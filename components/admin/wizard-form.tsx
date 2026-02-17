@@ -149,41 +149,89 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
 
     return (
         <>
-            {/* Stepper */}
-            <div className="flex items-start justify-between mb-16 relative px-4">
-                {steps.map((step, index) => (
-                    <div key={step.label} className="flex items-start" style={{ flex: index < steps.length - 1 ? 1 : undefined }}>
-                        <div className="flex flex-col items-center z-10">
-                            <button
-                                onClick={() => index <= currentStep && setCurrentStep(index)}
-                                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all cursor-pointer ${index <= currentStep
-                                    ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20"
-                                    : "bg-white border-2 border-gray-200 text-gray-400"
-                                    }`}
-                            >
-                                <span className="material-symbols-outlined text-xl">{step.icon}</span>
-                            </button>
-                            <span
-                                className={`mt-3 text-xs font-bold uppercase tracking-wider ${index <= currentStep ? "text-blue-500" : "text-gray-400"
-                                    }`}
-                            >
-                                {step.label}
-                            </span>
-                        </div>
-                        {index < steps.length - 1 && (
-                            <div
-                                className="flex-grow mx-3"
-                                style={{ position: "relative", top: "20px" }}
-                            >
-                                <div
-                                    className={`h-[2px] w-full ${index < currentStep ? "bg-blue-500" : "bg-gray-200"
-                                        }`}
-                                />
-                            </div>
-                        )}
+            <div className="flex gap-8 items-start">
+                {/* Sidebar */}
+                <aside className="hidden lg:flex flex-col w-64 shrink-0 bg-white rounded-2xl border border-slate-100 overflow-hidden sticky top-24" style={{ boxShadow: "0 4px 20px -2px rgba(0,0,0,0.05)" }}>
+                    <div className="p-5 border-b border-slate-100 bg-slate-50/60">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Etapas do Cadastro</p>
+                        <p className="text-xs text-slate-500 mt-0.5">{currentStep + 1} de {steps.length} etapas</p>
                     </div>
-                ))}
-            </div>
+                    {/* Progress bar */}
+                    <div className="h-1 bg-slate-100">
+                        <div
+                            className="h-full bg-blue-500 transition-all duration-500"
+                            style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+                        />
+                    </div>
+                    <nav className="p-3 space-y-1">
+                        {steps.map((step, index) => {
+                            const isCompleted = index < currentStep;
+                            const isCurrent = index === currentStep;
+                            const isDisabled = index > currentStep;
+                            return (
+                                <button
+                                    key={step.label}
+                                    onClick={() => !isDisabled && setCurrentStep(index)}
+                                    disabled={isDisabled}
+                                    className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all ${
+                                        isCurrent
+                                            ? "bg-blue-50 text-blue-700"
+                                            : isCompleted
+                                            ? "text-slate-600 hover:bg-slate-50 cursor-pointer"
+                                            : "text-slate-300 cursor-not-allowed"
+                                    }`}
+                                >
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all ${
+                                        isCurrent
+                                            ? "bg-blue-500 text-white shadow-sm shadow-blue-500/30"
+                                            : isCompleted
+                                            ? "bg-emerald-50 text-emerald-600"
+                                            : "bg-slate-100 text-slate-300"
+                                    }`}>
+                                        {isCompleted ? (
+                                            <span className="material-symbols-outlined text-[16px]">check</span>
+                                        ) : (
+                                            <span className="material-symbols-outlined text-[16px]">{step.icon}</span>
+                                        )}
+                                    </div>
+                                    <div className="min-w-0">
+                                        <p className={`text-xs font-bold leading-tight ${isCurrent ? "text-blue-700" : isCompleted ? "text-slate-700" : "text-slate-300"}`}>
+                                            {step.label}
+                                        </p>
+                                        <p className={`text-[10px] mt-0.5 font-mono ${isCurrent ? "text-blue-500" : isCompleted ? "text-emerald-500" : "text-slate-300"}`}>
+                                            {isCompleted ? "Concluído" : isCurrent ? "Em andamento" : "Pendente"}
+                                        </p>
+                                    </div>
+                                    {isCurrent && (
+                                        <span className="material-symbols-outlined text-[14px] text-blue-400 ml-auto shrink-0">chevron_right</span>
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </nav>
+                    <div className="p-4 mx-3 mb-3 bg-blue-50/60 rounded-xl border border-blue-100">
+                        <p className="text-[10px] font-bold text-blue-700 uppercase tracking-wider mb-1">Etapa atual</p>
+                        <p className="text-xs text-blue-600 leading-relaxed">{stepDescriptions[currentStep]}</p>
+                    </div>
+                </aside>
+
+                {/* Main Content */}
+                <div className="flex-1 min-w-0">
+                    {/* Mobile step indicator */}
+                    <div className="lg:hidden flex items-center gap-3 mb-6 bg-white rounded-xl border border-slate-100 p-4">
+                        <div className="w-9 h-9 rounded-lg bg-blue-500 flex items-center justify-center text-white shrink-0">
+                            <span className="material-symbols-outlined text-[18px]">{steps[currentStep].icon}</span>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-slate-800">{steps[currentStep].label}</p>
+                            <p className="text-[10px] text-slate-400 font-mono">Etapa {currentStep + 1} de {steps.length}</p>
+                        </div>
+                        <div className="ml-auto flex gap-1">
+                            {steps.map((_, i) => (
+                                <div key={i} className={`h-1.5 rounded-full transition-all ${i === currentStep ? "w-6 bg-blue-500" : i < currentStep ? "w-2 bg-emerald-400" : "w-2 bg-slate-200"}`} />
+                            ))}
+                        </div>
+                    </div>
 
             {/* Form Card */}
             <div className="bg-white rounded-xl overflow-hidden border border-gray-100" style={{ boxShadow: "0 10px 25px -5px rgba(0,0,0,0.04), 0 8px 10px -6px rgba(0,0,0,0.04)" }}>
@@ -193,7 +241,7 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                         {isEditing ? "Editar Emenda" : "Cadastro de Emenda"}
                     </h2>
                     <p className="text-gray-500 mt-2 max-w-2xl">
-                        Passo {currentStep + 1}: {stepDescriptions[currentStep]}
+                        {stepDescriptions[currentStep]}
                     </p>
                 </div>
 
@@ -660,7 +708,7 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
             </div>
 
             {/* Info Cards */}
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100 flex gap-4">
                     <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 text-blue-600">
                         <span className="material-symbols-outlined">menu_book</span>
@@ -688,6 +736,8 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                     </div>
                 </div>
             </div>
+                </div>{/* end main content */}
+            </div>{/* end flex wrapper */}
         </>
     );
 }
