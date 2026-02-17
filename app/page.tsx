@@ -137,33 +137,33 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Card de Total de Emendas */}
-          <section className="mb-2">
-            <div className="relative overflow-hidden rounded-[20px] border border-blue-100 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-8 shadow-[0_8px_32px_-4px_rgba(37,99,235,0.3)] transition-transform hover:-translate-y-1">
+          {/* Card de Total de Emendas - Porcentagem vs R$ 144M */}
+          <section>
+            <div id="card-total-emendas" className="relative overflow-hidden rounded-[20px] border border-blue-100 p-6 md:p-8 shadow-[0_8px_32px_-4px_rgba(37,99,235,0.3)] transition-transform hover:-translate-y-1" style={{ background: "linear-gradient(135deg, #2563eb 0%, #3b82f6 40%, #4338ca 100%)" }}>
               {/* Decorative circles */}
-              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/5"></div>
-              <div className="absolute -right-4 top-16 h-24 w-24 rounded-full bg-white/5"></div>
-              <div className="absolute -left-6 -bottom-6 h-32 w-32 rounded-full bg-white/5"></div>
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full" style={{ background: "rgba(255,255,255,0.06)" }}></div>
+              <div className="absolute -right-4 top-16 h-24 w-24 rounded-full" style={{ background: "rgba(255,255,255,0.04)" }}></div>
+              <div className="absolute -left-6 -bottom-6 h-32 w-32 rounded-full" style={{ background: "rgba(255,255,255,0.04)" }}></div>
 
-              <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between" style={{ zIndex: 2 }}>
                 {/* Left side - Info */}
-                <div className="flex-1 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-blue-200">account_balance</span>
-                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-blue-200">
+                <div style={{ flex: 1 }}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="material-symbols-outlined" style={{ color: "#93c5fd" }}>account_balance</span>
+                    <p style={{ fontFamily: "monospace", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.2em", color: "#93c5fd" }}>
                       Total de Emendas Cadastradas
                     </p>
                   </div>
-                  <h3 className="text-3xl font-bold text-white md:text-4xl">
+                  <h3 style={{ fontSize: "2rem", fontWeight: "bold", color: "#ffffff", lineHeight: 1.2 }}>
                     {loading ? "Carregando..." : totalFormatado}
                   </h3>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
-                      <span className="material-symbols-outlined text-[14px]">description</span>
+                  <div className="flex flex-wrap items-center gap-3 mt-3">
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", borderRadius: "9999px", background: "rgba(255,255,255,0.15)", padding: "4px 12px", fontSize: "12px", fontWeight: 600, color: "#ffffff" }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: "14px" }}>description</span>
                       {amendments.length} emendas
                     </span>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
-                      <span className="material-symbols-outlined text-[14px]">target</span>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", borderRadius: "9999px", background: "rgba(255,255,255,0.15)", padding: "4px 12px", fontSize: "12px", fontWeight: 600, color: "#ffffff" }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: "14px" }}>target</span>
                       Meta: R$ 144M
                     </span>
                   </div>
@@ -171,53 +171,44 @@ export default function Home() {
 
                 {/* Right side - Circular progress */}
                 <div className="flex items-center gap-6">
-                  <div className="relative flex h-32 w-32 items-center justify-center">
-                    <svg className="h-32 w-32 -rotate-90" viewBox="0 0 120 120">
+                  <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", width: "128px", height: "128px" }}>
+                    <svg width="128" height="128" viewBox="0 0 120 120" style={{ transform: "rotate(-90deg)" }}>
                       <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="10" />
                       <circle
                         cx="60" cy="60" r="52" fill="none"
-                        stroke="url(#progressGradient)"
+                        stroke="#93c5fd"
                         strokeWidth="10"
                         strokeLinecap="round"
                         strokeDasharray={`${Math.min(Number(porcentagemFormatada), 100) * 3.267} 326.7`}
-                        className="transition-all duration-1000 ease-out"
                       />
-                      <defs>
-                        <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#93c5fd" />
-                          <stop offset="100%" stopColor="#ffffff" />
-                        </linearGradient>
-                      </defs>
                     </svg>
-                    <div className="absolute flex flex-col items-center">
-                      <span className="text-2xl font-bold text-white">{loading ? "--" : porcentagemFormatada}%</span>
-                      <span className="text-[10px] uppercase tracking-wider text-blue-200">utilizado</span>
+                    <div style={{ position: "absolute", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                      <span style={{ fontSize: "24px", fontWeight: "bold", color: "#ffffff" }}>{loading ? "--" : porcentagemFormatada}%</span>
+                      <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "#93c5fd" }}>utilizado</span>
                     </div>
                   </div>
 
                   {/* Bar breakdown */}
-                  <div className="hidden flex-col gap-2 md:flex">
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="text-xs text-blue-200">Cadastrado</span>
-                        <span className="font-mono text-xs font-bold text-white">{loading ? "--" : porcentagemFormatada}%</span>
+                  <div className="hidden md:flex" style={{ flexDirection: "column", gap: "8px" }}>
+                    <div>
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: "16px", marginBottom: "4px" }}>
+                        <span style={{ fontSize: "12px", color: "#93c5fd" }}>Cadastrado</span>
+                        <span style={{ fontFamily: "monospace", fontSize: "12px", fontWeight: "bold", color: "#ffffff" }}>{loading ? "--" : porcentagemFormatada}%</span>
                       </div>
-                      <div className="h-2 w-40 overflow-hidden rounded-full bg-white/15">
+                      <div style={{ height: "8px", width: "160px", borderRadius: "9999px", background: "rgba(255,255,255,0.15)", overflow: "hidden" }}>
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-blue-300 to-white transition-all duration-1000 ease-out"
-                          style={{ width: `${Math.min(Number(porcentagemFormatada), 100)}%` }}
+                          style={{ height: "100%", borderRadius: "9999px", background: "linear-gradient(to right, #93c5fd, #ffffff)", transition: "width 1s ease-out", width: `${Math.min(Number(porcentagemFormatada), 100)}%` }}
                         ></div>
                       </div>
                     </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="text-xs text-blue-200">Restante</span>
-                        <span className="font-mono text-xs font-bold text-white">{loading ? "--" : (100 - Math.min(Number(porcentagemFormatada), 100)).toFixed(1)}%</span>
+                    <div>
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: "16px", marginBottom: "4px" }}>
+                        <span style={{ fontSize: "12px", color: "#93c5fd" }}>Restante</span>
+                        <span style={{ fontFamily: "monospace", fontSize: "12px", fontWeight: "bold", color: "#ffffff" }}>{loading ? "--" : (100 - Math.min(Number(porcentagemFormatada), 100)).toFixed(1)}%</span>
                       </div>
-                      <div className="h-2 w-40 overflow-hidden rounded-full bg-white/15">
+                      <div style={{ height: "8px", width: "160px", borderRadius: "9999px", background: "rgba(255,255,255,0.15)", overflow: "hidden" }}>
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-amber-300 to-amber-400 transition-all duration-1000 ease-out"
-                          style={{ width: `${100 - Math.min(Number(porcentagemFormatada), 100)}%` }}
+                          style={{ height: "100%", borderRadius: "9999px", background: "linear-gradient(to right, #fcd34d, #f59e0b)", transition: "width 1s ease-out", width: `${100 - Math.min(Number(porcentagemFormatada), 100)}%` }}
                         ></div>
                       </div>
                     </div>
