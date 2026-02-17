@@ -139,47 +139,125 @@ export default async function ProjetoDetalhePage(props: Props) {
                             </div>
                         </div>
 
-                        {/* Financial History Chart Placeholder - Using simple SVG for now as per reference */}
+                        {/* Evolução Financeira — dados reais da emenda */}
                         <div className="bg-white border border-gray-100 shadow-sm rounded-xl overflow-hidden p-8">
-                            <div className="flex items-center justify-between mb-8">
-                                <h3 className="font-heading font-bold text-lg">Evolução Financeira</h3>
-                                <div className="flex gap-4 text-xs font-mono font-bold uppercase">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-3 h-3 bg-primary rounded-full"></div>
-                                        <span>Empenhado</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-3 h-3 bg-status-danger rounded-full"></div>
-                                        <span>Liquidado</span>
-                                    </div>
+                            <div className="flex items-start justify-between mb-8">
+                                <div>
+                                    <h3 className="font-heading font-bold text-lg">Evolução Financeira</h3>
+                                    <p className="text-xs text-slate-400 font-mono mt-0.5">
+                                        Base: {formatCurrency(valorTotal)} autorizados
+                                    </p>
                                 </div>
+                                {valorTotal === 0 && (
+                                    <span className="text-[10px] font-mono font-bold uppercase bg-amber-50 text-amber-600 border border-amber-100 px-2.5 py-1 rounded-lg">
+                                        Valor não informado
+                                    </span>
+                                )}
                             </div>
 
-                            {/* Simple Visual Representation instead of complex Chart for this iteration */}
-                            <div className="h-64 w-full relative bg-[radial-gradient(#E5E7EB_1px,transparent_1px)] bg-[length:20px_20px] rounded-lg overflow-hidden p-4 flex items-end justify-between px-10">
-                                {/* Mock Bars for Visual Check */}
-                                <div className="w-8 bg-primary/20 h-[30%] rounded-t-sm relative group">
-                                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity">JAN</div>
+                            {/* Stacked overview bar */}
+                            {valorTotal > 0 && (
+                                <div className="mb-8">
+                                    <div className="flex h-4 w-full rounded-full overflow-hidden bg-slate-100 gap-px">
+                                        <div
+                                            className="bg-blue-500 h-full transition-all duration-700"
+                                            style={{ width: `${Math.min(100, Math.round((empenhado / valorTotal) * 100))}%` }}
+                                            title={`Empenhado: ${formatCurrency(empenhado)}`}
+                                        />
+                                        <div
+                                            className="bg-amber-400 h-full transition-all duration-700"
+                                            style={{ width: `${Math.min(100, Math.round((Math.max(0, liquidado - empenhado) / valorTotal) * 100))}%` }}
+                                            title={`Liquidado acima do empenhado: ${formatCurrency(liquidado)}`}
+                                        />
+                                    </div>
+                                    <div className="flex justify-between mt-1.5 text-[10px] font-mono text-slate-400">
+                                        <span>R$ 0</span>
+                                        <span>{formatShortCurrency(valorTotal)}</span>
+                                    </div>
                                 </div>
-                                <div className="w-8 bg-primary/40 h-[45%] rounded-t-sm relative group">
-                                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity">FEV</div>
-                                </div>
-                                <div className="w-8 bg-primary/60 h-[50%] rounded-t-sm relative group">
-                                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity">MAR</div>
-                                </div>
-                                <div className="w-8 bg-primary/80 h-[70%] rounded-t-sm relative group">
-                                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity">ABR</div>
-                                </div>
-                                <div className="w-8 bg-primary h-[85%] rounded-t-sm relative group">
-                                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity">MAI</div>
-                                </div>
+                            )}
+
+                            {/* Individual metrics */}
+                            <div className="space-y-5">
+                                {[
+                                    {
+                                        label: "Empenhado",
+                                        value: empenhado,
+                                        barColor: "bg-blue-500",
+                                        dotColor: "bg-blue-500",
+                                        textColor: "text-blue-700",
+                                        desc: "Valor comprometido no orçamento",
+                                    },
+                                    {
+                                        label: "Liquidado",
+                                        value: liquidado,
+                                        barColor: "bg-amber-400",
+                                        dotColor: "bg-amber-400",
+                                        textColor: "text-amber-600",
+                                        desc: "Serviço/bem confirmado como entregue",
+                                    },
+                                    {
+                                        label: "Pago",
+                                        value: pago,
+                                        barColor: "bg-emerald-500",
+                                        dotColor: "bg-emerald-500",
+                                        textColor: "text-emerald-700",
+                                        desc: "Efetivamente transferido ao beneficiário",
+                                    },
+                                ].map(({ label, value, barColor, dotColor, textColor, desc }) => {
+                                    const pct = valorTotal > 0
+                                        ? Math.min(100, Math.round((value / valorTotal) * 100))
+                                        : 0;
+                                    return (
+                                        <div key={label}>
+                                            <div className="flex items-center justify-between mb-1.5">
+                                                <div className="flex items-center gap-2">
+                                                    <div className={`w-2.5 h-2.5 rounded-full ${dotColor} shrink-0`} />
+                                                    <span className="text-sm font-bold text-slate-700">{label}</span>
+                                                    <span className="hidden sm:block text-[10px] text-slate-400 font-mono">— {desc}</span>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    <span className={`text-xs font-mono font-bold ${textColor}`}>
+                                                        {valorTotal > 0 ? `${pct}%` : "—"}
+                                                    </span>
+                                                    <span className="font-mono text-sm font-bold text-slate-800">
+                                                        {value > 0 ? formatCurrency(value) : <span className="text-slate-300">Não informado</span>}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full ${barColor} rounded-full transition-all duration-700`}
+                                                    style={{ width: valorTotal > 0 ? `${pct}%` : "0%" }}
+                                                />
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
 
+                            {/* Alerts */}
                             {liquidado > empenhado && (
                                 <div className="mt-6 p-4 bg-red-50 rounded-lg border border-red-100 flex gap-3">
-                                    <span className="material-symbols-outlined text-status-danger text-[20px]">info</span>
+                                    <span className="material-symbols-outlined text-status-danger text-[20px]">warning</span>
                                     <p className="text-sm text-red-900 leading-snug">
-                                        <strong>Alerta de Descompasso:</strong> O valor liquidado supera o empenhado. Verifique a execução orçamentária.
+                                        <strong>Alerta de Descompasso:</strong> O valor liquidado ({formatShortCurrency(liquidado)}) supera o empenhado ({formatShortCurrency(empenhado)}). Verifique a execução orçamentária.
+                                    </p>
+                                </div>
+                            )}
+                            {pago > liquidado && liquidado > 0 && (
+                                <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-100 flex gap-3">
+                                    <span className="material-symbols-outlined text-amber-600 text-[20px]">warning</span>
+                                    <p className="text-sm text-amber-900 leading-snug">
+                                        <strong>Atenção:</strong> O valor pago ({formatShortCurrency(pago)}) supera o liquidado ({formatShortCurrency(liquidado)}).
+                                    </p>
+                                </div>
+                            )}
+                            {empenhado === 0 && liquidado === 0 && pago === 0 && (
+                                <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-100 flex gap-3">
+                                    <span className="material-symbols-outlined text-slate-400 text-[20px]">hourglass_empty</span>
+                                    <p className="text-sm text-slate-600 leading-snug">
+                                        Nenhum dado financeiro registrado ainda para esta emenda.
                                     </p>
                                 </div>
                             )}
