@@ -251,61 +251,129 @@ export default function Home() {
             ))}
           </section>
 
-          {/* Map and Sector Section */}
-          <section className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-            <div className="space-y-6 lg:col-span-8">
-              <div className="flex items-center justify-between">
-                <h2 className="flex items-center gap-2 text-xl font-bold text-slate-800">
-                  <span className="material-symbols-outlined text-blue-600">explore</span>
-                  Geolocalização de Investimentos
-                </h2>
-                <div className="flex gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-teal-500"></span>
-                    <span className="font-sans text-xs font-medium uppercase tracking-tighter text-slate-500">
-                      Normal
-                    </span>
+          {/* Emendas por Autor and Sector Section */}
+          <section className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+            {/* Card: Emendas por Autor */}
+            <div className="lg:col-span-8">
+              <div className="rounded-[16px] bg-white border border-slate-100 overflow-hidden" style={{ boxShadow: "0 4px 20px -2px rgba(0,0,0,0.05), 0 2px 10px -2px rgba(0,0,0,0.03)" }}>
+                {/* Header */}
+                <div className="flex items-center justify-between p-6 pb-4 border-b border-slate-50">
+                  <div className="flex items-center gap-3">
+                    <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "linear-gradient(135deg, #6366f1, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: "20px", color: "#ffffff" }}>groups</span>
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold text-slate-800">Emendas por Autor</h2>
+                      <p style={{ fontSize: "11px", color: "#94a3b8", fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "0.05em" }}>Distribuição de valores por parlamentar</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-amber-500"></span>
-                    <span className="font-sans text-xs font-medium uppercase tracking-tighter text-slate-500">
-                      Atenção
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-red-500"></span>
-                    <span className="font-sans text-xs font-medium uppercase tracking-tighter text-slate-500">
-                      Crítico
-                    </span>
-                  </div>
+                  <Link href="/projetos" style={{ fontSize: "11px", fontWeight: 700, color: "#3b82f6", textTransform: "uppercase", letterSpacing: "0.05em" }}>Ver todos</Link>
                 </div>
-              </div>
 
-              {/* Map Card */}
-              <div className="group relative h-[540px] overflow-hidden rounded-[16px] border border-white shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05),0_2px_10px_-2px_rgba(0,0,0,0.03)] bg-slate-100">
-                {/* Iframe OpenStreetMap Osasco */}
-                <iframe
-                  width="100%"
-                  height="100%"
-                  frameBorder="0"
-                  scrolling="no"
-                  marginHeight={0}
-                  marginWidth={0}
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=-46.8288803100586%2C-23.57008688863615%2C-46.745109558105476%2C-23.504449880472405&amp;layer=mapnik&amp;marker=-23.537274%2C-46.787"
-                  className="absolute inset-0 h-full w-full grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-                ></iframe>
+                {/* Author List */}
+                <div className="p-6">
+                  {loading ? (
+                    <div className="text-center py-8 text-slate-400">Carregando dados...</div>
+                  ) : (() => {
+                    // Agrupar emendas por autor
+                    const authorMap: Record<string, { total: number; count: number }> = {};
+                    amendments.forEach((e: any) => {
+                      const autorNome = e.autor || e.responsavelNome || "Não informado";
+                      if (!authorMap[autorNome]) {
+                        authorMap[autorNome] = { total: 0, count: 0 };
+                      }
+                      authorMap[autorNome].total += parseValor(e.valor);
+                      authorMap[autorNome].count += 1;
+                    });
 
-                <div className="absolute bottom-6 left-6 flex gap-1 rounded-xl border border-white/50 bg-white/90 p-1 backdrop-blur-[8px] shadow-lg">
-                  <button className="rounded-lg p-2 text-slate-600 transition-colors hover:bg-white hover:text-blue-600">
-                    <span className="material-symbols-outlined text-[20px]">add</span>
-                  </button>
-                  <button className="rounded-lg p-2 text-slate-600 transition-colors hover:bg-white hover:text-blue-600">
-                    <span className="material-symbols-outlined text-[20px]">remove</span>
-                  </button>
+                    const authorList = Object.entries(authorMap)
+                      .map(([name, data]) => ({ name, ...data }))
+                      .sort((a, b) => b.total - a.total);
+
+                    const maxTotal = authorList.length > 0 ? authorList[0].total : 1;
+
+                    // Cores alternadas para os autores
+                    const authorColors = ["#3b82f6", "#6366f1", "#8b5cf6", "#0ea5e9", "#14b8a6", "#f59e0b", "#ef4444", "#10b981"];
+
+                    if (authorList.length === 0) {
+                      return (
+                        <div className="text-center py-8 text-slate-400">
+                          <span className="material-symbols-outlined" style={{ fontSize: "48px", color: "#cbd5e1", marginBottom: "8px", display: "block" }}>person_off</span>
+                          <p>Nenhuma emenda com autor cadastrado.</p>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                        {authorList.map((author, idx) => {
+                          const color = authorColors[idx % authorColors.length];
+                          const percentage = maxTotal > 0 ? (author.total / maxTotal) * 100 : 0;
+                          const valorFormatado = author.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+                          return (
+                            <div
+                              key={author.name}
+                              className="group"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "16px",
+                                padding: "14px 16px",
+                                borderRadius: "14px",
+                                transition: "all 0.2s ease",
+                                cursor: "pointer",
+                                border: "1px solid transparent",
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = "#f8fafc";
+                                e.currentTarget.style.borderColor = "#e2e8f0";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = "transparent";
+                                e.currentTarget.style.borderColor = "transparent";
+                              }}
+                            >
+                              {/* Ranking */}
+                              <div style={{
+                                width: "32px", height: "32px", borderRadius: "10px",
+                                background: idx < 3 ? color : "#f1f5f9",
+                                display: "flex", alignItems: "center", justifyContent: "center",
+                                fontSize: "13px", fontWeight: 800, flexShrink: 0,
+                                color: idx < 3 ? "#ffffff" : "#64748b",
+                              }}>
+                                {idx + 1}
+                              </div>
+
+                              {/* Name + Bar */}
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "6px" }}>
+                                  <p style={{ fontSize: "14px", fontWeight: 700, color: "#1e293b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{author.name}</p>
+                                  <p style={{ fontSize: "13px", fontWeight: 700, color: "#1e293b", fontFamily: "monospace", flexShrink: 0, marginLeft: "12px" }}>{valorFormatado}</p>
+                                </div>
+                                <div style={{ height: "6px", width: "100%", borderRadius: "9999px", background: "#f1f5f9", overflow: "hidden" }}>
+                                  <div style={{
+                                    height: "100%", borderRadius: "9999px",
+                                    background: `linear-gradient(90deg, ${color}, ${color}dd)`,
+                                    width: `${percentage}%`,
+                                    transition: "width 0.8s ease-out",
+                                  }}></div>
+                                </div>
+                                <p style={{ fontSize: "11px", color: "#94a3b8", marginTop: "4px", fontFamily: "monospace" }}>
+                                  {author.count} {author.count === 1 ? "emenda" : "emendas"}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
 
+            {/* Right Column: Setor + Atividade Recente */}
             <div className="space-y-10 lg:col-span-4">
               <div className="space-y-6">
                 <h2 className="text-lg font-bold uppercase tracking-tight text-slate-800">Investimento por Setor</h2>
@@ -346,7 +414,6 @@ export default function Home() {
                         <div className="text-center py-4 text-slate-400">Carregando...</div>
                       ) : amendments.length > 0 ? (
                         amendments.slice(0, 5).map((emenda: any, idx: number) => {
-                          // Calcular tempo relativo
                           const createdDate = new Date(emenda.createdAt);
                           const now = new Date();
                           const diffMs = now.getTime() - createdDate.getTime();
@@ -356,7 +423,6 @@ export default function Home() {
                           else if (diffDays > 1 && diffDays < 7) timeLabel = `${diffDays} DIAS ATRÁS`;
                           else if (diffDays >= 7) timeLabel = createdDate.toLocaleDateString("pt-BR");
 
-                          // Cor do status
                           const statusColor = emenda.status === "concluido" ? "bg-teal-500"
                             : emenda.status === "em_andamento" ? "bg-amber-500"
                               : emenda.status === "cancelado" ? "bg-red-500"
