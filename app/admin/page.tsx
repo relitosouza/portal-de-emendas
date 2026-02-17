@@ -23,8 +23,7 @@ export default function LoginPage() {
         // Simple validation (accept any email/password for MVP or specific ones)
         if (email && password) {
             // Success
-            // router.push("/admin/wizard");
-            window.location.href = "/admin/wizard";
+            window.location.href = "/admin/dashboard";
         } else {
             setError("Preencha todos os campos.");
             setLoading(false);
@@ -35,8 +34,13 @@ export default function LoginPage() {
         <div className="flex min-h-screen items-center justify-center bg-slate-50 font-sans text-slate-800">
             <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05),0_2px_10px_-2px_rgba(0,0,0,0.03)] border border-slate-100">
                 <div className="mb-8 text-center">
-                    <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-teal-500 text-white">
-                        <span className="material-symbols-outlined">account_balance</span>
+                    <div className="mx-auto mb-6 flex size-20 items-center justify-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src="/brasao-osasco.png"
+                            alt="Brasão de Osasco"
+                            className="h-full w-full object-contain drop-shadow-md"
+                        />
                     </div>
                     <h1 className="text-2xl font-heading font-bold text-slate-800">Login Gestor</h1>
                     <p className="text-sm text-slate-500">Acesse o painel administrativo</p>

@@ -1,34 +1,112 @@
 "use client";
 
 import Link from "next/link";
-import { projects } from "@/lib/data";
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { Amendment } from "@/lib/store";
+import Navbar from "@/components/shared/navbar";
+
+interface Project {
+    id: string;
+    title: string;
+    status: string;
+    sector: string;
+    budget: string;
+    location: string;
+    progress: number;
+    description: string;
+    startDate: string;
+    endDate: string;
+    responsible?: string;
+}
 
 function ProjectsContent() {
     const searchParams = useSearchParams();
     const initialSector = searchParams.get("sector");
+    const initialSearch = searchParams.get("search");
 
-    const [searchTerm, setSearchTerm] = useState("");
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const [searchTerm, setSearchTerm] = useState(initialSearch || "");
     const [selectedSector, setSelectedSector] = useState<string | null>(initialSector);
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
     const [showStalledOnly, setShowStalledOnly] = useState(false);
 
+    useEffect(() => {
+        async function fetchAmendments() {
+            try {
+                const response = await fetch("/api/amendments");
+                const data = await response.json();
+
+                let amendments: Amendment[] = [];
+                if (Array.isArray(data)) {
+                    amendments = data;
+                } else if (data.data && Array.isArray(data.data)) {
+                    amendments = data.data;
+                }
+
+                // Map Amendment to Project for UI compatibility
+                const mappedProjects: Project[] = amendments.map(a => {
+                    // Infer sector from responsible/description/title
+                    const text = ((a.orgaoBeneficiario || a.responsible || "") + (a.objeto || a.title || "") + (a.finalidade || a.description || "")).toLowerCase();
+                    let sector = "Infraestrutura"; // Default
+                    if (text.includes("saude") || text.includes("saúde") || text.includes("hospital") || text.includes("ubs")) sector = "Saúde";
+                    else if (text.includes("educação") || text.includes("escola") || text.includes("creche")) sector = "Educação";
+                    else if (text.includes("segurança") || text.includes("policia") || text.includes("guarda")) sector = "Segurança";
+                    else if (text.includes("cultura") || text.includes("teatro") || text.includes("show")) sector = "Cultura";
+
+                    // Map status
+                    let status = "Planejamento";
+                    let progress = 0;
+                    if (a.status === "em_execucao") { status = "Em andamento"; progress = 45; }
+                    else if (a.status === "concluido") { status = "Concluído"; progress = 100; }
+                    else if (a.status === "suspenso") { status = "Parado"; progress = 15; }
+                    else if (a.status === "aprovado") { status = "Licitação"; progress = 10; }
+
+                    return {
+                        id: a.id,
+                        title: a.objeto || a.title || "Sem título",
+                        status,
+                        sector,
+                        budget: `R$ ${a.valor || a.value || "0,00"}`,
+                        location: a.localidadeBeneficiada || a.neighborhood || a.address || "Local não informado",
+                        progress,
+                        description: a.finalidade || a.description || "",
+                        startDate: a.startDate || "",
+                        endDate: a.endDate || "",
+                        responsible: (a.autor || a.author) ? `${a.autor || a.author} (Parlamentar)` : (a.orgaoBeneficiario || a.responsible || "Prefeitura")
+                    };
+                });
+
+                setProjects(mappedProjects);
+            } catch (error) {
+                console.error("Failed to load amendments", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchAmendments();
+    }, []);
+
     // Filter Logic
     const filteredProjects = projects.filter((project) => {
+        const term = searchTerm.toLowerCase();
         const matchesSearch =
-            project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            project.title.toLowerCase().includes(term) ||
+            project.description.toLowerCase().includes(term) ||
+            (project.responsible || "").toLowerCase().includes(term) ||
+            project.sector.toLowerCase().includes(term) ||
+            project.location.toLowerCase().includes(term) ||
             project.id.includes(searchTerm);
         const matchesSector = selectedSector ? project.sector === selectedSector : true;
-        // In the new layout, status buttons are explicit filters. Status in data: "Em andamento", "Concluído", "Parado", "Atenção", "Licitação"
-        // UI Checkboxes: "Em Execução" (Em andamento), "Paralisado" (Parado), "Concluído"
-        // Let's map strict UI filters to data statuses.
+
         const matchesStatus = selectedStatus
             ? (selectedStatus === "Em Execução" ? project.status === "Em andamento" :
                 selectedStatus === "Paralisado" ? project.status === "Parado" :
                     selectedStatus === "Concluído" ? project.status === "Concluído" :
-                        project.status === selectedStatus) // Fallback for direct matches
+                        project.status === selectedStatus)
             : true;
 
         const matchesStalled = showStalledOnly ? project.status === "Parado" || project.status === "Atenção" : true;
@@ -36,33 +114,26 @@ function ProjectsContent() {
         return matchesSearch && matchesSector && matchesStatus && matchesStalled;
     });
 
-    return (
-        <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-800">
-            {/* Header (Project List Context) */}
-            {/* Note: The user requested layout has a Header inside the page structure or global? 
-               Looking at provided HTML, it has a Global Header. Since we have a RootLayout, we might have duplication if I put the global header here.
-               However, the user's HTML replaces the whole "Projetos" page content.
-               I will implement the Sidebar + Main Content structure here, assuming the RootHeader is either separate or I should hide it.
-               The previous implementation had a RootLayout. I should probably ONLY implement the <main> part if RootLayout is persistent.
-               But the user provided a full HTML with <body>.
-               I'll implement the layout *within* the page for now, but I might need to check if RootLayout allows it.
-               The Sidebar is specific to this page in the HTML.
-            */}
+    if (loading) return <div className="flex h-screen items-center justify-center">Carregando emendas...</div>;
 
-            <div className="flex flex-1 overflow-hidden h-[calc(100vh-80px)]">
+    return (
+        <div className="flex flex-col min-h-screen bg-[#f8fafc] font-sans text-slate-800">
+            <Navbar />
+
+            <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar Filters */}
-                <aside className="hidden lg:flex w-80 flex-col border-r border-slate-200 bg-white">
-                    <div className="p-8 space-y-8 overflow-y-auto">
+                <aside className="hidden lg:flex w-72 flex-col border-r border-slate-200 bg-white">
+                    <div className="p-6 space-y-6 overflow-y-auto flex-1">
                         <div>
-                            <h2 className="font-heading text-xl font-bold mb-2 text-slate-900">Filtros</h2>
-                            <p className="text-sm text-slate-500">Explore as emendas e investimentos do seu município.</p>
+                            <h2 className="font-heading text-lg font-bold mb-1 text-slate-900">Filtros</h2>
+                            <p className="text-xs text-slate-500">Explore as emendas e investimentos.</p>
                         </div>
 
                         <div className="space-y-6">
                             {/* Status Filter */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Status do Projeto</h3>
-                                <div className="space-y-2">
+                                <div className="space-y-1">
                                     {[
                                         { label: "Em Execução", value: "Em Execução" },
                                         { label: "Paralisado", value: "Paralisado" },
@@ -82,7 +153,7 @@ function ProjectsContent() {
                             </div>
 
                             {/* Sector Filter */}
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Secretaria / Setor</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {["Saúde", "Educação", "Infraestrutura", "Segurança", "Cultura"].map((sector) => (
@@ -115,12 +186,22 @@ function ProjectsContent() {
                                     </label>
                                 </div>
                                 <p className="text-[11px] text-rose-600 leading-relaxed">
-                                    Filtre projetos que possuem inconsistências entre repasse financeiro e progresso físico.
+                                    Filtre projetos com inconsistências entre repasse e progresso.
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div className="mt-auto p-8 border-t border-slate-100">
+                    <div className="p-6 border-t border-slate-100 space-y-3">
+                        <div className="flex gap-2">
+                            <button className="flex-1 flex items-center justify-center gap-2 py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors text-xs font-bold text-slate-600">
+                                <span className="material-symbols-outlined text-[16px]">tune</span>
+                                Ordenar
+                            </button>
+                            <button className="flex-1 flex items-center justify-center gap-2 py-2.5 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors text-xs font-bold text-slate-600">
+                                <span className="material-symbols-outlined text-[16px]">download</span>
+                                Exportar
+                            </button>
+                        </div>
                         <button
                             onClick={() => {
                                 setSearchTerm("");
@@ -128,7 +209,7 @@ function ProjectsContent() {
                                 setSelectedStatus(null);
                                 setShowStalledOnly(false);
                             }}
-                            className="w-full py-3 bg-slate-50 text-slate-600 text-xs font-bold rounded-lg hover:bg-slate-100 transition-colors uppercase tracking-wider"
+                            className="w-full py-2.5 bg-slate-50 text-slate-600 text-xs font-bold rounded-lg hover:bg-slate-100 transition-colors uppercase tracking-wider"
                         >
                             Limpar Filtros
                         </button>
@@ -137,167 +218,166 @@ function ProjectsContent() {
 
                 {/* Main Content */}
                 <section className="flex-1 overflow-y-auto bg-slate-50/50 relative">
-                    {/* Sticky Header */}
-                    <div className="p-8 bg-white border-b border-slate-200 flex flex-col md:flex-row gap-6 items-center justify-between sticky top-0 z-10 shadow-sm">
-                        <div className="relative w-full max-w-xl">
-                            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                            <input
-                                type="text"
-                                className="w-full pl-12 pr-4 py-3 bg-slate-50 border-transparent rounded-2xl focus:bg-white focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900/20 transition-all text-sm outline-none"
-                                placeholder="Pesquisar por obra, ID ou parlamentar..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
+                    <div className="p-6 lg:p-8 space-y-6">
+                        {/* Search Bar */}
+                        <div className="max-w-2xl mx-auto">
+                            <div className="relative group">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-blue-500">search</span>
+                                <input
+                                    type="text"
+                                    placeholder="Pesquisar emendas, bairros ou parlamentares..."
+                                    className="w-full rounded-2xl border border-slate-200 bg-white py-4 pl-12 pr-4 text-base shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+                            <p className="mt-2 text-center font-mono text-xs text-slate-400 uppercase tracking-widest">{filteredProjects.length} resultados encontrados</p>
                         </div>
-                        <div className="flex items-center gap-4 shrink-0">
-                            <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">{filteredProjects.length} Resultados</span>
-                            <button className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors text-xs font-bold text-slate-600">
-                                <span className="material-symbols-outlined text-lg">tune</span>
-                                ORDENAR
-                            </button>
-                            <button className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors text-xs font-bold text-slate-600">
-                                <span className="material-symbols-outlined text-lg">download</span>
-                                EXPORTAR
-                            </button>
-                        </div>
-                    </div>
 
-                    {/* Cards Grid */}
-                    <div className="p-8 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
-                        {filteredProjects.map((project) => {
-                            // Style Logic
-                            let tagClass = "bg-slate-500/10 text-slate-700 border border-slate-500/20";
-                            let dotClass = "bg-slate-400";
-                            let statusText: string = project.status;
-                            let progressColor = "bg-slate-300";
-                            let progressText = "text-slate-400";
+                        {/* Cards Grid */}
+                        <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
+                            {filteredProjects.map((project) => {
+                                // Style Logic
+                                let tagClass = "bg-slate-500/10 text-slate-700 border border-slate-500/20";
+                                let dotClass = "bg-slate-400";
+                                let statusText: string = project.status;
+                                let progressColor = "bg-slate-300";
+                                let progressText = "text-slate-400";
 
-                            if (project.status === "Em andamento") {
-                                tagClass = "bg-emerald-500/10 text-emerald-700 border border-emerald-500/20";
-                                dotClass = "bg-emerald-500";
-                                statusText = "Em Execução";
-                                progressColor = "bg-emerald-500";
-                                progressText = "text-emerald-600";
-                            } else if (project.status === "Parado") {
-                                tagClass = "bg-rose-500/10 text-rose-700 border border-rose-500/20";
-                                dotClass = "bg-rose-500 animate-pulse";
-                                statusText = "Obra Paralisada";
-                                progressColor = "bg-rose-500";
-                                progressText = "text-rose-600";
-                            } else if (project.status === "Atenção") {
-                                tagClass = "bg-amber-500/10 text-amber-700 border border-amber-500/20";
-                                dotClass = "bg-amber-500";
-                                statusText = "Atenção Especial";
-                                progressColor = "bg-amber-400";
-                                progressText = "text-amber-600";
-                            } else if (project.status === "Concluído") {
-                                tagClass = "bg-slate-100 text-slate-600 border border-slate-200";
-                                dotClass = "hidden";
-                                statusText = "Obra Entregue";
-                                progressColor = "bg-emerald-500";
-                                progressText = "text-emerald-600";
-                            } else if (project.status === "Licitação") {
-                                tagClass = "bg-slate-500/10 text-slate-700 border border-slate-500/20";
-                                dotClass = "bg-slate-400";
-                                statusText = "Fase de Licitação";
-                                progressColor = "bg-slate-300";
-                                progressText = "text-slate-400";
-                            }
+                                if (project.status === "Em andamento") {
+                                    tagClass = "bg-emerald-500/10 text-emerald-700 border border-emerald-500/20";
+                                    dotClass = "bg-emerald-500";
+                                    statusText = "Em Execução";
+                                    progressColor = "bg-emerald-500";
+                                    progressText = "text-emerald-600";
+                                } else if (project.status === "Parado") {
+                                    tagClass = "bg-rose-500/10 text-rose-700 border border-rose-500/20";
+                                    dotClass = "bg-rose-500 animate-pulse";
+                                    statusText = "Obra Paralisada";
+                                    progressColor = "bg-rose-500";
+                                    progressText = "text-rose-600";
+                                } else if (project.status === "Atenção") {
+                                    tagClass = "bg-amber-500/10 text-amber-700 border border-amber-500/20";
+                                    dotClass = "bg-amber-500";
+                                    statusText = "Atenção Especial";
+                                    progressColor = "bg-amber-400";
+                                    progressText = "text-amber-600";
+                                } else if (project.status === "Concluído") {
+                                    tagClass = "bg-slate-100 text-slate-600 border border-slate-200";
+                                    dotClass = "hidden";
+                                    statusText = "Obra Entregue";
+                                    progressColor = "bg-emerald-500";
+                                    progressText = "text-emerald-600";
+                                } else if (project.status === "Licitação") {
+                                    tagClass = "bg-slate-500/10 text-slate-700 border border-slate-500/20";
+                                    dotClass = "bg-slate-400";
+                                    statusText = "Fase de Licitação";
+                                    progressColor = "bg-slate-300";
+                                    progressText = "text-slate-400";
+                                }
 
-                            return (
-                                <Link href={`/projetos/${project.id}`} key={project.id}>
-                                    <article className="group bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 relative flex flex-col h-full cursor-pointer">
-                                        <div className="flex justify-between items-start mb-6">
-                                            <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${tagClass}`}>
-                                                {project.status === "Concluído" ? (
-                                                    <span className="material-symbols-outlined text-[14px]">task_alt</span>
-                                                ) : (
-                                                    <span className={`size-1.5 rounded-full ${dotClass}`}></span>
-                                                )}
-                                                {statusText}
-                                            </span>
-                                            <span className="text-[10px] font-mono text-slate-400">ID #{project.id}</span>
-                                        </div>
-
-                                        <div className="flex-1 space-y-4">
-                                            <div className="space-y-1">
-                                                <h3 className="text-lg font-heading font-bold leading-tight group-hover:text-blue-600 transition-colors text-slate-800">
-                                                    {project.title}
-                                                </h3>
-                                                <p className="text-sm text-slate-500 leading-relaxed line-clamp-2">
-                                                    {project.description}
-                                                </p>
-                                            </div>
-
-                                            <div className="flex items-center gap-3 py-3 border-y border-slate-50">
-                                                <div className="size-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-                                                    {project.sector === "Saúde" && <span className="material-symbols-outlined text-lg">medical_services</span>}
-                                                    {project.sector === "Educação" && <span className="material-symbols-outlined text-lg">school</span>}
-                                                    {project.sector === "Infraestrutura" && <span className="material-symbols-outlined text-lg">engineering</span>}
-                                                    {project.sector === "Cultura" && <span className="material-symbols-outlined text-lg">theater_comedy</span>}
-                                                    {project.sector === "Segurança" && <span className="material-symbols-outlined text-lg">local_police</span>}
-                                                </div>
-                                                <div>
-                                                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Responsável</p>
-                                                    <p className="text-xs font-semibold text-slate-700">{project.responsible || "Prefeitura Municipal"}</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div>
-                                                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">Valor Total</p>
-                                                    <p className="font-mono text-base font-bold text-slate-900">{project.budget}</p>
-                                                </div>
-                                                <div className="text-right">
-                                                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">
-                                                        {project.status === "Concluído" ? "Status Final" : "Medição Física"}
-                                                    </p>
-                                                    <p className={`font-mono text-base font-bold ${progressText}`}>
-                                                        {project.status === "Concluído" ? "100%" : `${project.progress}%`}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="mt-6 pt-6 border-t border-slate-50">
-                                            <div className="flex justify-between text-[11px] font-bold text-slate-400 mb-2 uppercase tracking-tight">
-                                                <span>Progresso</span>
-                                                <span className={progressText}>
-                                                    {project.status === "Concluído" ? "FINALIZADO" :
-                                                        project.status === "Parado" ? "Gargalo Crítico" :
-                                                            "Em Andamento"}
+                                return (
+                                    <Link href={`/projetos/${project.id}`} key={project.id} className="cursor-pointer">
+                                        <article className="group bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 relative flex flex-col h-full">
+                                            <div className="flex justify-between items-start mb-6">
+                                                <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${tagClass}`}>
+                                                    {project.status === "Concluído" ? (
+                                                        <span className="material-symbols-outlined text-[14px]">task_alt</span>
+                                                    ) : (
+                                                        <span className={`size-1.5 rounded-full ${dotClass}`}></span>
+                                                    )}
+                                                    {statusText}
                                                 </span>
+                                                <span className="text-[10px] font-mono text-slate-400" title={project.id}>ID #{project.id.substring(0, 8)}</span>
                                             </div>
-                                            <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
-                                                <div
-                                                    className={`h-full rounded-full ${progressColor}`}
-                                                    style={{ width: `${project.progress}%` }}
-                                                ></div>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </Link>
-                            );
-                        })}
-                    </div>
 
-                    {/* Pagination */}
-                    <div className="p-8 flex items-center justify-between border-t border-slate-200 bg-white/50 backdrop-blur-md sticky bottom-0">
-                        <p className="text-xs font-medium text-slate-500">Mostrando <strong>1 - {filteredProjects.length}</strong> de {filteredProjects.length} projetos</p>
-                        <div className="flex gap-2">
-                            <button className="size-10 flex items-center justify-center border border-slate-200 rounded-xl text-slate-400 hover:bg-slate-50 disabled:opacity-30" disabled>
-                                <span className="material-symbols-outlined">chevron_left</span>
-                            </button>
-                            <button className="size-10 flex items-center justify-center bg-slate-900 text-white rounded-xl text-sm font-bold">1</button>
-                            <button className="size-10 flex items-center justify-center border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50">2</button>
-                            <button className="size-10 flex items-center justify-center border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50">3</button>
-                            <button className="size-10 flex items-center justify-center border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50">
-                                <span className="material-symbols-outlined">chevron_right</span>
-                            </button>
+                                            <div className="flex-1 space-y-4">
+                                                <div className="space-y-1">
+                                                    <h3 className="text-lg font-heading font-bold leading-tight group-hover:text-blue-600 transition-colors text-slate-800">
+                                                        {project.title}
+                                                    </h3>
+                                                    <p className="text-sm text-slate-500 leading-relaxed line-clamp-2">
+                                                        {project.description}
+                                                    </p>
+                                                </div>
+
+                                                <div className="flex items-center gap-3 py-3 border-y border-slate-50">
+                                                    <div className="size-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                                                        {project.sector === "Saúde" && <span className="material-symbols-outlined text-lg">medical_services</span>}
+                                                        {project.sector === "Educação" && <span className="material-symbols-outlined text-lg">school</span>}
+                                                        {project.sector === "Infraestrutura" && <span className="material-symbols-outlined text-lg">engineering</span>}
+                                                        {project.sector === "Cultura" && <span className="material-symbols-outlined text-lg">theater_comedy</span>}
+                                                        {project.sector === "Segurança" && <span className="material-symbols-outlined text-lg">local_police</span>}
+                                                        {/* Default icon */}
+                                                        {!["Saúde", "Educação", "Infraestrutura", "Segurança", "Cultura"].includes(project.sector) && <span className="material-symbols-outlined text-lg">work</span>}
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Responsável</p>
+                                                        <p className="text-xs font-semibold text-slate-700">{project.responsible || "Prefeitura Municipal"}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">Valor Total</p>
+                                                        <p className="font-mono text-base font-bold text-slate-900">{project.budget}</p>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">
+                                                            {project.status === "Concluído" ? "Status Final" : "Medição Física"}
+                                                        </p>
+                                                        <p className={`font-mono text-base font-bold ${progressText}`}>
+                                                            {project.status === "Concluído" ? "100%" : `${project.progress}%`}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-6 pt-6 border-t border-slate-50">
+                                                <div className="flex justify-between text-[11px] font-bold text-slate-400 mb-2 uppercase tracking-tight">
+                                                    <span>Progresso</span>
+                                                    <span className={progressText}>
+                                                        {project.status === "Concluído" ? "FINALIZADO" :
+                                                            project.status === "Parado" ? "Gargalo Crítico" :
+                                                                "Em Andamento"}
+                                                    </span>
+                                                </div>
+                                                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                                                    <div
+                                                        className={`h-full rounded-full ${progressColor}`}
+                                                        style={{ width: `${project.progress}%` }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </Link>
+                                );
+                            })}
                         </div>
+
+                        {/* Pagination */}
+                        {filteredProjects.length === 0 && (
+                            <div className="p-12 text-center text-slate-500">
+                                Nenhum projeto encontrado.
+                            </div>
+                        )}
                     </div>
                 </section>
             </div>
+
+            {/* Footer */}
+            <footer className="border-t border-slate-200 bg-white px-6 py-8 lg:px-8">
+                <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 md:flex-row">
+                    <p className="font-mono text-xs text-slate-400">
+                        © 2026 Portal das Emendas Osasco • Plataforma de Auditoria Participativa
+                    </p>
+                    <div className="flex gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                        <a href="#" className="transition-colors hover:text-blue-600">Transparência</a>
+                        <a href="#" className="transition-colors hover:text-blue-600">Termos</a>
+                        <a href="#" className="transition-colors hover:text-blue-600">Contato</a>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }

@@ -16,6 +16,10 @@
 
   --color-surface: var(--surface);
 
+  /* Premium Theme */
+  --color-background-premium: var(--background-premium);
+  --color-text-main: var(--text-main);
+
   --color-sector-health-bg: var(--sector-health-bg);
   --color-sector-health-text: var(--sector-health-text);
   --color-sector-infra-bg: var(--sector-infra-bg);
@@ -27,11 +31,10 @@
   --color-status-warning: var(--status-warning);
   --color-status-danger: var(--status-danger);
 
-  --color-status-danger: var(--status-danger);
-
-  --color-accent: var(--accent-custom);
-  --color-background-paper: var(--background-paper);
-  --color-text-main: var(--text-main);
+  /* User Custom Colors - Direct Hex to avoid panic */
+  --color-accent: #3B82F6;
+  --color-background-paper: #F8F9FA;
+  --color-text-main: #2D2D2D;
 
   --shadow-hard: 4px 4px 0px 0px rgba(0, 0, 0, 1);
 }
@@ -44,16 +47,23 @@
     --font-jetbrains-mono: 'JetBrains Mono', monospace;
 
     /* Colors */
-    /* Colors */
     --primary: #1A1A1A;
     --primary-dark: #000000;
 
     --background: #f4f4f0;
-    /* Warm paper tone */
     --foreground: #2D2D2D;
 
     --surface: #ffffff;
 
+    --status-success: #007A5E;
+    --status-warning: #EDC805;
+    --status-danger: #D93025;
+
+    /* Premium Theme Colors */
+    --background-premium: #F8F9FA;
+    --text-main: #2D2D2D;
+
+    /* Sectors */
     --sector-health-bg: #E3F2FD;
     --sector-health-text: #1565C0;
     --sector-infra-bg: #EFEBE9;
@@ -61,16 +71,7 @@
     --sector-edu-bg: #FFF3E0;
     --sector-edu-text: #EF6C00;
 
-    --status-success: #007A5E;
-    --status-warning: #EDC805;
-    --status-danger: #D93025;
-    
-    /* User Custom Colors */
-    --accent-custom: #3B82F6;
-    --background-paper: #F8F9FA;
-    --text-main: #2D2D2D;
-
-    /* Shadcn/UI Mappings (Proxied to new system where possible) */
+    /* Shadcn/UI Mappings */
     --card: hsl(0 0% 100%);
     --card-foreground: hsl(222.2 84% 4.9%);
     --popover: hsl(0 0% 100%);
@@ -85,11 +86,9 @@
     --destructive: hsl(0 84.2% 60.2%);
     --destructive-foreground: hsl(210 40% 98%);
     --border: hsl(0 0% 0%);
-    /* distinct border */
     --input: hsl(214.3 31.8% 91.4%);
     --ring: hsl(222.2 84% 4.9%);
     --radius: 0px;
-    /* Neo-brutalist */
   }
 
   .dark {
@@ -99,10 +98,6 @@
 
     --primary: #156bc1;
     --primary-dark: #60a5fa;
-
-    /* Keep sector colors readable in dark mode or adjust? 
-       For now keeping same or slight adjust if needed, mostly trusting requested layout 
-    */
 
     /* Shadcn Mappings Dark */
     --card: hsl(222.2 84% 4.9%);
