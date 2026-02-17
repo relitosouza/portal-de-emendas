@@ -27,6 +27,8 @@ export interface Amendment {
     localidadeBeneficiada: string;
     instrumentoJuridico: string;
     possuiCronograma: string;
+    fornecedor?: string;
+    numeroLicitacao?: string;
 
     // Financeiro
     prazoAplicacao: string;

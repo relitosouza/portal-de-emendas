@@ -103,7 +103,9 @@ function mapAmendmentToRow(amendment: any): any[] {
         amendment.priority,
         amendment.latitude?.toString(),
         amendment.longitude?.toString(),
-        amendment.categoria // 35 - New Categorization Field
+        amendment.categoria, // 35
+        amendment.fornecedor, // 36
+        amendment.numeroLicitacao, // 37
     ];
 }
 
@@ -173,7 +175,7 @@ export async function appendAmendmentToSheet(amendment: any) {
 
     const response = await sheets.spreadsheets.values.append({
         spreadsheetId,
-        range: `${sheetName}!A:AJ`, // Expanded range to AJ (approx 36 cols)
+        range: `${sheetName}!A:AL`, // Expanded range to AL (approx 36 cols)
         valueInputOption: "USER_ENTERED",
         requestBody: {
             values: [row],
@@ -273,7 +275,7 @@ export async function updateAmendmentInSheet(id: string, amendment: any) {
 
     await sheets.spreadsheets.values.update({
         spreadsheetId,
-        range: `${sheetName}!A${rowIndex + 1}:AJ${rowIndex + 1}`, // Expanded range
+        range: `${sheetName}!A${rowIndex + 1}:AL${rowIndex + 1}`, // Expanded range
         valueInputOption: "USER_ENTERED",
         requestBody: {
             values: [row],
@@ -303,7 +305,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
     // Fetch Main Data
     const response = await sheets.spreadsheets.values.get({
         spreadsheetId,
-        range: `${sheetName}!A:AJ`, // Expanded range
+        range: `${sheetName}!A:AL`, // Expanded range
     });
 
     // Fetch Financial Data
@@ -368,7 +370,9 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
             priority: row[32],
             latitude: row[33] ? parseFloat(row[33]) : undefined,
             longitude: row[34] ? parseFloat(row[34]) : undefined,
-            categoria: row[35], // 35 - New Categorization Field
+            categoria: row[35],
+            fornecedor: row[36],
+            numeroLicitacao: row[37],
 
             // Financial Data (Merged)
             empenhado: financial ? financial[1] : undefined,

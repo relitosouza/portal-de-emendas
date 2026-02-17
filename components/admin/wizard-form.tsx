@@ -49,6 +49,8 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
         localidadeBeneficiada: initialData?.localidadeBeneficiada || "",
         instrumentoJuridico: initialData?.instrumentoJuridico || "",
         possuiCronograma: initialData?.possuiCronograma || "",
+        fornecedor: initialData?.fornecedor || "",
+        numeroLicitacao: initialData?.numeroLicitacao || "",
 
         // Financeiro
         prazoAplicacao: initialData?.prazoAplicacao || "",
@@ -461,6 +463,40 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                                             <div className="space-y-2">
                                                 <label className={labelClass}>Localidade Beneficiada</label>
                                                 <input className={inputClass} type="text" placeholder="Ex: Bairro Centro, Zona Norte" value={formData.localidadeBeneficiada} onChange={(e) => handleChange("localidadeBeneficiada", e.target.value)} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="h-[1px] bg-gray-100" />
+
+                                {/* Licitação */}
+                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                    <div className="md:col-span-4">
+                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Licitação & Fornecedor</h3>
+                                        <p className="text-sm text-gray-500 mt-1">Dados do processo licitatório e empresa contratada.</p>
+                                    </div>
+                                    <div className="md:col-span-8 space-y-6">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            <div className="space-y-2">
+                                                <label className={labelClass}>Número de Licitação</label>
+                                                <input
+                                                    className={`${inputClass} font-mono`}
+                                                    type="text"
+                                                    placeholder="Ex: PREGÃO 001/2026"
+                                                    value={formData.numeroLicitacao}
+                                                    onChange={(e) => handleChange("numeroLicitacao", e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className={labelClass}>Fornecedor / Empresa</label>
+                                                <input
+                                                    className={inputClass}
+                                                    type="text"
+                                                    placeholder="Razão social da contratada"
+                                                    value={formData.fornecedor}
+                                                    onChange={(e) => handleChange("fornecedor", e.target.value)}
+                                                />
                                             </div>
                                         </div>
                                     </div>

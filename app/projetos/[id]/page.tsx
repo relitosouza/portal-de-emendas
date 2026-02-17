@@ -293,36 +293,67 @@ export default async function ProjetoDetalhePage(props: Props) {
                     <div className="lg:col-span-3">
                         <div className="sticky top-24 space-y-6">
                             <div className="bg-white border border-gray-100 rounded-xl overflow-hidden p-6 shadow-xl border-primary/5">
-                                <h4 className="font-heading font-bold text-sm uppercase tracking-widest text-muted mb-6">Resumo Financeiro</h4>
-                                <div className="space-y-6">
-                                    <div>
-                                        <span className="text-xs text-muted block mb-1">Valor Total Autorizado</span>
-                                        <div className="text-3xl font-heading font-bold text-primary">
-                                            {formatCurrency(valorTotal)}
+                                <h4 className="font-heading font-bold text-sm uppercase tracking-widest text-muted mb-5">Identificação</h4>
+                                <div className="space-y-4">
+                                    {/* Vereador */}
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 text-blue-600">
+                                            <span className="material-symbols-outlined text-[18px]">how_to_vote</span>
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-0.5">Vereador</p>
+                                            <p className="text-sm font-bold text-primary leading-tight">
+                                                {amendment.autor || amendment.responsavelNome || <span className="text-slate-300 font-normal">Não informado</span>}
+                                            </p>
+                                            {amendment.responsavelCargo && (
+                                                <p className="text-[10px] font-mono text-muted mt-0.5">{amendment.responsavelCargo}</p>
+                                            )}
                                         </div>
                                     </div>
-                                    <div className="space-y-4">
-                                        <div className="flex justify-between items-end">
-                                            <span className="text-xs text-muted">Pago até agora</span>
-                                            <span className="text-sm font-mono font-bold text-status-danger">{percentPago}%</span>
+                                    <div className="h-px bg-gray-100" />
+                                    {/* Fornecedor */}
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 text-emerald-600">
+                                            <span className="material-symbols-outlined text-[18px]">storefront</span>
                                         </div>
-                                        <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                                            <div className="h-full bg-status-danger" style={{ width: `${percentPago}%` }}></div>
+                                        <div className="min-w-0">
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-0.5">Fornecedor</p>
+                                            <p className="text-sm font-bold text-primary leading-tight">
+                                                {amendment.fornecedor || <span className="text-slate-300 font-normal">Não informado</span>}
+                                            </p>
                                         </div>
                                     </div>
-                                    <div className="pt-6 border-t border-gray-100 space-y-3">
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-muted">Empenhado:</span>
-                                            <span className="font-mono font-bold">{formatShortCurrency(empenhado)}</span>
+                                    <div className="h-px bg-gray-100" />
+                                    {/* Número de Licitação */}
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0 text-amber-600">
+                                            <span className="material-symbols-outlined text-[18px]">gavel</span>
                                         </div>
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-muted">Liquidado:</span>
-                                            <span className="font-mono font-bold">{formatShortCurrency(liquidado)}</span>
+                                        <div className="min-w-0">
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-0.5">Nº Licitação</p>
+                                            <p className="text-sm font-bold text-primary font-mono leading-tight">
+                                                {amendment.numeroLicitacao || <span className="text-slate-300 font-normal font-sans">Não informado</span>}
+                                            </p>
                                         </div>
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-muted">Pago:</span>
-                                            <span className="font-mono font-bold text-status-success">{formatShortCurrency(pago)}</span>
-                                        </div>
+                                    </div>
+                                    <div className="h-px bg-gray-100" />
+                                    {/* Valor Total */}
+                                    <div className="pt-1">
+                                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-1">Valor Autorizado</p>
+                                        <p className="text-2xl font-heading font-bold text-primary">
+                                            {valorTotal > 0 ? formatCurrency(valorTotal) : <span className="text-slate-300 text-base font-normal">Não informado</span>}
+                                        </p>
+                                        {valorTotal > 0 && percentPago > 0 && (
+                                            <div className="mt-2">
+                                                <div className="flex justify-between text-[10px] font-mono text-muted mb-1">
+                                                    <span>Pago</span>
+                                                    <span className="font-bold text-emerald-600">{percentPago}%</span>
+                                                </div>
+                                                <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${percentPago}%` }} />
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
