@@ -14,6 +14,27 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [dashboardCards, setDashboardCards] = useState<any[]>([]);
 
+  // ---- Cálculo do total de emendas vs valor destinado (R$ 144 milhões) ----
+  const VALOR_DESTINADO = 144_000_000; // R$ 144.000.000,00
+
+  const parseValor = (v: any): number => {
+    if (!v) return 0;
+    if (typeof v === "number") return v;
+    // Remove "R$", pontos de milhar (.) e troca vírgula por ponto
+    const cleaned = String(v)
+      .replace(/R\$\s*/gi, "")
+      .replace(/\./g, "")
+      .replace(",", ".")
+      .trim();
+    const num = parseFloat(cleaned);
+    return isNaN(num) ? 0 : num;
+  };
+
+  const totalEmendas = amendments.reduce((acc, e) => acc + parseValor(e.valor), 0);
+  const porcentagemDestinado = VALOR_DESTINADO > 0 ? (totalEmendas / VALOR_DESTINADO) * 100 : 0;
+  const porcentagemFormatada = porcentagemDestinado.toFixed(1);
+  const totalFormatado = totalEmendas.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchTerm.trim()) {
       router.push(`/projetos?search=${encodeURIComponent(searchTerm.trim())}`);
@@ -115,6 +136,96 @@ export default function Home() {
               />
             </div>
           </div>
+
+          {/* Card de Total de Emendas */}
+          <section className="mb-2">
+            <div className="relative overflow-hidden rounded-[20px] border border-blue-100 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-8 shadow-[0_8px_32px_-4px_rgba(37,99,235,0.3)] transition-transform hover:-translate-y-1">
+              {/* Decorative circles */}
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/5"></div>
+              <div className="absolute -right-4 top-16 h-24 w-24 rounded-full bg-white/5"></div>
+              <div className="absolute -left-6 -bottom-6 h-32 w-32 rounded-full bg-white/5"></div>
+
+              <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                {/* Left side - Info */}
+                <div className="flex-1 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-blue-200">account_balance</span>
+                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-blue-200">
+                      Total de Emendas Cadastradas
+                    </p>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white md:text-4xl">
+                    {loading ? "Carregando..." : totalFormatado}
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                      <span className="material-symbols-outlined text-[14px]">description</span>
+                      {amendments.length} emendas
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                      <span className="material-symbols-outlined text-[14px]">target</span>
+                      Meta: R$ 144M
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right side - Circular progress */}
+                <div className="flex items-center gap-6">
+                  <div className="relative flex h-32 w-32 items-center justify-center">
+                    <svg className="h-32 w-32 -rotate-90" viewBox="0 0 120 120">
+                      <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="10" />
+                      <circle
+                        cx="60" cy="60" r="52" fill="none"
+                        stroke="url(#progressGradient)"
+                        strokeWidth="10"
+                        strokeLinecap="round"
+                        strokeDasharray={`${Math.min(Number(porcentagemFormatada), 100) * 3.267} 326.7`}
+                        className="transition-all duration-1000 ease-out"
+                      />
+                      <defs>
+                        <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#93c5fd" />
+                          <stop offset="100%" stopColor="#ffffff" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    <div className="absolute flex flex-col items-center">
+                      <span className="text-2xl font-bold text-white">{loading ? "--" : porcentagemFormatada}%</span>
+                      <span className="text-[10px] uppercase tracking-wider text-blue-200">utilizado</span>
+                    </div>
+                  </div>
+
+                  {/* Bar breakdown */}
+                  <div className="hidden flex-col gap-2 md:flex">
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-4">
+                        <span className="text-xs text-blue-200">Cadastrado</span>
+                        <span className="font-mono text-xs font-bold text-white">{loading ? "--" : porcentagemFormatada}%</span>
+                      </div>
+                      <div className="h-2 w-40 overflow-hidden rounded-full bg-white/15">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-blue-300 to-white transition-all duration-1000 ease-out"
+                          style={{ width: `${Math.min(Number(porcentagemFormatada), 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-4">
+                        <span className="text-xs text-blue-200">Restante</span>
+                        <span className="font-mono text-xs font-bold text-white">{loading ? "--" : (100 - Math.min(Number(porcentagemFormatada), 100)).toFixed(1)}%</span>
+                      </div>
+                      <div className="h-2 w-40 overflow-hidden rounded-full bg-white/15">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-amber-300 to-amber-400 transition-all duration-1000 ease-out"
+                          style={{ width: `${100 - Math.min(Number(porcentagemFormatada), 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
           {/* Stats Section */}
           <section className="grid grid-cols-1 gap-8 md:grid-cols-3">
