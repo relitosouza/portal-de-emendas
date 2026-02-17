@@ -16,20 +16,26 @@ export async function getAuthClient() {
         throw new Error("Missing Google Service Account credentials");
     }
 
-    // Fix key formatting:
+    // Vercel/Env var handling for Private Key
+    // 1. Remove wrapping double quotes if present
+    if (key.startsWith('"') && key.endsWith('"')) {
+        key = key.slice(1, -1);
+    }
+
+    // 2. Handle escaped newlines (common in Vercel)
     key = key.replace(/\\n/g, "\n");
+
+    // 3. Ensure proper PEM formatting
     if (!key.includes("-----BEGIN PRIVATE KEY-----")) {
         key = "-----BEGIN PRIVATE KEY-----\n" + key;
     }
     if (!key.includes("-----END PRIVATE KEY-----")) {
         key = key + "\n-----END PRIVATE KEY-----";
     }
-    key = key.replace(/"/g, "").trim();
-    // Re-do the simple fix but safer
-    key = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n") || "";
 
     if (key.length < 100) {
-        throw new Error("GOOGLE_PRIVATE_KEY appears to be invalid (too short).");
+        console.error("GOOGLE_PRIVATE_KEY is too short or invalid.");
+        throw new Error("GOOGLE_PRIVATE_KEY appears to be invalid.");
     }
 
     const auth = new google.auth.GoogleAuth({

@@ -28,7 +28,7 @@ export default function Navbar() {
                         <div className="relative flex size-10 shrink-0 items-center justify-center">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                                src="/brasao-osasco.png"
+                                src="/brasao-osasco.svg"
                                 alt="Brasão de Osasco"
                                 className="h-full w-full object-contain drop-shadow"
                             />
