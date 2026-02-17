@@ -11,21 +11,20 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-// Mock Steps matching the user request
+// Mock Steps with Icons
 const steps = [
-    { id: 1, label: "Identificação" },
-    { id: 2, label: "Classificação" },
-    { id: 3, label: "Financeiro" },
-    { id: 4, label: "Monitoramento" }
+    { id: 1, label: "Identificação", icon: "fingerprint" },
+    { id: 2, label: "Classificação", icon: "category" },
+    { id: 3, label: "Financeiro", icon: "payments" },
+    { id: 4, label: "Monitoramento", icon: "query_stats" }
 ];
 
-// Enhanced Schema
+// Schema
 const formSchema = z.object({
     // Step 1: Identificação
     responsavel: z.string().min(1, "Selecione um responsável"),
@@ -35,7 +34,7 @@ const formSchema = z.object({
 
     // Step 2: Classificação
     sector: z.string().min(1, "Selecione um setor"),
-    title: z.string().min(5, "Título deve ter pelo menos 5 caracteres"), // Moving title to classification or keeping in ID? Mock puts "Dados Cadastrais" in step 1. Let's keep ID fields in step 1 and Project specifics in Step 2.
+    title: z.string().min(5, "Título deve ter pelo menos 5 caracteres"),
 
     // Step 3: Financeiro
     budget: z.string().min(1, "Orçamento é obrigatório"),
@@ -86,6 +85,7 @@ export default function WizardPage() {
         if (isValid) {
             if (currentStep < steps.length - 1) {
                 setCurrentStep((prev) => prev + 1);
+                window.scrollTo(0, 0);
             } else {
                 await onSubmit(getValues());
             }
@@ -95,6 +95,7 @@ export default function WizardPage() {
     const handleBack = () => {
         if (currentStep > 0) {
             setCurrentStep((prev) => prev - 1);
+            window.scrollTo(0, 0);
         }
     };
 
@@ -109,14 +110,14 @@ export default function WizardPage() {
 
     if (isSuccess) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-background p-4">
-                <div className="bg-white border-2 border-primary p-8 max-w-md text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                    <div className="size-16 bg-success text-white rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span className="material-symbols-outlined text-4xl">check</span>
+            <div className="min-h-screen flex items-center justify-center bg-background-paper p-4 font-body">
+                <div className="bg-surface rounded-xl shadow-lg border border-gray-100 p-10 max-w-md text-center">
+                    <div className="size-16 bg-success/10 text-success rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span className="material-symbols-outlined text-4xl">check_circle</span>
                     </div>
-                    <h2 className="text-2xl font-bold font-heading mb-2">Projeto Criado!</h2>
-                    <p className="text-muted-foreground mb-8">O projeto foi cadastrado com sucesso e já está disponível para gestão.</p>
-                    <Link href="/projetos" className="block w-full bg-primary text-white py-3 font-bold uppercase tracking-wide hover:bg-black transition-colors">
+                    <h2 className="text-2xl font-bold font-display text-primary mb-2">Projeto Criado!</h2>
+                    <p className="text-gray-500 mb-8">O projeto foi cadastrado com sucesso e já está disponível para gestão.</p>
+                    <Link href="/projetos" className="block w-full bg-primary text-white py-3 rounded-xl font-bold hover:bg-black transition-all shadow-lg hover:shadow-xl">
                         Voltar para Lista
                     </Link>
                 </div>
@@ -125,343 +126,358 @@ export default function WizardPage() {
     }
 
     return (
-        <div className="min-h-screen bg-background flex flex-col font-sans">
-            {/* Header (Simplified to match mock layout context within existing app structure) */}
-            {/* Note: In a real Next.js app, this might be in layout.tsx, but per instructions, implementing the layout here */}
-            <header className="flex items-center justify-between whitespace-nowrap border-b-2 border-primary bg-white px-6 py-4 sticky top-0 z-50">
-                <div className="flex items-center gap-4 text-primary">
-                    <div className="size-8 flex items-center justify-center bg-primary text-white">
-                        <span className="material-symbols-outlined text-[20px]">account_balance</span>
+        <div className="bg-background-paper font-body text-text-main antialiased min-h-screen flex flex-col">
+            {/* Header */}
+            <header className="bg-surface border-b border-gray-100 px-8 py-4 flex items-center justify-between sticky top-0 z-50">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary flex items-center justify-center rounded-xl shadow-lg shadow-black/5">
+                        <span className="material-symbols-outlined text-white text-xl">account_balance</span>
                     </div>
-                    <h2 className="text-primary text-xl font-heading font-bold leading-tight tracking-[-0.015em] uppercase">Portal das Emendas Osasco</h2>
+                    <div>
+                        <h1 className="font-display font-bold text-lg tracking-tight leading-none">Impacto Cidadão</h1>
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400">Portal de Transparência</span>
+                    </div>
                 </div>
-                <div className="flex items-center gap-6">
-                    <div className="hidden md:flex items-center gap-6">
-                        <Link href="/" className="text-foreground hover:text-primary text-sm font-bold uppercase tracking-wide">Dashboard</Link>
-                        <Link href="/projetos" className="text-foreground hover:text-primary text-sm font-bold uppercase tracking-wide">Emendas</Link>
-                        <Link href="#" className="text-foreground hover:text-primary text-sm font-bold uppercase tracking-wide">Configurações</Link>
-                    </div>
-                    <button className="flex items-center justify-center h-9 px-4 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm font-bold font-heading uppercase tracking-wide shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
-                        <span>Sair</span>
+                <nav className="hidden md:flex items-center gap-8">
+                    <Link href="/" className="text-sm font-medium text-gray-500 hover:text-primary transition-colors">Dashboard</Link>
+                    <Link href="/projetos" className="text-sm font-semibold text-primary">Gestão de Emendas</Link>
+                    <Link href="#" className="text-sm font-medium text-gray-500 hover:text-primary transition-colors">Relatórios</Link>
+                </nav>
+                <div className="flex items-center gap-4">
+                    <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-50 transition-colors">
+                        <span className="material-symbols-outlined text-gray-500">notifications</span>
                     </button>
+                    <div className="h-8 w-[1px] bg-gray-100"></div>
+                    <div className="flex items-center gap-3 pl-2">
+                        <div className="text-right hidden sm:block">
+                            <p className="text-xs font-bold leading-none">Gestor Público</p>
+                            <p className="text-[10px] text-gray-400">ID: 4829-X</p>
+                        </div>
+                        <div className="w-9 h-9 bg-gray-200 rounded-full border-2 border-white overflow-hidden">
+                            <div className="w-full h-full bg-primary flex items-center justify-center text-white text-xs">GP</div>
+                        </div>
+                    </div>
                 </div>
             </header>
 
-            {/* Main Content Area: Split Layout */}
-            <main className="flex flex-1 flex-col lg:flex-row h-full">
+            <main className="max-w-5xl w-full mx-auto px-6 py-12 flex-1">
+                {/* Horizontal Stepper */}
+                <div className="flex items-start justify-between mb-16 relative px-4">
+                    {/* Stepper Logic to connect lines */}
+                    {steps.map((step, index) => {
+                        const isActive = index === currentStep;
+                        const isCompleted = index < currentStep;
 
-                {/* Left Panel: Form & Stepper */}
-                <div className="flex-1 bg-white flex flex-col lg:border-r-2 border-primary">
-                    <div className="max-w-3xl w-full mx-auto px-6 py-10 flex flex-col h-full">
-                        {/* Breadcrumb */}
-                        <Link href="/projetos" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 font-mono text-xs uppercase tracking-wide">
-                            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-                            Voltar para lista de projetos
-                        </Link>
-
-                        <div className="flex flex-col md:flex-row gap-12 flex-1">
-                            {/* Vertical Stepper */}
-                            <div className="w-full md:w-64 flex-shrink-0">
-                                <div className="flex flex-col gap-1 sticky top-24">
-                                    <h3 className="font-heading font-bold text-lg mb-6 text-primary leading-tight">Nova Emenda <br />TCESP 2026</h3>
-
-                                    {steps.map((step, index) => {
-                                        const isActive = index === currentStep;
-                                        const isCompleted = index < currentStep;
-
-                                        return (
-                                            <div
-                                                key={step.id}
-                                                className={`group flex items-center gap-3 py-3 px-3 rounded-none border transition-all duration-200
-                                                    ${isActive ? 'bg-primary text-white border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]' : ''}
-                                                    ${!isActive && !isCompleted ? 'text-muted-foreground border-transparent hover:border-gray-200' : ''}
-                                                    ${isCompleted ? 'text-primary border-primary bg-gray-50' : ''}
-                                                `}
-                                            >
-                                                <span className={`font-mono text-sm font-bold ${isActive ? 'text-white' : 'text-primary'}`}>0{step.id}</span>
-                                                <span className="font-heading font-bold text-sm uppercase tracking-wide">{step.label}</span>
-                                                {isCompleted && <span className="material-symbols-outlined text-sm ml-auto">check</span>}
-                                            </div>
-                                        );
-                                    })}
+                        return (
+                            <div key={step.id} className="contents">
+                                <div className="flex flex-col items-center z-10 relative">
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-lg
+                                        ${isActive || isCompleted ? 'bg-accent text-white shadow-accent/20' : 'bg-white border-2 border-gray-200 text-gray-400'}
+                                    `}>
+                                        <span className="material-symbols-outlined text-xl">{isCompleted ? 'check' : step.icon}</span>
+                                    </div>
+                                    <span className={`mt-3 text-xs font-bold uppercase tracking-wider ${isActive ? 'text-accent' : 'text-gray-400'}`}>
+                                        {step.label}
+                                    </span>
                                 </div>
+                                {index < steps.length - 1 && (
+                                    <div className={`h-[2px] flex-grow margin-0 mx-3 mt-5 relative ${index < currentStep ? 'bg-accent' : 'bg-gray-200'}`}></div>
+                                )}
                             </div>
+                        );
+                    })}
+                </div>
 
-                            {/* Form Content */}
-                            <div className="flex-1 max-w-lg">
-                                <div className="mb-8">
-                                    <h1 className="font-heading font-bold text-3xl text-primary mb-2 tracking-tight">
-                                        {steps[currentStep].label}
-                                    </h1>
-                                    <p className="text-muted-foreground">
-                                        {currentStep === 0 && "Preencha as informações iniciais para gerar o código de rastreio da emenda."}
-                                        {currentStep === 1 && "Defina a classificação setorial e o título oficial do projeto."}
-                                        {currentStep === 2 && "Especifique o valor total do orçamento aprovado."}
-                                        {currentStep === 3 && "Vincule o cronograma de execução previsto."}
-                                    </p>
-                                </div>
+                <div className="bg-surface rounded-xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.04),0_8px_10px_-6px_rgba(0,0,0,0.04)] overflow-hidden border border-gray-100">
+                    <div className="p-10 border-b border-gray-50 bg-gray-50/30">
+                        <h2 className="font-display font-bold text-3xl text-primary tracking-tight">Cadastro de Emenda</h2>
+                        <p className="text-gray-500 mt-2 max-w-2xl">
+                            {currentStep === 0 && "Passo 1: Identificação dos responsáveis e conformidade legal inicial exigida pelo TCESP 2026."}
+                            {currentStep === 1 && "Passo 2: Definição da classificação setorial e do título oficial do projeto."}
+                            {currentStep === 2 && "Passo 3: Detalhamento financeiro e orçamentário da emenda."}
+                            {currentStep === 3 && "Passo 4: Definição do cronograma de execução e monitoramento."}
+                        </p>
+                    </div>
 
-                                <Form {...form}>
-                                    <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
+                    <div className="p-10">
+                        <Form {...form}>
+                            <form onSubmit={(e) => e.preventDefault()} className="space-y-12">
 
-                                        {/* Step 1: Identificação */}
-                                        {currentStep === 0 && (
-                                            <>
-                                                <FormField
-                                                    control={form.control}
-                                                    name="responsavel"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex flex-col gap-1">
-                                                            <FormLabel className="text-sm font-bold text-primary font-heading uppercase tracking-wide">Responsável pela Emenda</FormLabel>
-                                                            <div className="relative">
-                                                                <select
-                                                                    className="w-full appearance-none bg-background border border-primary rounded-none px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans"
-                                                                    {...field}
-                                                                >
-                                                                    <option value="" disabled>Selecione um parlamentar</option>
-                                                                    <option value="dep_carlos">Dep. Carlos Mendes (PL)</option>
-                                                                    <option value="dep_ana">Dep. Ana Souza (PT)</option>
-                                                                    <option value="ver_joao">Ver. João da Silva (MDB)</option>
-                                                                </select>
-                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-primary">
-                                                                    <span className="material-symbols-outlined">expand_more</span>
-                                                                </div>
-                                                            </div>
-                                                            <FormMessage className="text-xs font-mono text-status-danger" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="cargo"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex flex-col gap-1">
-                                                            <FormLabel className="text-sm font-bold text-primary font-heading uppercase tracking-wide">Cargo do Responsável</FormLabel>
-                                                            <FormControl>
-                                                                <Input className="w-full bg-white border border-primary rounded-none px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans placeholder:text-gray-400 h-auto" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-xs font-mono text-status-danger" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="cnpj"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex flex-col gap-1">
-                                                            <FormLabel className="text-sm font-bold text-primary font-heading uppercase tracking-wide">CNPJ da Entidade Executora</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="00.000.000/0000-00" className="w-full bg-white border border-primary rounded-none px-4 py-3 text-foreground font-mono focus:outline-none focus:ring-2 focus:ring-primary/20 h-auto" {...field} />
-                                                            </FormControl>
-                                                            <p className="text-xs text-muted-foreground mt-1">O CNPJ deve conter 14 dígitos formatados corretamente.</p>
-                                                            <FormMessage className="text-xs font-mono text-status-danger" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="objeto"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex flex-col gap-1">
-                                                            <FormLabel className="text-sm font-bold text-primary font-heading uppercase tracking-wide">Objeto da Emenda</FormLabel>
-                                                            <FormControl>
-                                                                <Textarea placeholder="Descreva sucintamente o objetivo..." className="w-full bg-white border border-primary rounded-none px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans placeholder:text-gray-400 min-h-[100px]" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-xs font-mono text-status-danger" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </>
-                                        )}
-
-                                        {/* Step 2: Classificação */}
-                                        {currentStep === 1 && (
-                                            <>
-                                                <FormField
-                                                    control={form.control}
-                                                    name="sector"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex flex-col gap-1">
-                                                            <FormLabel className="text-sm font-bold text-primary font-heading uppercase tracking-wide">Setor de Atuação</FormLabel>
-                                                            <div className="relative">
-                                                                <select
-                                                                    className="w-full appearance-none bg-background border border-primary rounded-none px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans"
-                                                                    {...field}
-                                                                >
-                                                                    <option value="" disabled>Selecione um setor</option>
-                                                                    <option value="Saúde">Saúde</option>
-                                                                    <option value="Educação">Educação</option>
-                                                                    <option value="Infraestrutura">Infraestrutura</option>
-                                                                    <option value="Cultura">Cultura</option>
-                                                                </select>
-                                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-primary">
-                                                                    <span className="material-symbols-outlined">expand_more</span>
-                                                                </div>
-                                                            </div>
-                                                            <FormMessage className="text-xs font-mono text-status-danger" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="title"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex flex-col gap-1">
-                                                            <FormLabel className="text-sm font-bold text-primary font-heading uppercase tracking-wide">Título do Projeto</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Ex: Reforma da Praça Central" className="w-full bg-white border border-primary rounded-none px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans h-auto" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-xs font-mono text-status-danger" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </>
-                                        )}
-
-                                        {/* Step 3: Financeiro */}
-                                        {currentStep === 2 && (
-                                            <>
-                                                <FormField
-                                                    control={form.control}
-                                                    name="budget"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex flex-col gap-1">
-                                                            <FormLabel className="text-sm font-bold text-primary font-heading uppercase tracking-wide">Valor do Orçamento (R$)</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Ex: 500.000,00" className="w-full bg-white border border-primary rounded-none px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-mono h-auto" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-xs font-mono text-status-danger" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </>
-                                        )}
-
-                                        {/* Step 4: Monitoramento */}
-                                        {currentStep === 3 && (
-                                            <>
-                                                <div className="flex flex-col gap-4">
+                                {/* Step 1 content */}
+                                {currentStep === 0 && (
+                                    <>
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-display font-bold text-lg text-primary">Responsabilidade</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Defina o autor e cargo do responsável pela proposição.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                                     <FormField
                                                         control={form.control}
-                                                        name="startDate"
+                                                        name="responsavel"
                                                         render={({ field }) => (
-                                                            <FormItem className="flex flex-col gap-1">
-                                                                <FormLabel className="text-sm font-bold text-primary font-heading uppercase tracking-wide">Data de Início</FormLabel>
-                                                                <FormControl>
-                                                                    <Input type="date" className="w-full bg-white border border-primary rounded-none px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-mono h-auto" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage className="text-xs font-mono text-status-danger" />
+                                                            <FormItem className="space-y-2">
+                                                                <label className="text-[11px] font-bold uppercase tracking-widest text-gray-400 ml-1">Autor da Emenda</label>
+                                                                <div className="relative group">
+                                                                    <select
+                                                                        className="w-full h-12 bg-white border border-gray-200 rounded-xl px-4 text-sm text-primary appearance-none focus:outline-none focus:border-accent focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] transition-all"
+                                                                        {...field}
+                                                                    >
+                                                                        <option value="" disabled>Selecione...</option>
+                                                                        <option value="dep_carlos">Dep. Carlos Mendes (PL)</option>
+                                                                        <option value="dep_ana">Dep. Ana Souza (PT)</option>
+                                                                        <option value="ver_joao">Ver. João da Silva (MDB)</option>
+                                                                    </select>
+                                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                                </div>
+                                                                <FormMessage className="text-xs text-danger" />
                                                             </FormItem>
                                                         )}
                                                     />
+
                                                     <FormField
                                                         control={form.control}
-                                                        name="endDate"
+                                                        name="cargo"
                                                         render={({ field }) => (
-                                                            <FormItem className="flex flex-col gap-1">
-                                                                <FormLabel className="text-sm font-bold text-primary font-heading uppercase tracking-wide">Previsão de Término</FormLabel>
-                                                                <FormControl>
-                                                                    <Input type="date" className="w-full bg-white border border-primary rounded-none px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-mono h-auto" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage className="text-xs font-mono text-status-danger" />
+                                                            <FormItem className="space-y-2">
+                                                                <label className="text-[11px] font-bold uppercase tracking-widest text-gray-400 ml-1">Cargo</label>
+                                                                <Input className="w-full h-12 bg-white border border-gray-200 rounded-xl px-4 text-sm text-primary focus:border-accent focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] transition-all" {...field} />
+                                                                <FormMessage className="text-xs text-danger" />
                                                             </FormItem>
                                                         )}
                                                     />
                                                 </div>
-                                            </>
-                                        )}
-
-                                        {/* Action Buttons */}
-                                        <div className="flex items-center justify-end gap-4 mt-8 pt-6 border-t border-gray-200">
-                                            <button
-                                                type="button"
-                                                onClick={handleBack}
-                                                disabled={currentStep === 0 || isSubmitting}
-                                                className="px-6 py-3 rounded-none border border-transparent text-muted-foreground hover:text-primary font-heading font-bold text-sm uppercase tracking-wide transition-colors disabled:opacity-50"
-                                            >
-                                                {currentStep === 0 ? "Cancelar" : "Voltar"}
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={handleNext}
-                                                disabled={isSubmitting}
-                                                className="px-6 py-3 rounded-none bg-primary text-white border-2 border-primary hover:bg-black font-heading font-bold text-sm uppercase tracking-wide shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center gap-2"
-                                            >
-                                                {isSubmitting ? (
-                                                    <Loader2 className="animate-spin" size={18} />
-                                                ) : (
-                                                    <>
-                                                        {currentStep === steps.length - 1 ? "Finalizar Cadastro" : "Próximo Passo"}
-                                                        {currentStep < steps.length - 1 && <span className="material-symbols-outlined text-[18px]">arrow_forward</span>}
-                                                    </>
-                                                )}
-                                            </button>
+                                            </div>
                                         </div>
-                                    </form>
-                                </Form>
-                            </div>
-                        </div>
+
+                                        <div className="h-[1px] bg-gray-100"></div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-display font-bold text-lg text-primary">Entidade Executora</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Dados técnicos para rastreabilidade fiscal e auditoria.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <FormField
+                                                    control={form.control}
+                                                    name="cnpj"
+                                                    render={({ field }) => (
+                                                        <FormItem className="space-y-2">
+                                                            <div className="flex justify-between">
+                                                                <label className="text-[11px] font-bold uppercase tracking-widest text-gray-400 ml-1">CNPJ da Entidade</label>
+                                                                {/* Example of validation feedback implementation */}
+                                                                {form.formState.errors.cnpj && (
+                                                                    <span className="text-[10px] font-bold text-danger flex items-center gap-1">
+                                                                        <span className="material-symbols-outlined text-[14px]">info</span>
+                                                                        INVÁLIDO
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            <Input
+                                                                placeholder="00.000.000/0000-00"
+                                                                className={`w-full h-12 border rounded-xl px-4 font-mono text-sm transition-all focus:outline-none focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] 
+                                                                    ${form.formState.errors.cnpj
+                                                                        ? 'bg-red-50/30 border-red-200 text-danger focus:ring-red-500/10'
+                                                                        : 'bg-white border-gray-200 text-primary focus:border-accent'}`
+                                                                }
+                                                                {...field}
+                                                            />
+                                                            <FormMessage className="text-xs text-danger ml-1" />
+                                                            {form.formState.errors.cnpj && <p className="text-[11px] text-danger mt-1.5 ml-1">O formato do CNPJ não atende aos requisitos do Art. 2 da TCESP.</p>}
+                                                        </FormItem>
+                                                    )}
+                                                />
+
+                                                <FormField
+                                                    control={form.control}
+                                                    name="objeto"
+                                                    render={({ field }) => (
+                                                        <FormItem className="space-y-2">
+                                                            <label className="text-[11px] font-bold uppercase tracking-widest text-gray-400 ml-1">Objeto do Projeto</label>
+                                                            <Textarea placeholder="Ex: Reforma da Unidade Básica de Saúde Central..." className="w-full bg-white border border-gray-200 rounded-xl p-4 text-sm text-primary focus:border-accent focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] transition-all resize-none min-h-[100px]" {...field} />
+                                                            <FormMessage className="text-xs text-danger" />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {/* Other Steps (Simplified for brevity but keeping structure) */}
+                                {currentStep === 1 && (
+                                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                        <div className="md:col-span-4">
+                                            <h3 className="font-display font-bold text-lg text-primary">Classificação</h3>
+                                            <p className="text-sm text-gray-500 mt-1">Defina o setor e título.</p>
+                                        </div>
+                                        <div className="md:col-span-8 space-y-6">
+                                            <FormField
+                                                control={form.control}
+                                                name="sector"
+                                                render={({ field }) => (
+                                                    <FormItem className="space-y-2">
+                                                        <label className="text-[11px] font-bold uppercase tracking-widest text-gray-400 ml-1">Setor</label>
+                                                        <div className="relative">
+                                                            <select className="w-full h-12 bg-white border border-gray-200 rounded-xl px-4 text-sm text-primary appearance-none focus:border-accent focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] transition-all" {...field}>
+                                                                <option value="" disabled>Selecione...</option>
+                                                                <option value="Saúde">Saúde</option>
+                                                                <option value="Educação">Educação</option>
+                                                                <option value="Infraestrutura">Infraestrutura</option>
+                                                                <option value="Cultura">Cultura</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                        <FormMessage className="text-xs text-danger" />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="title"
+                                                render={({ field }) => (
+                                                    <FormItem className="space-y-2">
+                                                        <label className="text-[11px] font-bold uppercase tracking-widest text-gray-400 ml-1">Título</label>
+                                                        <Input className="w-full h-12 bg-white border border-gray-200 rounded-xl px-4 text-sm text-primary focus:border-accent focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] transition-all" {...field} />
+                                                        <FormMessage className="text-xs text-danger" />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {currentStep === 2 && (
+                                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                        <div className="md:col-span-4">
+                                            <h3 className="font-display font-bold text-lg text-primary">Financeiro</h3>
+                                            <p className="text-sm text-gray-500 mt-1">Defina o orçamento.</p>
+                                        </div>
+                                        <div className="md:col-span-8 space-y-6">
+                                            <FormField
+                                                control={form.control}
+                                                name="budget"
+                                                render={({ field }) => (
+                                                    <FormItem className="space-y-2">
+                                                        <label className="text-[11px] font-bold uppercase tracking-widest text-gray-400 ml-1">Valor (R$)</label>
+                                                        <Input className="w-full h-12 bg-white border border-gray-200 rounded-xl px-4 text-sm text-primary focus:border-accent focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] transition-all" placeholder="0,00" {...field} />
+                                                        <FormMessage className="text-xs text-danger" />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {currentStep === 3 && (
+                                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                        <div className="md:col-span-4">
+                                            <h3 className="font-display font-bold text-lg text-primary">Cronograma</h3>
+                                            <p className="text-sm text-gray-500 mt-1">Datas de execução.</p>
+                                        </div>
+                                        <div className="md:col-span-8 space-y-6">
+                                            <div className="grid grid-cols-2 gap-6">
+                                                <FormField
+                                                    control={form.control}
+                                                    name="startDate"
+                                                    render={({ field }) => (
+                                                        <FormItem className="space-y-2">
+                                                            <label className="text-[11px] font-bold uppercase tracking-widest text-gray-400 ml-1">Início</label>
+                                                            <Input type="date" className="w-full h-12 bg-white border border-gray-200 rounded-xl px-4 text-sm text-primary focus:border-accent focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] transition-all" {...field} />
+                                                            <FormMessage className="text-xs text-danger" />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="endDate"
+                                                    render={({ field }) => (
+                                                        <FormItem className="space-y-2">
+                                                            <label className="text-[11px] font-bold uppercase tracking-widest text-gray-400 ml-1">Término</label>
+                                                            <Input type="date" className="w-full h-12 bg-white border border-gray-200 rounded-xl px-4 text-sm text-primary focus:border-accent focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] transition-all" {...field} />
+                                                            <FormMessage className="text-xs text-danger" />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="h-[1px] bg-gray-100"></div>
+
+                                {/* Footer Actions */}
+                                <div className="flex items-center justify-between pt-4">
+                                    <Link href="/projetos" className="px-6 py-3 text-sm font-bold text-gray-400 hover:text-primary transition-colors flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-xl">close</span>
+                                        CANCELAR
+                                    </Link>
+
+                                    <div className="flex gap-4">
+                                        <button
+                                            type="button"
+                                            disabled={isSubmitting}
+                                            className="px-8 py-3 bg-white border border-gray-200 text-primary rounded-xl text-sm font-bold hover:bg-gray-50 transition-all disabled:opacity-50"
+                                        >
+                                            SALVAR RASCUNHO
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={handleNext}
+                                            disabled={isSubmitting}
+                                            className="px-10 py-3 bg-gradient-to-br from-[#1A1A1A] to-[#333333] hover:from-[#333333] hover:to-[#444444] text-white rounded-xl text-sm font-bold shadow-lg shadow-black/10 flex items-center gap-3 transition-all disabled:opacity-70"
+                                        >
+                                            {isSubmitting ? (
+                                                <Loader2 className="animate-spin" size={20} />
+                                            ) : (
+                                                <>
+                                                    {currentStep === steps.length - 1 ? "FINALIZAR" : "PRÓXIMO PASSO"}
+                                                    {currentStep < steps.length - 1 && <span className="material-symbols-outlined text-lg">arrow_forward</span>}
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </Form>
                     </div>
                 </div>
 
-                {/* Right Panel: Context & Help */}
-                <div className="hidden lg:flex w-[400px] bg-background border-l-2 border-primary p-8 flex-col gap-8 sticky top-[73px] h-[calc(100vh-73px)] overflow-y-auto">
-                    <div className="flex items-center gap-3 text-muted-foreground mb-4">
-                        <span className="material-symbols-outlined">menu_book</span>
-                        <span className="font-mono text-xs uppercase tracking-wider">Manual de Conformidade</span>
-                    </div>
-
-                    <div className="space-y-6">
-                        {/* Info Card 1 */}
-                        <div className="bg-white border text-foreground border-primary p-5 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-1 h-full bg-primary"></div>
-                            <h4 className="font-heading font-bold text-lg text-primary mb-3">Diretriz TCESP: Artigo 2</h4>
-                            <p className="text-sm text-foreground leading-relaxed mb-4">
-                                O CNPJ informado deve corresponder estritamente à entidade executora do recurso (Prefeitura ou Organização Social), conforme Art. 2 da resolução normativa vigente.
+                {/* Info Cards (Visible mostly on large screens or stacked) */}
+                <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
+                    <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100 flex gap-4">
+                        <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 text-blue-600">
+                            <span className="material-symbols-outlined">menu_book</span>
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-bold text-blue-900">Diretriz TCESP: Artigo 2</h4>
+                            <p className="text-xs text-blue-800/70 mt-1 leading-relaxed">
+                                O CNPJ informado deve corresponder à entidade executora direta do recurso, conforme resolução normativa 2026.
                             </p>
-                            <div className="bg-blue-50 border border-blue-100 p-3 rounded-none flex gap-3 items-start">
-                                <span className="material-symbols-outlined text-blue-600 text-sm mt-0.5">info</span>
-                                <p className="text-xs text-blue-800">
-                                    CPF de pessoas físicas não são aceitos para emendas de infraestrutura acima de R$ 100k.
-                                </p>
-                            </div>
+                            <a href="#" className="inline-flex items-center text-[11px] font-bold text-blue-600 mt-3 hover:underline">
+                                VER MANUAL COMPLETO
+                                <span className="material-symbols-outlined text-[14px] ml-1">open_in_new</span>
+                            </a>
                         </div>
-
-                        {/* Info Card 2 */}
-                        <div className="bg-white border border-gray-200 p-5 rounded-none">
-                            <h4 className="font-heading font-bold text-lg text-primary mb-3">Dicas de Preenchimento</h4>
-                            <ul className="space-y-3">
-                                <li className="flex items-start gap-3">
-                                    <span className="material-symbols-outlined text-status-success text-sm mt-0.5">check_circle</span>
-                                    <span className="text-sm text-muted-foreground">Utilize o CNPJ da matriz, não de filiais, salvo exceções justificadas.</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <span className="material-symbols-outlined text-status-success text-sm mt-0.5">check_circle</span>
-                                    <span className="text-sm text-muted-foreground">O cargo deve ser o vigente na data da assinatura do convênio.</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* External Link */}
-                        <Link href="#" className="flex items-center justify-between p-4 border border-gray-300 rounded-none hover:border-primary hover:bg-white transition-all group">
-                            <span className="text-sm font-bold text-text-main group-hover:text-primary">Baixar Manual Completo (PDF)</span>
-                            <span className="material-symbols-outlined text-gray-400 group-hover:text-primary">open_in_new</span>
-                        </Link>
                     </div>
-
-                    {/* Decorative Context Map */}
-                    <div className="mt-auto pt-8 border-t border-gray-200">
-                        <p className="font-mono text-xs text-muted-foreground uppercase mb-2">Contexto Regional</p>
-                        <div className="h-40 w-full bg-gray-200 rounded-none overflow-hidden relative border border-gray-300 filter grayscale opacity-70">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxUrI2WMky-wpkyrBldKkhkWB2GbB5kvVI6_3Jw_K07yww7rWYSdhMSIhQwDMvV44LLg0GW_bV7zyXFB5TMdMGPq8wtkayxk-uFeNKAuDk2PuZXVatnngNoEVPsTljPn5mQ6CqOSeLc8jMc_t13HvQ3wSdTkJcc3ymKlF8ol18v-eg5ajaqOcw99D1RUOFCaQ4dXnLWm_CHxNn6w00UMltEeDVZguFvPB3unpmZgcqr7Ypd3IQFkQkAhdoPp07nQxhStYvjw_H0c8" alt="Map Context" className="w-full h-full object-cover mix-blend-multiply" />
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="bg-white/80 px-2 py-1 font-mono text-xs text-primary border border-primary/20 backdrop-blur-sm">São Paulo - SP</span>
-                            </div>
+                    <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 flex gap-4">
+                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center flex-shrink-0 text-gray-400 border border-gray-200">
+                            <span className="material-symbols-outlined">lightbulb</span>
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-bold text-gray-700">Dica de Preenchimento</h4>
+                            <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                                Utilize o CNPJ da matriz administrativa. O cargo do responsável deve ser o vigente na data de envio.
+                            </p>
                         </div>
                     </div>
                 </div>
-
             </main>
+
+            <footer className="mt-auto py-12 px-8 border-t border-gray-100 text-center">
+                <p className="text-xs font-mono text-gray-400 uppercase tracking-widest">Plataforma Impacto Cidadão © 2024 • Desenvolvido para Transparência Fiscal</p>
+            </footer>
         </div>
     );
 }

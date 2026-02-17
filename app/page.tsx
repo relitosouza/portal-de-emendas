@@ -49,7 +49,7 @@ export default function Home() {
         </nav>
         <div className="border-t border-slate-100 p-4">
           <Link
-            href="/admin/wizard"
+            href="/admin"
             className="flex items-center gap-4 rounded-xl p-3 text-slate-500 transition-colors hover:bg-slate-50"
           >
             <span className="material-symbols-outlined">account_circle</span>
@@ -222,7 +222,7 @@ export default function Home() {
               <div className="space-y-6">
                 <h2 className="text-lg font-bold uppercase tracking-tight text-slate-800">Investimento por Setor</h2>
                 <div className="space-y-4">
-                  <div className="group flex cursor-pointer items-center justify-between rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-blue-100 hover:bg-blue-50/50">
+                  <Link href="/projetos?sector=Saúde" className="group flex cursor-pointer items-center justify-between rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-blue-100 hover:bg-blue-50/50">
                     <div className="flex items-center gap-4">
                       <div className="rounded-xl bg-blue-50 p-2.5 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
                         <span className="material-symbols-outlined">medical_services</span>
@@ -236,9 +236,9 @@ export default function Home() {
                       <p className="text-sm font-bold text-slate-800">35%</p>
                       <p className="text-[10px] uppercase text-slate-400">Do total</p>
                     </div>
-                  </div>
+                  </Link>
 
-                  <div className="group flex cursor-pointer items-center justify-between rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-teal-100 hover:bg-teal-50/50">
+                  <Link href="/projetos?sector=Infraestrutura" className="group flex cursor-pointer items-center justify-between rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-teal-100 hover:bg-teal-50/50">
                     <div className="flex items-center gap-4">
                       <div className="rounded-xl bg-teal-50 p-2.5 text-teal-600 transition-colors group-hover:bg-teal-600 group-hover:text-white">
                         <span className="material-symbols-outlined">engineering</span>
@@ -252,9 +252,9 @@ export default function Home() {
                       <p className="text-sm font-bold text-slate-800">45%</p>
                       <p className="text-[10px] uppercase text-slate-400">Do total</p>
                     </div>
-                  </div>
+                  </Link>
 
-                  <div className="group flex cursor-pointer items-center justify-between rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-slate-100 hover:bg-slate-50">
+                  <Link href="/projetos?sector=Educação" className="group flex cursor-pointer items-center justify-between rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-slate-100 hover:bg-slate-50">
                     <div className="flex items-center gap-4">
                       <div className="rounded-xl bg-slate-50 p-2.5 text-slate-600 transition-colors group-hover:bg-slate-600 group-hover:text-white">
                         <span className="material-symbols-outlined">school</span>
@@ -268,7 +268,7 @@ export default function Home() {
                       <p className="text-sm font-bold text-slate-800">20%</p>
                       <p className="text-[10px] uppercase text-slate-400">Do total</p>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </div>
 

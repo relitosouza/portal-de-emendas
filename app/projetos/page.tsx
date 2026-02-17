@@ -2,11 +2,15 @@
 
 import Link from "next/link";
 import { projects } from "@/lib/data";
-import { useState } from "react";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default function ProjetosPage() {
+function ProjectsContent() {
+    const searchParams = useSearchParams();
+    const initialSector = searchParams.get("sector");
+
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedSector, setSelectedSector] = useState<string | null>(null);
+    const [selectedSector, setSelectedSector] = useState<string | null>(initialSector);
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
     const [showStalledOnly, setShowStalledOnly] = useState(false);
 
@@ -295,5 +299,13 @@ export default function ProjetosPage() {
                 </section>
             </div>
         </div>
+    );
+}
+
+export default function ProjetosPage() {
+    return (
+        <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+            <ProjectsContent />
+        </Suspense>
     );
 }

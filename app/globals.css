@@ -27,6 +27,12 @@
   --color-status-warning: var(--status-warning);
   --color-status-danger: var(--status-danger);
 
+  --color-status-danger: var(--status-danger);
+
+  --color-accent: var(--accent-custom);
+  --color-background-paper: var(--background-paper);
+  --color-text-main: var(--text-main);
+
   --shadow-hard: 4px 4px 0px 0px rgba(0, 0, 0, 1);
 }
 
@@ -58,6 +64,11 @@
     --status-success: #007A5E;
     --status-warning: #EDC805;
     --status-danger: #D93025;
+    
+    /* User Custom Colors */
+    --accent-custom: #3B82F6;
+    --background-paper: #F8F9FA;
+    --text-main: #2D2D2D;
 
     /* Shadcn/UI Mappings (Proxied to new system where possible) */
     --card: hsl(0 0% 100%);
