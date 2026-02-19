@@ -32,7 +32,12 @@ export default async function ProjetoDetalhePage(props: Props) {
     // Parse financial values
     const parseCurrency = (val?: string) => {
         if (!val) return 0;
-        return parseFloat(val.replace(/[^\d,.-]/g, "").replace(",", ".")) || 0;
+        if (typeof val === 'number') return val;
+        // Remove "R$", dots (thousand separators), and replace comma with dot (decimal separator)
+        const cleaned = String(val)
+            .replace(/[R$\s.]/g, "") // Remove R$, spaces, and dots
+            .replace(",", "."); // Replace comma with dot
+        return parseFloat(cleaned) || 0;
     };
 
     const valorTotal = parseCurrency(amendment.valorAutorizado || amendment.valor);
