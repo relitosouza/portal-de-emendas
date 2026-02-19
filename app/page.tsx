@@ -151,11 +151,11 @@ export default function Home() {
                   <div className="flex items-center gap-2 mb-3">
                     <span className="material-symbols-outlined" style={{ color: "#93c5fd" }}>account_balance</span>
                     <p style={{ fontFamily: "monospace", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.2em", color: "#93c5fd" }}>
-                      Total de Emendas Cadastradas
+                      Orçamento aprovado de emendas 2026
                     </p>
                   </div>
                   <h3 style={{ fontSize: "2rem", fontWeight: "bold", color: "#ffffff", lineHeight: 1.2 }}>
-                    {loading ? "Carregando..." : totalFormatado}
+                    R$ 144.000.000,00
                   </h3>
                   <div className="flex flex-wrap items-center gap-3 mt-3">
                     <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", borderRadius: "9999px", background: "rgba(255,255,255,0.15)", padding: "4px 12px", fontSize: "12px", fontWeight: 600, color: "#ffffff" }}>
