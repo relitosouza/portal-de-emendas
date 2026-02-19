@@ -40,6 +40,8 @@ export interface Amendment {
     empenhado?: string;
     liquidado?: string;
     pago?: string;
+    codigoAplicacao?: string;
+    codigoAplicacaoVariavel?: string;
 
     // Transparência
     portalTransparenciaCheck: string;

@@ -342,6 +342,25 @@ export default async function ProjetoDetalhePage(props: Props) {
                                         </div>
                                     </div>
                                     <div className="h-px bg-gray-100" />
+                                    {/* Códigos de Aplicação */}
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0 text-indigo-600">
+                                            <span className="material-symbols-outlined text-[18px]">receipt_long</span>
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-0.5">Cód. Aplicação</p>
+                                            <p className="text-sm font-bold text-primary font-mono leading-tight">
+                                                {amendment.codigoAplicacao || <span className="text-slate-300 font-normal font-sans">Não informado</span>}
+                                            </p>
+                                            {amendment.codigoAplicacaoVariavel && (
+                                                <div className="mt-1">
+                                                    <p className="text-[9px] font-bold uppercase tracking-widest text-muted mb-0.5">Cód. Variável</p>
+                                                    <p className="text-xs font-mono text-slate-600">{amendment.codigoAplicacaoVariavel}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="h-px bg-gray-100" />
                                     {/* Valor Total */}
                                     <div className="pt-1">
                                         <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-1">Valor Autorizado</p>
