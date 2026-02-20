@@ -269,7 +269,9 @@ export async function updateAmendmentInSheet(id: string, amendment: any) {
     const rowIndex = rows.findIndex((row: any) => row[0] === id);
 
     if (rowIndex === -1) {
-        throw new Error("Amendment not found");
+        console.log(`Amendment ${id} not found in main sheet, appending as new row`);
+        await appendAmendmentToSheet(amendment);
+        return true;
     }
 
     // 2. Update the row (Main Sheet)
@@ -310,6 +312,18 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
         range: `${sheetName}!A:AN`, // Expanded range
     });
 
+    // Fetch Emendas (Vereador) Data
+    let emendasRows: any[] = [];
+    try {
+        const emendasResponse = await sheets.spreadsheets.values.get({
+            spreadsheetId,
+            range: `Emendas!A:W`, // Up to 23 cols to be safe
+        });
+        emendasRows = emendasResponse.data.values || [];
+    } catch (e) {
+        console.warn("Could not fetch Emendas sheet, assuming empty.", e);
+    }
+
     // Fetch Financial Data
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let financialRows: any[] = [];
@@ -323,15 +337,12 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
         console.warn("Could not fetch financial sheet, assuming empty.", e);
     }
 
-    const rows = response.data.values;
-    if (!rows || rows.length === 0) {
-        return [];
-    }
-
-    const dataRows = rows.slice(1); // Skip header
+    const rows = response.data.values || [];
+    const dataRows = rows.length > 0 ? rows.slice(1) : []; // Skip header
+    const emendasDataRows = emendasRows.length > 0 ? emendasRows.slice(1) : [];
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return dataRows.map((row: any[]) => {
+    const mainAmendments: Amendment[] = dataRows.map((row: any[]) => {
         const id = row[0];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const financial = financialRows.find((r: any) => r[0] === id);
@@ -389,6 +400,81 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
             year: "2026",
         };
     });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const externalAmendments: Amendment[] = emendasDataRows.map((row: any[]) => {
+        const id = row[0];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const financial = financialRows.find((r: any) => r[0] === id);
+
+        return {
+            id: row[0] || crypto.randomUUID(),
+            createdAt: row[16] || new Date().toISOString(),
+            municipio: "",
+            cnpj: "",
+            responsavelNome: "",
+            responsavelCargo: "",
+            loa2026Check: "",
+            ambito: row[2] || "",
+            tipoEmenda: row[3] || "",
+            tipoEmendaOutro: "",
+            fundamentoLegal: row[4] || "",
+            autor: row[5] || "",
+            numeroEmenda: row[6] || "",
+            objeto: row[7] || "",
+            finalidade: row[8] || "",
+            programaVinculado: "",
+            destinacao: row[9] || "",
+            orgaoBeneficiario: "",
+            localidadeBeneficiada: row[10] || "",
+            instrumentoJuridico: row[11] || "",
+            possuiCronograma: "",
+            prazoAplicacao: "",
+            valor: row[12] || "",
+            valorAutorizado: row[13] || "",
+            percentualRcl: "",
+            contaEspecifica: "",
+            numeroConta: "",
+            portalTransparenciaCheck: "",
+            divulgacaoTempoReal: "",
+            linkPortal: "",
+            monitoramentoCheck: "",
+            status: "pendente",
+            priority: "normal",
+            latitude: undefined,
+            longitude: undefined,
+            categoria: row[14] || "",
+            fornecedor: "",
+            numeroLicitacao: "",
+            codigoAplicacao: "",
+            codigoAplicacaoVariavel: "",
+
+            // Financial Data (Merged)
+            empenhado: financial ? financial[1] : undefined,
+            liquidado: financial ? financial[2] : undefined,
+            pago: financial ? financial[3] : undefined,
+
+            // Mapped for compatibility
+            title: row[7] || "", // Objeto
+            address: row[10] || "", // Localidade
+            year: "2026",
+        };
+    });
+
+    // Merge external and main
+    const resultMap = new Map<string, Amendment>();
+
+    // Add external first
+    externalAmendments.forEach(a => {
+        if (a.id) resultMap.set(a.id, a);
+    });
+
+    // Add main (will overwrite external if ID matches)
+    mainAmendments.forEach(a => {
+        if (a.id) resultMap.set(a.id, a);
+    });
+
+    return Array.from(resultMap.values());
 }
 
 // =====================================================
