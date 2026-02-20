@@ -292,6 +292,13 @@ export async function updateAmendmentInSheet(id: string, amendment: any) {
     return true;
 }
 
+// Name of the sheet where councilors (vereadores) register their amendments
+// via the "Cadastro Vereador Emenda" companion project.
+// Expected columns (A–K):
+//   A: ID | B: Data | C: Autor/Vereador | D: Nº Emenda | E: Tipo Emenda
+//   F: Âmbito | G: Objeto | H: Finalidade | I: Valor | J: Categoria | K: Localidade
+const EMENDA_CADASTRO_SHEET_NAME = "Emenda";
+
 export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
     const auth = await getAuthClient();
     const sheets = google.sheets({ version: "v4", auth });
@@ -325,13 +332,19 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
 
     const rows = response.data.values;
     if (!rows || rows.length === 0) {
-        return [];
+        // Even if main sheet is empty, we still return pendentes below
+        const pendentes = await getEmendaCadastroFromSheet(sheets, spreadsheetId, new Set<string>());
+        return pendentes;
     }
 
     const dataRows = rows.slice(1); // Skip header
 
+    // Collect all IDs already in the main sheet so we can exclude them from pendentes
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return dataRows.map((row: any[]) => {
+    const processedIds = new Set<string>(dataRows.map((row: any[]) => row[0]).filter(Boolean));
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mainAmendments: Amendment[] = dataRows.map((row: any[]) => {
         const id = row[0];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const financial = financialRows.find((r: any) => r[0] === id);
@@ -389,6 +402,83 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
             year: "2026",
         };
     });
+
+    // Fetch pending amendments from the "Emenda" cadastro sheet (vereadores)
+    const pendentes = await getEmendaCadastroFromSheet(sheets, spreadsheetId, processedIds);
+
+    return [...mainAmendments, ...pendentes];
+}
+
+/**
+ * Fetches amendments registered by councilors (vereadores) from the "Emenda" sheet.
+ * Only returns rows whose IDs are NOT already present in the main sheet (processedIds),
+ * ensuring already-published amendments are not shown as pending again.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getEmendaCadastroFromSheet(sheets: any, spreadsheetId: string, processedIds: Set<string>): Promise<Amendment[]> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let emendaRows: any[][] = [];
+    try {
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId,
+            range: `${EMENDA_CADASTRO_SHEET_NAME}!A:K`,
+        });
+        emendaRows = response.data.values || [];
+    } catch {
+        // "Emenda" sheet doesn't exist yet or is inaccessible — no pendentes
+        return [];
+    }
+
+    if (emendaRows.length <= 1) return []; // only header or empty
+
+    const dataRows = emendaRows.slice(1); // skip header row
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return dataRows
+        .filter((row: any[]) => row[0] && !processedIds.has(row[0]))
+        .map((row: any[]) => ({
+            id: row[0] || "",
+            createdAt: row[1] || new Date().toISOString(),
+            // Fields filled by the vereador
+            autor: row[2] || "",
+            numeroEmenda: row[3] || "",
+            tipoEmenda: row[4] || "",
+            ambito: row[5] || "",
+            objeto: row[6] || "",
+            finalidade: row[7] || "",
+            valor: row[8] || "",
+            categoria: row[9] || "",
+            localidadeBeneficiada: row[10] || "",
+            // Fields to be completed by the prefeitura (initially empty)
+            municipio: "",
+            cnpj: "",
+            responsavelNome: "",
+            responsavelCargo: "",
+            loa2026Check: "",
+            tipoEmendaOutro: "",
+            fundamentoLegal: "",
+            programaVinculado: "",
+            destinacao: "",
+            orgaoBeneficiario: "",
+            instrumentoJuridico: "",
+            possuiCronograma: "",
+            prazoAplicacao: "",
+            valorAutorizado: "",
+            percentualRcl: "",
+            contaEspecifica: "",
+            numeroConta: "",
+            portalTransparenciaCheck: "",
+            divulgacaoTempoReal: "",
+            linkPortal: "",
+            monitoramentoCheck: "",
+            priority: "normal",
+            // Mark as pending — will not appear in the public portal until completed
+            status: "pendente",
+            // Compat fields
+            title: row[6] || "",
+            address: row[10] || "",
+            year: "2026",
+        }));
 }
 
 // =====================================================

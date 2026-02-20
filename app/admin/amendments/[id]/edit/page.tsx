@@ -63,29 +63,50 @@ export default function EditAmendmentPage({ params }: PageProps) {
         setFormData((prev: any) => ({ ...prev, [field]: value }));
     };
 
+    // A pending amendment comes from the "Emenda" cadastro sheet and has never been
+    // saved to the main sheet. When completing it, we must POST (create) rather than PUT.
+    const isPending = amendment?.status === "pendente";
+
     const handleSave = async () => {
         setSaving(true);
         setFeedback(null);
         try {
+            // For pending amendments we publish to main sheet via POST, preserving the original ID.
+            // For regular amendments we update via PUT.
+            const method = isPending ? "POST" : "PUT";
+            const payload = isPending
+                ? { ...formData, status: formData.status === "pendente" ? "planejamento" : formData.status }
+                : formData;
+
             const res = await fetch("/api/amendments", {
-                method: "PUT",
+                method,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(payload),
             });
             if (res.ok) {
-                setFeedback({ type: "success", msg: "Emenda atualizada com sucesso!" });
-                // Also save financial data
-                await fetch("/api/financial", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        amendmentId: formData.id,
-                        empenhado: formData.empenhado || "",
-                        liquidado: formData.liquidado || "",
-                        pago: formData.pago || "",
-                    }),
-                });
-                setTimeout(() => setFeedback(null), 3000);
+                const successMsg = isPending
+                    ? "Emenda publicada com sucesso! Já está visível no portal."
+                    : "Emenda atualizada com sucesso!";
+                setFeedback({ type: "success", msg: successMsg });
+                // Also save financial data if present
+                if (formData.empenhado || formData.liquidado || formData.pago) {
+                    await fetch("/api/financial", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            amendmentId: formData.id,
+                            empenhado: formData.empenhado || "",
+                            liquidado: formData.liquidado || "",
+                            pago: formData.pago || "",
+                        }),
+                    });
+                }
+                if (isPending) {
+                    // Redirect back to dashboard after publishing
+                    setTimeout(() => router.push("/admin/dashboard"), 1800);
+                } else {
+                    setTimeout(() => setFeedback(null), 3000);
+                }
             } else {
                 setFeedback({ type: "error", msg: "Erro ao salvar emenda." });
             }
@@ -407,7 +428,11 @@ export default function EditAmendmentPage({ params }: PageProps) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
                                 <label className={labelClass}>Status da Emenda</label>
-                                <select className={selectClass} value={formData.status || ""} onChange={(e) => handleChange("status", e.target.value)}>
+                                <select
+                                    className={selectClass}
+                                    value={formData.status === "pendente" ? "planejamento" : (formData.status || "planejamento")}
+                                    onChange={(e) => handleChange("status", e.target.value)}
+                                >
                                     <option value="planejamento">Planejamento</option>
                                     <option value="aprovado">Aprovado</option>
                                     <option value="em_execucao">Em Execução</option>
@@ -500,12 +525,16 @@ export default function EditAmendmentPage({ params }: PageProps) {
                         <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
                             <Link href="/admin/dashboard" className="hover:text-blue-600 transition-colors">Dashboard</Link>
                             <span className="material-symbols-outlined text-[12px]">chevron_right</span>
-                            <span className="text-slate-700 font-bold">Editar Emenda</span>
+                            <span className="text-slate-700 font-bold">{isPending ? "Completar Emenda Pendente" : "Editar Emenda"}</span>
                         </div>
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <div>
-                                <h1 className="text-2xl font-bold text-slate-900">{formData.objeto || "Editar Emenda"}</h1>
-                                <p className="text-sm text-slate-500 mt-0.5">Atualize os dados da emenda por seção no menu lateral.</p>
+                                <h1 className="text-2xl font-bold text-slate-900">{formData.objeto || (isPending ? "Completar Emenda" : "Editar Emenda")}</h1>
+                                <p className="text-sm text-slate-500 mt-0.5">
+                                    {isPending
+                                        ? "Preencha os dados da prefeitura para publicar esta emenda no portal."
+                                        : "Atualize os dados da emenda por seção no menu lateral."}
+                                </p>
                             </div>
                             <div className="flex gap-3">
                                 <Link href="/admin/dashboard" className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
@@ -515,14 +544,37 @@ export default function EditAmendmentPage({ params }: PageProps) {
                                 <button
                                     onClick={handleSave}
                                     disabled={saving}
-                                    className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-teal-500 px-6 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg disabled:opacity-50"
+                                    className={`flex items-center gap-2 rounded-xl px-6 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:shadow-lg disabled:opacity-50 ${
+                                        isPending
+                                            ? "bg-gradient-to-r from-orange-500 to-amber-500 shadow-orange-500/20"
+                                            : "bg-gradient-to-r from-blue-600 to-teal-500 shadow-blue-500/20"
+                                    }`}
                                 >
-                                    <span className="material-symbols-outlined text-[18px]">{saving ? "hourglass_empty" : "save"}</span>
-                                    {saving ? "Salvando..." : "Salvar Alterações"}
+                                    <span className="material-symbols-outlined text-[18px]">
+                                        {saving ? "hourglass_empty" : isPending ? "publish" : "save"}
+                                    </span>
+                                    {saving ? (isPending ? "Publicando..." : "Salvando...") : isPending ? "Publicar Emenda" : "Salvar Alterações"}
                                 </button>
                             </div>
                         </div>
                     </div>
+
+                    {/* Banner for pending amendments from councilor cadastro */}
+                    {isPending && (
+                        <div className="mb-6 flex items-start gap-4 rounded-xl border border-orange-200 bg-orange-50 p-5">
+                            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+                                <span className="material-symbols-outlined">assignment_ind</span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-bold text-orange-800">Emenda cadastrada pelo vereador — aguarda complemento da prefeitura</p>
+                                <p className="text-xs text-orange-600 mt-1 leading-relaxed">
+                                    O vereador <strong>{formData.autor || "—"}</strong> cadastrou esta emenda no sistema. Os campos preenchidos por ele
+                                    estão exibidos abaixo. Complete as informações da prefeitura (município, CNPJ, fundamentação, valores, monitoramento, etc.)
+                                    e clique em <strong>Publicar Emenda</strong> para torná-la visível no portal público.
+                                </p>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Feedback */}
                     {feedback && (

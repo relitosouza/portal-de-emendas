@@ -46,6 +46,9 @@ function ProjectsContent() {
                     amendments = data.data;
                 }
 
+                // Exclude pending amendments — they are not yet published by the prefeitura
+                amendments = amendments.filter(a => a.status !== "pendente");
+
                 // Map Amendment to Project for UI compatibility
                 const mappedProjects: Project[] = amendments.map(a => {
                     // Infer sector from responsible/description/title

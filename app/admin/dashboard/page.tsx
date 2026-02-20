@@ -13,6 +13,7 @@ export default function DashboardPage() {
     const [financialData, setFinancialData] = useState({ empenhado: "", liquidado: "", pago: "" });
     const [savingFinancial, setSavingFinancial] = useState(false);
     const [financialFeedback, setFinancialFeedback] = useState<string | null>(null);
+    const [showPendentes, setShowPendentes] = useState(true);
 
     useEffect(() => {
         async function loadData() {
@@ -61,15 +62,19 @@ export default function DashboardPage() {
         }
     };
 
-    // Computed stats
-    const totalValue = amendments.reduce((acc, curr) => {
+    // Separate published amendments from pending ones
+    const pendentes = amendments.filter((a) => a.status === "pendente");
+    const publicadas = amendments.filter((a) => a.status !== "pendente");
+
+    // Computed stats (only for published amendments)
+    const totalValue = publicadas.reduce((acc, curr) => {
         const val = parseFloat((curr.valor || "0").replace(/\./g, "").replace(",", ".")) || 0;
         return acc + val;
     }, 0);
 
-    const emExecucao = amendments.filter((a) => a.status === "em_execucao").length;
-    const concluidos = amendments.filter((a) => a.status === "concluido").length;
-    const planejamento = amendments.filter((a) => a.status === "planejamento").length;
+    const emExecucao = publicadas.filter((a) => a.status === "em_execucao").length;
+    const concluidos = publicadas.filter((a) => a.status === "concluido").length;
+    const planejamento = publicadas.filter((a) => a.status === "planejamento").length;
 
     const formatCurrency = (value: number) => {
         if (value >= 1000000) return `R$ ${(value / 1000000).toFixed(1)}M`;
@@ -150,10 +155,10 @@ export default function DashboardPage() {
                     {/* Stats Row */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[
-                            { label: "Total de Emendas", value: amendments.length.toString(), icon: "description", color: "blue", sub: "cadastradas" },
+                            { label: "Total de Emendas", value: publicadas.length.toString(), icon: "description", color: "blue", sub: "publicadas" },
                             { label: "Valor Total", value: formatCurrency(totalValue), icon: "payments", color: "teal", sub: "em emendas" },
                             { label: "Em Execução", value: emExecucao.toString(), icon: "engineering", color: "amber", sub: "projetos ativos" },
-                            { label: "Concluídos", value: concluidos.toString(), icon: "check_circle", color: "emerald", sub: `de ${amendments.length}` },
+                            { label: "Pendentes", value: pendentes.length.toString(), icon: "pending_actions", color: "orange", sub: "aguardando prefeitura" },
                         ].map((stat) => (
                             <div key={stat.label} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
                                 <div className="flex items-center justify-between mb-3">
@@ -169,18 +174,18 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Status Distribution Bar */}
-                    {amendments.length > 0 && (
+                    {publicadas.length > 0 && (
                         <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
                             <h3 className="text-sm font-bold text-slate-700 mb-4">Distribuição por Status</h3>
                             <div className="flex h-3 w-full overflow-hidden rounded-full bg-slate-100">
                                 {planejamento > 0 && (
-                                    <div className="bg-blue-500 transition-all" style={{ width: `${(planejamento / amendments.length) * 100}%` }} title={`Planejamento: ${planejamento}`}></div>
+                                    <div className="bg-blue-500 transition-all" style={{ width: `${(planejamento / publicadas.length) * 100}%` }} title={`Planejamento: ${planejamento}`}></div>
                                 )}
                                 {emExecucao > 0 && (
-                                    <div className="bg-amber-500 transition-all" style={{ width: `${(emExecucao / amendments.length) * 100}%` }} title={`Em Execução: ${emExecucao}`}></div>
+                                    <div className="bg-amber-500 transition-all" style={{ width: `${(emExecucao / publicadas.length) * 100}%` }} title={`Em Execução: ${emExecucao}`}></div>
                                 )}
                                 {concluidos > 0 && (
-                                    <div className="bg-emerald-500 transition-all" style={{ width: `${(concluidos / amendments.length) * 100}%` }} title={`Concluídos: ${concluidos}`}></div>
+                                    <div className="bg-emerald-500 transition-all" style={{ width: `${(concluidos / publicadas.length) * 100}%` }} title={`Concluídos: ${concluidos}`}></div>
                                 )}
                             </div>
                             <div className="flex gap-6 mt-3">
@@ -200,16 +205,107 @@ export default function DashboardPage() {
                         </div>
                     )}
 
+                    {/* Pendentes do Cadastro Vereador — awaiting prefeitura completion */}
+                    {!loading && pendentes.length > 0 && (
+                        <div className="rounded-2xl border border-orange-200 bg-orange-50/40 shadow-sm overflow-hidden">
+                            <button
+                                className="w-full flex items-center justify-between border-b border-orange-200 px-6 py-4 text-left"
+                                onClick={() => setShowPendentes((v) => !v)}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <span className="material-symbols-outlined text-orange-500">pending_actions</span>
+                                    <div>
+                                        <h2 className="text-lg font-bold text-orange-800">Emendas Pendentes dos Vereadores</h2>
+                                        <p className="text-xs text-orange-600 mt-0.5">
+                                            Cadastradas pelos vereadores — aguardando complemento e publicação pela prefeitura
+                                        </p>
+                                    </div>
+                                    <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-orange-700 border border-orange-200">
+                                        {pendentes.length}
+                                    </span>
+                                </div>
+                                <span className="material-symbols-outlined text-orange-400 text-[20px]">
+                                    {showPendentes ? "expand_less" : "expand_more"}
+                                </span>
+                            </button>
+
+                            {showPendentes && (
+                                <div className="divide-y divide-orange-100">
+                                    {/* Table Header */}
+                                    <div className="hidden lg:grid grid-cols-12 gap-4 bg-orange-50/80 px-6 py-3 text-[10px] font-bold uppercase tracking-widest text-orange-400">
+                                        <div className="col-span-4">Emenda (Vereador)</div>
+                                        <div className="col-span-2">Parlamentar</div>
+                                        <div className="col-span-2">Valor Solicitado</div>
+                                        <div className="col-span-2">Nº Emenda</div>
+                                        <div className="col-span-2 text-right">Ação</div>
+                                    </div>
+
+                                    {pendentes.map((amendment) => (
+                                        <div
+                                            key={amendment.id}
+                                            className="group grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-4 px-6 py-4 items-center transition-colors hover:bg-orange-50/60"
+                                        >
+                                            {/* Emenda */}
+                                            <div className="col-span-4 flex items-center gap-3 min-w-0">
+                                                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+                                                    <span className="material-symbols-outlined text-[20px]">assignment</span>
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-bold text-slate-800 truncate" title={amendment.objeto}>
+                                                        {amendment.objeto || "Sem objeto"}
+                                                    </p>
+                                                    <p className="text-xs text-slate-400 truncate">
+                                                        {amendment.localidadeBeneficiada || "Localidade não informada"}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            {/* Parlamentar */}
+                                            <div className="col-span-2">
+                                                <p className="text-sm text-slate-600 truncate">{amendment.autor || "—"}</p>
+                                                <p className="text-[10px] text-slate-400 capitalize">{amendment.categoria || "—"}</p>
+                                            </div>
+
+                                            {/* Valor */}
+                                            <div className="col-span-2">
+                                                <span className="font-mono text-sm font-bold text-slate-800">
+                                                    {amendment.valor ? `R$ ${amendment.valor}` : "—"}
+                                                </span>
+                                            </div>
+
+                                            {/* Nº Emenda */}
+                                            <div className="col-span-2">
+                                                <span className="text-sm text-slate-600">{amendment.numeroEmenda || "—"}</span>
+                                            </div>
+
+                                            {/* Action */}
+                                            <div className="col-span-2 flex justify-end">
+                                                <Link
+                                                    href={`/admin/amendments/${amendment.id}/edit`}
+                                                    className="flex items-center gap-1.5 rounded-lg bg-orange-500 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-orange-600"
+                                                    title="Completar e Publicar"
+                                                >
+                                                    <span className="material-symbols-outlined text-[16px]">edit_note</span>
+                                                    Completar
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     {/* Amendments Table/List Section */}
                     <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
                         <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
                             <div className="flex items-center gap-3">
                                 <span className="material-symbols-outlined text-blue-600">list_alt</span>
                                 <h2 className="text-lg font-bold text-slate-800">Emendas Cadastradas</h2>
-                                <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-bold text-blue-600">{amendments.length}</span>
+                                <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-bold text-blue-600">{publicadas.length}</span>
                             </div>
                             <div className="flex gap-2">
-                                {amendments.length > 0 && (
+                                {publicadas.length > 0 && (
                                     <button
                                         onClick={handleClear}
                                         className="flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 text-xs font-bold text-red-600 transition-colors hover:bg-red-50"
@@ -235,7 +331,7 @@ export default function DashboardPage() {
                                     <span className="text-xs text-slate-400">Carregando emendas...</span>
                                 </div>
                             </div>
-                        ) : amendments.length === 0 ? (
+                        ) : publicadas.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-20 text-center">
                                 <div className="mb-4 flex size-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
                                     <span className="material-symbols-outlined text-[32px]">inbox</span>
@@ -261,7 +357,7 @@ export default function DashboardPage() {
                                     <div className="col-span-2 text-right">Ações</div>
                                 </div>
 
-                                {amendments.map((amendment) => {
+                                {publicadas.map((amendment) => {
                                     const statusCfg = getStatusConfig(amendment.status);
                                     const priorityCfg = getPriorityConfig(amendment.priority || "normal");
 

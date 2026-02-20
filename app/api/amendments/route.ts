@@ -16,8 +16,12 @@ export async function POST(req: NextRequest) {
 
         const amendment = {
             ...body,
-            id: crypto.randomUUID(),
-            createdAt: new Date().toISOString(),
+            // Preserve caller-supplied ID when completing a pending amendment from the
+            // "Emenda" (cadastro vereador) sheet; otherwise generate a fresh UUID.
+            id: body.id || crypto.randomUUID(),
+            createdAt: body.createdAt || new Date().toISOString(),
+            // When publishing a previously-pending amendment, promote its status.
+            status: body.status === "pendente" ? "planejamento" : (body.status || "planejamento"),
         };
 
         // Try to save to Google Sheets
