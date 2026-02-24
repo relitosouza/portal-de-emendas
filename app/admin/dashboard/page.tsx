@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Amendment, getAmendments, clearAmendments } from "@/lib/store";
+import { Amendment, getAmendments, clearAmendments, deleteAmendment } from "@/lib/store";
 import Navbar from "@/components/shared/navbar";
 
 export default function DashboardPage() {
@@ -41,10 +41,16 @@ export default function DashboardPage() {
         setDeleting(id);
         try {
             const response = await fetch(`/api/amendments?id=${id}`, { method: "DELETE" });
-            if (response.ok) {
+            const result = await response.json();
+
+            if (response.ok || result.success) {
+                // Remove from local storage regardless of API warning (e.g. missing sheets credentials)
+                deleteAmendment(id);
                 setAmendments((prev) => prev.filter((a) => a.id !== id));
+                if (result.warning) {
+                    console.warn("Deleted locally. API warning:", result.warning);
+                }
             } else {
-                const result = await response.json();
                 alert("Erro ao excluir: " + result.error);
             }
         } catch {

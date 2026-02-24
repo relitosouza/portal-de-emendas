@@ -199,49 +199,58 @@ export async function deleteAmendmentFromSheet(id: string) {
 
     if (!spreadsheetId) throw new Error("Missing GOOGLE_SHEET_ID");
 
-    const sheetName = await getFirstSheetName(sheets, spreadsheetId);
+    const meta = await sheets.spreadsheets.get({ spreadsheetId });
+    const sheetList = meta.data.sheets || [];
 
-    // 1. Find the row index
-    const response = await sheets.spreadsheets.values.get({
-        spreadsheetId,
-        range: `${sheetName}!A:A`,
-    });
+    let deletedAny = false;
 
-    const rows = response.data.values;
-    if (!rows) return false;
+    // Helper to delete from a specific sheet
+    const deleteFromSheetName = async (sheetTitle: string) => {
+        try {
+            const getRes = await sheets.spreadsheets.values.get({
+                spreadsheetId,
+                range: `${sheetTitle}!A:A`,
+            });
+            const rows = getRes.data.values;
+            if (!rows) return;
+            const rowIndex = rows.findIndex((row: any) => row[0] === id);
+            if (rowIndex === -1) return;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const rowIndex = rows.findIndex((row: any) => row[0] === id);
+            const sheetInfo = sheetList.find((s: any) => s.properties?.title === sheetTitle);
+            const sheetId = sheetInfo?.properties?.sheetId;
+            if (sheetId === undefined) return;
 
-    if (rowIndex === -1) {
+            await sheets.spreadsheets.batchUpdate({
+                spreadsheetId,
+                requestBody: {
+                    requests: [
+                        {
+                            deleteDimension: {
+                                range: {
+                                    sheetId: sheetId,
+                                    dimension: "ROWS",
+                                    startIndex: rowIndex,
+                                    endIndex: rowIndex + 1,
+                                },
+                            },
+                        },
+                    ],
+                },
+            });
+            deletedAny = true;
+        } catch (e) {
+            console.error(`Error deleting from ${sheetTitle}:`, e);
+        }
+    };
+
+    const firstSheetTitle = sheetList[0]?.properties?.title || "Página1";
+    await deleteFromSheetName(firstSheetTitle);
+    await deleteFromSheetName("Emendas");
+    await deleteFromSheetName(getFinancialSheetName());
+
+    if (!deletedAny) {
         throw new Error("Amendment not found");
     }
-
-    // 2. Delete the row
-    const meta = await sheets.spreadsheets.get({ spreadsheetId });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const sheet = meta.data.sheets?.find((s: any) => s.properties?.title === sheetName);
-    const sheetId = sheet?.properties?.sheetId;
-
-    if (sheetId === undefined) throw new Error("Could not find sheet ID");
-
-    await sheets.spreadsheets.batchUpdate({
-        spreadsheetId,
-        requestBody: {
-            requests: [
-                {
-                    deleteDimension: {
-                        range: {
-                            sheetId: sheetId,
-                            dimension: "ROWS",
-                            startIndex: rowIndex,
-                            endIndex: rowIndex + 1,
-                        },
-                    },
-                },
-            ],
-        },
-    });
 
     return true;
 }
