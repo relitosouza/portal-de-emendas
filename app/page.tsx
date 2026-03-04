@@ -15,7 +15,7 @@ export default function Home() {
   const [dashboardCards, setDashboardCards] = useState<any[]>([]);
 
   // ---- Cálculo do total de emendas vs valor destinado (R$ 144 milhões) ----
-  const VALOR_DESTINADO = 144_000_000; // R$ 144.000.000,00
+  const VALOR_DESTINADO = 27_081_713.01; // R$ 27.081.713,01
 
   const parseValor = (v: any): number => {
     if (!v) return 0;
@@ -155,7 +155,7 @@ export default function Home() {
                     </p>
                   </div>
                   <h3 style={{ fontSize: "2rem", fontWeight: "bold", color: "#ffffff", lineHeight: 1.2 }}>
-                    R$ 144.000.000,00
+                    R$ 27.081.713,01
                   </h3>
                   <div className="flex flex-wrap items-center gap-3 mt-3">
                     <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", borderRadius: "9999px", background: "rgba(255,255,255,0.15)", padding: "4px 12px", fontSize: "12px", fontWeight: 600, color: "#ffffff" }}>
@@ -164,7 +164,7 @@ export default function Home() {
                     </span>
                     <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", borderRadius: "9999px", background: "rgba(255,255,255,0.15)", padding: "4px 12px", fontSize: "12px", fontWeight: 600, color: "#ffffff" }}>
                       <span className="material-symbols-outlined" style={{ fontSize: "14px" }}>target</span>
-                      Meta: R$ 144M
+                      Meta: R$ 27.1M
                     </span>
                   </div>
                 </div>
