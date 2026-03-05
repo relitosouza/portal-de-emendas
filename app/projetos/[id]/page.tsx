@@ -112,10 +112,18 @@ export default async function ProjetoDetalhePage(props: Props) {
 
     const statusMap: Record<string, number> = {
         planejamento: 0,
-        aprovado: 3,
+        aprovado: 4,
         em_execucao: 5,
         concluido: 6,
         suspenso: 7,
+        "Não Iniciada": 0,
+        "Em Análise": 1,
+        "Elaboração": 2,
+        "Viabilização": 3,
+        "Contratação": 4,
+        "Execução": 5,
+        "Executada": 6,
+        "Cancelada": 7,
     };
 
     const currentStep = statusMap[amendment.status as string] ?? 0;
@@ -132,10 +140,13 @@ export default async function ProjetoDetalhePage(props: Props) {
         .toUpperCase();
 
     const getStatusLabel = () => {
-        if (amendment.status === "concluido") return { label: "Executada", color: "bg-blue-50 border-blue-100 text-blue-600" };
-        if (amendment.status === "em_execucao") return { label: "Em Execução", color: "bg-emerald-50 border-emerald-100 text-emerald-600" };
-        if (amendment.status === "suspenso") return { label: "Cancelada / Impedida", color: "bg-red-50 border-red-100 text-red-600" };
-        if (amendment.status === "aprovado") return { label: "Contratação", color: "bg-blue-50 border-blue-100 text-blue-600" };
+        if (currentStep === 6) return { label: "Executada", color: "bg-blue-50 border-blue-100 text-blue-600" };
+        if (currentStep === 5) return { label: "Execução", color: "bg-emerald-50 border-emerald-100 text-emerald-600" };
+        if (currentStep === 7) return { label: "Cancelada", color: "bg-red-50 border-red-100 text-red-600" };
+        if (currentStep === 4) return { label: "Contratação", color: "bg-blue-50 border-blue-100 text-blue-600" };
+        if (currentStep === 3) return { label: "Viabilização", color: "bg-purple-50 border-purple-100 text-purple-600" };
+        if (currentStep === 2) return { label: "Elaboração", color: "bg-indigo-50 border-indigo-100 text-indigo-600" };
+        if (currentStep === 1) return { label: "Em Análise", color: "bg-amber-50 border-amber-100 text-amber-600" };
         return { label: "Não Iniciada", color: "bg-slate-50 border-slate-200 text-slate-600" };
     };
 
@@ -195,12 +206,12 @@ export default async function ProjetoDetalhePage(props: Props) {
                                         ) : (
                                             <div
                                                 className={`size-8 rounded-full flex items-center justify-center mb-3 ring-4 ring-white transition-transform hover:scale-110 ${isCompleted
-                                                        ? "bg-blue-500 text-white"
-                                                        : isFuture || (isCancelled && currentStep !== 7)
-                                                            ? "bg-slate-200 text-slate-400"
-                                                            : currentStep === 7 && isCancelled
-                                                                ? "bg-red-500 text-white"
-                                                                : "bg-slate-500 text-white"
+                                                    ? "bg-blue-500 text-white"
+                                                    : isFuture || (isCancelled && currentStep !== 7)
+                                                        ? "bg-slate-200 text-slate-400"
+                                                        : currentStep === 7 && isCancelled
+                                                            ? "bg-red-500 text-white"
+                                                            : "bg-slate-500 text-white"
                                                     }`}
                                             >
                                                 <span className="material-symbols-outlined text-sm font-bold">{step.icon}</span>

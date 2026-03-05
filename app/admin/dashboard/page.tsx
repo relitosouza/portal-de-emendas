@@ -73,9 +73,9 @@ export default function DashboardPage() {
         return acc + val;
     }, 0);
 
-    const emExecucao = amendments.filter((a) => a.status === "em_execucao").length;
-    const concluidos = amendments.filter((a) => a.status === "concluido").length;
-    const planejamento = amendments.filter((a) => a.status === "planejamento").length;
+    const emExecucao = amendments.filter((a) => a.status === "em_execucao" || a.status === "Execução").length;
+    const concluidos = amendments.filter((a) => a.status === "concluido" || a.status === "Executada").length;
+    const planejamento = amendments.filter((a) => a.status === "planejamento" || a.status === "Não Iniciada").length;
 
     const formatCurrency = (value: number) => {
         if (value >= 1000000) return `R$ ${(value / 1000000).toFixed(1)}M`;
@@ -89,6 +89,14 @@ export default function DashboardPage() {
             aprovado: { label: "Aprovado", color: "purple", icon: "verified" },
             em_execucao: { label: "Em Execução", color: "amber", icon: "engineering" },
             concluido: { label: "Concluído", color: "emerald", icon: "check_circle" },
+            "Não Iniciada": { label: "Não Iniciada", color: "blue", icon: "edit_note" },
+            "Em Análise": { label: "Em Análise", color: "indigo", icon: "pending_actions" },
+            "Elaboração": { label: "Elaboração", color: "cyan", icon: "design_services" },
+            "Viabilização": { label: "Viabilização", color: "purple", icon: "verified" },
+            "Contratação": { label: "Contratação", color: "pink", icon: "gavel" },
+            "Execução": { label: "Execução", color: "amber", icon: "engineering" },
+            "Executada": { label: "Executada", color: "emerald", icon: "check_circle" },
+            "Cancelada": { label: "Cancelada", color: "red", icon: "cancel" },
         };
         return map[status] || { label: status || "—", color: "slate", icon: "help" };
     };

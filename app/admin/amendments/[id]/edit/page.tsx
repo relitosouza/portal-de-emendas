@@ -408,10 +408,14 @@ export default function EditAmendmentPage({ params }: PageProps) {
                             <div>
                                 <label className={labelClass}>Status da Emenda</label>
                                 <select className={selectClass} value={formData.status || ""} onChange={(e) => handleChange("status", e.target.value)}>
-                                    <option value="planejamento">Planejamento</option>
-                                    <option value="aprovado">Aprovado</option>
-                                    <option value="em_execucao">Em Execução</option>
-                                    <option value="concluido">Concluído</option>
+                                    <option value="Não Iniciada">Não Iniciada</option>
+                                    <option value="Em Análise">Em Análise</option>
+                                    <option value="Elaboração">Elaboração</option>
+                                    <option value="Viabilização">Viabilização</option>
+                                    <option value="Contratação">Contratação</option>
+                                    <option value="Execução">Execução</option>
+                                    <option value="Executada">Executada</option>
+                                    <option value="Cancelada">Cancelada</option>
                                 </select>
                             </div>
                             <div>
@@ -429,10 +433,14 @@ export default function EditAmendmentPage({ params }: PageProps) {
                             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Resumo</p>
                             <div className="flex flex-wrap gap-3">
                                 {[
-                                    { label: "Planejamento", value: "planejamento", color: "blue" },
-                                    { label: "Aprovado", value: "aprovado", color: "purple" },
-                                    { label: "Em Execução", value: "em_execucao", color: "amber" },
-                                    { label: "Concluído", value: "concluido", color: "emerald" },
+                                    { label: "Não Iniciada", value: "Não Iniciada", color: "blue" },
+                                    { label: "Em Análise", value: "Em Análise", color: "indigo" },
+                                    { label: "Elaboração", value: "Elaboração", color: "cyan" },
+                                    { label: "Viabilização", value: "Viabilização", color: "purple" },
+                                    { label: "Contratação", value: "Contratação", color: "pink" },
+                                    { label: "Execução", value: "Execução", color: "amber" },
+                                    { label: "Executada", value: "Executada", color: "emerald" },
+                                    { label: "Cancelada", value: "Cancelada", color: "red" },
                                 ].map((s) => (
                                     <div
                                         key={s.value}

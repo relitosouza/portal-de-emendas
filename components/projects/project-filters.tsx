@@ -47,10 +47,14 @@ export function ProjectFilters({
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="all">Todos</SelectItem>
-                    <SelectItem value="em_andamento">Em Andamento</SelectItem>
-                    <SelectItem value="concluido">Concluído</SelectItem>
-                    <SelectItem value="parado">Parado</SelectItem>
-                    <SelectItem value="planejamento">Planejamento</SelectItem>
+                    <SelectItem value="Não Iniciada">Não Iniciada</SelectItem>
+                    <SelectItem value="Em Análise">Em Análise</SelectItem>
+                    <SelectItem value="Elaboração">Elaboração</SelectItem>
+                    <SelectItem value="Viabilização">Viabilização</SelectItem>
+                    <SelectItem value="Contratação">Contratação</SelectItem>
+                    <SelectItem value="Execução">Execução</SelectItem>
+                    <SelectItem value="Executada">Executada</SelectItem>
+                    <SelectItem value="Cancelada">Cancelada</SelectItem>
                 </SelectContent>
             </Select>
         </div>

@@ -72,7 +72,7 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
         // Legacy
         latitude: initialData?.latitude || -23.5329,
         longitude: initialData?.longitude || -46.7915,
-        status: initialData?.status || "planejamento",
+        status: initialData?.status || "Não Iniciada",
         priority: initialData?.priority || "media",
     });
 
@@ -678,10 +678,14 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                                                 <label className={labelClass}>Status</label>
                                                 <div className="relative">
                                                     <select className={selectClass} value={formData.status} onChange={(e) => handleChange("status", e.target.value)}>
-                                                        <option value="planejamento">Planejamento</option>
-                                                        <option value="em_andamento">Em Andamento</option>
-                                                        <option value="concluido">Concluído</option>
-                                                        <option value="cancelado">Cancelado</option>
+                                                        <option value="Não Iniciada">Não Iniciada</option>
+                                                        <option value="Em Análise">Em Análise</option>
+                                                        <option value="Elaboração">Elaboração</option>
+                                                        <option value="Viabilização">Viabilização</option>
+                                                        <option value="Contratação">Contratação</option>
+                                                        <option value="Execução">Execução</option>
+                                                        <option value="Executada">Executada</option>
+                                                        <option value="Cancelada">Cancelada</option>
                                                     </select>
                                                     <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
                                                 </div>
