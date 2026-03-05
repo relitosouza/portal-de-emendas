@@ -19,6 +19,10 @@ interface Project {
     endDate: string;
     responsible?: string;
     responsiblePhoto?: string;
+    hasReservado?: boolean;
+    hasEmpenhado?: boolean;
+    hasLiquidado?: boolean;
+    hasPago?: boolean;
 }
 
 const VEREADORES_PHOTOS: Record<string, string> = {
@@ -77,10 +81,25 @@ function findVereadorPhoto(name: string): string | undefined {
 
 const ITEMS_PER_PAGE = 9;
 
+const FILTRO_LABELS: Record<string, string> = {
+    reservado: "Com Reserva",
+    empenhado: "Com Empenho",
+    liquidado: "Com Liquidação",
+    pago: "Com Pagamento",
+};
+
+const parseFinanceiro = (v: any): number => {
+    if (!v) return 0;
+    const cleaned = String(v).replace(/R\$\s*/gi, "").replace(/\./g, "").replace(",", ".").trim();
+    const num = parseFloat(cleaned);
+    return isNaN(num) ? 0 : num;
+};
+
 function ProjectsContent() {
     const searchParams = useSearchParams();
     const initialSector = searchParams.get("sector");
     const initialSearch = searchParams.get("search");
+    const filtroParam = searchParams.get("filtro");
 
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(true);
@@ -132,6 +151,10 @@ function ProjectsContent() {
                         endDate: a.endDate || "",
                         responsible,
                         responsiblePhoto: findVereadorPhoto(responsible),
+                        hasReservado: parseFinanceiro(a.reservado) > 0,
+                        hasEmpenhado: parseFinanceiro(a.empenhado) > 0,
+                        hasLiquidado: parseFinanceiro(a.liquidado) > 0,
+                        hasPago: parseFinanceiro(a.pago) > 0,
                     };
                 });
 
@@ -158,7 +181,14 @@ function ProjectsContent() {
             project.location.toLowerCase().includes(term);
         const matchesSector = selectedSector ? project.sector === selectedSector : true;
         const matchesStatus = selectedStatus ? project.status === selectedStatus : true;
-        return matchesSearch && matchesSector && matchesStatus;
+        const matchesFiltro = !filtroParam || (
+            filtroParam === "reservado" ? project.hasReservado :
+            filtroParam === "empenhado" ? project.hasEmpenhado :
+            filtroParam === "liquidado" ? project.hasLiquidado :
+            filtroParam === "pago" ? project.hasPago :
+            true
+        );
+        return matchesSearch && matchesSector && matchesStatus && matchesFiltro;
     });
 
     // Pagination
@@ -229,6 +259,16 @@ function ProjectsContent() {
                         </div>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
+                        {/* Filtro financeiro ativo (vindo da home) */}
+                        {filtroParam && FILTRO_LABELS[filtroParam] && (
+                            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-500 text-white text-sm font-medium">
+                                <span className="material-symbols-outlined text-sm">filter_alt</span>
+                                <span>{FILTRO_LABELS[filtroParam]}</span>
+                                <Link href="/projetos" className="ml-1 opacity-70 hover:opacity-100">
+                                    <span className="material-symbols-outlined text-sm">close</span>
+                                </Link>
+                            </div>
+                        )}
                         {/* Sector Filter */}
                         {["Saúde", "Educação", "Infraestrutura"].map((sector) => (
                             <button

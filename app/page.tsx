@@ -194,10 +194,10 @@ export default function Home() {
                   {loading ? "Carregando..." : animatedValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                 </h2>
                 <div className="flex flex-wrap gap-3">
-                  <div className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl flex items-center gap-2 border border-white/10">
+                  <Link href="/projetos" className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl flex items-center gap-2 border border-white/10 hover:bg-white/20 transition-colors">
                     <span className="material-symbols-outlined text-sm">description</span>
                     <span className="text-sm font-semibold">{loading ? "..." : Math.round(animatedCount)} emendas</span>
-                  </div>
+                  </Link>
                   <div className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl flex items-center gap-2 border border-white/10">
                     <span className="material-symbols-outlined text-sm">trending_up</span>
                     <span className="text-sm font-semibold">{loading ? "..." : `${porcentagemFormatada}% empenhado`}</span>
@@ -253,7 +253,7 @@ export default function Home() {
             {/* Financial Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Reservado */}
-              <div className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md">
+              <Link href="/projetos?filtro=reservado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300 cursor-pointer">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
                     <span className="material-symbols-outlined">account_balance</span>
@@ -278,10 +278,10 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
 
               {/* Empenhado */}
-              <div className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md">
+              <Link href="/projetos?filtro=empenhado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-blue-300 cursor-pointer">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
                     <span className="material-symbols-outlined">payments</span>
@@ -306,10 +306,10 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
 
               {/* Liquidado */}
-              <div className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md">
+              <Link href="/projetos?filtro=liquidado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-indigo-300 cursor-pointer">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
                     <span className="material-symbols-outlined">receipt_long</span>
@@ -334,10 +334,10 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
 
               {/* Pago */}
-              <div className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md">
+              <Link href="/projetos?filtro=pago" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-300 cursor-pointer">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
                     <span className="material-symbols-outlined">check_circle</span>
@@ -362,7 +362,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
 
             {/* Recent Activities */}
