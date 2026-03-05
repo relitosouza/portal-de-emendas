@@ -77,8 +77,11 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ success: true });
         } catch (error: any) {
             console.error("Delete Error:", error);
-            if (error.message.includes("Amendment not found")) {
-                return NextResponse.json({ error: "Amendment not found" }, { status: 404 });
+            if (error.message.includes("Missing")) {
+                return NextResponse.json({ success: true, warning: "Missing Credentials" });
+            }
+            if (error.message.includes("Amendment not found") || error.message.includes("No data found")) {
+                return NextResponse.json({ success: true, warning: "Amendment not found in Sheets, but proceeding." });
             }
             return NextResponse.json({ error: "Failed to delete: " + error.message }, { status: 500 });
         }

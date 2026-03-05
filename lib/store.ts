@@ -90,3 +90,10 @@ export const addAmendment = (amendment: Omit<Amendment, "id" | "createdAt">) => 
 export const clearAmendments = () => {
     localStorage.removeItem(STORAGE_KEY);
 };
+
+export const deleteAmendment = (id: string) => {
+    if (typeof window === "undefined") return;
+    const amendments = getAmendments();
+    const updated = amendments.filter(a => a.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+};
