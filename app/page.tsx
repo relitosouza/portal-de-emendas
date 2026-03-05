@@ -10,6 +10,8 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [amendments, setAmendments] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const parseValor = (v: any): number => {
     if (!v) return 0;
@@ -126,25 +128,25 @@ export default function Home() {
   };
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchData(isRefresh = false) {
+      if (isRefresh) setIsRefreshing(true);
       try {
         const res = await fetch("/api/amendments");
         const data = await res.json();
         if (Array.isArray(data)) {
           setAmendments(data);
+          setLastUpdated(new Date());
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
+        if (isRefresh) setIsRefreshing(false);
       }
     }
 
-    // Initial fetch
     fetchData();
-
-    // Auto-refresh every 2 minutes (120000 ms) for TV Display
-    const interval = setInterval(fetchData, 120000);
+    const interval = setInterval(() => fetchData(true), 120000);
     return () => clearInterval(interval);
   }, []);
 
@@ -196,6 +198,24 @@ export default function Home() {
                     <span className="text-sm font-semibold">{loading ? "..." : `${porcentagemFormatada}% empenhado`}</span>
                   </div>
                 </div>
+                {/* Indicador de atualização */}
+                {!loading && (
+                  <div className="mt-4 flex items-center gap-2 opacity-70">
+                    {isRefreshing ? (
+                      <>
+                        <span className="material-symbols-outlined text-sm animate-spin">refresh</span>
+                        <span className="text-xs font-semibold">Atualizando...</span>
+                      </>
+                    ) : lastUpdated ? (
+                      <>
+                        <span className="material-symbols-outlined text-sm">check_circle</span>
+                        <span className="text-xs font-semibold">
+                          Atualizado às {lastUpdated.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+                        </span>
+                      </>
+                    ) : null}
+                  </div>
+                )}
               </div>
               <div className="lg:col-span-5 flex flex-col items-center justify-center">
                 <div className="relative w-40 h-40 flex items-center justify-center">
