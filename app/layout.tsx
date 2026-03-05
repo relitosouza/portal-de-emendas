@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Public_Sans, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
-});
-
-const publicSans = Public_Sans({
-  subsets: ["latin"],
-  variable: "--font-public-sans",
+  variable: "--font-plus-jakarta",
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -33,7 +28,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={`${publicSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${plusJakarta.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         {children}
       </body>
