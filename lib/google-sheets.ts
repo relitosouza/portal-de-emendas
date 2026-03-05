@@ -140,6 +140,7 @@ export async function upsertFinancialData(sheets: any, spreadsheetId: string, am
         data.empenhado || "",
         data.liquidado || "",
         data.pago || "",
+        data.reservado || "",
         new Date().toISOString()
     ];
 
@@ -147,7 +148,7 @@ export async function upsertFinancialData(sheets: any, spreadsheetId: string, am
         // Update
         await sheets.spreadsheets.values.update({
             spreadsheetId,
-            range: `${sheetName}!A${rowIndex + 1}:E${rowIndex + 1}`,
+            range: `${sheetName}!A${rowIndex + 1}:F${rowIndex + 1}`,
             valueInputOption: "USER_ENTERED",
             requestBody: { values: [rowData] },
         });
@@ -155,7 +156,7 @@ export async function upsertFinancialData(sheets: any, spreadsheetId: string, am
         // Append
         await sheets.spreadsheets.values.append({
             spreadsheetId,
-            range: `${sheetName}!A:E`,
+            range: `${sheetName}!A:F`,
             valueInputOption: "USER_ENTERED",
             requestBody: { values: [rowData] },
         });
@@ -185,7 +186,7 @@ export async function appendAmendmentToSheet(amendment: any) {
     });
 
     // If financial data is present on creation (unlikely but possible), save it
-    if (amendment.empenhado || amendment.liquidado || amendment.pago) {
+    if (amendment.reservado || amendment.empenhado || amendment.liquidado || amendment.pago) {
         await upsertFinancialData(sheets, spreadsheetId, amendment.id, amendment);
     }
 
@@ -296,7 +297,7 @@ export async function updateAmendmentInSheet(id: string, amendment: any) {
     });
 
     // 3. Update/Insert Financial Data (Secondary Sheet)
-    if (amendment.empenhado !== undefined || amendment.liquidado !== undefined || amendment.pago !== undefined) {
+    if (amendment.reservado !== undefined || amendment.empenhado !== undefined || amendment.liquidado !== undefined || amendment.pago !== undefined) {
         await upsertFinancialData(sheets, spreadsheetId, id, amendment);
     }
 
@@ -339,7 +340,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
     try {
         const finResponse = await sheets.spreadsheets.values.get({
             spreadsheetId,
-            range: `${financialSheetName}!A:E`,
+            range: `${financialSheetName}!A:F`,
         });
         financialRows = finResponse.data.values || [];
     } catch (e) {
@@ -402,6 +403,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
             empenhado: financial ? financial[1] : undefined,
             liquidado: financial ? financial[2] : undefined,
             pago: financial ? financial[3] : undefined,
+            reservado: financial ? financial[4] : undefined,
 
             // Mapped for compatibility
             title: row[13], // Objeto
@@ -462,6 +464,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
             empenhado: financial ? financial[1] : undefined,
             liquidado: financial ? financial[2] : undefined,
             pago: financial ? financial[3] : undefined,
+            reservado: financial ? financial[4] : undefined,
 
             // Mapped for compatibility
             title: row[7] || "", // Objeto

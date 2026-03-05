@@ -25,11 +25,23 @@ export default function Home() {
     return isNaN(num) ? 0 : num;
   };
 
+  const totalReservado = amendments.reduce((acc, e) => acc + parseValor(e.reservado), 0);
   const totalEmpenhado = amendments.reduce((acc, e) => acc + parseValor(e.empenhado), 0);
+  const totalLiquidado = amendments.reduce((acc, e) => acc + parseValor(e.liquidado), 0);
   const totalPago = amendments.reduce((acc, e) => acc + parseValor(e.pago), 0);
+
   const porcentagemEmpenhada = VALOR_DESTINADO > 0 ? (totalEmpenhado / VALOR_DESTINADO) * 100 : 0;
   const porcentagemFormatada = porcentagemEmpenhada.toFixed(1);
+  const porcentagemReservada = VALOR_DESTINADO > 0 ? (totalReservado / VALOR_DESTINADO) * 100 : 0;
+  const porcentagemReservadaFormatada = porcentagemReservada.toFixed(1);
+  const porcentagemLiquidada = VALOR_DESTINADO > 0 ? (totalLiquidado / VALOR_DESTINADO) * 100 : 0;
+  const porcentagemLiquidadaFormatada = porcentagemLiquidada.toFixed(1);
+  const porcentagemPaga = VALOR_DESTINADO > 0 ? (totalPago / VALOR_DESTINADO) * 100 : 0;
+  const porcentagemPagaFormatada = porcentagemPaga.toFixed(1);
+
+  const totalReservadoFormatado = totalReservado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   const totalEmpenhadoFormatado = totalEmpenhado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const totalLiquidadoFormatado = totalLiquidado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   const totalPagoFormatado = totalPago.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
   // Comprometido = empenhado percentage for the circle
@@ -208,13 +220,41 @@ export default function Home() {
           <div className="lg:col-span-2 space-y-8">
             {/* Financial Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Reservado */}
+              <div className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
+                    <span className="material-symbols-outlined">account_balance</span>
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Previsão</span>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Reservado</p>
+                  <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
+                    {loading ? "Carregando..." : totalReservadoFormatado}
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      <span>Percentual do Total</span>
+                      <span>{loading ? "--" : `${porcentagemReservadaFormatada}%`}</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-amber-500 rounded-full transition-all duration-1000"
+                        style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemReservadaFormatada), 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Empenhado */}
               <div className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
                     <span className="material-symbols-outlined">payments</span>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Execução Inicial</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Alocação Inicial</span>
                 </div>
                 <div>
                   <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Empenhado</p>
@@ -236,6 +276,34 @@ export default function Home() {
                 </div>
               </div>
 
+              {/* Liquidado */}
+              <div className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
+                    <span className="material-symbols-outlined">receipt_long</span>
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Execução</span>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Liquidado</p>
+                  <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
+                    {loading ? "Carregando..." : totalLiquidadoFormatado}
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      <span>Percentual do Total</span>
+                      <span>{loading ? "--" : `${porcentagemLiquidadaFormatada}%`}</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-indigo-500 rounded-full transition-all duration-1000"
+                        style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemLiquidadaFormatada), 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Pago */}
               <div className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
@@ -245,13 +313,21 @@ export default function Home() {
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Fase Final</span>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Pago (Executado)</p>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Pago</p>
                   <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
                     {loading ? "Carregando..." : totalPagoFormatado}
                   </h3>
-                  <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 w-fit px-2 py-1 rounded-md">
-                    <span className="material-symbols-outlined text-sm">trending_up</span>
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Liquidação em dia</span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      <span>Percentual do Total</span>
+                      <span>{loading ? "--" : `${porcentagemPagaFormatada}%`}</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-emerald-500 rounded-full transition-all duration-1000"
+                        style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemPagaFormatada), 100)}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
