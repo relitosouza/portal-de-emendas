@@ -360,10 +360,10 @@ export default async function ProjetoDetalhePage(props: Props) {
                                     <img
                                         src={autorPhoto}
                                         alt={autor}
-                                        className="size-14 rounded-full object-cover border-2 border-slate-200"
+                                        className="size-20 rounded-full object-cover border-2 border-slate-200"
                                     />
                                 ) : (
-                                    <div className="size-14 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-lg">
+                                    <div className="size-20 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xl">
                                         {autorInitials}
                                     </div>
                                 )}
