@@ -275,7 +275,7 @@ export default function Home() {
                 ) : amendments.length === 0 ? (
                   <div className="text-center py-8 text-slate-400">Nenhuma emenda cadastrada ainda.</div>
                 ) : (
-                  amendments.slice(0, 3).map((emenda: any, idx: number) => {
+                  amendments.slice(0, 5).map((emenda: any, idx: number) => {
                     const title = emenda.objeto || emenda.finalidade || `Emenda ${emenda.numeroEmenda || ""}`;
                     const autor = emenda.autor || emenda.responsavelNome || "Sem autor";
                     const valor = parseValor(emenda.valor);
@@ -426,7 +426,7 @@ export default function Home() {
             <span className="font-bold text-slate-400">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</span>
           </div>
           <div className="flex gap-8">
-            <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Transparência</a>
+            <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="https://transparencia.osasco.sp.gov.br/#/" target="_blank" rel="noopener noreferrer">Transparência</a>
             <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Privacidade</a>
             <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Contato</a>
           </div>
