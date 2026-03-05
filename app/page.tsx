@@ -140,7 +140,13 @@ export default function Home() {
         setLoading(false);
       }
     }
+
+    // Initial fetch
     fetchData();
+
+    // Auto-refresh every 2 minutes (120000 ms) for TV Display
+    const interval = setInterval(fetchData, 120000);
+    return () => clearInterval(interval);
   }, []);
 
   const authorRanking = getAuthorRanking();
