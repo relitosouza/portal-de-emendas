@@ -26,16 +26,22 @@ export default function ShareCard({
 }: ShareCardProps) {
     const [open, setOpen] = useState(false);
     const [generating, setGenerating] = useState(false);
+    const [feedback, setFeedback] = useState("");
     const cardRef = useRef<HTMLDivElement>(null);
 
     const getStatusColor = () => {
-        if (status === "concluido") return { bg: "bg-emerald-500", text: "text-emerald-500", light: "bg-emerald-50 text-emerald-700" };
-        if (status === "em_execucao") return { bg: "bg-blue-500", text: "text-blue-500", light: "bg-blue-50 text-blue-700" };
-        if (status === "suspenso") return { bg: "bg-red-500", text: "text-red-500", light: "bg-red-50 text-red-700" };
-        return { bg: "bg-amber-500", text: "text-amber-500", light: "bg-amber-50 text-amber-700" };
+        if (status === "concluido") return { light: "bg-emerald-50 text-emerald-700" };
+        if (status === "em_execucao") return { light: "bg-blue-50 text-blue-700" };
+        if (status === "suspenso") return { light: "bg-red-50 text-red-700" };
+        return { light: "bg-amber-50 text-amber-700" };
     };
 
     const statusColor = getStatusColor();
+
+    const showFeedback = (msg: string) => {
+        setFeedback(msg);
+        setTimeout(() => setFeedback(""), 2500);
+    };
 
     const generateImage = useCallback(async (): Promise<Blob | null> => {
         if (!cardRef.current) return null;
@@ -43,20 +49,46 @@ export default function ShareCard({
         try {
             const canvas = await html2canvas(cardRef.current, {
                 scale: 2,
-                backgroundColor: null,
+                backgroundColor: "#0f172a",
                 useCORS: true,
-                allowTaint: true,
+                allowTaint: false,
                 logging: false,
             });
+
             return new Promise((resolve) => {
-                canvas.toBlob((blob) => {
-                    resolve(blob);
-                    setGenerating(false);
-                }, "image/png");
+                canvas.toBlob(
+                    (blob) => {
+                        setGenerating(false);
+                        resolve(blob);
+                    },
+                    "image/png",
+                );
             });
-        } catch {
-            setGenerating(false);
-            return null;
+        } catch (err) {
+            console.error("html2canvas error:", err);
+            // Fallback: try again with allowTaint (won't export cleanly but won't crash)
+            try {
+                const canvas = await html2canvas(cardRef.current!, {
+                    scale: 2,
+                    backgroundColor: "#0f172a",
+                    useCORS: false,
+                    allowTaint: true,
+                    logging: false,
+                });
+                return new Promise((resolve) => {
+                    canvas.toBlob(
+                        (blob) => {
+                            setGenerating(false);
+                            resolve(blob);
+                        },
+                        "image/png",
+                    );
+                });
+            } catch {
+                setGenerating(false);
+                showFeedback("Erro ao gerar imagem");
+                return null;
+            }
         }
     }, []);
 
@@ -67,32 +99,75 @@ export default function ShareCard({
         const a = document.createElement("a");
         a.href = url;
         a.download = `emenda-${id}.png`;
+        document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        showFeedback("Imagem salva!");
     };
 
     const handleShare = async () => {
-        if (navigator.share) {
-            const blob = await generateImage();
-            if (!blob) return;
-            const file = new File([blob], `emenda-${id}.png`, { type: "image/png" });
+        const blob = await generateImage();
+        if (!blob) return;
+
+        const file = new File([blob], `emenda-${id}.png`, { type: "image/png" });
+
+        // Try Web Share API with file
+        if (navigator.share && navigator.canShare?.({ files: [file] })) {
             try {
                 await navigator.share({
                     title: `Emenda: ${title}`,
                     text: `Confira esta emenda parlamentar: ${title} - ${valor}`,
                     files: [file],
                 });
-            } catch {
-                // User cancelled or error
+                return;
+            } catch (err) {
+                // User cancelled - that's fine
+                if ((err as Error)?.name === "AbortError") return;
             }
-        } else {
-            handleDownload();
         }
+
+        // Fallback: try share without files (just link + text)
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: `Emenda: ${title}`,
+                    text: `Confira esta emenda parlamentar: ${title} - ${valor}`,
+                    url: `${window.location.origin}/projetos/${id}`,
+                });
+                return;
+            } catch (err) {
+                if ((err as Error)?.name === "AbortError") return;
+            }
+        }
+
+        // Final fallback: download the image
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `emenda-${id}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showFeedback("Imagem salva!");
     };
 
-    const handleCopyLink = () => {
+    const handleCopyLink = async () => {
         const url = `${window.location.origin}/projetos/${id}`;
-        navigator.clipboard.writeText(url);
+        try {
+            await navigator.clipboard.writeText(url);
+            showFeedback("Link copiado!");
+        } catch {
+            // Fallback for older browsers
+            const input = document.createElement("input");
+            input.value = url;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand("copy");
+            document.body.removeChild(input);
+            showFeedback("Link copiado!");
+        }
     };
 
     if (!open) {
@@ -109,13 +184,22 @@ export default function ShareCard({
 
     return (
         <>
+            {/* Keep the button visible behind modal */}
+            <button
+                className="w-full flex items-center justify-center gap-2 border border-slate-200 bg-slate-50 text-slate-600 font-bold py-3 px-6 rounded-xl text-sm opacity-50"
+                disabled
+            >
+                <span className="material-symbols-outlined text-xl">share</span>
+                Compartilhar
+            </button>
+
             {/* Modal Overlay */}
             <div
                 className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
                 onClick={() => setOpen(false)}
             >
                 <div
-                    className="relative flex flex-col items-center gap-6 max-w-lg w-full"
+                    className="relative flex flex-col items-center gap-6 max-w-lg w-full animate-[fadeIn_0.2s_ease-out]"
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Close button */}
@@ -150,6 +234,7 @@ export default function ShareCard({
                                         src="/brasao-osasco.png"
                                         alt="Brasão"
                                         className="w-10 h-10 object-contain drop-shadow-lg"
+                                        crossOrigin="anonymous"
                                     />
                                     <div>
                                         <p className="text-white text-sm font-bold leading-tight">Portal das Emendas</p>
@@ -169,6 +254,7 @@ export default function ShareCard({
                                         src={autorPhoto}
                                         alt={autor}
                                         className="size-24 rounded-full object-cover border-4 border-white/20 shadow-xl mb-4"
+                                        crossOrigin="anonymous"
                                     />
                                 ) : (
                                     <div className="size-24 rounded-full bg-white/10 border-4 border-white/20 flex items-center justify-center text-white font-bold text-2xl mb-4">
@@ -205,6 +291,13 @@ export default function ShareCard({
                             </div>
                         </div>
                     </div>
+
+                    {/* Feedback toast */}
+                    {feedback && (
+                        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white text-slate-900 font-bold text-sm px-5 py-2.5 rounded-full shadow-xl animate-[fadeIn_0.15s_ease-out] z-20">
+                            {feedback}
+                        </div>
+                    )}
 
                     {/* Action buttons */}
                     <div className="flex items-center gap-3 w-full">
