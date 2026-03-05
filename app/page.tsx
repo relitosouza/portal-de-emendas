@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/shared/navbar";
+import { useCountUp } from "@/hooks/useCountUp";
 
 export default function Home() {
   const router = useRouter();
@@ -40,15 +41,19 @@ export default function Home() {
   const porcentagemPaga = totalValor > 0 ? (totalPago / totalValor) * 100 : 0;
   const porcentagemPagaFormatada = porcentagemPaga.toFixed(1);
 
-  const totalReservadoFormatado = totalReservado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-  const totalEmpenhadoFormatado = totalEmpenhado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-  const totalLiquidadoFormatado = totalLiquidado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-  const totalPagoFormatado = totalPago.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
   // Comprometido = empenhado percentage for the circle
   const comprometido = Math.min(Number(porcentagemFormatada), 100);
   const circumference = 2 * Math.PI * 42; // r=42
   const strokeDashoffset = circumference - (comprometido / 100) * circumference;
+
+  // Animated counters (2s ease-out)
+  const animatedValor = useCountUp(loading ? 0 : totalValor, 2000);
+  const animatedReservado = useCountUp(loading ? 0 : totalReservado, 2000);
+  const animatedEmpenhado = useCountUp(loading ? 0 : totalEmpenhado, 2000);
+  const animatedLiquidado = useCountUp(loading ? 0 : totalLiquidado, 2000);
+  const animatedPago = useCountUp(loading ? 0 : totalPago, 2000);
+  const animatedCount = useCountUp(loading ? 0 : amendments.length, 2000);
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchTerm.trim()) {
@@ -186,12 +191,12 @@ export default function Home() {
                   <span className="text-xs font-bold uppercase tracking-[0.2em]">Emendas aprovadas</span>
                 </div>
                 <h2 className="text-4xl md:text-5xl font-extrabold mb-8">
-                  {loading ? "Carregando..." : totalValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                  {loading ? "Carregando..." : animatedValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                 </h2>
                 <div className="flex flex-wrap gap-3">
                   <div className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl flex items-center gap-2 border border-white/10">
                     <span className="material-symbols-outlined text-sm">description</span>
-                    <span className="text-sm font-semibold">{loading ? "..." : amendments.length} emendas</span>
+                    <span className="text-sm font-semibold">{loading ? "..." : Math.round(animatedCount)} emendas</span>
                   </div>
                   <div className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl flex items-center gap-2 border border-white/10">
                     <span className="material-symbols-outlined text-sm">trending_up</span>
@@ -258,7 +263,7 @@ export default function Home() {
                 <div>
                   <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Reservado</p>
                   <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
-                    {loading ? "Carregando..." : totalReservadoFormatado}
+                    {loading ? "Carregando..." : animatedReservado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
@@ -286,7 +291,7 @@ export default function Home() {
                 <div>
                   <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Empenhado</p>
                   <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
-                    {loading ? "Carregando..." : totalEmpenhadoFormatado}
+                    {loading ? "Carregando..." : animatedEmpenhado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
@@ -314,7 +319,7 @@ export default function Home() {
                 <div>
                   <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Liquidado</p>
                   <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
-                    {loading ? "Carregando..." : totalLiquidadoFormatado}
+                    {loading ? "Carregando..." : animatedLiquidado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
@@ -342,7 +347,7 @@ export default function Home() {
                 <div>
                   <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Pago</p>
                   <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
-                    {loading ? "Carregando..." : totalPagoFormatado}
+                    {loading ? "Carregando..." : animatedPago.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
