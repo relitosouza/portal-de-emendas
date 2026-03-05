@@ -13,8 +13,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portal das Emendas Osasco",
-  description: "Portal de Transparência e Gestão de Projetos",
+  title: "Portal das Emendas - Prefeitura Municipal de Osasco",
+  description: "Portal de Transparência e Gestão de Emendas Parlamentares",
 };
 
 export default function RootLayout({

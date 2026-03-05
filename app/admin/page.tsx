@@ -71,8 +71,8 @@ export default function LoginPage() {
                             className="h-full w-full object-contain drop-shadow-md"
                         />
                     </div>
-                    <h1 className="text-2xl font-heading font-bold text-slate-800">Login Gestor</h1>
-                    <p className="text-sm text-slate-500">Acesse o painel administrativo</p>
+                    <h1 className="text-2xl font-heading font-bold text-slate-800">Portal das Emendas</h1>
+                    <p className="text-sm text-slate-500">Prefeitura Municipal de Osasco</p>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

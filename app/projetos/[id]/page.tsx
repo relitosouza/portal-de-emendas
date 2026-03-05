@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/shared/navbar";
 
-
-export const revalidate = 60; // Revalidate every minute
+export const revalidate = 60;
 
 interface Props {
     params: Promise<{
@@ -16,7 +15,6 @@ export default async function ProjetoDetalhePage(props: Props) {
     const params = await props.params;
     const { id } = params;
 
-    // Fetch data
     let amendment = null;
     try {
         const amendments = await getAmendmentsFromSheet();
@@ -29,14 +27,12 @@ export default async function ProjetoDetalhePage(props: Props) {
         notFound();
     }
 
-    // Parse financial values
     const parseCurrency = (val?: string) => {
         if (!val) return 0;
-        if (typeof val === 'number') return val;
-        // Remove "R$", dots (thousand separators), and replace comma with dot (decimal separator)
+        if (typeof val === "number") return val;
         const cleaned = String(val)
-            .replace(/[R$\s.]/g, "") // Remove R$, spaces, and dots
-            .replace(",", "."); // Replace comma with dot
+            .replace(/[R$\s.]/g, "")
+            .replace(",", ".");
         return parseFloat(cleaned) || 0;
     };
 
@@ -45,364 +41,330 @@ export default async function ProjetoDetalhePage(props: Props) {
     const liquidado = parseCurrency(amendment.liquidado);
     const pago = parseCurrency(amendment.pago);
 
-    const percentPago = valorTotal > 0 ? Math.min(100, Math.round((pago / valorTotal) * 100)) : 0;
-
-    // Status visual mapping
-    const statusMap = {
-        "planejamento": 0,
-        "aprovado": 1, // Licitação
-        "em_execucao": 2, // Execução
-        "concluido": 3 // Entrega
-    };
-
-    const currentStatusIndex = statusMap[amendment.status as keyof typeof statusMap] ?? 0;
-
     const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+        return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
     };
 
-    const formatShortCurrency = (value: number) => {
-        if (value >= 1000000) return `R$ ${(value / 1000000).toFixed(1)}M`;
-        if (value >= 1000) return `R$ ${(value / 1000).toFixed(0)}k`;
-        return formatCurrency(value);
+    // Status tracker
+    const statusSteps = [
+        { label: "Não Iniciada", icon: "check" },
+        { label: "Em Análise", icon: "check" },
+        { label: "Elaboração", icon: "check" },
+        { label: "Viabilização", icon: "check" },
+        { label: "Contratação", icon: "check" },
+        { label: "Execução", icon: "sync" },
+        { label: "Executada", icon: "done_all" },
+        { label: "Cancelada", icon: "block" },
+    ];
+
+    const statusMap: Record<string, number> = {
+        planejamento: 0,
+        aprovado: 3,
+        em_execucao: 5,
+        concluido: 6,
+        suspenso: 7,
     };
+
+    const currentStep = statusMap[amendment.status as string] ?? 0;
+    const progressPercent = currentStep <= 6 ? (Math.min(currentStep, 5) / 7) * 100 : 0;
+
+    const autor = amendment.autor || amendment.author || amendment.responsavelNome || "Não informado";
+    const autorInitials = autor
+        .split(" ")
+        .filter(Boolean)
+        .map((w: string) => w[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
+
+    const getStatusLabel = () => {
+        if (amendment.status === "concluido") return { label: "Executada", color: "bg-blue-50 border-blue-100 text-blue-600" };
+        if (amendment.status === "em_execucao") return { label: "Em Execução", color: "bg-emerald-50 border-emerald-100 text-emerald-600" };
+        if (amendment.status === "suspenso") return { label: "Cancelada / Impedida", color: "bg-red-50 border-red-100 text-red-600" };
+        if (amendment.status === "aprovado") return { label: "Contratação", color: "bg-blue-50 border-blue-100 text-blue-600" };
+        return { label: "Não Iniciada", color: "bg-slate-50 border-slate-200 text-slate-600" };
+    };
+
+    const statusInfo = getStatusLabel();
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#f8fafc] font-sans text-slate-800 antialiased">
+        <div className="min-h-screen bg-slate-50 text-slate-900">
             <Navbar />
 
-            <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
-                <nav className="flex items-center gap-2 text-xs text-slate-400 font-mono mb-8">
-                    <Link href="/" className="hover:text-blue-600 transition-colors">Painel</Link>
-                    <span className="material-symbols-outlined text-[12px]">chevron_right</span>
-                    <Link href="/projetos" className="hover:text-blue-600 transition-colors">Emendas</Link>
-                    <span className="material-symbols-outlined text-[12px]">chevron_right</span>
-                    <span className="text-slate-800 font-bold">{amendment.id}</span>
-                </nav>
-
-                <div className="mb-10">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-3">
-                                <span className="px-3 py-1 bg-sector-health-bg text-sector-health-text font-mono text-[10px] font-bold uppercase rounded-md tracking-wider">
-                                    {amendment.ambito || "Geral"}
-                                </span>
-                                <span className="px-3 py-1 bg-gray-200 text-primary font-mono text-[10px] font-bold uppercase rounded-md tracking-wider">
-                                    {amendment.tipoEmenda}
-                                </span>
-                            </div>
-                            <h1 className="font-heading font-bold text-4xl lg:text-5xl text-primary tracking-tight">
-                                {amendment.objeto || amendment.title || "Sem Título"}
-                            </h1>
-                            <p className="text-lg text-muted max-w-3xl leading-relaxed">
-                                {amendment.finalidade || amendment.description || "Sem descrição disponível."}
-                            </p>
-                        </div>
-                        <div className="flex flex-col items-start md:items-end gap-2">
-                            <span className="text-xs font-mono uppercase text-muted">Protocolo</span>
-                            <div className="bg-white border border-gray-200 px-4 py-2 rounded-lg font-mono font-bold text-primary shadow-sm">
-                                {amendment.numeroEmenda || "N/A"}
-                            </div>
-                        </div>
-                    </div>
+            <main className="max-w-[1200px] mx-auto px-6 lg:px-10 py-8">
+                {/* Breadcrumb */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                    <Link className="text-slate-500 text-sm font-medium hover:text-blue-500" href="/">Início</Link>
+                    <span className="text-slate-400 text-sm font-medium">/</span>
+                    <Link className="text-slate-500 text-sm font-medium hover:text-blue-500" href="/projetos">Emendas</Link>
+                    <span className="text-slate-400 text-sm font-medium">/</span>
+                    <span className="text-slate-900 text-sm font-semibold">Detalhes da Emenda</span>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-10 gap-8">
-                    <div className="lg:col-span-7 space-y-8">
-                        {/* Status Card */}
-                        <div className="bg-white border border-gray-100 shadow-sm rounded-xl overflow-hidden p-8">
-                            <h3 className="font-heading font-bold text-lg mb-8 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-primary">analytics</span>
-                                Status da Execução
-                            </h3>
-                            <div className="relative flex justify-between">
-                                <div className="absolute top-5 left-0 w-full h-[2px] bg-gray-100 -z-0"></div>
-                                {/* Progress Bar Width based on status */}
-                                <div className="absolute top-5 left-0 h-[2px] bg-status-success -z-0" style={{ width: `${(currentStatusIndex / 3) * 100}%` }}></div>
-
-                                {["Planejamento", "Licitação", "Execução", "Entrega"].map((step, idx) => {
-                                    const isCompleted = idx <= currentStatusIndex;
-                                    const isCurrent = idx === currentStatusIndex;
-                                    const isLast = idx === 3;
-
-                                    return (
-                                        <div key={step} className="relative z-10 flex flex-col items-center gap-3 group">
-                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center ring-4 ring-white shadow-md transition-all 
-                                                ${isCompleted ? "bg-status-success text-white" : "bg-gray-200 text-gray-400"}
-                                                ${isCurrent && idx !== 3 ? "animate-pulse ring-primary/10" : ""}
-                                            `}>
-                                                <span className="material-symbols-outlined text-[20px]">
-                                                    {isLast ? "flag" : "check"}
-                                                </span>
-                                            </div>
-                                            <span className={`font-heading text-xs font-bold uppercase ${isCompleted ? "text-primary" : "text-gray-400"}`}>
-                                                {step}
-                                            </span>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                {/* Status Tracker */}
+                <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 className="text-lg font-bold">Estágio Atual da Emenda</h2>
+                            <p className="text-sm text-slate-500">Acompanhamento em tempo real do fluxo administrativo</p>
                         </div>
-
-                        {/* Evolução Financeira — dados reais da emenda */}
-                        <div className="bg-white border border-gray-100 shadow-sm rounded-xl overflow-hidden p-8">
-                            <div className="flex items-start justify-between mb-8">
-                                <div>
-                                    <h3 className="font-heading font-bold text-lg">Evolução Financeira</h3>
-                                    <p className="text-xs text-slate-400 font-mono mt-0.5">
-                                        Base: {formatCurrency(valorTotal)} autorizados
-                                    </p>
-                                </div>
-                                {valorTotal === 0 && (
-                                    <span className="text-[10px] font-mono font-bold uppercase bg-amber-50 text-amber-600 border border-amber-100 px-2.5 py-1 rounded-lg">
-                                        Valor não informado
-                                    </span>
-                                )}
-                            </div>
-
-                            {/* Stacked overview bar */}
-                            {valorTotal > 0 && (
-                                <div className="mb-8">
-                                    <div className="flex h-4 w-full rounded-full overflow-hidden bg-slate-100 gap-px">
-                                        <div
-                                            className="bg-blue-500 h-full transition-all duration-700"
-                                            style={{ width: `${Math.min(100, Math.round((empenhado / valorTotal) * 100))}%` }}
-                                            title={`Empenhado: ${formatCurrency(empenhado)}`}
-                                        />
-                                        <div
-                                            className="bg-amber-400 h-full transition-all duration-700"
-                                            style={{ width: `${Math.min(100, Math.round((Math.max(0, liquidado - empenhado) / valorTotal) * 100))}%` }}
-                                            title={`Liquidado acima do empenhado: ${formatCurrency(liquidado)}`}
-                                        />
-                                    </div>
-                                    <div className="flex justify-between mt-1.5 text-[10px] font-mono text-slate-400">
-                                        <span>R$ 0</span>
-                                        <span>{formatShortCurrency(valorTotal)}</span>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Individual metrics */}
-                            <div className="space-y-5">
-                                {[
-                                    {
-                                        label: "Empenhado",
-                                        value: empenhado,
-                                        barColor: "bg-blue-500",
-                                        dotColor: "bg-blue-500",
-                                        textColor: "text-blue-700",
-                                        desc: "Valor comprometido no orçamento",
-                                    },
-                                    {
-                                        label: "Liquidado",
-                                        value: liquidado,
-                                        barColor: "bg-amber-400",
-                                        dotColor: "bg-amber-400",
-                                        textColor: "text-amber-600",
-                                        desc: "Serviço/bem confirmado como entregue",
-                                    },
-                                    {
-                                        label: "Pago",
-                                        value: pago,
-                                        barColor: "bg-emerald-500",
-                                        dotColor: "bg-emerald-500",
-                                        textColor: "text-emerald-700",
-                                        desc: "Efetivamente transferido ao beneficiário",
-                                    },
-                                ].map(({ label, value, barColor, dotColor, textColor, desc }) => {
-                                    const pct = valorTotal > 0
-                                        ? Math.min(100, Math.round((value / valorTotal) * 100))
-                                        : 0;
-                                    return (
-                                        <div key={label}>
-                                            <div className="flex items-center justify-between mb-1.5">
-                                                <div className="flex items-center gap-2">
-                                                    <div className={`w-2.5 h-2.5 rounded-full ${dotColor} shrink-0`} />
-                                                    <span className="text-sm font-bold text-slate-700">{label}</span>
-                                                    <span className="hidden sm:block text-[10px] text-slate-400 font-mono">— {desc}</span>
-                                                </div>
-                                                <div className="flex items-center gap-3">
-                                                    <span className={`text-xs font-mono font-bold ${textColor}`}>
-                                                        {valorTotal > 0 ? `${pct}%` : "—"}
-                                                    </span>
-                                                    <span className="font-mono text-sm font-bold text-slate-800">
-                                                        {value > 0 ? formatCurrency(value) : <span className="text-slate-300">Não informado</span>}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                                                <div
-                                                    className={`h-full ${barColor} rounded-full transition-all duration-700`}
-                                                    style={{ width: valorTotal > 0 ? `${pct}%` : "0%" }}
-                                                />
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Alerts */}
-                            {liquidado > empenhado && (
-                                <div className="mt-6 p-4 bg-red-50 rounded-lg border border-red-100 flex gap-3">
-                                    <span className="material-symbols-outlined text-status-danger text-[20px]">warning</span>
-                                    <p className="text-sm text-red-900 leading-snug">
-                                        <strong>Alerta de Descompasso:</strong> O valor liquidado ({formatShortCurrency(liquidado)}) supera o empenhado ({formatShortCurrency(empenhado)}). Verifique a execução orçamentária.
-                                    </p>
-                                </div>
-                            )}
-                            {pago > liquidado && liquidado > 0 && (
-                                <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-100 flex gap-3">
-                                    <span className="material-symbols-outlined text-amber-600 text-[20px]">warning</span>
-                                    <p className="text-sm text-amber-900 leading-snug">
-                                        <strong>Atenção:</strong> O valor pago ({formatShortCurrency(pago)}) supera o liquidado ({formatShortCurrency(liquidado)}).
-                                    </p>
-                                </div>
-                            )}
-                            {empenhado === 0 && liquidado === 0 && pago === 0 && (
-                                <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-100 flex gap-3">
-                                    <span className="material-symbols-outlined text-slate-400 text-[20px]">hourglass_empty</span>
-                                    <p className="text-sm text-slate-600 leading-snug">
-                                        Nenhum dado financeiro registrado ainda para esta emenda.
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-
-
-                        {/* Details Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="bg-white border border-gray-100 shadow-sm rounded-xl overflow-hidden p-6 flex flex-col gap-4">
-                                <div className="flex items-center gap-3 text-muted">
-                                    <span className="material-symbols-outlined text-[20px]">person_pin</span>
-                                    <span className="font-mono text-[10px] uppercase font-bold tracking-widest">Autor Responsável</span>
-                                </div>
-                                <div>
-                                    <p className="font-heading font-bold text-xl text-primary">{amendment.autor || amendment.author || "Não informado"}</p>
-                                    <p className="text-sm text-muted">Parlamentar</p>
-                                </div>
-                            </div>
-                            <div className="bg-white border border-gray-100 shadow-sm rounded-xl overflow-hidden p-6 flex flex-col gap-4">
-                                <div className="flex items-center gap-3 text-muted">
-                                    <span className="material-symbols-outlined text-[20px]">apartment</span>
-                                    <span className="font-mono text-[10px] uppercase font-bold tracking-widest">Órgão Beneficiário</span>
-                                </div>
-                                <div>
-                                    <p className="font-heading font-bold text-xl text-primary">{amendment.orgaoBeneficiario || "Não informado"}</p>
-                                    <p className="font-mono text-xs text-muted">Executor</p>
-                                </div>
-                            </div>
+                        <div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${statusInfo.color}`}>
+                            <span className="size-2 rounded-full bg-current animate-pulse"></span>
+                            <span className="text-xs font-bold uppercase tracking-widest">{statusInfo.label}</span>
                         </div>
                     </div>
+                    <div className="overflow-x-auto pb-4">
+                        <div className="flex min-w-[1000px] justify-between relative px-4 pt-4">
+                            {/* Background line */}
+                            <div className="absolute top-8 left-4 right-4 h-1 bg-slate-100 z-0"></div>
+                            {/* Progress line */}
+                            <div
+                                className="absolute top-8 left-4 h-1 bg-emerald-500 z-0 transition-all duration-500"
+                                style={{ width: `${progressPercent}%` }}
+                            ></div>
 
-                    {/* Sidebar */}
-                    <div className="lg:col-span-3">
-                        <div className="sticky top-24 space-y-6">
-                            <div className="bg-white border border-gray-100 rounded-xl overflow-hidden p-6 shadow-xl border-primary/5">
-                                <h4 className="font-heading font-bold text-sm uppercase tracking-widest text-muted mb-5">Identificação</h4>
-                                <div className="space-y-4">
-                                    {/* Vereador */}
-                                    <div className="flex items-start gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 text-blue-600">
-                                            <span className="material-symbols-outlined text-[18px]">how_to_vote</span>
-                                        </div>
-                                        <div className="min-w-0">
-                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-0.5">Vereador</p>
-                                            <p className="text-sm font-bold text-primary leading-tight">
-                                                {amendment.autor || amendment.responsavelNome || <span className="text-slate-300 font-normal">Não informado</span>}
-                                            </p>
-                                            {amendment.responsavelCargo && (
-                                                <p className="text-[10px] font-mono text-muted mt-0.5">{amendment.responsavelCargo}</p>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="h-px bg-gray-100" />
-                                    {/* Fornecedor */}
-                                    <div className="flex items-start gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 text-emerald-600">
-                                            <span className="material-symbols-outlined text-[18px]">storefront</span>
-                                        </div>
-                                        <div className="min-w-0">
-                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-0.5">Fornecedor</p>
-                                            <p className="text-sm font-bold text-primary leading-tight">
-                                                {amendment.fornecedor || <span className="text-slate-300 font-normal">Não informado</span>}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="h-px bg-gray-100" />
-                                    {/* Número de Licitação */}
-                                    <div className="flex items-start gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0 text-amber-600">
-                                            <span className="material-symbols-outlined text-[18px]">gavel</span>
-                                        </div>
-                                        <div className="min-w-0">
-                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-0.5">Nº Licitação</p>
-                                            <p className="text-sm font-bold text-primary font-mono leading-tight">
-                                                {amendment.numeroLicitacao || <span className="text-slate-300 font-normal font-sans">Não informado</span>}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="h-px bg-gray-100" />
-                                    {/* Códigos de Aplicação */}
-                                    <div className="flex items-start gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0 text-indigo-600">
-                                            <span className="material-symbols-outlined text-[18px]">receipt_long</span>
-                                        </div>
-                                        <div className="min-w-0">
-                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-0.5">Cód. Aplicação</p>
-                                            <p className="text-sm font-bold text-primary font-mono leading-tight">
-                                                {amendment.codigoAplicacao || <span className="text-slate-300 font-normal font-sans">Não informado</span>}
-                                            </p>
-                                            {amendment.codigoAplicacaoVariavel && (
-                                                <div className="mt-1">
-                                                    <p className="text-[9px] font-bold uppercase tracking-widest text-muted mb-0.5">Cód. Variável</p>
-                                                    <p className="text-xs font-mono text-slate-600">{amendment.codigoAplicacaoVariavel}</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="h-px bg-gray-100" />
-                                    {/* Valor Total */}
-                                    <div className="pt-1">
-                                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted mb-1">Valor Autorizado</p>
-                                        <p className="text-2xl font-heading font-bold text-primary">
-                                            {valorTotal > 0 ? formatCurrency(valorTotal) : <span className="text-slate-300 text-base font-normal">Não informado</span>}
-                                        </p>
-                                        {valorTotal > 0 && percentPago > 0 && (
-                                            <div className="mt-2">
-                                                <div className="flex justify-between text-[10px] font-mono text-muted mb-1">
-                                                    <span>Pago</span>
-                                                    <span className="font-bold text-emerald-600">{percentPago}%</span>
-                                                </div>
-                                                <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                                    <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${percentPago}%` }} />
-                                                </div>
+                            {statusSteps.map((step, idx) => {
+                                const isCompleted = idx < currentStep;
+                                const isCurrent = idx === currentStep;
+                                const isFuture = idx > currentStep;
+                                const isCancelled = idx === 7;
+
+                                return (
+                                    <div
+                                        key={step.label}
+                                        className={`relative z-10 flex flex-col items-center group w-32 ${isFuture && !isCancelled ? "opacity-40" : ""} ${isCancelled && currentStep !== 7 ? "opacity-40" : ""}`}
+                                    >
+                                        {isCurrent && idx < 7 ? (
+                                            <div className="size-10 -mt-1 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-2 ring-4 ring-emerald-100 shadow-lg shadow-emerald-500/20">
+                                                <span className="material-symbols-outlined text-lg">{step.icon}</span>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                className={`size-8 rounded-full flex items-center justify-center mb-3 ring-4 ring-white transition-transform hover:scale-110 ${
+                                                    isCompleted
+                                                        ? "bg-blue-500 text-white"
+                                                        : isFuture || (isCancelled && currentStep !== 7)
+                                                            ? "bg-slate-200 text-slate-400"
+                                                            : currentStep === 7 && isCancelled
+                                                                ? "bg-red-500 text-white"
+                                                                : "bg-slate-500 text-white"
+                                                }`}
+                                            >
+                                                <span className="material-symbols-outlined text-sm font-bold">{step.icon}</span>
                                             </div>
                                         )}
+                                        <span className={`text-[11px] font-bold text-center leading-tight ${
+                                            isCurrent ? "text-emerald-600 font-black" : "text-slate-900"
+                                        }`}>
+                                            {step.label}
+                                        </span>
                                     </div>
-                                </div>
-                            </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
 
-                            <div className="space-y-3">
-                                <button className="w-full bg-gradient-to-r from-[#1A1A1A] to-[#434343] text-white font-heading font-bold text-sm uppercase tracking-widest py-4 rounded-xl shadow-lg hover:-translate-y-[2px] transition-all flex items-center justify-center gap-2">
-                                    <span className="material-symbols-outlined text-[20px]">download</span>
-                                    Exportar Relatório
-                                </button>
-                                <button className="w-full bg-white border border-gray-200 text-primary font-heading font-bold text-sm uppercase tracking-widest py-4 rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
-                                    <span className="material-symbols-outlined text-[20px]">share</span>
-                                    Compartilhar
-                                </button>
-                            </div>
-
-                            <div className="p-5 bg-gray-100 rounded-xl border border-gray-200">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
-                                        <span className="material-symbols-outlined text-[18px] text-gray-600">verified_user</span>
-                                    </div>
-                                    <span className="text-xs font-bold uppercase tracking-tight text-gray-600">Auditoria Fiscal</span>
+                {/* Main Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-start">
+                    {/* Left Column */}
+                    <div className="lg:col-span-7 flex flex-col gap-8">
+                        {/* Project Info */}
+                        <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                            <div className="flex flex-col gap-2 mb-6">
+                                <div className="flex items-center gap-3">
+                                    <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-500 text-xs font-bold uppercase tracking-wider">
+                                        {amendment.categoria || amendment.ambito || "Geral"}
+                                    </span>
+                                    <span className="text-slate-400 text-sm font-medium">
+                                        ID: {amendment.numeroEmenda || amendment.id.slice(0, 8)} &bull; {amendment.tipoEmenda || "Emenda Individual"}
+                                    </span>
                                 </div>
-                                <p className="text-[11px] text-muted leading-relaxed">
-                                    Os dados exibidos nesta página são coletados diretamente via API do TCESP e validados por cruzamento de dados bancários municipais.
+                                <h1 className="text-3xl font-extrabold leading-tight tracking-tight">
+                                    {amendment.objeto || amendment.title || "Sem Título"}
+                                </h1>
+                            </div>
+                            <div className="flex flex-col gap-4">
+                                <h2 className="text-xl font-bold">Descrição do Projeto</h2>
+                                <p className="text-slate-600 text-base leading-relaxed">
+                                    {amendment.finalidade || amendment.description || "Sem descrição disponível para esta emenda."}
                                 </p>
+                            </div>
+                        </section>
+
+                        {/* Financial Flow */}
+                        <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                            <h2 className="text-xl font-bold mb-8">Fluxo de Execução Orçamentária</h2>
+                            <div className="relative space-y-12">
+                                {/* Vertical line */}
+                                <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100"></div>
+
+                                {/* Empenhado */}
+                                <div className="relative flex items-center gap-6">
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${
+                                        empenhado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                    }`}>
+                                        <span className="material-symbols-outlined text-sm font-bold">
+                                            {empenhado > 0 ? "check" : "more_horiz"}
+                                        </span>
+                                    </div>
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${
+                                        empenhado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                    } transition-colors`}>
+                                        <div>
+                                            <p className={`font-bold ${empenhado > 0 ? "text-slate-900" : "text-slate-400"}`}>Empenhado</p>
+                                            <p className={`text-sm ${empenhado > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso reservado para o projeto</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className={`font-bold ${empenhado > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                                {empenhado > 0 ? formatCurrency(empenhado) : "R$ 0,00"}
+                                            </p>
+                                            <p className="text-xs text-slate-400">
+                                                {empenhado > 0 ? "Confirmado" : "Em processamento"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Liquidado */}
+                                <div className="relative flex items-center gap-6">
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${
+                                        liquidado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                    }`}>
+                                        <span className="material-symbols-outlined text-sm font-bold">
+                                            {liquidado > 0 ? "check" : "more_horiz"}
+                                        </span>
+                                    </div>
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${
+                                        liquidado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                    } transition-colors`}>
+                                        <div>
+                                            <p className={`font-bold ${liquidado > 0 ? "text-slate-900" : "text-slate-400"}`}>Liquidado</p>
+                                            <p className={`text-sm ${liquidado > 0 ? "text-slate-500" : "text-slate-400"}`}>Serviço/Produto entregue e verificado</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className={`font-bold ${liquidado > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                                {liquidado > 0 ? formatCurrency(liquidado) : "R$ 0,00"}
+                                            </p>
+                                            <p className="text-xs text-slate-400">
+                                                {liquidado > 0 ? "Confirmado" : "Em processamento"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Pago */}
+                                <div className="relative flex items-center gap-6">
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${
+                                        pago > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                    }`}>
+                                        <span className="material-symbols-outlined text-sm font-bold">
+                                            {pago > 0 ? "check" : "more_horiz"}
+                                        </span>
+                                    </div>
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${
+                                        pago > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                    } transition-colors`}>
+                                        <div>
+                                            <p className={`font-bold ${pago > 0 ? "text-slate-900" : "text-slate-400"}`}>Pago</p>
+                                            <p className={`text-sm ${pago > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso transferido ao fornecedor</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className={`font-bold ${pago > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                                {pago > 0 ? formatCurrency(pago) : "R$ 0,00"}
+                                            </p>
+                                            <p className="text-xs text-slate-400">
+                                                {pago > 0 ? "Confirmado" : "Em processamento"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    {/* Right Sidebar */}
+                    <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-24">
+                        {/* Value Card */}
+                        <div className="bg-blue-500 text-white p-6 rounded-xl shadow-lg shadow-blue-500/20">
+                            <p className="text-blue-100 text-xs font-bold uppercase tracking-wider mb-1">Valor Total Destinado</p>
+                            <p className="text-3xl font-extrabold mb-4">
+                                {valorTotal > 0 ? formatCurrency(valorTotal) : "Não informado"}
+                            </p>
+                            {valorTotal > 0 && pago > 0 && (
+                                <div className="flex items-center gap-2 text-sm text-blue-100">
+                                    <span className="material-symbols-outlined text-sm">trending_up</span>
+                                    <span>{Math.round((pago / valorTotal) * 100)}% já pago</span>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Author Card */}
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                            <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-4">Autor da Emenda</p>
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="size-14 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-lg">
+                                    {autorInitials}
+                                </div>
+                                <div>
+                                    <p className="font-bold text-slate-900">{autor}</p>
+                                    <p className="text-xs text-slate-500">
+                                        {amendment.responsavelCargo || "Parlamentar"}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="space-y-3 pt-4 border-t border-slate-50">
+                                {amendment.orgaoBeneficiario && (
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-slate-500">Órgão:</span>
+                                        <span className="font-medium text-slate-900 text-right max-w-[60%]">{amendment.orgaoBeneficiario}</span>
+                                    </div>
+                                )}
+                                {amendment.localidadeBeneficiada && (
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-slate-500">Local:</span>
+                                        <span className="font-medium text-slate-900 text-right max-w-[60%]">{amendment.localidadeBeneficiada}</span>
+                                    </div>
+                                )}
+                                {amendment.fornecedor && (
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-slate-500">Fornecedor:</span>
+                                        <span className="font-medium text-slate-900 text-right max-w-[60%]">{amendment.fornecedor}</span>
+                                    </div>
+                                )}
+                                {amendment.numeroLicitacao && (
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-slate-500">Licitação:</span>
+                                        <span className="font-mono font-medium text-slate-900">{amendment.numeroLicitacao}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex flex-col gap-3">
+                            <button className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:scale-95">
+                                <span className="material-symbols-outlined text-xl">notifications_active</span>
+                                Acompanhar Execução
+                            </button>
+                            <button className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all active:scale-95">
+                                <span className="material-symbols-outlined text-xl">description</span>
+                                Baixar Documentos
+                            </button>
+                            <button className="w-full flex items-center justify-center gap-2 border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold py-3 px-6 rounded-xl transition-all text-sm active:scale-95">
+                                <span className="material-symbols-outlined text-xl">share</span>
+                                Compartilhar
+                            </button>
+                        </div>
+
+                        {/* Transparency Badge */}
+                        <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                            <div className="flex items-start gap-3">
+                                <span className="material-symbols-outlined text-emerald-600 mt-0.5">verified</span>
+                                <div>
+                                    <p className="text-sm font-bold text-emerald-900">Emenda Transparente</p>
+                                    <p className="text-xs text-emerald-700">Os dados desta emenda são públicos e auditáveis.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -410,15 +372,17 @@ export default async function ProjetoDetalhePage(props: Props) {
             </main>
 
             {/* Footer */}
-            <footer className="border-t border-slate-200 bg-white px-6 py-8 lg:px-8">
-                <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
-                    <p className="font-mono text-xs text-slate-400">
-                        © 2026 Portal das Emendas Osasco • Plataforma de Auditoria Participativa
-                    </p>
-                    <div className="flex gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-400">
-                        <a href="#" className="transition-colors hover:text-blue-600">Transparência</a>
-                        <a href="#" className="transition-colors hover:text-blue-600">Termos</a>
-                        <a href="#" className="transition-colors hover:text-blue-600">Contato</a>
+            <footer className="mt-auto bg-white border-t border-slate-200 py-10">
+                <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div className="flex items-center gap-3 text-slate-400">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain" />
+                        <p className="text-sm font-medium">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</p>
+                    </div>
+                    <div className="flex gap-6">
+                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Privacidade</a>
+                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Dados Abertos</a>
+                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Contato</a>
                     </div>
                 </div>
             </footer>

@@ -323,10 +323,19 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="max-w-7xl mx-auto px-6 py-12 text-center border-t border-slate-100 mt-12">
-        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-          © 2026 Impacto Cidadão - Portal de Transparência Municipal
-        </p>
+      <footer className="mt-12 bg-white border-t border-slate-200 py-10">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain" />
+            <span className="font-bold text-slate-400">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</span>
+          </div>
+          <div className="flex gap-8">
+            <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Transparência</a>
+            <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Privacidade</a>
+            <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Contato</a>
+          </div>
+        </div>
       </footer>
     </div>
   );
