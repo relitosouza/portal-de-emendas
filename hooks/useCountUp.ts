@@ -1,6 +1,4 @@
 // hooks/useCountUp.ts
-"use client";
-
 import { useState, useEffect, useRef } from "react";
 
 export function useCountUp(target: number, duration: number = 2000): number {
