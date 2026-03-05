@@ -275,7 +275,7 @@ export default function Home() {
                 ) : amendments.length === 0 ? (
                   <div className="text-center py-8 text-slate-400">Nenhuma emenda cadastrada ainda.</div>
                 ) : (
-                  amendments.slice(0, 5).map((emenda: any, idx: number) => {
+                  amendments.slice(0, 6).map((emenda: any, idx: number) => {
                     const title = emenda.objeto || emenda.finalidade || `Emenda ${emenda.numeroEmenda || ""}`;
                     const autor = emenda.autor || emenda.responsavelNome || "Sem autor";
                     const valor = parseValor(emenda.valor);
