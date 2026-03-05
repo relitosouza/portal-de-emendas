@@ -60,11 +60,50 @@ export default function Home() {
       .slice(0, 5);
   };
 
+  // Map sector categories
+  const categoryMap: Record<string, string> = {
+    "1": "LEGISLATIVA",
+    "2": "JUDICIÁRIA",
+    "3": "ESSENCIAL À JUSTIÇA",
+    "4": "ADMINISTRAÇÃO",
+    "5": "DEFESA NACIONAL",
+    "6": "SEGURANÇA PÚBLICA",
+    "7": "RELAÇÕES EXTERIORES",
+    "8": "ASSISTÊNCIA SOCIAL",
+    "9": "PREVIDÊNCIA SOCIAL",
+    "10": "SAÚDE",
+    "11": "TRABALHO",
+    "12": "EDUCAÇÃO",
+    "13": "CULTURA",
+    "14": "DIREITOS DA CIDADANIA",
+    "15": "URBANISMO",
+    "16": "HABITAÇÃO",
+    "17": "SANEAMENTO",
+    "18": "GESTÃO AMBIENTAL",
+    "19": "CIÊNCIA E TECNOLOGIA",
+    "20": "AGRICULTURA",
+    "21": "ORGANIZAÇÃO AGRÁRIA",
+    "22": "INDÚSTRIA",
+    "23": "COMÉRCIO E SERVIÇOS",
+    "24": "COMUNICAÇÕES",
+    "25": "ENERGIA",
+    "26": "TRANSPORTE",
+    "27": "DESPORTO E LAZER",
+    "28": "ENCARGOS ESPECIAIS",
+    "99": "RESERVA DE CONTIGÊNCIA",
+  };
+
   // Group amendments by sector
   const getSectorData = () => {
     const sectorMap: Record<string, { count: number, valor: number }> = {};
     amendments.forEach((e: any) => {
-      const cat = e.categoria || "Sem Categoria";
+      let catNum = e.categoria;
+      // Handle cases where categoria might come as "10 - Saúde" or just "10"
+      if (typeof catNum === "string" && catNum.includes(" - ")) {
+        catNum = catNum.split(" - ")[0].trim();
+      }
+
+      const cat = catNum ? (categoryMap[catNum] || `Categoria ${catNum}`) : "Sem Categoria";
       if (!sectorMap[cat]) sectorMap[cat] = { count: 0, valor: 0 };
       sectorMap[cat].count += 1;
       sectorMap[cat].valor += parseValor(e.valor);
