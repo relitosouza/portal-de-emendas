@@ -164,7 +164,7 @@ export default function Home() {
               <div className="lg:col-span-7">
                 <div className="flex items-center gap-2 mb-4 opacity-80">
                   <span className="material-symbols-outlined text-xl">account_balance_wallet</span>
-                  <span className="text-xs font-bold uppercase tracking-[0.2em]">Orçamento Aprovado 2026</span>
+                  <span className="text-xs font-bold uppercase tracking-[0.2em]">Emendas aprovadas</span>
                 </div>
                 <h2 className="text-4xl md:text-5xl font-extrabold mb-8">R$ 27.081.713,01</h2>
                 <div className="flex flex-wrap gap-3">
