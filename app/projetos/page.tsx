@@ -190,10 +190,10 @@ function ProjectsContent() {
         const matchesStatus = selectedStatus ? project.status === selectedStatus : true;
         const matchesFiltro = !filtroParam || (
             filtroParam === "reservado" ? project.hasReservado :
-            filtroParam === "empenhado" ? project.hasEmpenhado :
-            filtroParam === "liquidado" ? project.hasLiquidado :
-            filtroParam === "pago" ? project.hasPago :
-            true
+                filtroParam === "empenhado" ? project.hasEmpenhado :
+                    filtroParam === "liquidado" ? project.hasLiquidado :
+                        filtroParam === "pago" ? project.hasPago :
+                            true
         );
         return matchesSearch && matchesSector && matchesStatus && matchesFiltro;
     });
@@ -276,35 +276,35 @@ function ProjectsContent() {
                                 </Link>
                             </div>
                         )}
-                        {/* Sector Filter */}
-                        {["Saúde", "Educação", "Infraestrutura"].map((sector) => (
-                            <button
-                                key={sector}
-                                onClick={() => setSelectedSector(selectedSector === sector ? null : sector)}
-                                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-colors ${
-                                    selectedSector === sector
-                                        ? "bg-blue-500 text-white border-blue-500"
-                                        : "bg-slate-50 border-slate-100 hover:bg-slate-100"
-                                }`}
+                        {/* Agrupamento Setorial */}
+                        <div className="flex items-center gap-2">
+                            <select
+                                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px] cursor-pointer"
+                                value={selectedSector || ""}
+                                onChange={(e) => setSelectedSector(e.target.value || null)}
                             >
-                                <span>Tipo: {sector}</span>
-                            </button>
-                        ))}
+                                <option value="">Todos os Setores</option>
+                                <option value="Saúde">🏥 Saúde</option>
+                                <option value="Educação">📚 Educação</option>
+                                <option value="Infraestrutura">🚧 Infraestrutura</option>
+                                <option value="Segurança">🚓 Segurança</option>
+                                <option value="Cultura">🎭 Cultura</option>
+                            </select>
+                        </div>
 
-                        {/* Status Filter */}
-                        {["Pago", "Em Execução", "Aguardando"].map((status) => (
-                            <button
-                                key={status}
-                                onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}
-                                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-colors ${
-                                    selectedStatus === status
-                                        ? "bg-blue-500 text-white border-blue-500"
-                                        : "bg-slate-50 border-slate-100 hover:bg-slate-100"
-                                }`}
+                        {/* Agrupamento de Status */}
+                        <div className="flex items-center gap-2">
+                            <select
+                                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px] cursor-pointer"
+                                value={selectedStatus || ""}
+                                onChange={(e) => setSelectedStatus(e.target.value || null)}
                             >
-                                <span>Status: {status}</span>
-                            </button>
-                        ))}
+                                <option value="">Todos os Status</option>
+                                <option value="Aguardando">⏳ Aguardando</option>
+                                <option value="Em Execução">⚙️ Em Execução</option>
+                                <option value="Pago">✅ Pago</option>
+                            </select>
+                        </div>
 
                         <div className="w-px h-8 bg-slate-200 mx-1"></div>
 
@@ -439,11 +439,10 @@ function ProjectsContent() {
                                     <button
                                         key={pageNum}
                                         onClick={() => setCurrentPage(pageNum)}
-                                        className={`size-10 rounded-lg font-bold transition-colors ${
-                                            currentPage === pageNum
+                                        className={`size-10 rounded-lg font-bold transition-colors ${currentPage === pageNum
                                                 ? "bg-blue-500 text-white"
                                                 : "border border-slate-200 hover:bg-white"
-                                        }`}
+                                            }`}
                                     >
                                         {pageNum}
                                     </button>
