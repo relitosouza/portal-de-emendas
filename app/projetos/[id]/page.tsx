@@ -89,6 +89,7 @@ export default async function ProjetoDetalhePage(props: Props) {
     };
 
     const valorTotal = parseCurrency(amendment.valorAutorizado || amendment.valor);
+    const reservado = parseCurrency(amendment.reservado);
     const empenhado = parseCurrency(amendment.empenhado);
     const liquidado = parseCurrency(amendment.liquidado);
     const pago = parseCurrency(amendment.pago);
@@ -193,22 +194,20 @@ export default async function ProjetoDetalhePage(props: Props) {
                                             </div>
                                         ) : (
                                             <div
-                                                className={`size-8 rounded-full flex items-center justify-center mb-3 ring-4 ring-white transition-transform hover:scale-110 ${
-                                                    isCompleted
+                                                className={`size-8 rounded-full flex items-center justify-center mb-3 ring-4 ring-white transition-transform hover:scale-110 ${isCompleted
                                                         ? "bg-blue-500 text-white"
                                                         : isFuture || (isCancelled && currentStep !== 7)
                                                             ? "bg-slate-200 text-slate-400"
                                                             : currentStep === 7 && isCancelled
                                                                 ? "bg-red-500 text-white"
                                                                 : "bg-slate-500 text-white"
-                                                }`}
+                                                    }`}
                                             >
                                                 <span className="material-symbols-outlined text-sm font-bold">{step.icon}</span>
                                             </div>
                                         )}
-                                        <span className={`text-[11px] font-bold text-center leading-tight ${
-                                            isCurrent ? "text-emerald-600 font-black" : "text-slate-900"
-                                        }`}>
+                                        <span className={`text-[11px] font-bold text-center leading-tight ${isCurrent ? "text-emerald-600 font-black" : "text-slate-900"
+                                            }`}>
                                             {step.label}
                                         </span>
                                     </div>
@@ -252,18 +251,41 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 {/* Vertical line */}
                                 <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100"></div>
 
+                                {/* Reservado */}
+                                <div className="relative flex items-center gap-6">
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${reservado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                        }`}>
+                                        <span className="material-symbols-outlined text-sm font-bold">
+                                            {reservado > 0 ? "check" : "more_horiz"}
+                                        </span>
+                                    </div>
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${reservado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                        } transition-colors`}>
+                                        <div>
+                                            <p className={`font-bold ${reservado > 0 ? "text-slate-900" : "text-slate-400"}`}>Reservado</p>
+                                            <p className={`text-sm ${reservado > 0 ? "text-slate-500" : "text-slate-400"}`}>Previsão inicial de destinação</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className={`font-bold ${reservado > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                                {reservado > 0 ? formatCurrency(reservado) : "R$ 0,00"}
+                                            </p>
+                                            <p className="text-xs text-slate-400">
+                                                {reservado > 0 ? "Confirmado" : "Em processamento"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {/* Empenhado */}
                                 <div className="relative flex items-center gap-6">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${
-                                        empenhado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                    }`}>
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${empenhado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                        }`}>
                                         <span className="material-symbols-outlined text-sm font-bold">
                                             {empenhado > 0 ? "check" : "more_horiz"}
                                         </span>
                                     </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${
-                                        empenhado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
-                                    } transition-colors`}>
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${empenhado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                        } transition-colors`}>
                                         <div>
                                             <p className={`font-bold ${empenhado > 0 ? "text-slate-900" : "text-slate-400"}`}>Empenhado</p>
                                             <p className={`text-sm ${empenhado > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso reservado para o projeto</p>
@@ -281,16 +303,14 @@ export default async function ProjetoDetalhePage(props: Props) {
 
                                 {/* Liquidado */}
                                 <div className="relative flex items-center gap-6">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${
-                                        liquidado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                    }`}>
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${liquidado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                        }`}>
                                         <span className="material-symbols-outlined text-sm font-bold">
                                             {liquidado > 0 ? "check" : "more_horiz"}
                                         </span>
                                     </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${
-                                        liquidado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
-                                    } transition-colors`}>
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${liquidado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                        } transition-colors`}>
                                         <div>
                                             <p className={`font-bold ${liquidado > 0 ? "text-slate-900" : "text-slate-400"}`}>Liquidado</p>
                                             <p className={`text-sm ${liquidado > 0 ? "text-slate-500" : "text-slate-400"}`}>Serviço/Produto entregue e verificado</p>
@@ -308,16 +328,14 @@ export default async function ProjetoDetalhePage(props: Props) {
 
                                 {/* Pago */}
                                 <div className="relative flex items-center gap-6">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${
-                                        pago > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                    }`}>
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${pago > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                        }`}>
                                         <span className="material-symbols-outlined text-sm font-bold">
                                             {pago > 0 ? "check" : "more_horiz"}
                                         </span>
                                     </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${
-                                        pago > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
-                                    } transition-colors`}>
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${pago > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                        } transition-colors`}>
                                         <div>
                                             <p className={`font-bold ${pago > 0 ? "text-slate-900" : "text-slate-400"}`}>Pago</p>
                                             <p className={`text-sm ${pago > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso transferido ao fornecedor</p>

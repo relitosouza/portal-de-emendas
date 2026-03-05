@@ -37,6 +37,7 @@ export interface Amendment {
     percentualRcl: string;
     contaEspecifica: string;
     numeroConta?: string;
+    reservado?: string;
     empenhado?: string;
     liquidado?: string;
     pago?: string;
