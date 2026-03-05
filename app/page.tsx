@@ -393,6 +393,10 @@ export default function Home() {
                     const icon = icons[idx % icons.length];
                     const color = colors[idx % colors.length];
 
+                    let catNum = emenda.categoria;
+                    if (typeof catNum === "string" && catNum.includes(" - ")) catNum = catNum.split(" - ")[0].trim();
+                    const setor = catNum ? (categoryMap[String(catNum)] || null) : null;
+
                     return (
                       <Link
                         key={emenda.id || idx}
@@ -409,12 +413,20 @@ export default function Home() {
                               Novo
                             </span>
                           </div>
-                          <div className="flex items-center gap-4 text-xs text-slate-500 font-medium">
+                          <div className="flex items-center gap-3 flex-wrap text-xs text-slate-500 font-medium">
                             <span className="flex items-center gap-1">
                               <span className="material-symbols-outlined text-[14px]">person</span> {autor}
                             </span>
                             <span className="text-slate-300">&bull;</span>
                             <span className="font-bold text-slate-700">{valorFormatado}</span>
+                            {setor && (
+                              <>
+                                <span className="text-slate-300">&bull;</span>
+                                <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase rounded-md tracking-wider">
+                                  {setor}
+                                </span>
+                              </>
+                            )}
                           </div>
                         </div>
                         <div className="hidden sm:block text-right">

@@ -336,11 +336,16 @@ function ProjectsContent() {
                             return (
                                 <Link href={`/projetos/${project.id}`} key={project.id}>
                                     <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-xl transition-all group h-full flex flex-col">
-                                        {/* Status Badge */}
+                                        {/* Status + Sector Badges */}
                                         <div className="flex justify-between items-start mb-6">
-                                            <span className={`px-3 py-1 ${style.bg} rounded-full text-xs font-bold uppercase tracking-wider`}>
-                                                {project.status}
-                                            </span>
+                                            <div className="flex flex-wrap gap-2">
+                                                <span className={`px-3 py-1 ${style.bg} rounded-full text-xs font-bold uppercase tracking-wider`}>
+                                                    {project.status}
+                                                </span>
+                                                <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold uppercase tracking-wider">
+                                                    {project.sector}
+                                                </span>
+                                            </div>
                                             <button
                                                 className="text-slate-300 group-hover:text-blue-500 transition-colors"
                                                 onClick={(e) => e.preventDefault()}
