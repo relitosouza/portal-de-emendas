@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import VLibras from "@/components/shared/vlibras";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
         className={`${plusJakarta.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         {children}
+        <VLibras />
       </body>
     </html>
   );
