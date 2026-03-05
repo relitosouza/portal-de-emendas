@@ -30,10 +30,10 @@ export default function Home() {
     return isNaN(num) ? 0 : num;
   };
 
-  const totalEmendas = amendments.reduce((acc, e) => acc + parseValor(e.valor), 0);
-  const porcentagemDestinado = VALOR_DESTINADO > 0 ? (totalEmendas / VALOR_DESTINADO) * 100 : 0;
-  const porcentagemFormatada = porcentagemDestinado.toFixed(1);
-  const totalFormatado = totalEmendas.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const totalEmpenhado = amendments.reduce((acc, e) => acc + parseValor(e.empenhado), 0);
+  const porcentagemEmpenhada = VALOR_DESTINADO > 0 ? (totalEmpenhado / VALOR_DESTINADO) * 100 : 0;
+  const porcentagemFormatada = porcentagemEmpenhada.toFixed(1);
+  const totalFormatado = totalEmpenhado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchTerm.trim()) {
@@ -184,7 +184,7 @@ export default function Home() {
                     </svg>
                     <div style={{ position: "absolute", display: "flex", flexDirection: "column", alignItems: "center" }}>
                       <span style={{ fontSize: "24px", fontWeight: "bold", color: "#ffffff" }}>{loading ? "--" : porcentagemFormatada}%</span>
-                      <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "#93c5fd" }}>utilizado</span>
+                      <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "#93c5fd" }}>empenhado</span>
                     </div>
                   </div>
 
@@ -192,7 +192,7 @@ export default function Home() {
                   <div className="hidden md:flex" style={{ flexDirection: "column", gap: "8px" }}>
                     <div>
                       <div style={{ display: "flex", justifyContent: "space-between", gap: "16px", marginBottom: "4px" }}>
-                        <span style={{ fontSize: "12px", color: "#93c5fd" }}>Cadastrado</span>
+                        <span style={{ fontSize: "12px", color: "#93c5fd" }}>Empenhado</span>
                         <span style={{ fontFamily: "monospace", fontSize: "12px", fontWeight: "bold", color: "#ffffff" }}>{loading ? "--" : porcentagemFormatada}%</span>
                       </div>
                       <div style={{ height: "8px", width: "160px", borderRadius: "9999px", background: "rgba(255,255,255,0.15)", overflow: "hidden" }}>
