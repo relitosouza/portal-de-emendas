@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/shared/navbar";
 import { useCountUp } from "@/hooks/useCountUp";
+import { getSectorColor } from "@/lib/sector-colors";
 
 export default function Home() {
   const router = useRouter();
@@ -113,7 +114,7 @@ export default function Home() {
 
   // Group amendments by sector
   const getSectorData = () => {
-    const sectorMap: Record<string, { count: number, valor: number }> = {};
+    const sectorMap: Record<string, { count: number, valor: number, catNum: string }> = {};
     amendments.forEach((e: any) => {
       let catNum = e.categoria;
       // Handle cases where categoria might come as "10 - Saúde" or just "10"
@@ -121,8 +122,8 @@ export default function Home() {
         catNum = catNum.split(" - ")[0].trim();
       }
 
-      const cat = catNum ? (categoryMap[catNum] || `Categoria ${catNum}`) : "Sem Categoria";
-      if (!sectorMap[cat]) sectorMap[cat] = { count: 0, valor: 0 };
+      const cat = catNum ? (categoryMap[String(catNum)] || `Categoria ${catNum}`) : "Sem Categoria";
+      if (!sectorMap[cat]) sectorMap[cat] = { count: 0, valor: 0, catNum: String(catNum || "") };
       sectorMap[cat].count += 1;
       sectorMap[cat].valor += parseValor(e.valor);
     });
@@ -389,13 +390,12 @@ export default function Home() {
                     const valor = parseValor(emenda.valor);
                     const valorFormatado = valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
                     const icons = ["folder_open", "description", "folder_managed"];
-                    const colors = ["blue", "teal", "blue"];
                     const icon = icons[idx % icons.length];
-                    const color = colors[idx % colors.length];
 
                     let catNum = emenda.categoria;
                     if (typeof catNum === "string" && catNum.includes(" - ")) catNum = catNum.split(" - ")[0].trim();
                     const setor = catNum ? (categoryMap[String(catNum)] || null) : null;
+                    const sc = getSectorColor(catNum ? String(catNum) : null);
 
                     return (
                       <Link
@@ -403,7 +403,7 @@ export default function Home() {
                         href={`/projetos/${emenda.id}`}
                         className={`bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-6 transition-all duration-300 group hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-[0_10px_25px_-5px_rgba(59,130,246,0.1)]`}
                       >
-                        <div className={`w-14 h-14 rounded-2xl bg-${color}-50 text-${color}-600 flex items-center justify-center shrink-0 group-hover:bg-${color}-600 group-hover:text-white transition-colors`}>
+                        <div className={`w-14 h-14 rounded-2xl ${sc.iconBg} ${sc.iconText} flex items-center justify-center shrink-0 ${sc.iconHoverBg} ${sc.iconHoverText} transition-colors`}>
                           <span className="material-symbols-outlined text-2xl">{icon}</span>
                         </div>
                         <div className="flex-1 min-w-0">
@@ -422,7 +422,7 @@ export default function Home() {
                             {setor && (
                               <>
                                 <span className="text-slate-300">&bull;</span>
-                                <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase rounded-md tracking-wider">
+                                <span className={`px-2 py-0.5 ${sc.badgeBg} ${sc.badgeText} text-[10px] font-bold uppercase rounded-md tracking-wider`}>
                                   {setor}
                                 </span>
                               </>
@@ -503,9 +503,8 @@ export default function Home() {
                 ) : sectorData.length === 0 ? (
                   <div className="p-6 text-center text-slate-400">Nenhum setor encontrado.</div>
                 ) : (
-                  sectorData.map((sector, idx) => {
-                    const colors = ["bg-indigo-500", "bg-emerald-500", "bg-amber-500", "bg-rose-500", "bg-cyan-500"];
-                    const colorClass = colors[idx % colors.length];
+                  sectorData.map((sector) => {
+                    const sc = getSectorColor(sector.catNum);
                     const maxValor = sectorData[0].valor;
                     const widthPercent = Math.max((sector.valor / maxValor) * 100, 5);
                     const valorFormatado = sector.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -513,12 +512,12 @@ export default function Home() {
                     return (
                       <div key={sector.name} className="p-4 hover:bg-slate-50 transition-colors">
                         <div className="flex justify-between items-end mb-2">
-                          <span className="text-xs font-bold text-slate-700 truncate pr-2" title={sector.name}>{sector.name}</span>
+                          <span className={`text-xs font-bold truncate pr-2 ${sc.badgeText}`} title={sector.name}>{sector.name}</span>
                           <span className="text-[10px] font-bold text-slate-500 text-right shrink-0">{sector.count} emendas<br />{valorFormatado}</span>
                         </div>
                         <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                           <div
-                            className={`h-full ${colorClass} rounded-full`}
+                            className={`h-full ${sc.bar} rounded-full`}
                             style={{ width: `${widthPercent}%` }}
                           />
                         </div>

@@ -5,6 +5,7 @@ import { useState, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Amendment } from "@/lib/store";
 import Navbar from "@/components/shared/navbar";
+import { getSectorColor } from "@/lib/sector-colors";
 
 interface Project {
     id: string;
@@ -23,6 +24,7 @@ interface Project {
     hasEmpenhado?: boolean;
     hasLiquidado?: boolean;
     hasPago?: boolean;
+    categoriaNum?: string;
 }
 
 const VEREADORES_PHOTOS: Record<string, string> = {
@@ -122,6 +124,10 @@ function ProjectsContent() {
                 }
 
                 const mappedProjects: Project[] = amendments.map(a => {
+                    let rawCat = (a as any).categoria;
+                    if (typeof rawCat === "string" && rawCat.includes(" - ")) rawCat = rawCat.split(" - ")[0].trim();
+                    const categoriaNum = rawCat ? String(rawCat) : undefined;
+
                     const text = ((a.orgaoBeneficiario || a.responsible || "") + (a.objeto || a.title || "") + (a.finalidade || a.description || "")).toLowerCase();
                     let sector = "Infraestrutura";
                     if (text.includes("saude") || text.includes("saúde") || text.includes("hospital") || text.includes("ubs")) sector = "Saúde";
@@ -155,6 +161,7 @@ function ProjectsContent() {
                         hasEmpenhado: parseFinanceiro(a.empenhado) > 0,
                         hasLiquidado: parseFinanceiro(a.liquidado) > 0,
                         hasPago: parseFinanceiro(a.pago) > 0,
+                        categoriaNum,
                     };
                 });
 
@@ -332,6 +339,7 @@ function ProjectsContent() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {paginatedProjects.map((project) => {
                             const style = getStatusStyle(project.status);
+                            const sc = getSectorColor(project.categoriaNum);
 
                             return (
                                 <Link href={`/projetos/${project.id}`} key={project.id}>
@@ -342,7 +350,7 @@ function ProjectsContent() {
                                                 <span className={`px-3 py-1 ${style.bg} rounded-full text-xs font-bold uppercase tracking-wider`}>
                                                     {project.status}
                                                 </span>
-                                                <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold uppercase tracking-wider">
+                                                <span className={`px-3 py-1 ${sc.badgeBg} ${sc.badgeText} rounded-full text-xs font-bold uppercase tracking-wider`}>
                                                     {project.sector}
                                                 </span>
                                             </div>
