@@ -339,9 +339,10 @@ export default function Home() {
                   <div className="p-6 text-center text-slate-400">Nenhum autor encontrado.</div>
                 ) : (
                   authorRanking.map((author) => (
-                    <div
+                    <Link
+                      href={`/projetos?search=${encodeURIComponent(author.name)}`}
                       key={author.name}
-                      className="p-4 flex items-center justify-between group hover:bg-slate-50 transition-colors cursor-pointer"
+                      className="p-4 flex items-center justify-between group hover:bg-slate-50 transition-colors cursor-pointer block"
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs">
@@ -352,7 +353,7 @@ export default function Home() {
                       <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-[10px] font-bold shadow-lg shadow-blue-500/20">
                         {String(author.count).padStart(2, "0")}
                       </div>
-                    </div>
+                    </Link>
                   ))
                 )}
               </div>
