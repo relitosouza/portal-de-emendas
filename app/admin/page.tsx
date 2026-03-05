@@ -2,30 +2,59 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod/v4";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2, Eye, EyeOff } from "lucide-react";
+
+const loginSchema = z.object({
+    email: z
+        .string()
+        .nonempty("O e-mail é obrigatório.")
+        .email("Informe um e-mail válido."),
+    password: z
+        .string()
+        .nonempty("A senha é obrigatória.")
+        .min(6, "A senha deve ter no mínimo 6 caracteres."),
+});
+
+type LoginForm = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-    const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [loginError, setLoginError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<LoginForm>({
+        resolver: zodResolver(loginSchema),
+        mode: "onTouched",
+    });
+
+    const onSubmit = async (data: LoginForm) => {
         setLoading(true);
-        setError("");
+        setLoginError("");
 
-        // Simulate login delay
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        try {
+            const res = await fetch("/api/auth", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
 
-        // Simple validation (accept any email/password for MVP or specific ones)
-        if (email && password) {
-            // Success
-            window.location.href = "/admin/dashboard";
-        } else {
-            setError("Preencha todos os campos.");
+            const result = await res.json();
+
+            if (res.ok) {
+                window.location.href = "/admin/dashboard";
+            } else {
+                setLoginError(result.error || "E-mail ou senha incorretos.");
+                setLoading(false);
+            }
+        } catch {
+            setLoginError("Erro ao conectar com o servidor.");
             setLoading(false);
         }
     };
@@ -46,29 +75,62 @@ export default function LoginPage() {
                     <p className="text-sm text-slate-500">Acesse o painel administrativo</p>
                 </div>
 
-                <form onSubmit={handleLogin} className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div>
-                        <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">E-mail</label>
+                        <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">
+                            E-mail
+                        </label>
                         <input
                             type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 transition-all"
+                            {...register("email")}
+                            aria-invalid={!!errors.email}
+                            className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition-all ${
+                                errors.email
+                                    ? "border-red-400 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                                    : "border-slate-200 bg-slate-50 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20"
+                            }`}
                             placeholder="seu@email.com"
                         />
-                    </div>
-                    <div>
-                        <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">Senha</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 transition-all"
-                            placeholder="••••••••"
-                        />
+                        {errors.email && (
+                            <p className="mt-1 text-xs text-red-500 font-medium">{errors.email.message}</p>
+                        )}
                     </div>
 
-                    {error && <p className="text-xs text-red-500 font-bold">{error}</p>}
+                    <div>
+                        <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">
+                            Senha
+                        </label>
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                {...register("password")}
+                                aria-invalid={!!errors.password}
+                                className={`w-full rounded-lg border px-4 py-2.5 pr-10 text-sm outline-none transition-all ${
+                                    errors.password
+                                        ? "border-red-400 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                                        : "border-slate-200 bg-slate-50 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20"
+                                }`}
+                                placeholder="••••••••"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                                tabIndex={-1}
+                            >
+                                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                            </button>
+                        </div>
+                        {errors.password && (
+                            <p className="mt-1 text-xs text-red-500 font-medium">{errors.password.message}</p>
+                        )}
+                    </div>
+
+                    {loginError && (
+                        <div className="rounded-lg bg-red-50 border border-red-200 p-3">
+                            <p className="text-xs text-red-600 font-bold">{loginError}</p>
+                        </div>
+                    )}
 
                     <button
                         type="submit"
