@@ -60,6 +60,21 @@ export default function Home() {
       .slice(0, 5);
   };
 
+  // Group amendments by sector
+  const getSectorData = () => {
+    const sectorMap: Record<string, { count: number, valor: number }> = {};
+    amendments.forEach((e: any) => {
+      const cat = e.categoria || "Sem Categoria";
+      if (!sectorMap[cat]) sectorMap[cat] = { count: 0, valor: 0 };
+      sectorMap[cat].count += 1;
+      sectorMap[cat].valor += parseValor(e.valor);
+    });
+    return Object.entries(sectorMap)
+      .map(([name, data]) => ({ name, ...data }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -78,6 +93,7 @@ export default function Home() {
   }, []);
 
   const authorRanking = getAuthorRanking();
+  const sectorData = getSectorData();
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -309,14 +325,53 @@ export default function Home() {
             </div>
 
             {/* Sector Card */}
-            <div className="bg-white rounded-[16px] p-6 border border-dashed border-slate-200 text-center">
-              <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-3">
-                <span className="material-symbols-outlined text-slate-300">pie_chart</span>
+            <div className="bg-white rounded-[16px] border border-slate-100 shadow-sm overflow-hidden mt-6">
+              <div className="p-4 border-b border-slate-50 flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500">
+                  <span className="material-symbols-outlined text-sm">pie_chart</span>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-800">Investimento por Setor</h3>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
+                    {loading ? "Carregando dados..." : `${amendments.filter(a => a.categoria && a.categoria !== "Sem Categoria").length} categorizadas`}
+                  </p>
+                </div>
               </div>
-              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Investimento por Setor</p>
-              <p className="text-xs text-slate-500 mt-1">
-                {loading ? "Carregando dados estatísticos..." : `${amendments.length} emendas categorizadas`}
-              </p>
+              <div className="divide-y divide-slate-50">
+                {loading ? (
+                  <div className="p-6 text-center text-slate-400">Carregando...</div>
+                ) : sectorData.length === 0 ? (
+                  <div className="p-6 text-center text-slate-400">Nenhum setor encontrado.</div>
+                ) : (
+                  sectorData.map((sector, idx) => {
+                    const colors = ["bg-indigo-500", "bg-emerald-500", "bg-amber-500", "bg-rose-500", "bg-cyan-500"];
+                    const colorClass = colors[idx % colors.length];
+                    const maxCount = sectorData[0].count;
+                    const widthPercent = Math.max((sector.count / maxCount) * 100, 5);
+                    const valorFormatado = sector.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+                    return (
+                      <div key={sector.name} className="p-4 hover:bg-slate-50 transition-colors">
+                        <div className="flex justify-between items-end mb-2">
+                          <span className="text-xs font-bold text-slate-700 truncate pr-2" title={sector.name}>{sector.name}</span>
+                          <span className="text-[10px] font-bold text-slate-500 text-right shrink-0">{sector.count} emendas<br />{valorFormatado}</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full ${colorClass} rounded-full`}
+                            style={{ width: `${widthPercent}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+              <div className="p-4 bg-slate-50 text-center">
+                <Link href="/projetos" className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest hover:underline">
+                  Ver análise completa
+                </Link>
+              </div>
             </div>
           </div>
         </div>
