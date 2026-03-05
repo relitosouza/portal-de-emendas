@@ -110,7 +110,7 @@ export default function Home() {
     });
     return Object.entries(sectorMap)
       .map(([name, data]) => ({ name, ...data }))
-      .sort((a, b) => b.count - a.count)
+      .sort((a, b) => b.valor - a.valor)
       .slice(0, 5);
   };
 
@@ -385,8 +385,8 @@ export default function Home() {
                   sectorData.map((sector, idx) => {
                     const colors = ["bg-indigo-500", "bg-emerald-500", "bg-amber-500", "bg-rose-500", "bg-cyan-500"];
                     const colorClass = colors[idx % colors.length];
-                    const maxCount = sectorData[0].count;
-                    const widthPercent = Math.max((sector.count / maxCount) * 100, 5);
+                    const maxValor = sectorData[0].valor;
+                    const widthPercent = Math.max((sector.valor / maxValor) * 100, 5);
                     const valorFormatado = sector.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
                     return (
