@@ -2,6 +2,7 @@ import { getAmendmentsFromSheet } from "@/lib/google-sheets";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/shared/navbar";
+import ShareCard from "@/components/projects/share-card";
 
 export const revalidate = 60;
 
@@ -412,10 +413,16 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 <span className="material-symbols-outlined text-xl">description</span>
                                 Baixar Documentos
                             </button>
-                            <button className="w-full flex items-center justify-center gap-2 border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold py-3 px-6 rounded-xl transition-all text-sm active:scale-95">
-                                <span className="material-symbols-outlined text-xl">share</span>
-                                Compartilhar
-                            </button>
+                            <ShareCard
+                                title={amendment.objeto || amendment.title || "Sem Título"}
+                                autor={autor}
+                                autorPhoto={autorPhoto}
+                                autorInitials={autorInitials}
+                                valor={valorTotal > 0 ? formatCurrency(valorTotal) : "Não informado"}
+                                status={amendment.status as string}
+                                statusLabel={statusInfo.label}
+                                id={amendment.id}
+                            />
                         </div>
 
                         {/* Transparency Badge */}
