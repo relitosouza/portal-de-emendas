@@ -42,10 +42,10 @@ export default function Home() {
   const porcentagemPagaFormatada = porcentagemPaga.toFixed(1);
 
 
-  // Comprometido = empenhado percentage for the circle
-  const comprometido = Math.min(Number(porcentagemFormatada), 100);
+  // Pago percentage for the circle
+  const pagoPct = Math.min(Number(porcentagemPagaFormatada), 100);
   const circumference = 2 * Math.PI * 42; // r=42
-  const strokeDashoffset = circumference - (comprometido / 100) * circumference;
+  const strokeDashoffset = circumference - (pagoPct / 100) * circumference;
 
   // Animated counters (2s ease-out)
   const animatedValor = useCountUp(loading ? 0 : totalValor, 2000);
@@ -237,8 +237,8 @@ export default function Home() {
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-2xl font-black">{loading ? "--" : `${porcentagemFormatada}%`}</span>
-                    <span className="text-[10px] font-bold uppercase opacity-80">Comprometido</span>
+                    <span className="text-2xl font-black">{loading ? "--" : `${porcentagemPagaFormatada}%`}</span>
+                    <span className="text-[10px] font-bold uppercase opacity-80">Pago</span>
                   </div>
                 </div>
               </div>
@@ -301,7 +301,7 @@ export default function Home() {
                     <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-blue-500 rounded-full transition-all duration-1000"
-                        style={{ width: loading ? "0%" : `${comprometido}%` }}
+                        style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemFormatada), 100)}%` }}
                       />
                     </div>
                   </div>
