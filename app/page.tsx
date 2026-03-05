@@ -11,8 +11,6 @@ export default function Home() {
   const [amendments, setAmendments] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const totalValor = amendments.reduce((acc: number, e: any) => acc + parseValor(e.valor), 0);
-
   const parseValor = (v: any): number => {
     if (!v) return 0;
     if (typeof v === "number") return v;
@@ -29,6 +27,7 @@ export default function Home() {
   const totalEmpenhado = amendments.reduce((acc, e) => acc + parseValor(e.empenhado), 0);
   const totalLiquidado = amendments.reduce((acc, e) => acc + parseValor(e.liquidado), 0);
   const totalPago = amendments.reduce((acc, e) => acc + parseValor(e.pago), 0);
+  const totalValor = amendments.reduce((acc: number, e: any) => acc + parseValor(e.valor), 0);
 
   const porcentagemEmpenhada = totalValor > 0 ? (totalEmpenhado / totalValor) * 100 : 0;
   const porcentagemFormatada = porcentagemEmpenhada.toFixed(1);
