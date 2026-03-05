@@ -11,7 +11,7 @@ export default function Home() {
   const [amendments, setAmendments] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const VALOR_DESTINADO = 27_081_713.01;
+  const totalValor = amendments.reduce((acc: number, e: any) => acc + parseValor(e.valor), 0);
 
   const parseValor = (v: any): number => {
     if (!v) return 0;
@@ -30,13 +30,13 @@ export default function Home() {
   const totalLiquidado = amendments.reduce((acc, e) => acc + parseValor(e.liquidado), 0);
   const totalPago = amendments.reduce((acc, e) => acc + parseValor(e.pago), 0);
 
-  const porcentagemEmpenhada = VALOR_DESTINADO > 0 ? (totalEmpenhado / VALOR_DESTINADO) * 100 : 0;
+  const porcentagemEmpenhada = totalValor > 0 ? (totalEmpenhado / totalValor) * 100 : 0;
   const porcentagemFormatada = porcentagemEmpenhada.toFixed(1);
-  const porcentagemReservada = VALOR_DESTINADO > 0 ? (totalReservado / VALOR_DESTINADO) * 100 : 0;
+  const porcentagemReservada = totalValor > 0 ? (totalReservado / totalValor) * 100 : 0;
   const porcentagemReservadaFormatada = porcentagemReservada.toFixed(1);
-  const porcentagemLiquidada = VALOR_DESTINADO > 0 ? (totalLiquidado / VALOR_DESTINADO) * 100 : 0;
+  const porcentagemLiquidada = totalValor > 0 ? (totalLiquidado / totalValor) * 100 : 0;
   const porcentagemLiquidadaFormatada = porcentagemLiquidada.toFixed(1);
-  const porcentagemPaga = VALOR_DESTINADO > 0 ? (totalPago / VALOR_DESTINADO) * 100 : 0;
+  const porcentagemPaga = totalValor > 0 ? (totalPago / totalValor) * 100 : 0;
   const porcentagemPagaFormatada = porcentagemPaga.toFixed(1);
 
   const totalReservadoFormatado = totalReservado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -184,7 +184,9 @@ export default function Home() {
                   <span className="material-symbols-outlined text-xl">account_balance_wallet</span>
                   <span className="text-xs font-bold uppercase tracking-[0.2em]">Emendas aprovadas</span>
                 </div>
-                <h2 className="text-4xl md:text-5xl font-extrabold mb-8">R$ 27.081.713,01</h2>
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-8">
+                  {loading ? "Carregando..." : totalValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                </h2>
                 <div className="flex flex-wrap gap-3">
                   <div className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl flex items-center gap-2 border border-white/10">
                     <span className="material-symbols-outlined text-sm">description</span>
