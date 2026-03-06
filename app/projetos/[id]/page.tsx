@@ -452,7 +452,8 @@ export default async function ProjetoDetalhePage(props: Props) {
                             </div>
                         </div>
 
-                        {/* Action Buttons */}
+                        {/* Action Buttons (Temporarily Hidden) */}
+                        {/* 
                         <div className="flex flex-col gap-3">
                             <button className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:scale-95">
                                 <span className="material-symbols-outlined text-xl">notifications_active</span>
@@ -472,7 +473,8 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 statusLabel={statusInfo.label}
                                 id={amendment.id}
                             />
-                        </div>
+                        </div> 
+                        */}
 
                         {/* Transparency Badge */}
                         <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
