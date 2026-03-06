@@ -234,9 +234,6 @@ export default async function ProjetoDetalhePage(props: Props) {
                                         ID: {amendment.numeroEmenda || amendment.id.slice(0, 8)} &bull; {amendment.tipoEmenda || "Emenda Individual"}
                                     </span>
                                 </div>
-                                <h1 className="text-3xl font-extrabold leading-tight tracking-tight">
-                                    {amendment.objeto || amendment.title || "Sem Título"}
-                                </h1>
                             </div>
                             <div className="flex flex-col gap-6">
                                 <div className="flex flex-col gap-2">
