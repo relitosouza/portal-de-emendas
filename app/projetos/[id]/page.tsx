@@ -238,11 +238,19 @@ export default async function ProjetoDetalhePage(props: Props) {
                                     {amendment.objeto || amendment.title || "Sem Título"}
                                 </h1>
                             </div>
-                            <div className="flex flex-col gap-4">
-                                <h2 className="text-xl font-bold">Descrição do Projeto</h2>
-                                <p className="text-slate-600 text-base leading-relaxed">
-                                    {amendment.finalidade || amendment.description || "Sem descrição disponível para esta emenda."}
-                                </p>
+                            <div className="flex flex-col gap-6">
+                                <div className="flex flex-col gap-2">
+                                    <h2 className="text-xl font-bold">Objetivo da Emenda</h2>
+                                    <p className="text-slate-600 text-base leading-relaxed">
+                                        {amendment.objeto || amendment.title || "Sem objetivo disponível para esta emenda."}
+                                    </p>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <h2 className="text-xl font-bold">Finalidade</h2>
+                                    <p className="text-slate-600 text-base leading-relaxed">
+                                        {amendment.finalidade || amendment.description || "Sem finalidade disponível para esta emenda."}
+                                    </p>
+                                </div>
                             </div>
                         </section>
 
