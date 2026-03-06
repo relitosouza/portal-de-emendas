@@ -464,8 +464,7 @@ export default async function ProjetoDetalhePage(props: Props) {
                         <p className="text-sm font-medium">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</p>
                     </div>
                     <div className="flex gap-6">
-                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Privacidade</a>
-                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Dados Abertos</a>
+                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="https://transparencia.osasco.sp.gov.br/#/dados_abertos" target="_blank" rel="noopener noreferrer">Dados Abertos</a>
                         <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Contato</a>
                     </div>
                 </div>

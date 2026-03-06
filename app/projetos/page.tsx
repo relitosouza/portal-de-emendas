@@ -503,7 +503,7 @@ function ProjectsContent() {
                         <span className="font-bold text-slate-400">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</span>
                     </div>
                     <div className="flex gap-8">
-                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Privacidade</a>
+                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="https://transparencia.osasco.sp.gov.br/#/dados_abertos" target="_blank" rel="noopener noreferrer">Dados Abertos</a>
                         <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Transparência</a>
                         <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Contato</a>
                     </div>
