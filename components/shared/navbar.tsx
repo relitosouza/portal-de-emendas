@@ -63,6 +63,7 @@ export default function Navbar() {
                     <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 border border-slate-200 rounded-full">
                         <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
                         <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Sistema Online</span>
+                        <span className="text-[11px] font-black uppercase tracking-wider text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">Beta Teste</span>
                     </div>
 
                     {/* Mobile hamburger */}
