@@ -66,13 +66,12 @@ export default function ShareCard({
             });
         } catch (err) {
             console.error("html2canvas error:", err);
-            // Fallback: try again with allowTaint (won't export cleanly but won't crash)
+            // Fallback that might ignore some external content but won't crash
             try {
                 const canvas = await html2canvas(cardRef.current!, {
                     scale: 2,
                     backgroundColor: "#0f172a",
-                    useCORS: false,
-                    allowTaint: true,
+                    useCORS: true,
                     logging: false,
                 });
                 return new Promise((resolve) => {
@@ -84,7 +83,8 @@ export default function ShareCard({
                         "image/png",
                     );
                 });
-            } catch {
+            } catch (fallbackErr) {
+                console.error("Fallback html2canvas error:", fallbackErr);
                 setGenerating(false);
                 showFeedback("Erro ao gerar imagem");
                 return null;
@@ -229,12 +229,10 @@ export default function ShareCard({
                             {/* Header */}
                             <div className="flex items-center justify-between mb-8">
                                 <div className="flex items-center gap-3">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src="/brasao-osasco.png"
                                         alt="Brasão"
                                         className="w-10 h-10 object-contain drop-shadow-lg"
-                                        crossOrigin="anonymous"
                                     />
                                     <div>
                                         <p className="text-white text-sm font-bold leading-tight">Portal das Emendas</p>
@@ -249,13 +247,15 @@ export default function ShareCard({
                             {/* Author section */}
                             <div className="flex flex-col items-center text-center mb-6">
                                 {autorPhoto ? (
-                                    /* eslint-disable-next-line @next/next/no-img-element */
-                                    <img
-                                        src={autorPhoto}
-                                        alt={autor}
-                                        className="size-24 rounded-full object-cover border-4 border-white/20 shadow-xl mb-4"
-                                        crossOrigin="anonymous"
-                                    />
+                                    <div className="relative size-24 mb-4">
+                                        <div className="absolute inset-0 rounded-full bg-white/10 animate-pulse"></div>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                            src={`/api/proxy-image?url=${encodeURIComponent(autorPhoto || "")}`}
+                                            alt={autor}
+                                            className="relative z-10 size-24 rounded-full object-cover border-4 border-white/20 shadow-xl"
+                                        />
+                                    </div>
                                 ) : (
                                     <div className="size-24 rounded-full bg-white/10 border-4 border-white/20 flex items-center justify-center text-white font-bold text-2xl mb-4">
                                         {autorInitials}
