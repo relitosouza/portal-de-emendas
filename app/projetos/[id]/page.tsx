@@ -153,9 +153,9 @@ export default async function ProjetoDetalhePage(props: Props) {
                     <span className="text-slate-900 text-sm font-semibold">Detalhes da Emenda</span>
                 </div>
 
-                {/* Informações da Emenda Card */}
+                {/* Detalhamento da Emenda Card */}
                 <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100">
-                    <h2 className="text-lg font-bold mb-6">Informações da Emenda</h2>
+                    <h2 className="text-lg font-bold mb-6">Detalhamento da Emenda</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div>
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Âmbito</p>
@@ -170,11 +170,28 @@ export default async function ProjetoDetalhePage(props: Props) {
                             <p className="text-sm font-medium text-slate-900">{amendment.fundamentoLegal || "Não informado"}</p>
                         </div>
                         <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Função / Subfunção LOA</p>
-                            <p className="text-sm font-medium text-slate-900">
-                                {amendment.funcao || "Não informado"}
-                                {amendment.subfuncao ? ` / ${amendment.subfuncao}` : ""}
-                            </p>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Função</p>
+                            <p className="text-sm font-medium text-slate-900">{amendment.funcao || "Não informado"}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Subfunção</p>
+                            <p className="text-sm font-medium text-slate-900">{amendment.subfuncao || "Não informado"}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Destinação</p>
+                            <p className="text-sm font-medium text-slate-900">{amendment.destinacao || "Não informado"}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Número Conta</p>
+                            <p className="text-sm font-medium text-slate-900">{amendment.numeroConta || "Não informado"}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cód. de Aplicação</p>
+                            <p className="text-sm font-medium text-slate-900">{amendment.codigoAplicacao || "Não informado"}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cód. Aplicação Variável</p>
+                            <p className="text-sm font-medium text-slate-900">{amendment.codigoAplicacaoVariavel || "Não informado"}</p>
                         </div>
                     </div>
                 </section>
