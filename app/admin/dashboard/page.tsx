@@ -95,6 +95,7 @@ export default function DashboardPage() {
             "Contratação": { label: "Contratação", color: "pink", icon: "gavel" },
             "Execução": { label: "Execução", color: "amber", icon: "engineering" },
             "Executada": { label: "Executada", color: "emerald", icon: "check_circle" },
+            "Prestação de Contas": { label: "Prestação de Contas", color: "teal", icon: "receipt_long" },
             "Cancelada": { label: "Cancelada", color: "red", icon: "cancel" },
         };
         return map[status] || { label: status || "—", color: "slate", icon: "help" };

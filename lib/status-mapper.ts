@@ -1,6 +1,7 @@
 export function getNormalizedStatus(rawStatus: string | null | undefined): string {
     const s = String(rawStatus || "").toLowerCase().trim();
 
+    if (s.includes("prestação de contas") || s.includes("prestacao de contas") || s.includes("prestação") || s.includes("prestacao")) return "Prestação de Contas";
     if (s.includes("executada") || s.includes("concluido") || s.includes("pago")) return "Executada";
     if (s.includes("execução") || s.includes("execucao") || s.includes("andamento")) return "Execução";
     if (s.includes("contratação") || s.includes("contratacao") || s.includes("aprovado")) return "Contratação";
@@ -22,7 +23,8 @@ export function getStatusStep(status: string): number {
         case "Contratação": return 4;
         case "Execução": return 5;
         case "Executada": return 6;
-        case "Cancelada": return 7;
+        case "Prestação de Contas": return 7;
+        case "Cancelada": return 8;
         default: return 0;
     }
 }

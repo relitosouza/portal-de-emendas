@@ -109,6 +109,7 @@ export default async function ProjetoDetalhePage(props: Props) {
         { label: "Contratação", icon: "check" },
         { label: "Execução", icon: "sync" },
         { label: "Executada", icon: "done_all" },
+        { label: "Prestação de Contas", icon: "receipt_long" },
         { label: "Cancelada", icon: "block" },
     ];
 
@@ -129,7 +130,8 @@ export default async function ProjetoDetalhePage(props: Props) {
     const getStatusLabel = () => {
         if (currentStep === 6) return { label: "Executada", color: "bg-blue-50 border-blue-100 text-blue-600" };
         if (currentStep === 5) return { label: "Execução", color: "bg-emerald-50 border-emerald-100 text-emerald-600" };
-        if (currentStep === 7) return { label: "Cancelada", color: "bg-red-50 border-red-100 text-red-600" };
+        if (currentStep === 7) return { label: "Prestação de Contas", color: "bg-teal-50 border-teal-100 text-teal-600" };
+        if (currentStep === 8) return { label: "Cancelada", color: "bg-red-50 border-red-100 text-red-600" };
         if (currentStep === 4) return { label: "Contratação", color: "bg-blue-50 border-blue-100 text-blue-600" };
         if (currentStep === 3) return { label: "Viabilização", color: "bg-purple-50 border-purple-100 text-purple-600" };
         if (currentStep === 2) return { label: "Elaboração", color: "bg-indigo-50 border-indigo-100 text-indigo-600" };

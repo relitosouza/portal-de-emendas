@@ -700,6 +700,7 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                                                                 <option value="Contratação">Contratação</option>
                                                                 <option value="Execução">Execução</option>
                                                                 <option value="Executada">Executada</option>
+                                                                <option value="Prestação de Contas">Prestação de Contas</option>
                                                                 <option value="Cancelada">Cancelada</option>
                                                             </select>
                                                             <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>

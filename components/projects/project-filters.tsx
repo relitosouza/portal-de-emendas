@@ -54,6 +54,7 @@ export function ProjectFilters({
                     <SelectItem value="Contratação">Contratação</SelectItem>
                     <SelectItem value="Execução">Execução</SelectItem>
                     <SelectItem value="Executada">Executada</SelectItem>
+                    <SelectItem value="Prestação de Contas">Prestação de Contas</SelectItem>
                     <SelectItem value="Cancelada">Cancelada</SelectItem>
                 </SelectContent>
             </Select>

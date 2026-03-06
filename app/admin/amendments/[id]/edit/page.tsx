@@ -429,6 +429,7 @@ export default function EditAmendmentPage({ params }: PageProps) {
                                     <option value="Contratação">Contratação</option>
                                     <option value="Execução">Execução</option>
                                     <option value="Executada">Executada</option>
+                                    <option value="Prestação de Contas">Prestação de Contas</option>
                                     <option value="Cancelada">Cancelada</option>
                                 </select>
                             </div>
@@ -454,6 +455,7 @@ export default function EditAmendmentPage({ params }: PageProps) {
                                     { label: "Contratação", value: "Contratação", color: "pink" },
                                     { label: "Execução", value: "Execução", color: "amber" },
                                     { label: "Executada", value: "Executada", color: "emerald" },
+                                    { label: "Prestação de Contas", value: "Prestação de Contas", color: "teal" },
                                     { label: "Cancelada", value: "Cancelada", color: "red" },
                                 ].map((s) => (
                                     <div

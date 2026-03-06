@@ -147,6 +147,7 @@ function ProjectsContent() {
                         "Contratação": 50,
                         "Execução": 75,
                         "Executada": 100,
+                        "Prestação de Contas": 100,
                         "Cancelada": 0
                     };
 
@@ -224,6 +225,8 @@ function ProjectsContent() {
 
     const getStatusStyle = (status: string) => {
         switch (status) {
+            case "Prestação de Contas":
+                return { bg: "bg-teal-100 text-teal-700", bar: "bg-teal-500" };
             case "Executada":
                 return { bg: "bg-blue-100 text-blue-700", bar: "bg-blue-500" };
             case "Execução":
@@ -328,6 +331,7 @@ function ProjectsContent() {
                                 <option value="Contratação">Contratação</option>
                                 <option value="Execução">Execução</option>
                                 <option value="Executada">Executada</option>
+                                <option value="Prestação de Contas">Prestação de Contas</option>
                                 <option value="Cancelada">Cancelada</option>
                             </select>
                         </div>
