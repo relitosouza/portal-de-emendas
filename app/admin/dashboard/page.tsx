@@ -117,8 +117,9 @@ export default function DashboardPage() {
         const autorMatch = (a.autor || a.author || a.responsavelNome || "").toLowerCase().includes(term);
         const statusMatch = getNormalizedStatus(a.status as string).toLowerCase().includes(term);
         const locMatch = (a.localidadeBeneficiada || a.address || "").toLowerCase().includes(term);
+        const numMatch = (a.numeroEmenda || "").toLowerCase().includes(term);
 
-        return titleMatch || autorMatch || statusMatch || locMatch;
+        return titleMatch || autorMatch || statusMatch || locMatch || numMatch;
     });
 
     // Quick nav cards
@@ -259,7 +260,7 @@ export default function DashboardPage() {
                                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
                                 <input
                                     type="text"
-                                    placeholder="Buscar por título, autor, local ou status..."
+                                    placeholder="Buscar por número, título, autor ou local..."
                                     className="w-full rounded-xl border border-slate-200 bg-white py-2 pl-10 pr-4 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}

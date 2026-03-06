@@ -153,48 +153,7 @@ export default async function ProjetoDetalhePage(props: Props) {
                     <span className="text-slate-900 text-sm font-semibold">Detalhes da Emenda</span>
                 </div>
 
-                {/* Detalhamento da Emenda Card */}
-                <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100">
-                    <h2 className="text-lg font-bold mb-6">Detalhamento da Emenda</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Âmbito</p>
-                            <p className="text-sm font-medium text-slate-900">{amendment.ambito || "Não informado"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Tipo de Emenda</p>
-                            <p className="text-sm font-medium text-slate-900">{amendment.tipoEmenda || "Não informado"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Fundamento Legal</p>
-                            <p className="text-sm font-medium text-slate-900">{amendment.fundamentoLegal || "Não informado"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Função</p>
-                            <p className="text-sm font-medium text-slate-900">{amendment.funcao || "Não informado"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Subfunção</p>
-                            <p className="text-sm font-medium text-slate-900">{amendment.subfuncao || "Não informado"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Destinação</p>
-                            <p className="text-sm font-medium text-slate-900">{amendment.destinacao || "Não informado"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Número Conta</p>
-                            <p className="text-sm font-medium text-slate-900">{amendment.numeroConta || "Não informado"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cód. de Aplicação</p>
-                            <p className="text-sm font-medium text-slate-900">{amendment.codigoAplicacao || "Não informado"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cód. Aplicação Variável</p>
-                            <p className="text-sm font-medium text-slate-900">{amendment.codigoAplicacaoVariavel || "Não informado"}</p>
-                        </div>
-                    </div>
-                </section>
+
 
                 {/* Status Tracker */}
                 <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100">
@@ -435,22 +394,10 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 </div>
                             </div>
                             <div className="space-y-3 pt-4 border-t border-slate-50">
-                                {amendment.orgaoBeneficiario && (
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-500">Órgão:</span>
-                                        <span className="font-medium text-slate-900 text-right max-w-[60%]">{amendment.orgaoBeneficiario}</span>
-                                    </div>
-                                )}
                                 {amendment.localidadeBeneficiada && (
                                     <div className="flex justify-between text-sm">
                                         <span className="text-slate-500">Local:</span>
                                         <span className="font-medium text-slate-900 text-right max-w-[60%]">{amendment.localidadeBeneficiada}</span>
-                                    </div>
-                                )}
-                                {amendment.fornecedor && (
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-500">Fornecedor:</span>
-                                        <span className="font-medium text-slate-900 text-right max-w-[60%]">{amendment.fornecedor}</span>
                                     </div>
                                 )}
                                 {amendment.numeroLicitacao && (
@@ -459,6 +406,49 @@ export default async function ProjetoDetalhePage(props: Props) {
                                         <span className="font-mono font-medium text-slate-900">{amendment.numeroLicitacao}</span>
                                     </div>
                                 )}
+                            </div>
+                        </div>
+
+                        {/* Detalhamento da Emenda Card */}
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                            <h2 className="text-base font-bold mb-5">Detalhamento da Emenda</h2>
+                            <div className="space-y-4">
+                                <div>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Âmbito</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.ambito || "Não informado"}</p>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Tipo de Emenda</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.tipoEmenda || "Não informado"}</p>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Fundamento Legal</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.fundamentoLegal || "Não informado"}</p>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Função</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.funcao || "Não informado"}</p>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Subfunção</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.subfuncao || "Não informado"}</p>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Destinação</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.destinacao || "Não informado"}</p>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Número Conta</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.numeroConta || "Não informado"}</p>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cód. de Aplicação</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.codigoAplicacao || "Não informado"}</p>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cód. Aplicação Variável</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.codigoAplicacaoVariavel || "Não informado"}</p>
+                                </div>
                             </div>
                         </div>
 

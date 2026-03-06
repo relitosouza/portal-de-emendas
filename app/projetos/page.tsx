@@ -10,6 +10,7 @@ import { getNormalizedStatus } from "@/lib/status-mapper";
 
 interface Project {
     id: string;
+    numeroEmenda?: string;
     title: string;
     status: string;
     sector: string;
@@ -155,6 +156,7 @@ function ProjectsContent() {
 
                     return {
                         id: a.id,
+                        numeroEmenda: a.numeroEmenda,
                         title: a.objeto || a.title || "Sem título",
                         status,
                         sector,
@@ -190,6 +192,7 @@ function ProjectsContent() {
         const term = searchTerm.toLowerCase();
         const matchesSearch =
             !term ||
+            (project.numeroEmenda || "").toLowerCase().includes(term) ||
             project.title.toLowerCase().includes(term) ||
             project.description.toLowerCase().includes(term) ||
             (project.responsible || "").toLowerCase().includes(term) ||
@@ -276,7 +279,7 @@ function ProjectsContent() {
                             <span className="material-symbols-outlined text-slate-400 mr-3">search</span>
                             <input
                                 className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm w-full"
-                                placeholder="Buscar por título, autor ou palavra-chave..."
+                                placeholder="Buscar por número, título ou autor..."
                                 type="text"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
