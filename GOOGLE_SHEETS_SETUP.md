@@ -46,7 +46,7 @@ Para que o sistema funcione corretamente, a primeira linha da sua planilha deve 
 13. Número Emenda
 14. Objeto
 15. Finalidade
-16. Programa Vinculado
+16. Função
 17. Destinação
 18. Órgão Beneficiário
 19. Localidade Beneficiada
@@ -63,9 +63,15 @@ Para que o sistema funcione corretamente, a primeira linha da sua planilha deve 
 30. Link Portal
 31. Monitoramento Check
 32. Status
+33. Prioridade
 34. Latitude
 35. Longitude
 36. Categoria
+37. Fornecedor
+38. Número Licitação
+39. Código de Aplicação
+40. Código Aplicação Variável
+41. Subfunção
 
 ## 5. Aba de Categorias (NOVO)
 Crie uma **nova aba** (página) na mesma planilha com o nome: `Categorias`.

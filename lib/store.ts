@@ -21,7 +21,8 @@ export interface Amendment {
     finalidade: string;
 
     // Detalhamento
-    programaVinculado: string;
+    funcao: string;
+    subfuncao: string;
     destinacao: string;
     orgaoBeneficiario: string;
     localidadeBeneficiada: string;

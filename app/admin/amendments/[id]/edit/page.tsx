@@ -214,23 +214,41 @@ export default function EditAmendmentPage({ params }: PageProps) {
                     <div className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label className={labelClass}>Programa Vinculado</label>
-                                <input className={inputClass} value={formData.programaVinculado || ""} onChange={(e) => handleChange("programaVinculado", e.target.value)} placeholder="Nome do programa" />
+                                <label className={labelClass}>Função</label>
+                                <input className={inputClass} value={formData.funcao || ""} onChange={(e) => handleChange("funcao", e.target.value)} placeholder="Informe a função" />
                             </div>
                             <div>
-                                <label className={labelClass}>Destinação</label>
-                                <input className={inputClass} value={formData.destinacao || ""} onChange={(e) => handleChange("destinacao", e.target.value)} placeholder="Destinação do recurso" />
+                                <label className={labelClass}>Subfunção</label>
+                                <input className={inputClass} value={formData.subfuncao || ""} onChange={(e) => handleChange("subfuncao", e.target.value)} placeholder="Informe a subfunção" />
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
+                                <label className={labelClass}>Código de Aplicação</label>
+                                <input className={inputClass} value={formData.codigoAplicacao || ""} onChange={(e) => handleChange("codigoAplicacao", e.target.value)} placeholder="Válidos: 800; 801; 802; 803; 804; 900; 901; 902 e 904" />
+                            </div>
+                            <div>
+                                <label className={labelClass}>Cód. Aplicação Variável</label>
+                                <select className={selectClass} value={formData.codigoAplicacaoVariavel || ""} onChange={(e) => handleChange("codigoAplicacaoVariavel", e.target.value)}>
+                                    <option value="">Selecione</option>
+                                    <option value="001">001</option>
+                                    <option value="002">002</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label className={labelClass}>Destinação</label>
+                                <input className={inputClass} value={formData.destinacao || ""} onChange={(e) => handleChange("destinacao", e.target.value)} placeholder="Destinação do recurso" />
+                            </div>
+                            <div>
                                 <label className={labelClass}>Órgão Beneficiário</label>
                                 <input className={inputClass} value={formData.orgaoBeneficiario || ""} onChange={(e) => handleChange("orgaoBeneficiario", e.target.value)} placeholder="Órgão que recebe" />
                             </div>
-                            <div>
-                                <label className={labelClass}>Localidade Beneficiada</label>
-                                <input className={inputClass} value={formData.localidadeBeneficiada || ""} onChange={(e) => handleChange("localidadeBeneficiada", e.target.value)} placeholder="Bairro, região" />
-                            </div>
+                        </div>
+                        <div>
+                            <label className={labelClass}>Localidade Beneficiada</label>
+                            <input className={inputClass} value={formData.localidadeBeneficiada || ""} onChange={(e) => handleChange("localidadeBeneficiada", e.target.value)} placeholder="Bairro, região" />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>

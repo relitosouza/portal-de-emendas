@@ -83,7 +83,7 @@ function mapAmendmentToRow(amendment: any): any[] {
         amendment.numeroEmenda,
         amendment.objeto,
         amendment.finalidade,
-        amendment.programaVinculado,
+        amendment.funcao,
         amendment.destinacao,
         amendment.orgaoBeneficiario,
         amendment.localidadeBeneficiada,
@@ -108,6 +108,7 @@ function mapAmendmentToRow(amendment: any): any[] {
         amendment.numeroLicitacao, // 37
         amendment.codigoAplicacao, // 38
         amendment.codigoAplicacaoVariavel, // 39
+        amendment.subfuncao, // 40
     ];
 }
 
@@ -178,7 +179,7 @@ export async function appendAmendmentToSheet(amendment: any) {
 
     const response = await sheets.spreadsheets.values.append({
         spreadsheetId,
-        range: `${sheetName}!A:AN`, // Expanded range to AN (approx 38 cols)
+        range: `${sheetName}!A:AO`, // Expanded range to AO (approx 40 cols)
         valueInputOption: "USER_ENTERED",
         requestBody: {
             values: [row],
@@ -289,7 +290,7 @@ export async function updateAmendmentInSheet(id: string, amendment: any) {
 
     await sheets.spreadsheets.values.update({
         spreadsheetId,
-        range: `${sheetName}!A${rowIndex + 1}:AN${rowIndex + 1}`, // Expanded range
+        range: `${sheetName}!A${rowIndex + 1}:AO${rowIndex + 1}`, // Expanded range
         valueInputOption: "USER_ENTERED",
         requestBody: {
             values: [row],
@@ -319,7 +320,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
     // Fetch Main Data
     const response = await sheets.spreadsheets.values.get({
         spreadsheetId,
-        range: `${sheetName}!A:AN`, // Expanded range
+        range: `${sheetName}!A:AO`, // Expanded range
     });
 
     // Fetch Emendas (Vereador) Data
@@ -373,7 +374,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
             numeroEmenda: row[12],
             objeto: row[13],
             finalidade: row[14],
-            programaVinculado: row[15],
+            funcao: row[15],
             destinacao: row[16],
             orgaoBeneficiario: row[17],
             localidadeBeneficiada: row[18],
@@ -398,6 +399,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
             numeroLicitacao: row[37],
             codigoAplicacao: row[38],
             codigoAplicacaoVariavel: row[39],
+            subfuncao: row[40],
 
             // Financial Data (Merged)
             empenhado: financial ? financial[1] : undefined,
@@ -434,7 +436,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
             numeroEmenda: row[6] || "",
             objeto: row[7] || "",
             finalidade: row[8] || "",
-            programaVinculado: "",
+            funcao: "",
             destinacao: row[9] || "",
             orgaoBeneficiario: "",
             localidadeBeneficiada: row[10] || "",
@@ -459,6 +461,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
             numeroLicitacao: "",
             codigoAplicacao: "",
             codigoAplicacaoVariavel: "",
+            subfuncao: "",
 
             // Financial Data (Merged)
             empenhado: financial ? financial[1] : undefined,

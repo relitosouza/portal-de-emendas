@@ -43,7 +43,10 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
         finalidade: initialData?.finalidade || "",
 
         // Detalhamento
-        programaVinculado: initialData?.programaVinculado || "",
+        funcao: initialData?.funcao || "",
+        subfuncao: initialData?.subfuncao || "",
+        codigoAplicacao: initialData?.codigoAplicacao || "",
+        codigoAplicacaoVariavel: initialData?.codigoAplicacaoVariavel || "",
         destinacao: initialData?.destinacao || "",
         orgaoBeneficiario: initialData?.orgaoBeneficiario || "",
         localidadeBeneficiada: initialData?.localidadeBeneficiada || "",
@@ -175,21 +178,19 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                                     key={step.label}
                                     onClick={() => !isDisabled && setCurrentStep(index)}
                                     disabled={isDisabled}
-                                    className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all ${
-                                        isCurrent
-                                            ? "bg-blue-50 text-blue-700"
-                                            : isCompleted
+                                    className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all ${isCurrent
+                                        ? "bg-blue-50 text-blue-700"
+                                        : isCompleted
                                             ? "text-slate-600 hover:bg-slate-50 cursor-pointer"
                                             : "text-slate-300 cursor-not-allowed"
-                                    }`}
+                                        }`}
                                 >
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all ${
-                                        isCurrent
-                                            ? "bg-blue-500 text-white shadow-sm shadow-blue-500/30"
-                                            : isCompleted
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all ${isCurrent
+                                        ? "bg-blue-500 text-white shadow-sm shadow-blue-500/30"
+                                        : isCompleted
                                             ? "bg-emerald-50 text-emerald-600"
                                             : "bg-slate-100 text-slate-300"
-                                    }`}>
+                                        }`}>
                                         {isCompleted ? (
                                             <span className="material-symbols-outlined text-[16px]">check</span>
                                         ) : (
@@ -235,547 +236,568 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                         </div>
                     </div>
 
-            {/* Form Card */}
-            <div className="bg-white rounded-xl overflow-hidden border border-gray-100" style={{ boxShadow: "0 10px 25px -5px rgba(0,0,0,0.04), 0 8px 10px -6px rgba(0,0,0,0.04)" }}>
-                {/* Card Header */}
-                <div className="p-10 border-b border-gray-50 bg-gray-50/30">
-                    <h2 className="font-bold text-3xl text-[#1A1A1A] tracking-tight">
-                        {isEditing ? "Editar Emenda" : "Cadastro de Emenda"}
-                    </h2>
-                    <p className="text-gray-500 mt-2 max-w-2xl">
-                        {stepDescriptions[currentStep]}
-                    </p>
-                </div>
+                    {/* Form Card */}
+                    <div className="bg-white rounded-xl overflow-hidden border border-gray-100" style={{ boxShadow: "0 10px 25px -5px rgba(0,0,0,0.04), 0 8px 10px -6px rgba(0,0,0,0.04)" }}>
+                        {/* Card Header */}
+                        <div className="p-10 border-b border-gray-50 bg-gray-50/30">
+                            <h2 className="font-bold text-3xl text-[#1A1A1A] tracking-tight">
+                                {isEditing ? "Editar Emenda" : "Cadastro de Emenda"}
+                            </h2>
+                            <p className="text-gray-500 mt-2 max-w-2xl">
+                                {stepDescriptions[currentStep]}
+                            </p>
+                        </div>
 
-                {/* Card Body */}
-                <div className="p-10">
-                    <form className="space-y-12" onSubmit={(e) => e.preventDefault()}>
-                        {/* ===== STEP 1: IDENTIFICAÇÃO ===== */}
-                        {currentStep === 0 && (
-                            <>
-                                {/* Section: Responsabilidade */}
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Responsabilidade</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Defina o autor e cargo do responsável pela proposição.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Nome do Responsável</label>
-                                                <input
-                                                    className={inputClass}
-                                                    type="text"
-                                                    placeholder="Nome completo"
-                                                    value={formData.responsavelNome}
-                                                    onChange={(e) => handleChange("responsavelNome", e.target.value)}
-                                                />
+                        {/* Card Body */}
+                        <div className="p-10">
+                            <form className="space-y-12" onSubmit={(e) => e.preventDefault()}>
+                                {/* ===== STEP 1: IDENTIFICAÇÃO ===== */}
+                                {currentStep === 0 && (
+                                    <>
+                                        {/* Section: Responsabilidade */}
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Responsabilidade</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Defina o autor e cargo do responsável pela proposição.</p>
                                             </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Cargo</label>
-                                                <input
-                                                    className={inputClass}
-                                                    type="text"
-                                                    placeholder="Ex: Vereador, Deputado"
-                                                    value={formData.responsavelCargo}
-                                                    onChange={(e) => handleChange("responsavelCargo", e.target.value)}
-                                                />
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Nome do Responsável</label>
+                                                        <input
+                                                            className={inputClass}
+                                                            type="text"
+                                                            placeholder="Nome completo"
+                                                            value={formData.responsavelNome}
+                                                            onChange={(e) => handleChange("responsavelNome", e.target.value)}
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Cargo</label>
+                                                        <input
+                                                            className={inputClass}
+                                                            type="text"
+                                                            placeholder="Ex: Vereador, Deputado"
+                                                            value={formData.responsavelCargo}
+                                                            onChange={(e) => handleChange("responsavelCargo", e.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className={labelClass}>Município</label>
+                                                    <input
+                                                        className={inputClass}
+                                                        type="text"
+                                                        placeholder="Ex: Osasco"
+                                                        value={formData.municipio}
+                                                        onChange={(e) => handleChange("municipio", e.target.value)}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className={labelClass}>Município</label>
-                                            <input
-                                                className={inputClass}
-                                                type="text"
-                                                placeholder="Ex: Osasco"
-                                                value={formData.municipio}
-                                                onChange={(e) => handleChange("municipio", e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
 
+                                        <div className="h-[1px] bg-gray-100" />
+
+                                        {/* Section: Entidade Executora */}
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Entidade Executora</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Dados técnicos para rastreabilidade fiscal e auditoria.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>CNPJ da Entidade</label>
+                                                        <input
+                                                            className={`${inputClass} font-mono`}
+                                                            type="text"
+                                                            placeholder="00.000.000/0000-00"
+                                                            value={formData.cnpj}
+                                                            onChange={(e) => handleChange("cnpj", e.target.value)}
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Conformidade LOA 2026</label>
+                                                        <div className="relative">
+                                                            <select
+                                                                className={selectClass}
+                                                                value={formData.loa2026Check}
+                                                                onChange={(e) => handleChange("loa2026Check", e.target.value)}
+                                                            >
+                                                                <option value="">Selecione</option>
+                                                                <option value="Sim">Sim</option>
+                                                                <option value="Não">Não</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {/* ===== STEP 2: CLASSIFICAÇÃO ===== */}
+                                {currentStep === 1 && (
+                                    <>
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Tipologia</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Defina o âmbito, tipo e categoria da emenda parlamentar.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Âmbito</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.ambito} onChange={(e) => handleChange("ambito", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="Federal">Federal</option>
+                                                                <option value="Estadual">Estadual</option>
+                                                                <option value="Municipal">Municipal</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Tipo de Emenda</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.tipoEmenda} onChange={(e) => handleChange("tipoEmenda", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="Individual">Individual</option>
+                                                                <option value="Bancada">Bancada</option>
+                                                                <option value="Comissão">Comissão</option>
+                                                                <option value="Relator">Relator</option>
+                                                                <option value="Outro">Outro</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Categoria (Setor)</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.categoria} onChange={(e) => handleChange("categoria", e.target.value)}>
+                                                                <option value="">Selecione a categoria</option>
+                                                                <option value="Saúde">Saúde</option>
+                                                                <option value="Infraestrutura">Infraestrutura</option>
+                                                                <option value="Educação">Educação</option>
+                                                                <option value="Esporte e Lazer">Esporte e Lazer</option>
+                                                                <option value="Meio Ambiente">Meio Ambiente</option>
+                                                                <option value="Urbanismo">Urbanismo</option>
+                                                                <option value="Outro">Outro</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Autor da Emenda</label>
+                                                        <input className={inputClass} type="text" placeholder="Parlamentar proponente" value={formData.autor} onChange={(e) => handleChange("autor", e.target.value)} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="h-[1px] bg-gray-100" />
+
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Descrição</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Objeto, finalidade e fundamento legal da emenda.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Número da Emenda</label>
+                                                        <input className={`${inputClass} font-mono`} type="text" placeholder="Ex: EMD-2026/001" value={formData.numeroEmenda} onChange={(e) => handleChange("numeroEmenda", e.target.value)} />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Fundamento Legal</label>
+                                                        <input className={inputClass} type="text" placeholder="Artigo ou Lei" value={formData.fundamentoLegal} onChange={(e) => handleChange("fundamentoLegal", e.target.value)} />
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className={labelClass}>Objeto do Projeto</label>
+                                                    <textarea className={textareaClass} rows={3} placeholder="Ex: Reforma da Unidade Básica de Saúde Central..." value={formData.objeto} onChange={(e) => handleChange("objeto", e.target.value)} />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className={labelClass}>Finalidade</label>
+                                                    <textarea className={textareaClass} rows={2} placeholder="Descreva a finalidade da emenda..." value={formData.finalidade} onChange={(e) => handleChange("finalidade", e.target.value)} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {/* ===== STEP 3: DETALHAMENTO ===== */}
+                                {currentStep === 2 && (
+                                    <>
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Vinculação</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Programa, destinação e órgão beneficiário vinculados.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Função</label>
+                                                        <input className={inputClass} type="text" placeholder="Informe a função" value={formData.funcao} onChange={(e) => handleChange("funcao", e.target.value)} />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Subfunção</label>
+                                                        <input className={inputClass} type="text" placeholder="Informe a subfunção" value={formData.subfuncao} onChange={(e) => handleChange("subfuncao", e.target.value)} />
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Código de Aplicação</label>
+                                                        <input className={inputClass} type="text" placeholder="Válidos: 800; 801; 802; 803; 804; 900; 901; 902 e 904" value={formData.codigoAplicacao} onChange={(e) => handleChange("codigoAplicacao", e.target.value)} />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Cód. Aplicação Variável</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.codigoAplicacaoVariavel} onChange={(e) => handleChange("codigoAplicacaoVariavel", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="001">001</option>
+                                                                <option value="002">002</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Destinação</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.destinacao} onChange={(e) => handleChange("destinacao", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="Custeio">Custeio</option>
+                                                                <option value="Investimento">Investimento</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Órgão Beneficiário</label>
+                                                        <input className={inputClass} type="text" placeholder="Ex: Secretaria de Saúde" value={formData.orgaoBeneficiario} onChange={(e) => handleChange("orgaoBeneficiario", e.target.value)} />
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className={labelClass}>Localidade Beneficiada</label>
+                                                    <input className={inputClass} type="text" placeholder="Ex: Bairro Centro, Zona Norte" value={formData.localidadeBeneficiada} onChange={(e) => handleChange("localidadeBeneficiada", e.target.value)} />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="h-[1px] bg-gray-100" />
+
+                                        {/* Licitação */}
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Licitação & Fornecedor</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Dados do processo licitatório e empresa contratada.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Número de Licitação</label>
+                                                        <input
+                                                            className={`${inputClass} font-mono`}
+                                                            type="text"
+                                                            placeholder="Ex: PREGÃO 001/2026"
+                                                            value={formData.numeroLicitacao}
+                                                            onChange={(e) => handleChange("numeroLicitacao", e.target.value)}
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Fornecedor / Empresa</label>
+                                                        <input
+                                                            className={inputClass}
+                                                            type="text"
+                                                            placeholder="Razão social da contratada"
+                                                            value={formData.fornecedor}
+                                                            onChange={(e) => handleChange("fornecedor", e.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="h-[1px] bg-gray-100" />
+
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Instrumento & Localização</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Informações jurídicas e geolocalização da obra.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Instrumento Jurídico</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.instrumentoJuridico} onChange={(e) => handleChange("instrumentoJuridico", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="Convênio">Convênio</option>
+                                                                <option value="Contrato de Repasse">Contrato de Repasse</option>
+                                                                <option value="Termo de Fomento">Termo de Fomento</option>
+                                                                <option value="Transferência Especial">Transferência Especial</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Possui Cronograma</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.possuiCronograma} onChange={(e) => handleChange("possuiCronograma", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="Sim">Sim</option>
+                                                                <option value="Não">Não</option>
+                                                                <option value="N/A">N/A</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className={labelClass}>Localização no Mapa</label>
+                                                    <div className="rounded-xl overflow-hidden border border-gray-200">
+                                                        <MapPicker
+                                                            lat={formData.latitude}
+                                                            lng={formData.longitude}
+                                                            onChange={handleLocationChange}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {/* ===== STEP 4: FINANCEIRO ===== */}
+                                {currentStep === 3 && (
+                                    <>
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Valores</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Dados orçamentários e financeiros da emenda.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Valor da Emenda (R$)</label>
+                                                        <input className={`${inputClass} font-mono`} type="text" placeholder="0,00" value={formData.valor} onChange={(e) => handleChange("valor", e.target.value)} />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Valor Autorizado (R$)</label>
+                                                        <input className={`${inputClass} font-mono`} type="text" placeholder="0,00" value={formData.valorAutorizado} onChange={(e) => handleChange("valorAutorizado", e.target.value)} />
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Percentual RCL (%)</label>
+                                                        <input className={`${inputClass} font-mono`} type="text" placeholder="0,00%" value={formData.percentualRcl} onChange={(e) => handleChange("percentualRcl", e.target.value)} />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Prazo de Aplicação</label>
+                                                        <input className={inputClass} type="text" placeholder="Ex: 12 meses" value={formData.prazoAplicacao} onChange={(e) => handleChange("prazoAplicacao", e.target.value)} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="h-[1px] bg-gray-100" />
+
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Conta Bancária</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Dados da conta específica vinculada ao recurso.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Conta Específica</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.contaEspecifica} onChange={(e) => handleChange("contaEspecifica", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="Sim">Sim</option>
+                                                                <option value="Não">Não</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Número da Conta</label>
+                                                        <input className={`${inputClass} font-mono`} type="text" placeholder="0000-0" value={formData.numeroConta} onChange={(e) => handleChange("numeroConta", e.target.value)} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {/* ===== STEP 5: MONITORAMENTO ===== */}
+                                {currentStep === 4 && (
+                                    <>
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Transparência</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Informações sobre publicidade ativa e portal de transparência.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Portal de Transparência</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.portalTransparenciaCheck} onChange={(e) => handleChange("portalTransparenciaCheck", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="Sim">Sim</option>
+                                                                <option value="Não">Não</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Divulgação Tempo Real</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.divulgacaoTempoReal} onChange={(e) => handleChange("divulgacaoTempoReal", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="Sim">Sim</option>
+                                                                <option value="Não">Não</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className={labelClass}>Link do Portal</label>
+                                                    <input className={inputClass} type="url" placeholder="https://transparencia.exemplo.gov.br" value={formData.linkPortal} onChange={(e) => handleChange("linkPortal", e.target.value)} />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="h-[1px] bg-gray-100" />
+
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Controle</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Status, prioridade e monitoramento contínuo da emenda.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Monitoramento Ativo</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.monitoramentoCheck} onChange={(e) => handleChange("monitoramentoCheck", e.target.value)}>
+                                                                <option value="">Selecione</option>
+                                                                <option value="Sim">Sim</option>
+                                                                <option value="Não">Não</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Status</label>
+                                                        <div className="relative">
+                                                            <select className={selectClass} value={formData.status} onChange={(e) => handleChange("status", e.target.value)}>
+                                                                <option value="Não Iniciada">Não Iniciada</option>
+                                                                <option value="Em Análise">Em Análise</option>
+                                                                <option value="Elaboração">Elaboração</option>
+                                                                <option value="Viabilização">Viabilização</option>
+                                                                <option value="Contratação">Contratação</option>
+                                                                <option value="Execução">Execução</option>
+                                                                <option value="Executada">Executada</option>
+                                                                <option value="Cancelada">Cancelada</option>
+                                                            </select>
+                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className={labelClass}>Prioridade</label>
+                                                    <div className="relative">
+                                                        <select className={selectClass} value={formData.priority} onChange={(e) => handleChange("priority", e.target.value)}>
+                                                            <option value="alta">Alta</option>
+                                                            <option value="media">Média</option>
+                                                            <option value="baixa">Baixa</option>
+                                                        </select>
+                                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {/* Divider before footer */}
                                 <div className="h-[1px] bg-gray-100" />
 
-                                {/* Section: Entidade Executora */}
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Entidade Executora</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Dados técnicos para rastreabilidade fiscal e auditoria.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>CNPJ da Entidade</label>
-                                                <input
-                                                    className={`${inputClass} font-mono`}
-                                                    type="text"
-                                                    placeholder="00.000.000/0000-00"
-                                                    value={formData.cnpj}
-                                                    onChange={(e) => handleChange("cnpj", e.target.value)}
-                                                />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Conformidade LOA 2026</label>
-                                                <div className="relative">
-                                                    <select
-                                                        className={selectClass}
-                                                        value={formData.loa2026Check}
-                                                        onChange={(e) => handleChange("loa2026Check", e.target.value)}
-                                                    >
-                                                        <option value="">Selecione</option>
-                                                        <option value="Sim">Sim</option>
-                                                        <option value="Não">Não</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-
-                        {/* ===== STEP 2: CLASSIFICAÇÃO ===== */}
-                        {currentStep === 1 && (
-                            <>
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Tipologia</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Defina o âmbito, tipo e categoria da emenda parlamentar.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Âmbito</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.ambito} onChange={(e) => handleChange("ambito", e.target.value)}>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Federal">Federal</option>
-                                                        <option value="Estadual">Estadual</option>
-                                                        <option value="Municipal">Municipal</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Tipo de Emenda</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.tipoEmenda} onChange={(e) => handleChange("tipoEmenda", e.target.value)}>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Individual">Individual</option>
-                                                        <option value="Bancada">Bancada</option>
-                                                        <option value="Comissão">Comissão</option>
-                                                        <option value="Relator">Relator</option>
-                                                        <option value="Outro">Outro</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Categoria (Setor)</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.categoria} onChange={(e) => handleChange("categoria", e.target.value)}>
-                                                        <option value="">Selecione a categoria</option>
-                                                        <option value="Saúde">Saúde</option>
-                                                        <option value="Infraestrutura">Infraestrutura</option>
-                                                        <option value="Educação">Educação</option>
-                                                        <option value="Esporte e Lazer">Esporte e Lazer</option>
-                                                        <option value="Meio Ambiente">Meio Ambiente</option>
-                                                        <option value="Urbanismo">Urbanismo</option>
-                                                        <option value="Outro">Outro</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Autor da Emenda</label>
-                                                <input className={inputClass} type="text" placeholder="Parlamentar proponente" value={formData.autor} onChange={(e) => handleChange("autor", e.target.value)} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="h-[1px] bg-gray-100" />
-
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Descrição</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Objeto, finalidade e fundamento legal da emenda.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Número da Emenda</label>
-                                                <input className={`${inputClass} font-mono`} type="text" placeholder="Ex: EMD-2026/001" value={formData.numeroEmenda} onChange={(e) => handleChange("numeroEmenda", e.target.value)} />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Fundamento Legal</label>
-                                                <input className={inputClass} type="text" placeholder="Artigo ou Lei" value={formData.fundamentoLegal} onChange={(e) => handleChange("fundamentoLegal", e.target.value)} />
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className={labelClass}>Objeto do Projeto</label>
-                                            <textarea className={textareaClass} rows={3} placeholder="Ex: Reforma da Unidade Básica de Saúde Central..." value={formData.objeto} onChange={(e) => handleChange("objeto", e.target.value)} />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className={labelClass}>Finalidade</label>
-                                            <textarea className={textareaClass} rows={2} placeholder="Descreva a finalidade da emenda..." value={formData.finalidade} onChange={(e) => handleChange("finalidade", e.target.value)} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-
-                        {/* ===== STEP 3: DETALHAMENTO ===== */}
-                        {currentStep === 2 && (
-                            <>
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Vinculação</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Programa, destinação e órgão beneficiário vinculados.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Programa Vinculado (LOA 2026)</label>
-                                                <input className={inputClass} type="text" placeholder="Informe o programa" value={formData.programaVinculado} onChange={(e) => handleChange("programaVinculado", e.target.value)} />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Destinação</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.destinacao} onChange={(e) => handleChange("destinacao", e.target.value)}>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Custeio">Custeio</option>
-                                                        <option value="Investimento">Investimento</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Órgão Beneficiário</label>
-                                                <input className={inputClass} type="text" placeholder="Ex: Secretaria de Saúde" value={formData.orgaoBeneficiario} onChange={(e) => handleChange("orgaoBeneficiario", e.target.value)} />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Localidade Beneficiada</label>
-                                                <input className={inputClass} type="text" placeholder="Ex: Bairro Centro, Zona Norte" value={formData.localidadeBeneficiada} onChange={(e) => handleChange("localidadeBeneficiada", e.target.value)} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="h-[1px] bg-gray-100" />
-
-                                {/* Licitação */}
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Licitação & Fornecedor</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Dados do processo licitatório e empresa contratada.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Número de Licitação</label>
-                                                <input
-                                                    className={`${inputClass} font-mono`}
-                                                    type="text"
-                                                    placeholder="Ex: PREGÃO 001/2026"
-                                                    value={formData.numeroLicitacao}
-                                                    onChange={(e) => handleChange("numeroLicitacao", e.target.value)}
-                                                />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Fornecedor / Empresa</label>
-                                                <input
-                                                    className={inputClass}
-                                                    type="text"
-                                                    placeholder="Razão social da contratada"
-                                                    value={formData.fornecedor}
-                                                    onChange={(e) => handleChange("fornecedor", e.target.value)}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="h-[1px] bg-gray-100" />
-
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Instrumento & Localização</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Informações jurídicas e geolocalização da obra.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Instrumento Jurídico</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.instrumentoJuridico} onChange={(e) => handleChange("instrumentoJuridico", e.target.value)}>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Convênio">Convênio</option>
-                                                        <option value="Contrato de Repasse">Contrato de Repasse</option>
-                                                        <option value="Termo de Fomento">Termo de Fomento</option>
-                                                        <option value="Transferência Especial">Transferência Especial</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Possui Cronograma</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.possuiCronograma} onChange={(e) => handleChange("possuiCronograma", e.target.value)}>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Sim">Sim</option>
-                                                        <option value="Não">Não</option>
-                                                        <option value="N/A">N/A</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className={labelClass}>Localização no Mapa</label>
-                                            <div className="rounded-xl overflow-hidden border border-gray-200">
-                                                <MapPicker
-                                                    lat={formData.latitude}
-                                                    lng={formData.longitude}
-                                                    onChange={handleLocationChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-
-                        {/* ===== STEP 4: FINANCEIRO ===== */}
-                        {currentStep === 3 && (
-                            <>
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Valores</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Dados orçamentários e financeiros da emenda.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Valor da Emenda (R$)</label>
-                                                <input className={`${inputClass} font-mono`} type="text" placeholder="0,00" value={formData.valor} onChange={(e) => handleChange("valor", e.target.value)} />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Valor Autorizado (R$)</label>
-                                                <input className={`${inputClass} font-mono`} type="text" placeholder="0,00" value={formData.valorAutorizado} onChange={(e) => handleChange("valorAutorizado", e.target.value)} />
-                                            </div>
-                                        </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Percentual RCL (%)</label>
-                                                <input className={`${inputClass} font-mono`} type="text" placeholder="0,00%" value={formData.percentualRcl} onChange={(e) => handleChange("percentualRcl", e.target.value)} />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Prazo de Aplicação</label>
-                                                <input className={inputClass} type="text" placeholder="Ex: 12 meses" value={formData.prazoAplicacao} onChange={(e) => handleChange("prazoAplicacao", e.target.value)} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="h-[1px] bg-gray-100" />
-
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Conta Bancária</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Dados da conta específica vinculada ao recurso.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Conta Específica</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.contaEspecifica} onChange={(e) => handleChange("contaEspecifica", e.target.value)}>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Sim">Sim</option>
-                                                        <option value="Não">Não</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Número da Conta</label>
-                                                <input className={`${inputClass} font-mono`} type="text" placeholder="0000-0" value={formData.numeroConta} onChange={(e) => handleChange("numeroConta", e.target.value)} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-
-                        {/* ===== STEP 5: MONITORAMENTO ===== */}
-                        {currentStep === 4 && (
-                            <>
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Transparência</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Informações sobre publicidade ativa e portal de transparência.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Portal de Transparência</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.portalTransparenciaCheck} onChange={(e) => handleChange("portalTransparenciaCheck", e.target.value)}>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Sim">Sim</option>
-                                                        <option value="Não">Não</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Divulgação Tempo Real</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.divulgacaoTempoReal} onChange={(e) => handleChange("divulgacaoTempoReal", e.target.value)}>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Sim">Sim</option>
-                                                        <option value="Não">Não</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className={labelClass}>Link do Portal</label>
-                                            <input className={inputClass} type="url" placeholder="https://transparencia.exemplo.gov.br" value={formData.linkPortal} onChange={(e) => handleChange("linkPortal", e.target.value)} />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="h-[1px] bg-gray-100" />
-
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    <div className="md:col-span-4">
-                                        <h3 className="font-bold text-lg text-[#1A1A1A]">Controle</h3>
-                                        <p className="text-sm text-gray-500 mt-1">Status, prioridade e monitoramento contínuo da emenda.</p>
-                                    </div>
-                                    <div className="md:col-span-8 space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Monitoramento Ativo</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.monitoramentoCheck} onChange={(e) => handleChange("monitoramentoCheck", e.target.value)}>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Sim">Sim</option>
-                                                        <option value="Não">Não</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className={labelClass}>Status</label>
-                                                <div className="relative">
-                                                    <select className={selectClass} value={formData.status} onChange={(e) => handleChange("status", e.target.value)}>
-                                                        <option value="Não Iniciada">Não Iniciada</option>
-                                                        <option value="Em Análise">Em Análise</option>
-                                                        <option value="Elaboração">Elaboração</option>
-                                                        <option value="Viabilização">Viabilização</option>
-                                                        <option value="Contratação">Contratação</option>
-                                                        <option value="Execução">Execução</option>
-                                                        <option value="Executada">Executada</option>
-                                                        <option value="Cancelada">Cancelada</option>
-                                                    </select>
-                                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className={labelClass}>Prioridade</label>
-                                            <div className="relative">
-                                                <select className={selectClass} value={formData.priority} onChange={(e) => handleChange("priority", e.target.value)}>
-                                                    <option value="alta">Alta</option>
-                                                    <option value="media">Média</option>
-                                                    <option value="baixa">Baixa</option>
-                                                </select>
-                                                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-
-                        {/* Divider before footer */}
-                        <div className="h-[1px] bg-gray-100" />
-
-                        {/* Footer Buttons */}
-                        <div className="flex items-center justify-between pt-4">
-                            <button
-                                type="button"
-                                onClick={() => router.push("/admin/dashboard")}
-                                className="px-6 py-3 text-sm font-bold text-gray-400 hover:text-[#1A1A1A] transition-colors flex items-center gap-2"
-                            >
-                                <span className="material-symbols-outlined text-xl">close</span>
-                                CANCELAR
-                            </button>
-                            <div className="flex gap-4">
-                                {currentStep > 0 && (
+                                {/* Footer Buttons */}
+                                <div className="flex items-center justify-between pt-4">
                                     <button
                                         type="button"
-                                        onClick={handlePrevious}
-                                        className="px-8 py-3 bg-white border border-gray-200 text-[#1A1A1A] rounded-xl text-sm font-bold hover:bg-gray-50 transition-all flex items-center gap-2"
+                                        onClick={() => router.push("/admin/dashboard")}
+                                        className="px-6 py-3 text-sm font-bold text-gray-400 hover:text-[#1A1A1A] transition-colors flex items-center gap-2"
                                     >
-                                        <span className="material-symbols-outlined text-lg">arrow_back</span>
-                                        VOLTAR
+                                        <span className="material-symbols-outlined text-xl">close</span>
+                                        CANCELAR
                                     </button>
-                                )}
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    disabled={loading}
-                                    className="px-10 py-3 text-white rounded-xl text-sm font-bold shadow-lg shadow-black/10 flex items-center gap-3 transition-all disabled:opacity-50"
-                                    style={{ background: "linear-gradient(135deg, #1A1A1A 0%, #333333 100%)" }}
-                                >
-                                    {loading ? "SALVANDO..." : currentStep === steps.length - 1 ? "FINALIZAR CADASTRO" : "PRÓXIMO PASSO"}
-                                    {!loading && <span className="material-symbols-outlined text-lg">arrow_forward</span>}
-                                </button>
+                                    <div className="flex gap-4">
+                                        {currentStep > 0 && (
+                                            <button
+                                                type="button"
+                                                onClick={handlePrevious}
+                                                className="px-8 py-3 bg-white border border-gray-200 text-[#1A1A1A] rounded-xl text-sm font-bold hover:bg-gray-50 transition-all flex items-center gap-2"
+                                            >
+                                                <span className="material-symbols-outlined text-lg">arrow_back</span>
+                                                VOLTAR
+                                            </button>
+                                        )}
+                                        <button
+                                            type="button"
+                                            onClick={handleNext}
+                                            disabled={loading}
+                                            className="px-10 py-3 text-white rounded-xl text-sm font-bold shadow-lg shadow-black/10 flex items-center gap-3 transition-all disabled:opacity-50"
+                                            style={{ background: "linear-gradient(135deg, #1A1A1A 0%, #333333 100%)" }}
+                                        >
+                                            {loading ? "SALVANDO..." : currentStep === steps.length - 1 ? "FINALIZAR CADASTRO" : "PRÓXIMO PASSO"}
+                                            {!loading && <span className="material-symbols-outlined text-lg">arrow_forward</span>}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    {/* Info Cards */}
+                    <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100 flex gap-4">
+                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 text-blue-600">
+                                <span className="material-symbols-outlined">menu_book</span>
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-blue-900">Diretriz TCESP: Artigo 2</h4>
+                                <p className="text-xs text-blue-800/70 mt-1 leading-relaxed">
+                                    O CNPJ informado deve corresponder à entidade executora direta do recurso, conforme resolução normativa 2026.
+                                </p>
+                                <a className="inline-flex items-center text-[11px] font-bold text-blue-600 mt-3 hover:underline" href="#">
+                                    VER MANUAL COMPLETO
+                                    <span className="material-symbols-outlined text-[14px] ml-1">open_in_new</span>
+                                </a>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-
-            {/* Info Cards */}
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100 flex gap-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 text-blue-600">
-                        <span className="material-symbols-outlined">menu_book</span>
+                        <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 flex gap-4">
+                            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center flex-shrink-0 text-gray-400 border border-gray-200">
+                                <span className="material-symbols-outlined">lightbulb</span>
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-700">Dica de Preenchimento</h4>
+                                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                                    Utilize o CNPJ da matriz administrativa. O cargo do responsável deve ser o vigente na data de envio.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h4 className="text-sm font-bold text-blue-900">Diretriz TCESP: Artigo 2</h4>
-                        <p className="text-xs text-blue-800/70 mt-1 leading-relaxed">
-                            O CNPJ informado deve corresponder à entidade executora direta do recurso, conforme resolução normativa 2026.
-                        </p>
-                        <a className="inline-flex items-center text-[11px] font-bold text-blue-600 mt-3 hover:underline" href="#">
-                            VER MANUAL COMPLETO
-                            <span className="material-symbols-outlined text-[14px] ml-1">open_in_new</span>
-                        </a>
-                    </div>
-                </div>
-                <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 flex gap-4">
-                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center flex-shrink-0 text-gray-400 border border-gray-200">
-                        <span className="material-symbols-outlined">lightbulb</span>
-                    </div>
-                    <div>
-                        <h4 className="text-sm font-bold text-gray-700">Dica de Preenchimento</h4>
-                        <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                            Utilize o CNPJ da matriz administrativa. O cargo do responsável deve ser o vigente na data de envio.
-                        </p>
-                    </div>
-                </div>
-            </div>
                 </div>{/* end main content */}
             </div>{/* end flex wrapper */}
         </>

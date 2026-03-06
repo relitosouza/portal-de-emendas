@@ -153,6 +153,32 @@ export default async function ProjetoDetalhePage(props: Props) {
                     <span className="text-slate-900 text-sm font-semibold">Detalhes da Emenda</span>
                 </div>
 
+                {/* Informações da Emenda Card */}
+                <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100">
+                    <h2 className="text-lg font-bold mb-6">Informações da Emenda</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Âmbito</p>
+                            <p className="text-sm font-medium text-slate-900">{amendment.ambito || "Não informado"}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Tipo de Emenda</p>
+                            <p className="text-sm font-medium text-slate-900">{amendment.tipoEmenda || "Não informado"}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Fundamento Legal</p>
+                            <p className="text-sm font-medium text-slate-900">{amendment.fundamentoLegal || "Não informado"}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Função / Subfunção LOA</p>
+                            <p className="text-sm font-medium text-slate-900">
+                                {amendment.funcao || "Não informado"}
+                                {amendment.subfuncao ? ` / ${amendment.subfuncao}` : ""}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Status Tracker */}
                 <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100">
                     <div className="flex items-center justify-between mb-8">
