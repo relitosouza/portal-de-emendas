@@ -456,14 +456,7 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                                                     </div>
                                                     <div className="space-y-2">
                                                         <label className={labelClass}>Cód. Aplicação Variável</label>
-                                                        <div className="relative">
-                                                            <select className={selectClass} value={formData.codigoAplicacaoVariavel} onChange={(e) => handleChange("codigoAplicacaoVariavel", e.target.value)}>
-                                                                <option value="">Selecione</option>
-                                                                <option value="001">001</option>
-                                                                <option value="002">002</option>
-                                                            </select>
-                                                            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xl">expand_more</span>
-                                                        </div>
+                                                        <input className={inputClass} type="text" placeholder="001, 002" value={formData.codigoAplicacaoVariavel} onChange={(e) => handleChange("codigoAplicacaoVariavel", e.target.value)} />
                                                     </div>
                                                 </div>
                                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
