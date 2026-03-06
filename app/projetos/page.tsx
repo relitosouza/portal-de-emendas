@@ -339,7 +339,7 @@ function ProjectsContent() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {paginatedProjects.map((project) => {
                             const style = getStatusStyle(project.status);
-                            const sc = getSectorColor(project.categoriaNum);
+                            const sc = getSectorColor(project.sector);
 
                             return (
                                 <Link href={`/projetos/${project.id}`} key={project.id}>
@@ -440,8 +440,8 @@ function ProjectsContent() {
                                         key={pageNum}
                                         onClick={() => setCurrentPage(pageNum)}
                                         className={`size-10 rounded-lg font-bold transition-colors ${currentPage === pageNum
-                                                ? "bg-blue-500 text-white"
-                                                : "border border-slate-200 hover:bg-white"
+                                            ? "bg-blue-500 text-white"
+                                            : "border border-slate-200 hover:bg-white"
                                             }`}
                                     >
                                         {pageNum}
