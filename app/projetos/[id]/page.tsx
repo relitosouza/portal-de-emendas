@@ -1,4 +1,6 @@
 import { getAmendmentsFromSheet } from "@/lib/google-sheets";
+import { getSectorColor } from "@/lib/sector-colors";
+import { getNormalizedStatus, getStatusStep } from "@/lib/status-mapper";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/shared/navbar";
@@ -110,23 +112,8 @@ export default async function ProjetoDetalhePage(props: Props) {
         { label: "Cancelada", icon: "block" },
     ];
 
-    const statusMap: Record<string, number> = {
-        planejamento: 0,
-        aprovado: 4,
-        em_execucao: 5,
-        concluido: 6,
-        suspenso: 7,
-        "Não Iniciada": 0,
-        "Em Análise": 1,
-        "Elaboração": 2,
-        "Viabilização": 3,
-        "Contratação": 4,
-        "Execução": 5,
-        "Executada": 6,
-        "Cancelada": 7,
-    };
-
-    const currentStep = statusMap[amendment.status as string] ?? 0;
+    const normalizedStatus = getNormalizedStatus(amendment.status as string);
+    const currentStep = getStatusStep(normalizedStatus);
     const progressPercent = currentStep <= 6 ? (Math.min(currentStep, 5) / 7) * 100 : 0;
 
     const autor = amendment.autor || amendment.author || amendment.responsavelNome || "Não informado";

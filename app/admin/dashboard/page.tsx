@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Amendment, getAmendments, clearAmendments, deleteAmendment } from "@/lib/store";
 import Navbar from "@/components/shared/navbar";
-
+import { getSectorColor } from "@/lib/sector-colors";
+import { getNormalizedStatus } from "@/lib/status-mapper";
 export default function DashboardPage() {
     const [amendments, setAmendments] = useState<Amendment[]>([]);
     const [loading, setLoading] = useState(true);
@@ -73,9 +74,9 @@ export default function DashboardPage() {
         return acc + val;
     }, 0);
 
-    const emExecucao = amendments.filter((a) => a.status === "em_execucao" || a.status === "Execução").length;
-    const concluidos = amendments.filter((a) => a.status === "concluido" || a.status === "Executada").length;
-    const planejamento = amendments.filter((a) => a.status === "planejamento" || a.status === "Não Iniciada").length;
+    const emExecucao = amendments.filter((a) => getNormalizedStatus(a.status as string) === "Execução").length;
+    const concluidos = amendments.filter((a) => getNormalizedStatus(a.status as string) === "Executada").length;
+    const planejamento = amendments.filter((a) => getNormalizedStatus(a.status as string) === "Em Análise" || getNormalizedStatus(a.status as string) === "Não Iniciada" || getNormalizedStatus(a.status as string) === "Elaboração").length;
 
     const formatCurrency = (value: number) => {
         if (value >= 1000000) return `R$ ${(value / 1000000).toFixed(1)}M`;
@@ -83,12 +84,9 @@ export default function DashboardPage() {
         return `R$ ${value.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
     };
 
-    const getStatusConfig = (status: string) => {
+    const getStatusConfig = (rawStatus: string) => {
+        const status = getNormalizedStatus(rawStatus);
         const map: Record<string, { label: string; color: string; icon: string }> = {
-            planejamento: { label: "Planejamento", color: "blue", icon: "edit_note" },
-            aprovado: { label: "Aprovado", color: "purple", icon: "verified" },
-            em_execucao: { label: "Em Execução", color: "amber", icon: "engineering" },
-            concluido: { label: "Concluído", color: "emerald", icon: "check_circle" },
             "Não Iniciada": { label: "Não Iniciada", color: "blue", icon: "edit_note" },
             "Em Análise": { label: "Em Análise", color: "indigo", icon: "pending_actions" },
             "Elaboração": { label: "Elaboração", color: "cyan", icon: "design_services" },

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Amendment } from "@/lib/store";
 import Navbar from "@/components/shared/navbar";
 import { getSectorColor } from "@/lib/sector-colors";
+import { getNormalizedStatus } from "@/lib/status-mapper";
 
 interface Project {
     id: string;
@@ -135,12 +136,20 @@ function ProjectsContent() {
                     else if (text.includes("segurança") || text.includes("policia") || text.includes("guarda")) sector = "Segurança";
                     else if (text.includes("cultura") || text.includes("teatro") || text.includes("show")) sector = "Cultura";
 
-                    let status = "Aguardando";
-                    let progress = 0;
-                    if (a.status === "em_execucao") { status = "Em Execução"; progress = 45; }
-                    else if (a.status === "concluido") { status = "Pago"; progress = 100; }
-                    else if (a.status === "suspenso") { status = "Aguardando"; progress = 12; }
-                    else if (a.status === "aprovado") { status = "Em Execução"; progress = 30; }
+                    const status = getNormalizedStatus(a.status as string);
+
+                    const progressMap: Record<string, number> = {
+                        "Não Iniciada": 0,
+                        "Em Análise": 12,
+                        "Elaboração": 25,
+                        "Viabilização": 37,
+                        "Contratação": 50,
+                        "Execução": 75,
+                        "Executada": 100,
+                        "Cancelada": 0
+                    };
+
+                    let progress = progressMap[status] || 0;
 
                     const responsible = a.autor || a.author || a.orgaoBeneficiario || a.responsible || "Prefeitura";
 
@@ -212,12 +221,21 @@ function ProjectsContent() {
 
     const getStatusStyle = (status: string) => {
         switch (status) {
-            case "Pago":
-                return { bg: "bg-green-100 text-green-700", bar: "bg-green-500" };
-            case "Em Execução":
+            case "Executada":
                 return { bg: "bg-blue-100 text-blue-700", bar: "bg-blue-500" };
-            case "Aguardando":
+            case "Execução":
+                return { bg: "bg-emerald-100 text-emerald-700", bar: "bg-emerald-500" };
+            case "Cancelada":
+                return { bg: "bg-red-100 text-red-700", bar: "bg-red-500" };
+            case "Contratação":
+                return { bg: "bg-blue-100 text-blue-700", bar: "bg-blue-500" };
+            case "Viabilização":
+                return { bg: "bg-purple-100 text-purple-700", bar: "bg-purple-500" };
+            case "Elaboração":
+                return { bg: "bg-indigo-100 text-indigo-700", bar: "bg-indigo-500" };
+            case "Em Análise":
                 return { bg: "bg-amber-100 text-amber-700", bar: "bg-amber-500" };
+            case "Não Iniciada":
             default:
                 return { bg: "bg-slate-100 text-slate-700", bar: "bg-slate-400" };
         }
@@ -300,9 +318,14 @@ function ProjectsContent() {
                                 onChange={(e) => setSelectedStatus(e.target.value || null)}
                             >
                                 <option value="">Todos os Status</option>
-                                <option value="Aguardando">⏳ Aguardando</option>
-                                <option value="Em Execução">⚙️ Em Execução</option>
-                                <option value="Pago">✅ Pago</option>
+                                <option value="Não Iniciada">Não Iniciada</option>
+                                <option value="Em Análise">Em Análise</option>
+                                <option value="Elaboração">Elaboração</option>
+                                <option value="Viabilização">Viabilização</option>
+                                <option value="Contratação">Contratação</option>
+                                <option value="Execução">Execução</option>
+                                <option value="Executada">Executada</option>
+                                <option value="Cancelada">Cancelada</option>
                             </select>
                         </div>
 
