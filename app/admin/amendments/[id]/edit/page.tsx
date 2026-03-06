@@ -229,11 +229,7 @@ export default function EditAmendmentPage({ params }: PageProps) {
                             </div>
                             <div>
                                 <label className={labelClass}>Cód. Aplicação Variável</label>
-                                <select className={selectClass} value={formData.codigoAplicacaoVariavel || ""} onChange={(e) => handleChange("codigoAplicacaoVariavel", e.target.value)}>
-                                    <option value="">Selecione</option>
-                                    <option value="001">001</option>
-                                    <option value="002">002</option>
-                                </select>
+                                <input className={inputClass} value={formData.codigoAplicacaoVariavel || ""} onChange={(e) => handleChange("codigoAplicacaoVariavel", e.target.value)} placeholder="001, 002" />
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
