@@ -9,6 +9,7 @@ import { getNormalizedStatus } from "@/lib/status-mapper";
 export default function DashboardPage() {
     const [amendments, setAmendments] = useState<Amendment[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");
     const [deleting, setDeleting] = useState<string | null>(null);
     const [financialModal, setFinancialModal] = useState<Amendment | null>(null);
     const [financialData, setFinancialData] = useState({ empenhado: "", liquidado: "", pago: "" });
@@ -107,6 +108,18 @@ export default function DashboardPage() {
         };
         return map[priority] || { label: priority || "—", dot: "bg-slate-400" };
     };
+
+    const filteredAmendments = amendments.filter((a) => {
+        if (!searchTerm) return true;
+        const term = searchTerm.toLowerCase();
+
+        const titleMatch = (a.objeto || a.title || "").toLowerCase().includes(term);
+        const autorMatch = (a.autor || a.author || a.responsavelNome || "").toLowerCase().includes(term);
+        const statusMatch = getNormalizedStatus(a.status as string).toLowerCase().includes(term);
+        const locMatch = (a.localidadeBeneficiada || a.address || "").toLowerCase().includes(term);
+
+        return titleMatch || autorMatch || statusMatch || locMatch;
+    });
 
     // Quick nav cards
     const quickActions = [
@@ -240,6 +253,20 @@ export default function DashboardPage() {
                             </div>
                         </div>
 
+                        {/* Search Bar */}
+                        <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-3 flex items-center">
+                            <div className="relative flex-1 max-w-md">
+                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                                <input
+                                    type="text"
+                                    placeholder="Buscar por título, autor, local ou status..."
+                                    className="w-full rounded-xl border border-slate-200 bg-white py-2 pl-10 pr-4 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
                         {loading ? (
                             <div className="flex items-center justify-center py-20">
                                 <div className="flex flex-col items-center gap-3">
@@ -262,6 +289,20 @@ export default function DashboardPage() {
                                     Cadastrar Agora
                                 </Link>
                             </div>
+                        ) : filteredAmendments.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-20 text-center">
+                                <div className="mb-4 flex size-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+                                    <span className="material-symbols-outlined text-[32px]">manage_search</span>
+                                </div>
+                                <h3 className="text-lg font-bold text-slate-700">Nenhuma emenda para "{searchTerm}"</h3>
+                                <p className="mt-1 text-sm text-slate-500 max-w-sm">Tente usar outros termos para a busca.</p>
+                                <button
+                                    onClick={() => setSearchTerm("")}
+                                    className="mt-6 flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-slate-800"
+                                >
+                                    Limpar Busca
+                                </button>
+                            </div>
                         ) : (
                             <div className="divide-y divide-slate-50">
                                 {/* Table Header */}
@@ -273,7 +314,7 @@ export default function DashboardPage() {
                                     <div className="col-span-2 text-right">Ações</div>
                                 </div>
 
-                                {amendments.map((amendment) => {
+                                {filteredAmendments.map((amendment) => {
                                     const statusCfg = getStatusConfig(amendment.status);
                                     const priorityCfg = getPriorityConfig(amendment.priority || "normal");
 
@@ -368,172 +409,174 @@ export default function DashboardPage() {
                         )}
                     </div>
                 </div>
-            </main>
+            </main >
 
             {/* Financial Modal */}
-            {financialModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-                    <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
-                        <div className="flex items-center justify-between border-b border-slate-100 p-6">
-                            <div className="flex items-center gap-3">
-                                <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                                    <span className="material-symbols-outlined">account_balance</span>
+            {
+                financialModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+                        <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
+                            <div className="flex items-center justify-between border-b border-slate-100 p-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                                        <span className="material-symbols-outlined">account_balance</span>
+                                    </div>
+                                    <div>
+                                        <h2 className="text-base font-bold text-slate-900">Execução Financeira</h2>
+                                        <p className="text-xs text-slate-400 truncate max-w-[220px]">{financialModal.objeto || financialModal.title || "Emenda"}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h2 className="text-base font-bold text-slate-900">Execução Financeira</h2>
-                                    <p className="text-xs text-slate-400 truncate max-w-[220px]">{financialModal.objeto || financialModal.title || "Emenda"}</p>
-                                </div>
-                            </div>
-                            <button
-                                onClick={() => setFinancialModal(null)}
-                                className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-                            >
-                                <span className="material-symbols-outlined">close</span>
-                            </button>
-                        </div>
-
-                        <div className="p-6 space-y-5">
-                            {/* Valor autorizado reference */}
-                            <div className="rounded-xl bg-slate-50 p-4">
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Valor Autorizado</p>
-                                <p className="text-xl font-bold text-slate-800 font-mono">R$ {financialModal.valor || financialModal.valorAutorizado || "0,00"}</p>
+                                <button
+                                    onClick={() => setFinancialModal(null)}
+                                    className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                                >
+                                    <span className="material-symbols-outlined">close</span>
+                                </button>
                             </div>
 
-                            {/* Financial Fields */}
-                            <div className="space-y-4">
-                                <div>
-                                    <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                                        <span className="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
-                                        Empenhado
-                                    </label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
-                                        <input
-                                            type="text"
-                                            className="w-full rounded-xl border border-slate-200 py-3 pl-12 pr-4 text-sm font-mono outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                                            placeholder="0,00"
-                                            value={financialData.empenhado}
-                                            onChange={(e) => setFinancialData({ ...financialData, empenhado: e.target.value })}
-                                        />
+                            <div className="p-6 space-y-5">
+                                {/* Valor autorizado reference */}
+                                <div className="rounded-xl bg-slate-50 p-4">
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Valor Autorizado</p>
+                                    <p className="text-xl font-bold text-slate-800 font-mono">R$ {financialModal.valor || financialModal.valorAutorizado || "0,00"}</p>
+                                </div>
+
+                                {/* Financial Fields */}
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                                            <span className="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+                                            Empenhado
+                                        </label>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
+                                            <input
+                                                type="text"
+                                                className="w-full rounded-xl border border-slate-200 py-3 pl-12 pr-4 text-sm font-mono outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                                                placeholder="0,00"
+                                                value={financialData.empenhado}
+                                                onChange={(e) => setFinancialData({ ...financialData, empenhado: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                                            <span className="h-2.5 w-2.5 rounded-full bg-amber-500"></span>
+                                            Liquidado
+                                        </label>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
+                                            <input
+                                                type="text"
+                                                className="w-full rounded-xl border border-slate-200 py-3 pl-12 pr-4 text-sm font-mono outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+                                                placeholder="0,00"
+                                                value={financialData.liquidado}
+                                                onChange={(e) => setFinancialData({ ...financialData, liquidado: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                                            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                                            Pago
+                                        </label>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
+                                            <input
+                                                type="text"
+                                                className="w-full rounded-xl border border-slate-200 py-3 pl-12 pr-4 text-sm font-mono outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                                                placeholder="0,00"
+                                                value={financialData.pago}
+                                                onChange={(e) => setFinancialData({ ...financialData, pago: e.target.value })}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                                        <span className="h-2.5 w-2.5 rounded-full bg-amber-500"></span>
-                                        Liquidado
-                                    </label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
-                                        <input
-                                            type="text"
-                                            className="w-full rounded-xl border border-slate-200 py-3 pl-12 pr-4 text-sm font-mono outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
-                                            placeholder="0,00"
-                                            value={financialData.liquidado}
-                                            onChange={(e) => setFinancialData({ ...financialData, liquidado: e.target.value })}
-                                        />
+
+                                {/* Visual progress */}
+                                <div className="rounded-xl border border-slate-100 p-4 space-y-2">
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Fluxo de Execução</p>
+                                    <div className="flex items-center gap-2">
+                                        <div className="flex-1 space-y-1.5">
+                                            <div className="flex justify-between text-[10px] text-slate-500"><span>Empenhado</span><span className="font-mono">R$ {financialData.empenhado || "0"}</span></div>
+                                            <div className="h-2 rounded-full bg-slate-100 overflow-hidden"><div className="h-full rounded-full bg-blue-500 transition-all" style={{ width: financialData.empenhado ? '100%' : '0%' }}></div></div>
+                                        </div>
+                                        <span className="material-symbols-outlined text-[14px] text-slate-300">arrow_forward</span>
+                                        <div className="flex-1 space-y-1.5">
+                                            <div className="flex justify-between text-[10px] text-slate-500"><span>Liquidado</span><span className="font-mono">R$ {financialData.liquidado || "0"}</span></div>
+                                            <div className="h-2 rounded-full bg-slate-100 overflow-hidden"><div className="h-full rounded-full bg-amber-500 transition-all" style={{ width: financialData.liquidado ? '100%' : '0%' }}></div></div>
+                                        </div>
+                                        <span className="material-symbols-outlined text-[14px] text-slate-300">arrow_forward</span>
+                                        <div className="flex-1 space-y-1.5">
+                                            <div className="flex justify-between text-[10px] text-slate-500"><span>Pago</span><span className="font-mono">R$ {financialData.pago || "0"}</span></div>
+                                            <div className="h-2 rounded-full bg-slate-100 overflow-hidden"><div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: financialData.pago ? '100%' : '0%' }}></div></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
-                                        Pago
-                                    </label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
-                                        <input
-                                            type="text"
-                                            className="w-full rounded-xl border border-slate-200 py-3 pl-12 pr-4 text-sm font-mono outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                                            placeholder="0,00"
-                                            value={financialData.pago}
-                                            onChange={(e) => setFinancialData({ ...financialData, pago: e.target.value })}
-                                        />
+
+                                {financialFeedback && (
+                                    <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-sm font-medium text-emerald-700">
+                                        <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                                        {financialFeedback}
                                     </div>
-                                </div>
+                                )}
                             </div>
 
-                            {/* Visual progress */}
-                            <div className="rounded-xl border border-slate-100 p-4 space-y-2">
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Fluxo de Execução</p>
-                                <div className="flex items-center gap-2">
-                                    <div className="flex-1 space-y-1.5">
-                                        <div className="flex justify-between text-[10px] text-slate-500"><span>Empenhado</span><span className="font-mono">R$ {financialData.empenhado || "0"}</span></div>
-                                        <div className="h-2 rounded-full bg-slate-100 overflow-hidden"><div className="h-full rounded-full bg-blue-500 transition-all" style={{ width: financialData.empenhado ? '100%' : '0%' }}></div></div>
-                                    </div>
-                                    <span className="material-symbols-outlined text-[14px] text-slate-300">arrow_forward</span>
-                                    <div className="flex-1 space-y-1.5">
-                                        <div className="flex justify-between text-[10px] text-slate-500"><span>Liquidado</span><span className="font-mono">R$ {financialData.liquidado || "0"}</span></div>
-                                        <div className="h-2 rounded-full bg-slate-100 overflow-hidden"><div className="h-full rounded-full bg-amber-500 transition-all" style={{ width: financialData.liquidado ? '100%' : '0%' }}></div></div>
-                                    </div>
-                                    <span className="material-symbols-outlined text-[14px] text-slate-300">arrow_forward</span>
-                                    <div className="flex-1 space-y-1.5">
-                                        <div className="flex justify-between text-[10px] text-slate-500"><span>Pago</span><span className="font-mono">R$ {financialData.pago || "0"}</span></div>
-                                        <div className="h-2 rounded-full bg-slate-100 overflow-hidden"><div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: financialData.pago ? '100%' : '0%' }}></div></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {financialFeedback && (
-                                <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-sm font-medium text-emerald-700">
-                                    <span className="material-symbols-outlined text-[18px]">check_circle</span>
-                                    {financialFeedback}
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="flex justify-end gap-3 border-t border-slate-100 p-6">
-                            <button
-                                onClick={() => setFinancialModal(null)}
-                                className="rounded-xl px-5 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 transition-colors"
-                            >
-                                Cancelar
-                            </button>
-                            <button
-                                onClick={async () => {
-                                    setSavingFinancial(true);
-                                    try {
-                                        const res = await fetch("/api/financial", {
-                                            method: "POST",
-                                            headers: { "Content-Type": "application/json" },
-                                            body: JSON.stringify({
-                                                amendmentId: financialModal.id,
-                                                empenhado: financialData.empenhado,
-                                                liquidado: financialData.liquidado,
-                                                pago: financialData.pago,
-                                            }),
-                                        });
-                                        if (res.ok) {
-                                            // Update local state
-                                            setAmendments((prev) =>
-                                                prev.map((a) =>
-                                                    a.id === financialModal.id
-                                                        ? { ...a, empenhado: financialData.empenhado, liquidado: financialData.liquidado, pago: financialData.pago }
-                                                        : a
-                                                )
-                                            );
-                                            setFinancialFeedback("Dados financeiros salvos!");
-                                            setTimeout(() => {
-                                                setFinancialModal(null);
-                                                setFinancialFeedback(null);
-                                            }, 1500);
-                                        } else {
+                            <div className="flex justify-end gap-3 border-t border-slate-100 p-6">
+                                <button
+                                    onClick={() => setFinancialModal(null)}
+                                    className="rounded-xl px-5 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    onClick={async () => {
+                                        setSavingFinancial(true);
+                                        try {
+                                            const res = await fetch("/api/financial", {
+                                                method: "POST",
+                                                headers: { "Content-Type": "application/json" },
+                                                body: JSON.stringify({
+                                                    amendmentId: financialModal.id,
+                                                    empenhado: financialData.empenhado,
+                                                    liquidado: financialData.liquidado,
+                                                    pago: financialData.pago,
+                                                }),
+                                            });
+                                            if (res.ok) {
+                                                // Update local state
+                                                setAmendments((prev) =>
+                                                    prev.map((a) =>
+                                                        a.id === financialModal.id
+                                                            ? { ...a, empenhado: financialData.empenhado, liquidado: financialData.liquidado, pago: financialData.pago }
+                                                            : a
+                                                    )
+                                                );
+                                                setFinancialFeedback("Dados financeiros salvos!");
+                                                setTimeout(() => {
+                                                    setFinancialModal(null);
+                                                    setFinancialFeedback(null);
+                                                }, 1500);
+                                            } else {
+                                                alert("Erro ao salvar dados financeiros.");
+                                            }
+                                        } catch {
                                             alert("Erro ao salvar dados financeiros.");
+                                        } finally {
+                                            setSavingFinancial(false);
                                         }
-                                    } catch {
-                                        alert("Erro ao salvar dados financeiros.");
-                                    } finally {
-                                        setSavingFinancial(false);
-                                    }
-                                }}
-                                disabled={savingFinancial}
-                                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 px-6 py-2.5 text-sm font-bold text-white shadow-md disabled:opacity-50 transition-all hover:shadow-lg"
-                            >
-                                <span className="material-symbols-outlined text-[18px]">{savingFinancial ? "hourglass_empty" : "save"}</span>
-                                {savingFinancial ? "Salvando..." : "Salvar"}
-                            </button>
+                                    }}
+                                    disabled={savingFinancial}
+                                    className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 px-6 py-2.5 text-sm font-bold text-white shadow-md disabled:opacity-50 transition-all hover:shadow-lg"
+                                >
+                                    <span className="material-symbols-outlined text-[18px]">{savingFinancial ? "hourglass_empty" : "save"}</span>
+                                    {savingFinancial ? "Salvando..." : "Salvar"}
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* Footer */}
             <footer className="border-t border-slate-200 bg-white px-6 py-8 lg:px-8">
@@ -546,6 +589,6 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </footer>
-        </div>
+        </div >
     );
 }
