@@ -47,11 +47,19 @@ export default async function RelatorioPage(props: Props) {
 
     const autor = amendment.autor || amendment.author || amendment.responsavelNome || "Não informado";
 
-    // Calculate percentages
-    const pctEmpenhado = valorTotal > 0 ? Math.round((empenhado / valorTotal) * 100) : 0;
-    const pctLiquidado = valorTotal > 0 ? Math.round((liquidado / valorTotal) * 100) : 0;
-    const pctPago = valorTotal > 0 ? Math.round((pago / valorTotal) * 100) : 0;
-    const pctSaldo = valorTotal > 0 ? Math.max(0, Math.round(((valorTotal - pago) / valorTotal) * 100)) : 100;
+    const progressPercent = currentStep <= 6 ? (Math.min(currentStep, 5) / 7) * 100 : 0;
+
+    const statusSteps = [
+        { label: "Não Iniciada", icon: "check" },
+        { label: "Em Análise", icon: "check" },
+        { label: "Elaboração", icon: "check" },
+        { label: "Viabilização", icon: "check" },
+        { label: "Contratação", icon: "check" },
+        { label: "Execução", icon: "sync" },
+        { label: "Executada", icon: "done_all" },
+        { label: "Prestação de Contas", icon: "receipt_long" },
+        { label: "Cancelada", icon: "block" },
+    ];
 
     const today = new Date().toLocaleDateString("pt-BR");
 
@@ -183,114 +191,54 @@ export default async function RelatorioPage(props: Props) {
                         <h3 className="text-xs uppercase font-bold text-slate-400 mb-6 border-l-4 border-blue-600 pl-3">
                             Estágio de Execução
                         </h3>
-                        <div className="flex items-center w-full px-4 relative">
-                            {/* Background Line */}
-                            <div className="absolute h-[2px] bg-slate-100 left-12 right-12 top-4 -z-0"></div>
-                            {/* Active Line */}
-                            <div
-                                className="absolute h-[2px] bg-blue-600 left-12 top-4 -z-0"
-                                style={{
-                                    width: `${currentStep >= 6 ? 100 : currentStep >= 5 ? 65 : currentStep >= 4 ? 45 : currentStep >= 1 ? 20 : 0}%`,
-                                }}
-                            ></div>
-
-                            {/* Step: Aprovação */}
-                            <div className="flex flex-col items-center flex-1 relative z-10">
+                        <div className="overflow-x-auto pb-2">
+                            <div className="flex min-w-[700px] justify-between relative px-2 pt-2">
+                                {/* Background line */}
+                                <div className="absolute top-6 left-4 right-4 h-[2px] bg-slate-100 z-0"></div>
+                                {/* Progress line */}
                                 <div
-                                    className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${
-                                        currentStep >= 1
-                                            ? "bg-blue-600 text-white"
-                                            : "bg-slate-100 border border-slate-200 text-slate-300"
-                                    }`}
-                                >
-                                    <span className="material-symbols-outlined text-sm">
-                                        {currentStep >= 1 ? "check" : "pending"}
-                                    </span>
-                                </div>
-                                <span
-                                    className={`text-[10px] font-bold uppercase ${
-                                        currentStep >= 1 ? "text-slate-800" : "text-slate-400"
-                                    }`}
-                                >
-                                    Aprovação
-                                </span>
-                            </div>
+                                    className="absolute top-6 left-4 h-[2px] bg-blue-500 z-0"
+                                    style={{ width: `${progressPercent}%` }}
+                                ></div>
 
-                            {/* Step: Empenho */}
-                            <div className="flex flex-col items-center flex-1 relative z-10">
-                                <div
-                                    className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${
-                                        empenhado > 0 || currentStep >= 4
-                                            ? "bg-blue-600 text-white"
-                                            : "bg-slate-100 border border-slate-200 text-slate-300"
-                                    }`}
-                                >
-                                    <span className="material-symbols-outlined text-sm">
-                                        {empenhado > 0 || currentStep >= 4 ? "check" : "pending"}
-                                    </span>
-                                </div>
-                                <span
-                                    className={`text-[10px] font-bold uppercase ${
-                                        empenhado > 0 || currentStep >= 4
-                                            ? "text-slate-800"
-                                            : "text-slate-400"
-                                    }`}
-                                >
-                                    Empenho
-                                </span>
-                            </div>
+                                {statusSteps.map((step, idx) => {
+                                    const isCompleted = idx < currentStep;
+                                    const isCurrent = idx === currentStep;
+                                    const isFuture = idx > currentStep;
+                                    const isCancelled = idx === 8;
 
-                            {/* Step: Em Execução (Current) */}
-                            <div className="flex flex-col items-center flex-1 relative z-10">
-                                <div
-                                    className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${
-                                        currentStep >= 6
-                                            ? "bg-blue-600 text-white"
-                                            : pago > 0 || currentStep >= 5
-                                              ? "border-2 border-blue-600 bg-white text-blue-600 shadow-[0_0_0_4px_rgba(37,99,235,0.1)]"
-                                              : "bg-slate-100 border border-slate-200 text-slate-300"
-                                    }`}
-                                >
-                                    <span className="material-symbols-outlined text-sm font-bold">
-                                        {currentStep >= 6 ? "check" : "sync"}
-                                    </span>
-                                </div>
-                                <span
-                                    className={`text-[10px] font-bold uppercase ${
-                                        pago > 0 || currentStep >= 5
-                                            ? "text-blue-600"
-                                            : "text-slate-400"
-                                    }`}
-                                >
-                                    Em Execução
-                                </span>
-                                {pago > 0 && valorTotal > 0 && (
-                                    <span className="text-[10px] text-blue-600/70 font-medium">
-                                        {pctPago}% concluído
-                                    </span>
-                                )}
-                            </div>
-
-                            {/* Step: Conclusão */}
-                            <div className="flex flex-col items-center flex-1 relative z-10">
-                                <div
-                                    className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${
-                                        currentStep >= 6
-                                            ? "bg-blue-600 text-white"
-                                            : "bg-slate-100 border border-slate-200 text-slate-300"
-                                    }`}
-                                >
-                                    <span className="material-symbols-outlined text-sm">
-                                        {currentStep >= 6 ? "check" : "event"}
-                                    </span>
-                                </div>
-                                <span
-                                    className={`text-[10px] font-bold uppercase ${
-                                        currentStep >= 6 ? "text-slate-800" : "text-slate-400"
-                                    }`}
-                                >
-                                    Conclusão
-                                </span>
+                                    return (
+                                        <div
+                                            key={step.label}
+                                            className={`relative z-10 flex flex-col items-center w-[72px] ${isFuture && !isCancelled ? "opacity-40" : ""} ${isCancelled && currentStep !== 8 ? "opacity-40" : ""}`}
+                                        >
+                                            {isCurrent && idx < 8 ? (
+                                                <div className="w-7 h-7 -mt-0.5 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-1.5 ring-3 ring-emerald-100 shadow-lg shadow-emerald-500/20">
+                                                    <span className="material-symbols-outlined text-[14px]">{step.icon}</span>
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    className={`w-6 h-6 rounded-full flex items-center justify-center mb-2 ring-2 ring-white ${
+                                                        isCompleted
+                                                            ? "bg-blue-500 text-white"
+                                                            : isFuture || (isCancelled && currentStep !== 8)
+                                                                ? "bg-slate-200 text-slate-400"
+                                                                : currentStep === 8 && isCancelled
+                                                                    ? "bg-red-500 text-white"
+                                                                    : "bg-slate-500 text-white"
+                                                    }`}
+                                                >
+                                                    <span className="material-symbols-outlined text-[12px] font-bold">{step.icon}</span>
+                                                </div>
+                                            )}
+                                            <span className={`text-[8px] font-bold text-center leading-tight ${
+                                                isCurrent ? "text-emerald-600 font-black" : "text-slate-700"
+                                            }`}>
+                                                {step.label}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     </section>
@@ -366,75 +314,6 @@ export default async function RelatorioPage(props: Props) {
                                     </tr>
                                 </tfoot>
                             </table>
-                        </div>
-                    </section>
-
-                    {/* Distribuição de Recursos Aplicados */}
-                    <section className="mb-10">
-                        <h3 className="text-xs uppercase font-bold text-slate-400 mb-4 border-l-4 border-blue-600 pl-3">
-                            Distribuição de Recursos Aplicados
-                        </h3>
-                        <div className="grid grid-cols-[1fr_200px] gap-10 items-center">
-                            <div className="space-y-4">
-                                {/* Empenhado */}
-                                <div className="space-y-1">
-                                    <div className="flex justify-between text-[10px] font-bold uppercase">
-                                        <span>Recurso Comprometido (Empenho)</span>
-                                        <span className="text-blue-600">{pctEmpenhado}%</span>
-                                    </div>
-                                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-blue-600 rounded-full transition-all"
-                                            style={{
-                                                width: `${Math.min(pctEmpenhado, 100)}%`,
-                                            }}
-                                        ></div>
-                                    </div>
-                                </div>
-                                {/* Liquidado */}
-                                <div className="space-y-1">
-                                    <div className="flex justify-between text-[10px] font-bold uppercase">
-                                        <span>Recurso Executado (Liquidação)</span>
-                                        <span className="text-blue-600">{pctLiquidado}%</span>
-                                    </div>
-                                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-blue-600 rounded-full transition-all"
-                                            style={{
-                                                width: `${Math.min(pctLiquidado, 100)}%`,
-                                            }}
-                                        ></div>
-                                    </div>
-                                </div>
-                                {/* Pago */}
-                                <div className="space-y-1">
-                                    <div className="flex justify-between text-[10px] font-bold uppercase">
-                                        <span>Recurso Transferido (Pagamento)</span>
-                                        <span className="text-blue-600">{pctPago}%</span>
-                                    </div>
-                                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-blue-600 rounded-full transition-all"
-                                            style={{
-                                                width: `${Math.min(pctPago, 100)}%`,
-                                            }}
-                                        ></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <div className="w-32 h-32 border-8 border-blue-600 rounded-full flex flex-col items-center justify-center bg-blue-50/50">
-                                    <span className="text-xs font-bold text-slate-500 uppercase leading-none">
-                                        Saldo
-                                    </span>
-                                    <span className="text-lg font-bold text-blue-600">
-                                        {pctSaldo}%
-                                    </span>
-                                </div>
-                                <p className="text-[9px] text-center mt-3 text-slate-400 font-medium italic">
-                                    Percentual de recurso em conta aguardando destinação.
-                                </p>
-                            </div>
                         </div>
                     </section>
 
@@ -517,20 +396,6 @@ export default async function RelatorioPage(props: Props) {
                                 transparência. Documento gerado eletronicamente em conformidade
                                 com as normas legais.
                             </p>
-                            <div className="flex gap-10 mt-6">
-                                <div className="flex flex-col items-center">
-                                    <div className="w-32 border-b border-slate-400 mb-1"></div>
-                                    <span className="text-[9px] font-bold text-slate-600 uppercase">
-                                        Secretaria de Infraestrutura
-                                    </span>
-                                </div>
-                                <div className="flex flex-col items-center">
-                                    <div className="w-32 border-b border-slate-400 mb-1"></div>
-                                    <span className="text-[9px] font-bold text-slate-600 uppercase">
-                                        Controladoria Geral
-                                    </span>
-                                </div>
-                            </div>
                         </div>
                         <div className="flex flex-col items-center text-center">
                             <div className="w-24 h-24 bg-white border border-slate-200 p-1 mb-2 flex items-center justify-center rounded">
