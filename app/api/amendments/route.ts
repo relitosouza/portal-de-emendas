@@ -1,16 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { appendAmendmentToSheet, getAmendmentsFromSheet } from "@/lib/google-sheets";
+import { appendAmendmentToSheet, getAmendmentsFromSheet, deleteAmendmentFromSheet, updateAmendmentInSheet } from "@/lib/google-sheets";
+import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 
-// ... (existing code)
+export async function GET() {
+    try {
+        const amendments = await getAmendmentsFromSheet();
+        return NextResponse.json(amendments);
+    } catch (error: unknown) {
+        console.error("API GET Error:", error);
+        const message = error instanceof Error ? error.message : "";
+        if (message.includes("Missing")) {
+            return NextResponse.json({ warning: "Missing Credentials", data: [] });
+        }
+        return NextResponse.json({ error: "Failed to fetch amendments" }, { status: 500 });
+    }
+}
 
 export async function POST(req: NextRequest) {
+    if (!(await isAuthenticated())) return unauthorizedResponse();
+
     try {
         const body = await req.json();
 
-        // Basic validation
-        // Basic validation
-        // Support both new (objeto) and old (title) formats
-        if ((!body.objeto && !body.title)) {
+        if (!body.objeto && !body.title) {
             return NextResponse.json({ error: "Missing required fields: objeto/title is required" }, { status: 400 });
         }
 
@@ -20,50 +32,32 @@ export async function POST(req: NextRequest) {
             createdAt: new Date().toISOString(),
         };
 
-        // Try to save to Google Sheets
         try {
             await appendAmendmentToSheet(amendment);
             return NextResponse.json({ success: true, amendment }, { status: 201 });
-        } catch (sheetError: any) {
+        } catch (sheetError: unknown) {
             console.error("Google Sheets Error during save:", sheetError);
+            const message = sheetError instanceof Error ? sheetError.message : "";
 
-            // Fallback for demo/development if credentials aren't set
-            // ... (rest of fallback)
-            if (sheetError.message.includes("Missing")) {
+            if (message.includes("Missing")) {
                 console.warn("Falling back to simulated success for demo purposes (Credentials missing).");
                 return NextResponse.json({
                     success: true,
                     amendment,
-                    warning: "Data not saved to Sheet (Missing Credentials). Data is safe in local state for this session."
+                    warning: "Data not saved to Sheet (Missing Credentials)."
                 }, { status: 201 });
             }
 
-            return NextResponse.json({ error: "Failed to save to Sheet: " + sheetError.message }, { status: 500 });
+            return NextResponse.json({ error: "Falha ao salvar dados" }, { status: 500 });
         }
-
-    } catch (error) {
-        console.error("API Error:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    } catch {
+        return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
     }
 }
-
-export async function GET() {
-    try {
-        const amendments = await getAmendmentsFromSheet();
-        return NextResponse.json(amendments);
-    } catch (error: any) {
-        console.error("API GET Error:", error);
-        // ... (rest of get)
-        if (error.message.includes("Missing")) {
-            return NextResponse.json({ warning: "Missing Credentials", data: [] });
-        }
-        return NextResponse.json({ error: "Failed to fetch amendments" }, { status: 500 });
-    }
-}
-
-import { deleteAmendmentFromSheet } from "@/lib/google-sheets";
 
 export async function DELETE(req: NextRequest) {
+    if (!(await isAuthenticated())) return unauthorizedResponse();
+
     try {
         const { searchParams } = new URL(req.url);
         const id = searchParams.get("id");
@@ -75,25 +69,25 @@ export async function DELETE(req: NextRequest) {
         try {
             await deleteAmendmentFromSheet(id);
             return NextResponse.json({ success: true });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Delete Error:", error);
-            if (error.message.includes("Missing")) {
+            const message = error instanceof Error ? error.message : "";
+            if (message.includes("Missing")) {
                 return NextResponse.json({ success: true, warning: "Missing Credentials" });
             }
-            if (error.message.includes("Amendment not found") || error.message.includes("No data found")) {
+            if (message.includes("Amendment not found") || message.includes("No data found")) {
                 return NextResponse.json({ success: true, warning: "Amendment not found in Sheets, but proceeding." });
             }
-            return NextResponse.json({ error: "Failed to delete: " + error.message }, { status: 500 });
+            return NextResponse.json({ error: "Falha ao excluir" }, { status: 500 });
         }
-    } catch (error) {
-        console.error("API DELETE Error:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    } catch {
+        return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
     }
 }
 
-import { updateAmendmentInSheet } from "@/lib/google-sheets";
-
 export async function PUT(req: NextRequest) {
+    if (!(await isAuthenticated())) return unauthorizedResponse();
+
     try {
         const body = await req.json();
 
@@ -104,15 +98,15 @@ export async function PUT(req: NextRequest) {
         try {
             await updateAmendmentInSheet(body.id, body);
             return NextResponse.json({ success: true, amendment: body });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Update Error:", error);
-            if (error.message.includes("Amendment not found")) {
+            const message = error instanceof Error ? error.message : "";
+            if (message.includes("Amendment not found")) {
                 return NextResponse.json({ error: "Amendment not found" }, { status: 404 });
             }
-            return NextResponse.json({ error: "Failed to update: " + error.message }, { status: 500 });
+            return NextResponse.json({ error: "Falha ao atualizar" }, { status: 500 });
         }
-    } catch (error) {
-        console.error("API PUT Error:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    } catch {
+        return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
     }
 }

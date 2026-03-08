@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isValidSessionTokenEdge } from "@/lib/auth-edge";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
     const session = request.cookies.get("admin-session");
 
-    if (!session || session.value !== "authenticated") {
+    if (!session || !session.value || !(await isValidSessionTokenEdge(session.value))) {
         return NextResponse.redirect(new URL("/admin", request.url));
     }
 

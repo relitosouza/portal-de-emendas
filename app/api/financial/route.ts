@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
 import { getAuthClient, upsertFinancialData } from "@/lib/google-sheets";
+import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 
 export async function POST(request: Request) {
+    if (!(await isAuthenticated())) return unauthorizedResponse();
+
     try {
         const body = await request.json();
         const { amendmentId, empenhado, liquidado, pago } = body;
@@ -22,8 +25,8 @@ export async function POST(request: Request) {
         });
 
         return NextResponse.json({ success: true });
-    } catch (error) {
-        console.error("Error saving financial data:", error);
-        return NextResponse.json({ error: "Failed to save financial data" }, { status: 500 });
+    } catch {
+        console.error("Error saving financial data");
+        return NextResponse.json({ error: "Falha ao salvar dados financeiros" }, { status: 500 });
     }
 }
