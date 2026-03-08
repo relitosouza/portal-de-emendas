@@ -129,6 +129,7 @@ export async function POST(request: Request) {
         });
     } catch (error) {
         console.error("Error importing financial CSV:", error);
-        return NextResponse.json({ error: "Falha ao importar CSV financeiro" }, { status: 500 });
+        const message = error instanceof Error ? error.message : "Falha ao importar CSV financeiro";
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }
