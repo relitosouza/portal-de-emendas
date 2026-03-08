@@ -233,11 +233,17 @@ function ProjectsContent() {
                     const categoriaNum = rawCat ? String(rawCat) : undefined;
 
                     const text = ((a.orgaoBeneficiario || a.responsible || "") + (a.objeto || a.title || "") + (a.finalidade || a.description || "")).toLowerCase();
-                    let sector = "Infraestrutura";
+                    let sector = getCategoryLabel(a.categoria) || "Infraestrutura";
                     if (text.includes("saude") || text.includes("saúde") || text.includes("hospital") || text.includes("ubs")) sector = "Saúde";
                     else if (text.includes("educação") || text.includes("escola") || text.includes("creche")) sector = "Educação";
                     else if (text.includes("segurança") || text.includes("policia") || text.includes("guarda")) sector = "Segurança";
-                    else if (text.includes("cultura") || text.includes("teatro") || text.includes("show")) sector = "Cultura";
+                    else if (text.includes("cultura") || text.includes("teatro") || text.includes("show")) sector = "CULTURA"; // Keep uppercase if that's what's passed from page.tsx links
+
+                    // Wait, the page.tsx sends the exact category name (e.g. "CULTURA"). So let's just use the category from the database whenever it's available and valid, instead of text matching which is brittle.
+                    const dbCategory = getCategoryLabel(a.categoria);
+                    if (dbCategory && dbCategory !== "Sem Categoria" && a.categoria) {
+                        sector = dbCategory;
+                    }
 
                     const status = getNormalizedStatus(a.status as string);
 
