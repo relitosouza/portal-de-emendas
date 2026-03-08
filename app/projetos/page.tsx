@@ -99,6 +99,107 @@ const parseFinanceiro = (v: any): number => {
     return isNaN(num) ? 0 : num;
 };
 
+const CATEGORY_MAP: Record<string, string> = {
+    "1": "LEGISLATIVA", "2": "JUDICIÁRIA", "3": "ESSENCIAL À JUSTIÇA",
+    "4": "ADMINISTRAÇÃO", "5": "DEFESA NACIONAL", "6": "SEGURANÇA PÚBLICA",
+    "7": "RELAÇÕES EXTERIORES", "8": "ASSISTÊNCIA SOCIAL", "9": "PREVIDÊNCIA SOCIAL",
+    "10": "SAÚDE", "11": "TRABALHO", "12": "EDUCAÇÃO", "13": "CULTURA",
+    "14": "DIREITOS DA CIDADANIA", "15": "URBANISMO", "16": "HABITAÇÃO",
+    "17": "SANEAMENTO", "18": "GESTÃO AMBIENTAL", "19": "CIÊNCIA E TECNOLOGIA",
+    "20": "AGRICULTURA", "21": "ORGANIZAÇÃO AGRÁRIA", "22": "INDÚSTRIA",
+    "23": "COMÉRCIO E SERVIÇOS", "24": "COMUNICAÇÕES", "25": "ENERGIA",
+    "26": "TRANSPORTE", "27": "DESPORTO E LAZER", "28": "ENCARGOS ESPECIAIS",
+    "99": "RESERVA DE CONTIGÊNCIA",
+};
+
+function getCategoryLabel(cat?: string): string {
+    if (!cat) return "";
+    let catNum = cat;
+    if (typeof catNum === "string" && catNum.includes(" - ")) catNum = catNum.split(" - ")[0].trim();
+    return CATEGORY_MAP[String(catNum)] || cat;
+}
+
+function exportToExcel(amendments: Amendment[]) {
+    const headers = [
+        "ID", "Nº Emenda", "Objeto/Título", "Finalidade", "Autor",
+        "Categoria", "Tipo de Emenda", "Âmbito", "Fundamento Legal",
+        "Município", "CNPJ", "Responsável", "Cargo do Responsável",
+        "Função", "Subfunção", "Destinação", "Órgão Beneficiário",
+        "Localidade Beneficiada", "Instrumento Jurídico", "Fornecedor",
+        "Nº Licitação", "Prazo de Aplicação",
+        "Valor", "Valor Autorizado", "Reservado", "Empenhado", "Liquidado", "Pago",
+        "% RCL", "Conta Específica", "Nº Conta",
+        "Código Aplicação", "Código Aplicação Variável",
+        "Status", "Prioridade",
+        "Portal Transparência", "Divulgação Tempo Real", "Link Portal", "Monitoramento",
+        "Data de Criação",
+    ];
+
+    const escapeCSV = (val: any): string => {
+        const str = String(val ?? "").replace(/"/g, '""');
+        return `"${str}"`;
+    };
+
+    const rows = amendments.map((a) => [
+        a.id,
+        a.numeroEmenda || "",
+        a.objeto || a.title || "",
+        a.finalidade || a.description || "",
+        a.autor || a.author || "",
+        getCategoryLabel(a.categoria),
+        a.tipoEmenda || "",
+        a.ambito || "",
+        a.fundamentoLegal || "",
+        a.municipio || "",
+        a.cnpj || "",
+        a.responsavelNome || a.responsible || "",
+        a.responsavelCargo || "",
+        a.funcao || "",
+        a.subfuncao || "",
+        a.destinacao || "",
+        a.orgaoBeneficiario || "",
+        a.localidadeBeneficiada || a.neighborhood || a.address || "",
+        a.instrumentoJuridico || "",
+        a.fornecedor || "",
+        a.numeroLicitacao || "",
+        a.prazoAplicacao || "",
+        a.valor || a.value || "",
+        a.valorAutorizado || "",
+        a.reservado || "",
+        a.empenhado || "",
+        a.liquidado || "",
+        a.pago || "",
+        a.percentualRcl || "",
+        a.contaEspecifica || "",
+        a.numeroConta || "",
+        a.codigoAplicacao || "",
+        a.codigoAplicacaoVariavel || "",
+        getNormalizedStatus(a.status),
+        a.priority || "",
+        a.portalTransparenciaCheck || "",
+        a.divulgacaoTempoReal || "",
+        a.linkPortal || "",
+        a.monitoramentoCheck || "",
+        a.createdAt || "",
+    ]);
+
+    const csvContent = "\uFEFF" + [
+        headers.map(escapeCSV).join(";"),
+        ...rows.map(row => row.map(escapeCSV).join(";")),
+    ].join("\r\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    const date = new Date().toISOString().slice(0, 10);
+    link.download = `emendas-osasco-${date}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
 function ProjectsContent() {
     const searchParams = useSearchParams();
     const initialSector = searchParams.get("sector");
@@ -106,6 +207,7 @@ function ProjectsContent() {
     const filtroParam = searchParams.get("filtro");
 
     const [projects, setProjects] = useState<Project[]>([]);
+    const [rawAmendments, setRawAmendments] = useState<Amendment[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState(initialSearch || "");
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
@@ -178,6 +280,7 @@ function ProjectsContent() {
                 });
 
                 setProjects(mappedProjects);
+                setRawAmendments(amendments);
             } catch (error) {
                 console.error("Failed to load amendments", error);
             } finally {
@@ -349,6 +452,17 @@ function ProjectsContent() {
                             title="Limpar filtros"
                         >
                             <span className="material-symbols-outlined block">filter_list_off</span>
+                        </button>
+
+                        {/* Export to Excel */}
+                        <button
+                            onClick={() => exportToExcel(rawAmendments)}
+                            disabled={rawAmendments.length === 0}
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-bold hover:bg-emerald-600 transition-all disabled:opacity-40 cursor-pointer"
+                            title="Exportar todas as emendas para planilha Excel"
+                        >
+                            <span className="material-symbols-outlined text-sm">download</span>
+                            Exportar Excel
                         </button>
                     </div>
                 </div>
