@@ -85,20 +85,20 @@ export default async function RelatorioPage(props: Props) {
                     {/* Header */}
                     <header className="flex justify-between items-start border-b-2 border-blue-600 pb-6 mb-8 relative z-10">
                         <div className="flex items-center gap-3">
-                            <div className="bg-blue-600 p-2 rounded-lg">
+                            <div className="w-12 h-12 flex items-center justify-center shrink-0">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src="/brasao-osasco.png"
                                     alt="Brasão de Osasco"
-                                    className="w-8 h-8 filter brightness-0 invert object-contain"
+                                    className="h-full w-full object-contain drop-shadow"
                                 />
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+                                <h1 className="text-lg font-bold text-slate-900 uppercase tracking-tight leading-tight">
                                     Portal das Emendas
                                 </h1>
-                                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-semibold">
-                                    Portal de Transparência Municipal
+                                <p className="text-[10px] uppercase text-slate-500 font-medium">
+                                    Prefeitura Municipal de Osasco
                                 </p>
                             </div>
                         </div>

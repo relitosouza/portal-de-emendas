@@ -1,11 +1,9 @@
 import { getAmendmentsFromSheet } from "@/lib/json-storage";
-import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus, getStatusStep } from "@/lib/status-mapper";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/shared/navbar";
 import ShareCard from "@/components/projects/share-card";
-import PrintButton from "@/components/projects/print-button";
 
 export const revalidate = 60;
 
@@ -687,7 +685,6 @@ export default async function ProjetoDetalhePage(props: Props) {
                                     <span className="material-symbols-outlined text-xl">description</span>
                                     Visualizar Relatório
                                 </Link>
-                                <PrintButton />
                                 <Link href="/" className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all active:scale-95">
                                     <span className="material-symbols-outlined text-xl">home</span>
                                     Voltar ao Início
