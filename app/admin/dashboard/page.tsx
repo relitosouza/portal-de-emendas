@@ -16,6 +16,14 @@ export default function DashboardPage() {
     const [savingFinancial, setSavingFinancial] = useState(false);
     const [financialFeedback, setFinancialFeedback] = useState<string | null>(null);
 
+    // CSV Import state
+    const [importModal, setImportModal] = useState(false);
+    const [importType, setImportType] = useState<"financial" | "amendments">("financial");
+    const [importFile, setImportFile] = useState<File | null>(null);
+    const [importPreview, setImportPreview] = useState<string[][] | null>(null);
+    const [importing, setImporting] = useState(false);
+    const [importFeedback, setImportFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
     useEffect(() => {
         async function loadData() {
             try {
@@ -130,6 +138,77 @@ export default function DashboardPage() {
         { label: "Ver Portal Público", desc: "Visualizar a página pública", icon: "visibility", href: "/", color: "from-slate-700 to-slate-600" },
     ];
 
+    // CSV Import handlers
+    const handleFileSelect = (file: File) => {
+        setImportFile(file);
+        setImportFeedback(null);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const text = e.target?.result as string;
+            if (!text) return;
+            const lines = text.split("\n").filter((l) => l.trim());
+            const preview = lines.slice(0, 6).map((line) => {
+                const cells: string[] = [];
+                let current = "";
+                let inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (inQuotes) {
+                        if (char === '"' && line[i + 1] === '"') { current += '"'; i++; }
+                        else if (char === '"') { inQuotes = false; }
+                        else { current += char; }
+                    } else {
+                        if (char === '"') { inQuotes = true; }
+                        else if (char === "," || char === ";") { cells.push(current.trim()); current = ""; }
+                        else if (char === "\r") { continue; }
+                        else { current += char; }
+                    }
+                }
+                cells.push(current.trim());
+                return cells;
+            });
+            setImportPreview(preview);
+        };
+        reader.readAsText(file);
+    };
+
+    const handleImport = async () => {
+        if (!importFile) return;
+        setImporting(true);
+        setImportFeedback(null);
+        try {
+            const formData = new FormData();
+            formData.append("file", importFile);
+            const endpoint = importType === "financial" ? "/api/financial/import" : "/api/amendments/import";
+            const res = await fetch(endpoint, { method: "POST", body: formData });
+            const result = await res.json();
+            if (res.ok) {
+                if (importType === "financial") {
+                    setImportFeedback({ type: "success", message: `${result.updated} atualizados, ${result.added} novos. Total: ${result.total}` });
+                } else {
+                    setImportFeedback({ type: "success", message: `${result.amendments} emendas importadas${result.financial > 0 ? `, ${result.financial} registros financeiros extraídos` : ""}` });
+                    // Reload amendments
+                    const dataRes = await fetch("/api/amendments");
+                    const data = await dataRes.json();
+                    if (Array.isArray(data)) setAmendments(data);
+                }
+            } else {
+                setImportFeedback({ type: "error", message: result.error || "Erro ao importar" });
+            }
+        } catch {
+            setImportFeedback({ type: "error", message: "Erro de conexão ao importar" });
+        } finally {
+            setImporting(false);
+        }
+    };
+
+    const resetImportModal = () => {
+        setImportModal(false);
+        setImportFile(null);
+        setImportPreview(null);
+        setImportFeedback(null);
+    };
+
     return (
         <div className="flex flex-col min-h-screen bg-[#f8fafc] font-sans text-slate-800 antialiased">
             <Navbar />
@@ -151,7 +230,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Quick Actions */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                         {quickActions.map((action) => (
                             <Link
                                 key={action.href}
@@ -172,6 +251,22 @@ export default function DashboardPage() {
                                 </div>
                             </Link>
                         ))}
+                        <button
+                            onClick={() => setImportModal(true)}
+                            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 text-white transition-all hover:shadow-lg hover:-translate-y-0.5 text-left"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-br from-amber-600 to-orange-500 opacity-100"></div>
+                            <div className="relative flex items-center gap-4">
+                                <div className="flex size-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                                    <span className="material-symbols-outlined text-[24px]">upload_file</span>
+                                </div>
+                                <div>
+                                    <p className="font-bold text-sm">Importar CSV</p>
+                                    <p className="text-xs text-white/70">Emendas ou dados financeiros</p>
+                                </div>
+                                <span className="material-symbols-outlined ml-auto text-white/50 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </div>
+                        </button>
                     </div>
 
                     {/* Stats Row */}
@@ -579,6 +674,140 @@ export default function DashboardPage() {
                     </div>
                 )
             }
+
+            {/* CSV Import Modal */}
+            {importModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+                    <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl max-h-[90vh] flex flex-col">
+                        <div className="flex items-center justify-between border-b border-slate-100 p-6">
+                            <div className="flex items-center gap-3">
+                                <div className="flex size-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+                                    <span className="material-symbols-outlined">upload_file</span>
+                                </div>
+                                <div>
+                                    <h2 className="text-base font-bold text-slate-900">Importar CSV</h2>
+                                    <p className="text-xs text-slate-400">Selecione o tipo e o arquivo CSV</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={resetImportModal}
+                                className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                            >
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+
+                        <div className="p-6 space-y-5 overflow-y-auto flex-1">
+                            {/* Type Selector */}
+                            <div>
+                                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 block">Tipo de Importação</label>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button
+                                        onClick={() => { setImportType("amendments"); setImportFile(null); setImportPreview(null); setImportFeedback(null); }}
+                                        className={`flex items-center gap-3 rounded-xl border-2 p-4 transition-all ${importType === "amendments" ? "border-blue-500 bg-blue-50" : "border-slate-200 hover:border-slate-300"}`}
+                                    >
+                                        <span className={`material-symbols-outlined text-[24px] ${importType === "amendments" ? "text-blue-600" : "text-slate-400"}`}>description</span>
+                                        <div className="text-left">
+                                            <p className={`text-sm font-bold ${importType === "amendments" ? "text-blue-700" : "text-slate-700"}`}>Emendas</p>
+                                            <p className="text-[10px] text-slate-400">Página1 do Google Sheets</p>
+                                        </div>
+                                    </button>
+                                    <button
+                                        onClick={() => { setImportType("financial"); setImportFile(null); setImportPreview(null); setImportFeedback(null); }}
+                                        className={`flex items-center gap-3 rounded-xl border-2 p-4 transition-all ${importType === "financial" ? "border-emerald-500 bg-emerald-50" : "border-slate-200 hover:border-slate-300"}`}
+                                    >
+                                        <span className={`material-symbols-outlined text-[24px] ${importType === "financial" ? "text-emerald-600" : "text-slate-400"}`}>attach_money</span>
+                                        <div className="text-left">
+                                            <p className={`text-sm font-bold ${importType === "financial" ? "text-emerald-700" : "text-slate-700"}`}>Financeiro</p>
+                                            <p className="text-[10px] text-slate-400">ExecucaoFinanceira</p>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* File Input */}
+                            <div>
+                                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 block">Arquivo CSV</label>
+                                <div className="relative">
+                                    <input
+                                        type="file"
+                                        accept=".csv"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) handleFileSelect(file);
+                                        }}
+                                        className="w-full rounded-xl border-2 border-dashed border-slate-200 p-4 text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-xs file:font-bold file:text-blue-600 hover:border-slate-300 transition-colors"
+                                    />
+                                </div>
+                                {importFile && (
+                                    <p className="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                                        <span className="material-symbols-outlined text-[14px] text-emerald-500">check_circle</span>
+                                        {importFile.name} ({(importFile.size / 1024).toFixed(1)} KB)
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Preview */}
+                            {importPreview && importPreview.length > 0 && (
+                                <div>
+                                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 block">
+                                        Preview ({importPreview.length > 1 ? `${importPreview.length - 1} linhas` : "cabeçalho"})
+                                    </label>
+                                    <div className="overflow-x-auto rounded-xl border border-slate-200">
+                                        <table className="w-full text-xs">
+                                            <thead>
+                                                <tr className="bg-slate-50">
+                                                    {importPreview[0].slice(0, 6).map((header, i) => (
+                                                        <th key={i} className="px-3 py-2 text-left font-bold text-slate-500 whitespace-nowrap">{header || `Col ${i + 1}`}</th>
+                                                    ))}
+                                                    {importPreview[0].length > 6 && <th className="px-3 py-2 text-slate-400">...</th>}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {importPreview.slice(1, 6).map((row, ri) => (
+                                                    <tr key={ri} className="border-t border-slate-100">
+                                                        {row.slice(0, 6).map((cell, ci) => (
+                                                            <td key={ci} className="px-3 py-2 text-slate-600 whitespace-nowrap max-w-[150px] truncate">{cell || "—"}</td>
+                                                        ))}
+                                                        {row.length > 6 && <td className="px-3 py-2 text-slate-400">...</td>}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Feedback */}
+                            {importFeedback && (
+                                <div className={`flex items-center gap-2 rounded-xl border p-3 text-sm font-medium ${importFeedback.type === "success" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"}`}>
+                                    <span className="material-symbols-outlined text-[18px]">{importFeedback.type === "success" ? "check_circle" : "error"}</span>
+                                    {importFeedback.message}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex justify-end gap-3 border-t border-slate-100 p-6">
+                            <button
+                                onClick={resetImportModal}
+                                className="rounded-xl px-5 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+                            >
+                                {importFeedback?.type === "success" ? "Fechar" : "Cancelar"}
+                            </button>
+                            {importFeedback?.type !== "success" && (
+                                <button
+                                    onClick={handleImport}
+                                    disabled={!importFile || importing}
+                                    className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-600 to-orange-500 px-6 py-2.5 text-sm font-bold text-white shadow-md disabled:opacity-50 transition-all hover:shadow-lg"
+                                >
+                                    <span className="material-symbols-outlined text-[18px]">{importing ? "hourglass_empty" : "upload"}</span>
+                                    {importing ? "Importando..." : "Importar"}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Footer */}
             <footer className="border-t border-slate-200 bg-white px-6 py-8 lg:px-8">
