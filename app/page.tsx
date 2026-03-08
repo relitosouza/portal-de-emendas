@@ -509,7 +509,7 @@ export default function Home() {
                     const valorFormatado = sector.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
                     return (
-                      <div key={sector.name} className="p-4 hover:bg-slate-50 transition-colors">
+                      <Link href={`/projetos?search=${encodeURIComponent(sector.name)}`} key={sector.name} className="p-4 hover:bg-slate-50 transition-colors block cursor-pointer">
                         <div className="flex justify-between items-end mb-2">
                           <span className={`text-xs font-bold truncate pr-2 ${sc.badgeText}`} title={sector.name}>{sector.name}</span>
                           <span className="text-[10px] font-bold text-slate-500 text-right shrink-0">{sector.count} emendas<br />{valorFormatado}</span>
@@ -520,7 +520,7 @@ export default function Home() {
                             style={{ width: `${widthPercent}%` }}
                           />
                         </div>
-                      </div>
+                      </Link>
                     );
                   })
                 )}
