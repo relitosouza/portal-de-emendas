@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDashboardCards, saveDashboardCards, DashboardCard } from "@/lib/google-sheets";
+import { getDashboardCards, saveDashboardCards, DashboardCard } from "@/lib/json-storage";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 
 export async function GET() {

@@ -1,4 +1,4 @@
-import { getAmendmentsFromSheet } from "@/lib/google-sheets";
+import { getAmendmentsFromSheet } from "@/lib/json-storage";
 import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus, getStatusStep } from "@/lib/status-mapper";
 import { notFound } from "next/navigation";

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { google } from "googleapis";
-import { getAuthClient, upsertFinancialData } from "@/lib/google-sheets";
+import { upsertFinancialData } from "@/lib/json-storage";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 
 export async function POST(request: Request) {
@@ -14,11 +13,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "amendmentId is required" }, { status: 400 });
         }
 
-        const auth = await getAuthClient();
-        const sheets = google.sheets({ version: "v4", auth });
-        const spreadsheetId = process.env.GOOGLE_SHEET_ID!;
-
-        await upsertFinancialData(sheets, spreadsheetId, amendmentId, {
+        await upsertFinancialData(null, "", amendmentId, {
             empenhado: empenhado || "",
             liquidado: liquidado || "",
             pago: pago || "",
