@@ -129,8 +129,7 @@ export default function Home() {
     });
     return Object.entries(sectorMap)
       .map(([name, data]) => ({ name, ...data }))
-      .sort((a, b) => b.valor - a.valor)
-      .slice(0, 5);
+      .sort((a, b) => b.valor - a.valor);
   };
 
   useEffect(() => {
