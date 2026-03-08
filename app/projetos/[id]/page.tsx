@@ -680,6 +680,13 @@ export default async function ProjetoDetalhePage(props: Props) {
 
                             {/* Action Buttons */}
                             <div className="flex flex-col gap-3">
+                                <Link
+                                    href={`/projetos/${id}/relatorio`}
+                                    className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:scale-95"
+                                >
+                                    <span className="material-symbols-outlined text-xl">description</span>
+                                    Visualizar Relatório
+                                </Link>
                                 <PrintButton />
                                 <Link href="/" className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all active:scale-95">
                                     <span className="material-symbols-outlined text-xl">home</span>
