@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, Suspense, useEffect } from "react";
+import { useState, Suspense, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { Amendment } from "@/lib/store";
 import Navbar from "@/components/shared/navbar";
@@ -219,6 +219,11 @@ function ProjectsContent() {
     const [selectedSector, setSelectedSector] = useState<string | null>(initialSector);
     const [currentPage, setCurrentPage] = useState(1);
 
+    const availableSectors = useMemo(() => {
+        const sectors = new Set(projects.map(p => p.sector).filter(Boolean));
+        return Array.from(sectors).sort((a, b) => a.localeCompare(b, "pt-BR"));
+    }, [projects]);
+
     useEffect(() => {
         async function fetchAmendments() {
             try {
@@ -422,11 +427,9 @@ function ProjectsContent() {
                                 onChange={(e) => setSelectedSector(e.target.value || null)}
                             >
                                 <option value="">Todos os Setores</option>
-                                <option value="Saúde">🏥 Saúde</option>
-                                <option value="Educação">📚 Educação</option>
-                                <option value="Infraestrutura">🚧 Infraestrutura</option>
-                                <option value="Segurança">🚓 Segurança</option>
-                                <option value="Cultura">🎭 Cultura</option>
+                                {availableSectors.map(sector => (
+                                    <option key={sector} value={sector}>{sector}</option>
+                                ))}
                             </select>
                         </div>
 
