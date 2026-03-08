@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/shared/navbar";
 import ShareCard from "@/components/projects/share-card";
+import PrintButton from "@/components/projects/print-button";
 
 export const revalidate = 60;
 
@@ -142,12 +143,30 @@ export default async function ProjetoDetalhePage(props: Props) {
     const statusInfo = getStatusLabel();
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900">
-            <Navbar />
+        <div className="min-h-screen bg-slate-50 text-slate-900 print:bg-white print:text-black">
+            <div className="print:hidden">
+                <Navbar />
+            </div>
 
-            <main className="max-w-[1200px] mx-auto px-6 lg:px-10 py-8">
+            {/* Print Header (Only visible when printing/exporting to PDF) */}
+            <div className="hidden print:flex justify-between items-center border-b-2 border-black pb-4 mb-6 pt-4">
+                <div className="flex items-center gap-4">
+                    <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="h-16 w-16 object-contain" />
+                    <div>
+                        <h1 className="text-xl font-bold uppercase tracking-widest">Prefeitura do Município de Osasco</h1>
+                        <h2 className="text-lg font-bold text-slate-700">Relatório Executivo de Emenda Parlamentar</h2>
+                        <p className="text-xs text-slate-500">Documento Oficial • Gerado em {new Date().toLocaleDateString('pt-BR')} às {new Date().toLocaleTimeString('pt-BR')}</p>
+                    </div>
+                </div>
+                <div className="text-right">
+                    <p className="text-2xl font-black">{amendment.numeroEmenda || id.slice(0, 8)}</p>
+                    <p className="text-xs uppercase font-bold text-slate-500 tracking-wider">Cód. Identificador</p>
+                </div>
+            </div>
+
+            <main className="max-w-[1200px] mx-auto px-6 lg:px-10 py-8 print:py-0 print:px-0 print:block">
                 {/* Breadcrumb */}
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 mb-6 print:hidden">
                     <Link className="text-slate-500 text-sm font-medium hover:text-blue-500" href="/">Início</Link>
                     <span className="text-slate-400 text-sm font-medium">/</span>
                     <Link className="text-slate-500 text-sm font-medium hover:text-blue-500" href="/projetos">Emendas</Link>
@@ -158,18 +177,18 @@ export default async function ProjetoDetalhePage(props: Props) {
 
 
                 {/* Status Tracker */}
-                <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100">
-                    <div className="flex items-center justify-between mb-8">
+                <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100 print:border-black print:shadow-none print:break-inside-avoid">
+                    <div className="flex items-center justify-between mb-8 print:mb-4">
                         <div>
-                            <h2 className="text-lg font-bold">Estágio Atual da Emenda</h2>
-                            <p className="text-sm text-slate-500">Acompanhamento em tempo real do fluxo administrativo</p>
+                            <h2 className="text-lg font-bold print:uppercase">Estágio Atual da Emenda</h2>
+                            <p className="text-sm text-slate-500 print:hidden">Acompanhamento em tempo real do fluxo administrativo</p>
                         </div>
-                        <div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${statusInfo.color}`}>
-                            <span className="size-2 rounded-full bg-current animate-pulse"></span>
+                        <div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${statusInfo.color} print:bg-white print:border-black print:text-black`}>
+                            <span className="size-2 rounded-full bg-current animate-pulse print:hidden"></span>
                             <span className="text-xs font-bold uppercase tracking-widest">{statusInfo.label}</span>
                         </div>
                     </div>
-                    <div className="overflow-x-auto pb-4">
+                    <div className="overflow-x-auto pb-4 print:hidden">
                         <div className="flex min-w-[1000px] justify-between relative px-4 pt-4">
                             {/* Background line */}
                             <div className="absolute top-8 left-4 right-4 h-1 bg-slate-100 z-0"></div>
@@ -222,61 +241,61 @@ export default async function ProjetoDetalhePage(props: Props) {
                 {/* Main Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-start">
                     {/* Left Column */}
-                    <div className="lg:col-span-7 flex flex-col gap-8">
+                    <div className="lg:col-span-7 flex flex-col gap-8 print:col-span-full print:block">
                         {/* Project Info */}
-                        <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
-                            <div className="flex flex-col gap-2 mb-6">
+                        <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 print:border-0 print:p-0 print:mb-6 print:shadow-none">
+                            <div className="flex flex-col gap-2 mb-6 print:mb-4">
                                 <div className="flex items-center gap-3">
-                                    <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-500 text-xs font-bold uppercase tracking-wider">
+                                    <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-500 text-xs font-bold uppercase tracking-wider print:border print:border-black print:text-black">
                                         {amendment.categoria || amendment.ambito || "Geral"}
                                     </span>
-                                    <span className="text-slate-400 text-sm font-medium">
+                                    <span className="text-slate-400 text-sm font-medium print:text-black">
                                         ID: {amendment.numeroEmenda || amendment.id.slice(0, 8)} &bull; {amendment.tipoEmenda || "Emenda Individual"}
                                     </span>
                                 </div>
                             </div>
                             <div className="flex flex-col gap-6">
                                 <div className="flex flex-col gap-2">
-                                    <h2 className="text-xl font-bold">Objetivo da Emenda</h2>
-                                    <p className="text-slate-600 text-base leading-relaxed">
-                                        {amendment.objeto || amendment.title || "Sem objetivo disponível para esta emenda."}
+                                    <h2 className="text-xl font-bold print:uppercase">Objetivo da Emenda</h2>
+                                    <p className="text-slate-600 text-base leading-relaxed print:text-black">
+                                        {amendment.objeto || amendment.title || "-"}
                                     </p>
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <h2 className="text-xl font-bold">Finalidade</h2>
-                                    <p className="text-slate-600 text-base leading-relaxed">
-                                        {amendment.finalidade || amendment.description || "Sem finalidade disponível para esta emenda."}
+                                    <h2 className="text-xl font-bold print:uppercase">Finalidade</h2>
+                                    <p className="text-slate-600 text-base leading-relaxed print:text-black">
+                                        {amendment.finalidade || amendment.description || "-"}
                                     </p>
                                 </div>
                             </div>
                         </section>
 
                         {/* Financial Flow */}
-                        <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
-                            <h2 className="text-xl font-bold mb-8">Fluxo de Execução Orçamentária</h2>
-                            <div className="relative space-y-12">
+                        <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 print:border-black print:shadow-none print:break-inside-avoid print:p-6 print:mb-6">
+                            <h2 className="text-xl font-bold mb-8 print:mb-4 print:uppercase">Fluxo de Execução Orçamentária</h2>
+                            <div className="relative space-y-12 print:space-y-4">
                                 {/* Vertical line */}
-                                <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100"></div>
+                                <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100 print:hidden"></div>
 
                                 {/* Reservado */}
-                                <div className="relative flex items-center gap-6">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${reservado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                <div className="relative flex items-center gap-6 print:gap-2">
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm print:hidden ${reservado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
                                         }`}>
                                         <span className="material-symbols-outlined text-sm font-bold">
                                             {reservado > 0 ? "check" : "more_horiz"}
                                         </span>
                                     </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${reservado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg print:border-b print:border-black print:rounded-none print:p-2 ${reservado > 0 ? "bg-slate-50 hover:bg-slate-100 print:bg-white" : "bg-white border border-slate-100 print:border-0 print:border-b"
                                         } transition-colors`}>
                                         <div>
-                                            <p className={`font-bold ${reservado > 0 ? "text-slate-900" : "text-slate-400"}`}>Reservado</p>
-                                            <p className={`text-sm ${reservado > 0 ? "text-slate-500" : "text-slate-400"}`}>Previsão inicial de destinação</p>
+                                            <p className={`font-bold print:text-black ${reservado > 0 ? "text-slate-900" : "text-slate-400"}`}>Reservado</p>
+                                            <p className={`text-sm print:hidden ${reservado > 0 ? "text-slate-500" : "text-slate-400"}`}>Previsão inicial de destinação</p>
                                         </div>
                                         <div className="text-right">
-                                            <p className={`font-bold ${reservado > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                            <p className={`font-bold print:text-black ${reservado > 0 ? "text-blue-500" : "text-slate-400"}`}>
                                                 {reservado > 0 ? formatCurrency(reservado) : "R$ 0,00"}
                                             </p>
-                                            <p className="text-xs text-slate-400">
+                                            <p className="text-xs text-slate-400 print:hidden">
                                                 {reservado > 0 ? "Confirmado" : "Em processamento"}
                                             </p>
                                         </div>
@@ -284,24 +303,24 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 </div>
 
                                 {/* Empenhado */}
-                                <div className="relative flex items-center gap-6">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${empenhado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                <div className="relative flex items-center gap-6 print:gap-2">
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm print:hidden ${empenhado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
                                         }`}>
                                         <span className="material-symbols-outlined text-sm font-bold">
                                             {empenhado > 0 ? "check" : "more_horiz"}
                                         </span>
                                     </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${empenhado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg print:border-b print:border-black print:rounded-none print:p-2 ${empenhado > 0 ? "bg-slate-50 hover:bg-slate-100 print:bg-white" : "bg-white border border-slate-100 print:border-0 print:border-b"
                                         } transition-colors`}>
                                         <div>
-                                            <p className={`font-bold ${empenhado > 0 ? "text-slate-900" : "text-slate-400"}`}>Empenhado</p>
-                                            <p className={`text-sm ${empenhado > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso reservado para o projeto</p>
+                                            <p className={`font-bold print:text-black ${empenhado > 0 ? "text-slate-900" : "text-slate-400"}`}>Empenhado</p>
+                                            <p className={`text-sm print:hidden ${empenhado > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso reservado para o projeto</p>
                                         </div>
                                         <div className="text-right">
-                                            <p className={`font-bold ${empenhado > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                            <p className={`font-bold print:text-black ${empenhado > 0 ? "text-blue-500" : "text-slate-400"}`}>
                                                 {empenhado > 0 ? formatCurrency(empenhado) : "R$ 0,00"}
                                             </p>
-                                            <p className="text-xs text-slate-400">
+                                            <p className="text-xs text-slate-400 print:hidden">
                                                 {empenhado > 0 ? "Confirmado" : "Em processamento"}
                                             </p>
                                         </div>
@@ -309,24 +328,24 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 </div>
 
                                 {/* Liquidado */}
-                                <div className="relative flex items-center gap-6">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${liquidado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                <div className="relative flex items-center gap-6 print:gap-2">
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm print:hidden ${liquidado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
                                         }`}>
                                         <span className="material-symbols-outlined text-sm font-bold">
                                             {liquidado > 0 ? "check" : "more_horiz"}
                                         </span>
                                     </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${liquidado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg print:border-b print:border-black print:rounded-none print:p-2 ${liquidado > 0 ? "bg-slate-50 hover:bg-slate-100 print:bg-white" : "bg-white border border-slate-100 print:border-0 print:border-b"
                                         } transition-colors`}>
                                         <div>
-                                            <p className={`font-bold ${liquidado > 0 ? "text-slate-900" : "text-slate-400"}`}>Liquidado</p>
-                                            <p className={`text-sm ${liquidado > 0 ? "text-slate-500" : "text-slate-400"}`}>Serviço/Produto entregue e verificado</p>
+                                            <p className={`font-bold print:text-black ${liquidado > 0 ? "text-slate-900" : "text-slate-400"}`}>Liquidado</p>
+                                            <p className={`text-sm print:hidden ${liquidado > 0 ? "text-slate-500" : "text-slate-400"}`}>Serviço/Produto entregue e verificado</p>
                                         </div>
                                         <div className="text-right">
-                                            <p className={`font-bold ${liquidado > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                            <p className={`font-bold print:text-black ${liquidado > 0 ? "text-blue-500" : "text-slate-400"}`}>
                                                 {liquidado > 0 ? formatCurrency(liquidado) : "R$ 0,00"}
                                             </p>
-                                            <p className="text-xs text-slate-400">
+                                            <p className="text-xs text-slate-400 print:hidden">
                                                 {liquidado > 0 ? "Confirmado" : "Em processamento"}
                                             </p>
                                         </div>
@@ -334,24 +353,24 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 </div>
 
                                 {/* Pago */}
-                                <div className="relative flex items-center gap-6">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${pago > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                <div className="relative flex items-center gap-6 print:gap-2">
+                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm print:hidden ${pago > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
                                         }`}>
                                         <span className="material-symbols-outlined text-sm font-bold">
                                             {pago > 0 ? "check" : "more_horiz"}
                                         </span>
                                     </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${pago > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg print:border-0 print:rounded-none print:p-2 ${pago > 0 ? "bg-slate-50 hover:bg-slate-100 print:bg-white" : "bg-white border border-slate-100 print:border-none"
                                         } transition-colors`}>
                                         <div>
-                                            <p className={`font-bold ${pago > 0 ? "text-slate-900" : "text-slate-400"}`}>Pago</p>
-                                            <p className={`text-sm ${pago > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso transferido ao fornecedor</p>
+                                            <p className={`font-bold print:text-black ${pago > 0 ? "text-slate-900" : "text-slate-400"}`}>Pago</p>
+                                            <p className={`text-sm print:hidden ${pago > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso transferido ao fornecedor</p>
                                         </div>
                                         <div className="text-right">
-                                            <p className={`font-bold ${pago > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                            <p className={`font-bold print:text-black ${pago > 0 ? "text-blue-500" : "text-slate-400"}`}>
                                                 {pago > 0 ? formatCurrency(pago) : "R$ 0,00"}
                                             </p>
-                                            <p className="text-xs text-slate-400">
+                                            <p className="text-xs text-slate-400 print:hidden">
                                                 {pago > 0 ? "Confirmado" : "Em processamento"}
                                             </p>
                                         </div>
@@ -359,27 +378,44 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 </div>
                             </div>
                         </section>
+
+                        {/* Formulário Completo - Apenas Impressão da Ficha Técnica */}
+                        <section className="hidden print:block mb-8 break-inside-avoid">
+                            <h2 className="text-xl font-bold uppercase mb-4 border-b pb-2 border-black">Detalhamento Oficial (Ficha Técnica)</h2>
+                            <div className="grid grid-cols-2 gap-4 text-sm font-medium">
+                                <span className="border-b border-gray-300 pb-1"><strong>CNPJ/Município:</strong> <br />{amendment.cnpj || "-"} - {amendment.municipio || "Osasco/SP"}</span>
+                                <span className="border-b border-gray-300 pb-1"><strong>Responsável:</strong> <br />{amendment.responsavelNome || "-"} ({amendment.responsavelCargo || "-"})</span>
+                                <span className="border-b border-gray-300 pb-1"><strong>LOA 2026:</strong> <br />{amendment.loa2026Check || "-"}</span>
+                                <span className="border-b border-gray-300 pb-1"><strong>Prazo de Aplicação:</strong> <br />{amendment.prazoAplicacao || "-"}</span>
+                                <span className="border-b border-gray-300 pb-1"><strong>Instituição / Órgão:</strong> <br />{amendment.orgaoBeneficiario || "-"}</span>
+                                <span className="border-b border-gray-300 pb-1"><strong>Localidade:</strong> <br />{amendment.localidadeBeneficiada || "-"}</span>
+                                <span className="border-b border-gray-300 pb-1"><strong>Fornecedor:</strong> <br />{amendment.fornecedor || "-"}</span>
+                                <span className="border-b border-gray-300 pb-1"><strong>Instrumento Jurídico:</strong> <br />{amendment.instrumentoJuridico || "-"}</span>
+                                <span className="border-b border-gray-300 pb-1"><strong>Cronograma Fís.-Financeiro:</strong> <br />{amendment.possuiCronograma || "-"}</span>
+                                <span className="border-b border-gray-300 pb-1"><strong>Transparência:</strong> <br />{amendment.portalTransparenciaCheck || "-"}</span>
+                            </div>
+                        </section>
                     </div>
 
                     {/* Right Sidebar */}
-                    <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-24">
+                    <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-24 print:col-span-full print:block print:relative print:top-0">
                         {/* Value Card */}
-                        <div className="bg-blue-500 text-white p-6 rounded-xl shadow-lg shadow-blue-500/20">
-                            <p className="text-blue-100 text-xs font-bold uppercase tracking-wider mb-1">Valor Total Destinado</p>
-                            <p className="text-3xl font-extrabold mb-4">
+                        <div className="bg-blue-500 text-white p-6 rounded-xl shadow-lg shadow-blue-500/20 print:bg-white print:border-2 print:border-black print:text-black print:shadow-none print:mb-6">
+                            <p className="text-blue-100 text-xs font-bold uppercase tracking-wider mb-1 print:text-black">Valor Total Destinado</p>
+                            <p className="text-3xl font-extrabold mb-4 print:text-black">
                                 {valorTotal > 0 ? formatCurrency(valorTotal) : "Não informado"}
                             </p>
                             {valorTotal > 0 && pago > 0 && (
-                                <div className="flex items-center gap-2 text-sm text-blue-100">
-                                    <span className="material-symbols-outlined text-sm">trending_up</span>
+                                <div className="flex items-center gap-2 text-sm text-blue-100 print:text-black">
+                                    <span className="material-symbols-outlined text-sm print:hidden">trending_up</span>
                                     <span>{Math.round((pago / valorTotal) * 100)}% já pago</span>
                                 </div>
                             )}
                         </div>
 
                         {/* Author Card */}
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                            <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-4">Autor da Emenda</p>
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 print:break-inside-avoid print:border-black print:mb-6">
+                            <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-4 print:text-black">Autor da Emenda</p>
                             <div className="flex items-center gap-4 mb-6">
                                 {autorPhoto ? (
                                     /* eslint-disable-next-line @next/next/no-img-element */
@@ -417,74 +453,43 @@ export default async function ProjetoDetalhePage(props: Props) {
                         </div>
 
                         {/* Detalhamento da Emenda Card */}
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 print:hidden">
                             <h2 className="text-base font-bold mb-5">Detalhamento da Emenda</h2>
                             <div className="space-y-4">
                                 <div>
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Âmbito</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.ambito || "Não informado"}</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.ambito || "-"}</p>
                                 </div>
                                 <div>
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Tipo de Emenda</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.tipoEmenda || "Não informado"}</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.tipoEmenda || "-"}</p>
                                 </div>
                                 <div>
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Fundamento Legal</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.fundamentoLegal || "Não informado"}</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.fundamentoLegal || "-"}</p>
                                 </div>
                                 <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Função</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.funcao || "Não informado"}</p>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Subfunção</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.subfuncao || "Não informado"}</p>
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Função / Subfunção</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.funcao || "-"} / {amendment.subfuncao || "-"}</p>
                                 </div>
                                 <div>
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Destinação</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.destinacao || "Não informado"}</p>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Número Conta</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.numeroConta || "Não informado"}</p>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cód. de Aplicação</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.codigoAplicacao || "Não informado"}</p>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cód. Aplicação Variável</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.codigoAplicacaoVariavel || "Não informado"}</p>
+                                    <p className="text-sm font-medium text-slate-900">{amendment.destinacao || "-"}</p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Action Buttons (Temporarily Hidden) */}
-                        {/* 
-                        <div className="flex flex-col gap-3">
-                            <button className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:scale-95">
-                                <span className="material-symbols-outlined text-xl">notifications_active</span>
-                                Acompanhar Execução
-                            </button>
-                            <button className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all active:scale-95">
-                                <span className="material-symbols-outlined text-xl">description</span>
-                                Baixar Documentos
-                            </button>
-                            <ShareCard
-                                title={amendment.objeto || amendment.title || "Sem Título"}
-                                autor={autor}
-                                autorPhoto={autorPhoto}
-                                autorInitials={autorInitials}
-                                valor={valorTotal > 0 ? formatCurrency(valorTotal) : "Não informado"}
-                                status={amendment.status as string}
-                                statusLabel={statusInfo.label}
-                                id={amendment.id}
-                            />
-                        </div> 
-                        */}
+                        {/* Action Buttons */}
+                        <div className="flex flex-col gap-3 print:hidden">
+                            <PrintButton />
+                            <Link href="/" className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all active:scale-95">
+                                <span className="material-symbols-outlined text-xl">home</span>
+                                Voltar ao Início
+                            </Link>
+                        </div>
 
                         {/* Transparency Badge */}
-                        <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                        <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100 print:hidden">
                             <div className="flex items-start gap-3">
                                 <span className="material-symbols-outlined text-emerald-600 mt-0.5">verified</span>
                                 <div>
@@ -498,7 +503,7 @@ export default async function ProjetoDetalhePage(props: Props) {
             </main>
 
             {/* Footer */}
-            <footer className="mt-auto bg-white border-t border-slate-200 py-10">
+            <footer className="mt-auto bg-white border-t border-slate-200 py-10 print:hidden">
                 <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex items-center gap-3 text-slate-400">
                         {/* eslint-disable-next-line @next/next/no-img-element */}

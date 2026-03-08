@@ -209,6 +209,41 @@ export default function DashboardPage() {
         setImportFeedback(null);
     };
 
+    const handleExportExcel = () => {
+        if (filteredAmendments.length === 0) {
+            alert("Nenhuma emenda para exportar.");
+            return;
+        }
+
+        const headers = [
+            "Número", "Ano", "Objeto/Título", "Autor", "Valor Autorizado", "Status", "Localidade", "Empenhado", "Liquidado", "Pago"
+        ];
+
+        const rows = filteredAmendments.map(a => [
+            a.numeroEmenda || "",
+            a.year || "",
+            a.objeto || a.title || "",
+            a.autor || a.author || "",
+            a.valor || a.valorAutorizado || "",
+            getNormalizedStatus(a.status as string) || "",
+            a.localidadeBeneficiada || a.address || "",
+            a.empenhado || "",
+            a.liquidado || "",
+            a.pago || ""
+        ].map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(";"));
+
+        // O separador \uFEFF força o Excel a reconhecer os caracteres UTF-8 corretamente
+        const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(";"), ...rows].join("\n");
+        const encodedUri = encodeURI(csvContent);
+
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `emendas_exportativas_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <div className="flex flex-col min-h-screen bg-[#f8fafc] font-sans text-slate-800 antialiased">
             <Navbar />
@@ -340,6 +375,13 @@ export default function DashboardPage() {
                                         Limpar Tudo
                                     </button>
                                 )}
+                                <button
+                                    onClick={handleExportExcel}
+                                    className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700 transition-colors hover:bg-emerald-100 border border-emerald-200"
+                                >
+                                    <span className="material-symbols-outlined text-[16px]">download</span>
+                                    Exportar Planilha
+                                </button>
                                 <Link
                                     href="/admin/wizard"
                                     className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-teal-500 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg"
