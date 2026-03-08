@@ -143,379 +143,579 @@ export default async function ProjetoDetalhePage(props: Props) {
     const statusInfo = getStatusLabel();
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 print:bg-white print:text-black">
-            <div className="print:hidden">
-                <Navbar />
-            </div>
-
-            {/* Print Header (Only visible when printing/exporting to PDF) */}
-            <div className="hidden print:flex justify-between items-center border-b-2 border-black pb-4 mb-6 pt-4">
-                <div className="flex items-center gap-4">
-                    <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="h-16 w-16 object-contain" />
-                    <div>
-                        <h1 className="text-xl font-bold uppercase tracking-widest">Prefeitura do Município de Osasco</h1>
-                        <h2 className="text-lg font-bold text-slate-700">Relatório Executivo de Emenda Parlamentar</h2>
-                        <p className="text-xs text-slate-500">Documento Oficial • Gerado em {new Date().toLocaleDateString('pt-BR')} às {new Date().toLocaleTimeString('pt-BR')}</p>
-                    </div>
-                </div>
-                <div className="text-right">
-                    <p className="text-2xl font-black">{amendment.numeroEmenda || id.slice(0, 8)}</p>
-                    <p className="text-xs uppercase font-bold text-slate-500 tracking-wider">Cód. Identificador</p>
-                </div>
-            </div>
-
-            <main className="max-w-[1200px] mx-auto px-6 lg:px-10 py-8 print:py-0 print:px-0 print:block">
-                {/* Breadcrumb */}
-                <div className="flex flex-wrap gap-2 mb-6 print:hidden">
-                    <Link className="text-slate-500 text-sm font-medium hover:text-blue-500" href="/">Início</Link>
-                    <span className="text-slate-400 text-sm font-medium">/</span>
-                    <Link className="text-slate-500 text-sm font-medium hover:text-blue-500" href="/projetos">Emendas</Link>
-                    <span className="text-slate-400 text-sm font-medium">/</span>
-                    <span className="text-slate-900 text-sm font-semibold">Detalhes da Emenda</span>
-                </div>
-
-
-
-                {/* Status Tracker */}
-                <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100 print:border-black print:shadow-none print:break-inside-avoid">
-                    <div className="flex items-center justify-between mb-8 print:mb-4">
+        <>
+            {/* ========================================================= */}
+            {/* ============ LAYOUT DE IMPRESSÃO (PDF/PAPEL) ============ */}
+            {/* ========================================================= */}
+            <div className="hidden print:block w-full max-w-[800px] mx-auto bg-white font-sans text-slate-800 p-8">
+                {/* Cabeçalho */}
+                <div className="flex justify-between items-center mb-10 pb-4 border-b border-slate-200">
+                    <div className="flex items-center gap-4">
+                        <div className="size-16 rounded-xl bg-blue-600 flex items-center justify-center text-white">
+                            <img src="/brasao-osasco.png" alt="Logo" className="w-10 h-10 filter brightness-0 invert object-contain" />
+                        </div>
                         <div>
-                            <h2 className="text-lg font-bold print:uppercase">Estágio Atual da Emenda</h2>
-                            <p className="text-sm text-slate-500 print:hidden">Acompanhamento em tempo real do fluxo administrativo</p>
-                        </div>
-                        <div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${statusInfo.color} print:bg-white print:border-black print:text-black`}>
-                            <span className="size-2 rounded-full bg-current animate-pulse print:hidden"></span>
-                            <span className="text-xs font-bold uppercase tracking-widest">{statusInfo.label}</span>
+                            <h1 className="text-xl font-bold font-sans tracking-tight text-slate-900">Prefeitura de Osasco</h1>
+                            <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Portal de Transparência Municipal</p>
                         </div>
                     </div>
-                    <div className="overflow-x-auto pb-4 print:hidden">
-                        <div className="flex min-w-[1000px] justify-between relative px-4 pt-4">
-                            {/* Background line */}
-                            <div className="absolute top-8 left-4 right-4 h-1 bg-slate-100 z-0"></div>
-                            {/* Progress line */}
-                            <div
-                                className="absolute top-8 left-4 h-1 bg-emerald-500 z-0 transition-all duration-500"
-                                style={{ width: `${progressPercent}%` }}
-                            ></div>
+                    <div className="text-right">
+                        <p className="text-[10px] text-blue-600 font-bold uppercase tracking-wider mb-1">Emissão Oficial</p>
+                        <p className="font-bold text-slate-900">{new Date().toLocaleDateString('pt-BR')}</p>
+                        <p className="text-[10px] text-slate-400 mt-1">Ref: {id.slice(0,12).toUpperCase()}</p>
+                    </div>
+                </div>
 
-                            {statusSteps.map((step, idx) => {
-                                const isCompleted = idx < currentStep;
-                                const isCurrent = idx === currentStep;
-                                const isFuture = idx > currentStep;
-                                const isCancelled = idx === 7;
+                {/* Título Central */}
+                <div className="text-center mb-12">
+                    <h2 className="text-2xl font-bold text-slate-900">Relatório de Execução de Emenda</h2>
+                    <div className="h-1 w-12 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+                </div>
 
-                                return (
-                                    <div
-                                        key={step.label}
-                                        className={`relative z-10 flex flex-col items-center group w-32 ${isFuture && !isCancelled ? "opacity-40" : ""} ${isCancelled && currentStep !== 7 ? "opacity-40" : ""}`}
-                                    >
-                                        {isCurrent && idx < 7 ? (
-                                            <div className="size-10 -mt-1 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-2 ring-4 ring-emerald-100 shadow-lg shadow-emerald-500/20">
-                                                <span className="material-symbols-outlined text-lg">{step.icon}</span>
-                                            </div>
-                                        ) : (
-                                            <div
-                                                className={`size-8 rounded-full flex items-center justify-center mb-3 ring-4 ring-white transition-transform hover:scale-110 ${isCompleted
-                                                    ? "bg-blue-500 text-white"
-                                                    : isFuture || (isCancelled && currentStep !== 7)
-                                                        ? "bg-slate-200 text-slate-400"
-                                                        : currentStep === 7 && isCancelled
-                                                            ? "bg-red-500 text-white"
-                                                            : "bg-slate-500 text-white"
-                                                    }`}
-                                            >
-                                                <span className="material-symbols-outlined text-sm font-bold">{step.icon}</span>
-                                            </div>
-                                        )}
-                                        <span className={`text-[11px] font-bold text-center leading-tight ${isCurrent ? "text-emerald-600 font-black" : "text-slate-900"
+                {/* Identificação do Projeto */}
+                <div className="mb-10">
+                    <div className="flex items-center gap-2 mb-4">
+                        <div className="w-1 h-4 bg-blue-600 rounded-full"></div>
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Identificação do Projeto</h3>
+                    </div>
+                    <div className="border border-slate-200 rounded-2xl p-6">
+                        <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                            <div>
+                                <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Título da Emenda</p>
+                                <p className="text-sm font-bold text-slate-800">{amendment.objeto || amendment.title || "-"}</p>
+                            </div>
+                            <div>
+                                <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Autor da Emenda</p>
+                                <p className="text-sm font-bold text-slate-800">{autor}</p>
+                            </div>
+                            <div>
+                                <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Valor Total Autorizado</p>
+                                <p className="text-lg font-black text-blue-600">{formatCurrency(valorTotal)}</p>
+                            </div>
+                            <div>
+                                <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Cód. Identificador</p>
+                                <p className="text-sm font-bold text-slate-800">{amendment.numeroEmenda || id.slice(0, 8)}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Estágio de Execução */}
+                <div className="mb-10">
+                    <div className="flex items-center gap-2 mb-8">
+                        <div className="w-1 h-4 bg-blue-600 rounded-full"></div>
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Estágio de Execução</h3>
+                    </div>
+                    <div className="flex flex-col mb-4">
+                        <div className="flex items-start justify-between relative px-8">
+                            {/* Background Line */}
+                            <div className="absolute top-4 left-16 right-16 h-[2px] bg-slate-100 z-0"></div>
+                            
+                            {/* Aprovação */}
+                            <div className="relative z-10 flex flex-col items-center gap-2 bg-white px-2">
+                                <div className={`size-8 rounded-full flex items-center justify-center text-white ${currentStep >= 1 ? 'bg-blue-600' : 'bg-slate-200 text-slate-400 border-2 border-slate-200'}`}>
+                                    <span className="material-symbols-outlined text-[16px]">{currentStep >= 1 ? 'check' : 'pending'}</span>
+                                </div>
+                                <div className="text-center">
+                                    <p className={`text-[10px] font-bold uppercase tracking-wider ${currentStep >= 1 ? 'text-slate-800' : 'text-slate-400'}`}>Aprovação</p>
+                                    {currentStep >= 1 && <p className="text-[10px] text-slate-400 mt-0.5">OK</p>}
+                                </div>
+                            </div>
+
+                            {/* Empenho */}
+                            <div className="relative z-10 flex flex-col items-center gap-2 bg-white px-2">
+                                <div className={`size-8 rounded-full flex items-center justify-center text-white ${empenhado > 0 || currentStep >= 4 ? 'bg-blue-600' : 'bg-slate-200 text-slate-400 border-2 border-slate-200'}`}>
+                                    <span className="material-symbols-outlined text-[16px]">{empenhado > 0 || currentStep >= 4 ? 'check' : 'pending'}</span>
+                                </div>
+                                <div className="text-center">
+                                    <p className={`text-[10px] font-bold uppercase tracking-wider ${empenhado > 0 || currentStep >= 4 ? 'text-slate-800' : 'text-slate-400'}`}>Empenho</p>
+                                </div>
+                            </div>
+
+                            {/* Em Execução */}
+                            <div className="relative z-10 flex flex-col items-center gap-2 bg-white px-2">
+                                <div className={`size-8 rounded-full flex items-center justify-center text-white ${(liquidado > 0 || pago > 0) && currentStep < 6 ? 'bg-blue-600 ring-4 ring-blue-50' : (currentStep >= 6 ? 'bg-blue-600' : 'bg-slate-200 text-slate-400 border-2 border-slate-200')}`}>
+                                    <span className="material-symbols-outlined text-[16px]">{currentStep >= 6 ? 'check' : 'sync'}</span>
+                                </div>
+                                <div className="text-center">
+                                    <p className={`text-[10px] font-bold uppercase tracking-wider ${pago > 0 || currentStep >= 5 ? 'text-blue-600' : 'text-slate-400'}`}>Em Execução</p>
+                                    {pago > 0 && valorTotal > 0 && <p className="text-[10px] font-bold text-blue-500">{Math.round((pago/valorTotal)*100)}% concluído</p>}
+                                </div>
+                            </div>
+
+                            {/* Conclusão */}
+                            <div className="relative z-10 flex flex-col items-center gap-2 bg-white px-2">
+                                <div className={`size-8 rounded-full flex items-center justify-center text-white ${currentStep >= 6 ? 'bg-blue-600' : 'bg-slate-100 text-slate-300'}`}>
+                                    <span className="material-symbols-outlined text-[16px]">done_all</span>
+                                </div>
+                                <div className="text-center">
+                                    <p className={`text-[10px] font-bold uppercase tracking-wider ${currentStep >= 6 ? 'text-slate-800' : 'text-slate-400'}`}>Conclusão</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Cronograma Físico-Financeiro */}
+                <div className="mb-10">
+                    <div className="flex items-center gap-2 mb-4">
+                        <div className="w-1 h-4 bg-blue-600 rounded-full"></div>
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Cronograma Físico-Financeiro</h3>
+                    </div>
+                    <div className="rounded-2xl border border-slate-200 overflow-hidden">
+                        <table className="w-full text-left">
+                            <thead className="bg-slate-50 border-b border-slate-200">
+                                <tr>
+                                    <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Fase Orçamentária</th>
+                                    <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Situação</th>
+                                    <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest text-right">Valor Consolidado (R$)</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
+                                <tr>
+                                    <td className="px-6 py-4 font-bold text-slate-800">01. Reserva de Dotação</td>
+                                    <td className="px-6 py-4">{reservado > 0 ? "Confirmado" : "Pendente / Em Lançamento"}</td>
+                                    <td className="px-6 py-4 text-right font-mono font-medium">{formatCurrency(reservado)}</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-6 py-4 font-bold text-slate-800">02. Nota de Empenho</td>
+                                    <td className="px-6 py-4">{empenhado > 0 ? "Confirmado" : "Aguardando Contratação"}</td>
+                                    <td className="px-6 py-4 text-right font-mono font-medium">{formatCurrency(empenhado)}</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-6 py-4 font-bold text-slate-800">03. Liquidação Processada</td>
+                                    <td className="px-6 py-4">{liquidado > 0 ? "Serviços Preenchidos" : "Aguardando Medição"}</td>
+                                    <td className="px-6 py-4 text-right font-mono font-medium">{formatCurrency(liquidado)}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot className="bg-blue-50/50 border-t border-slate-200">
+                                <tr>
+                                    <td colSpan={2} className="px-6 py-5 text-right text-[10px] font-bold text-slate-700 uppercase tracking-widest">Total Pago Até a Data</td>
+                                    <td className="px-6 py-5 text-right font-black text-blue-600 text-sm font-mono">{formatCurrency(pago)}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                {/* Distribuição de Recursos Aplicados */}
+                <div className="mb-12">
+                    <div className="flex items-center gap-2 mb-6">
+                        <div className="w-1 h-4 bg-blue-600 rounded-full"></div>
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Distribuição de Recursos Aplicados</h3>
+                    </div>
+                    <div className="flex items-center gap-10 py-2 border-b border-slate-100 pb-12">
+                        <div className="flex-1 space-y-6">
+                            {/* Bar 1 */}
+                            <div>
+                                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest mb-2 text-slate-600">
+                                    <span>Recurso Comprometido (Empenho)</span>
+                                    <span className="text-blue-600">{valorTotal > 0 ? Math.round((empenhado/valorTotal)*100) : 0}%</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                    <div className="h-full bg-blue-600" style={{ width: `${valorTotal > 0 ? Math.min((empenhado/valorTotal)*100, 100) : 0}%` }}></div>
+                                </div>
+                            </div>
+                            {/* Bar 2 */}
+                            <div>
+                                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest mb-2 text-slate-600">
+                                    <span>Recurso Executado (Liquidação)</span>
+                                    <span className="text-blue-600">{valorTotal > 0 ? Math.round((liquidado/valorTotal)*100) : 0}%</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                    <div className="h-full bg-blue-600" style={{ width: `${valorTotal > 0 ? Math.min((liquidado/valorTotal)*100, 100) : 0}%` }}></div>
+                                </div>
+                            </div>
+                            {/* Bar 3 */}
+                            <div>
+                                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest mb-2 text-slate-600">
+                                    <span>Recurso Transferido (Pagamento)</span>
+                                    <span className="text-blue-600">{valorTotal > 0 ? Math.round((pago/valorTotal)*100) : 0}%</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                    <div className="h-full bg-blue-600" style={{ width: `${valorTotal > 0 ? Math.min((pago/valorTotal)*100, 100) : 0}%` }}></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-[180px] shrink-0 flex flex-col items-center">
+                            <div className="size-36 rounded-full border-8 border-blue-600 flex flex-col items-center justify-center mb-3">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Saldo Atual</span>
+                                <span className="text-3xl font-black text-blue-600">{valorTotal > 0 ? Math.max(0, Math.round(((valorTotal - pago)/valorTotal)*100)) : 100}%</span>
+                            </div>
+                            <p className="text-[9px] text-center text-slate-400 italic leading-snug">Percentual de recurso em conta aguardando destinação.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer Assinaturas */}
+                <div className="flex justify-between items-end pt-4">
+                    <div className="max-w-[450px]">
+                        <p className="text-[9px] text-slate-500 leading-relaxed mb-10 text-justify">
+                            Este documento é uma representação oficial dos dados contidos no Sistema de Gestão de 
+                            Emendas da Prefeitura de Osasco. A veracidade das informações pode ser conferida em tempo real no portal da 
+                            transparência. Documento gerado eletronicamente em conformidade com as normas legais.
+                        </p>
+                        <div className="flex gap-8">
+                            <div className="flex-1 border-t border-slate-300 pt-3 text-center">
+                                <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">Secretaria de Infraestrutura</p>
+                            </div>
+                            <div className="flex-1 border-t border-slate-300 pt-3 text-center">
+                                <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">Controladoria Geral</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className="p-2 border border-slate-200 bg-slate-50 rounded-lg mb-3">
+                            <div className="size-16 bg-white border border-slate-200 p-2 flex items-center justify-center">
+                                <span className="material-symbols-outlined text-4xl text-slate-300">qr_code_2</span>
+                            </div>
+                        </div>
+                        <p className="text-[9px] font-bold text-blue-600 uppercase tracking-widest">Validar Documento</p>
+                        <p className="text-[8px] text-slate-400 font-medium tracking-wide mt-1">transparencia.osasco.sp.gov.br/validar</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* ========================================================= */}
+            {/* ============ LAYOUT DE TELA (NAVEGAÇÃO WEB) ============= */}
+            {/* ========================================================= */}
+            <div className="min-h-screen bg-slate-50 text-slate-900 print:hidden">
+                <Navbar />
+
+                <main className="max-w-[1200px] mx-auto px-6 lg:px-10 py-8">
+                    {/* Breadcrumb */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                        <Link className="text-slate-500 text-sm font-medium hover:text-blue-500" href="/">Início</Link>
+                        <span className="text-slate-400 text-sm font-medium">/</span>
+                        <Link className="text-slate-500 text-sm font-medium hover:text-blue-500" href="/projetos">Emendas</Link>
+                        <span className="text-slate-400 text-sm font-medium">/</span>
+                        <span className="text-slate-900 text-sm font-semibold">Detalhes da Emenda</span>
+                    </div>
+
+                    {/* Status Tracker */}
+                    <section className="mb-8 bg-white p-6 lg:p-8 rounded-xl shadow-sm border border-slate-100">
+                        <div className="flex items-center justify-between mb-8">
+                            <div>
+                                <h2 className="text-lg font-bold">Estágio Atual da Emenda</h2>
+                                <p className="text-sm text-slate-500">Acompanhamento em tempo real do fluxo administrativo</p>
+                            </div>
+                            <div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${statusInfo.color}`}>
+                                <span className="size-2 rounded-full bg-current animate-pulse"></span>
+                                <span className="text-xs font-bold uppercase tracking-widest">{statusInfo.label}</span>
+                            </div>
+                        </div>
+                        <div className="overflow-x-auto pb-4">
+                            <div className="flex min-w-[1000px] justify-between relative px-4 pt-4">
+                                {/* Background line */}
+                                <div className="absolute top-8 left-4 right-4 h-1 bg-slate-100 z-0"></div>
+                                {/* Progress line */}
+                                <div
+                                    className="absolute top-8 left-4 h-1 bg-emerald-500 z-0 transition-all duration-500"
+                                    style={{ width: `${progressPercent}%` }}
+                                ></div>
+
+                                {statusSteps.map((step, idx) => {
+                                    const isCompleted = idx < currentStep;
+                                    const isCurrent = idx === currentStep;
+                                    const isFuture = idx > currentStep;
+                                    const isCancelled = idx === 7;
+
+                                    return (
+                                        <div
+                                            key={step.label}
+                                            className={`relative z-10 flex flex-col items-center group w-32 ${isFuture && !isCancelled ? "opacity-40" : ""} ${isCancelled && currentStep !== 7 ? "opacity-40" : ""}`}
+                                        >
+                                            {isCurrent && idx < 7 ? (
+                                                <div className="size-10 -mt-1 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-2 ring-4 ring-emerald-100 shadow-lg shadow-emerald-500/20">
+                                                    <span className="material-symbols-outlined text-lg">{step.icon}</span>
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    className={`size-8 rounded-full flex items-center justify-center mb-3 ring-4 ring-white transition-transform hover:scale-110 ${isCompleted
+                                                        ? "bg-blue-500 text-white"
+                                                        : isFuture || (isCancelled && currentStep !== 7)
+                                                            ? "bg-slate-200 text-slate-400"
+                                                            : currentStep === 7 && isCancelled
+                                                                ? "bg-red-500 text-white"
+                                                                : "bg-slate-500 text-white"
+                                                        }`}
+                                                >
+                                                    <span className="material-symbols-outlined text-sm font-bold">{step.icon}</span>
+                                                </div>
+                                            )}
+                                            <span className={`text-[11px] font-bold text-center leading-tight ${isCurrent ? "text-emerald-600 font-black" : "text-slate-900"
+                                                }`}>
+                                                {step.label}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Main Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-start">
+                        {/* Left Column */}
+                        <div className="lg:col-span-7 flex flex-col gap-8">
+                            {/* Project Info */}
+                            <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                                <div className="flex flex-col gap-2 mb-6">
+                                    <div className="flex items-center gap-3">
+                                        <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-500 text-xs font-bold uppercase tracking-wider">
+                                            {amendment.categoria || amendment.ambito || "Geral"}
+                                        </span>
+                                        <span className="text-slate-400 text-sm font-medium">
+                                            ID: {amendment.numeroEmenda || amendment.id.slice(0, 8)} &bull; {amendment.tipoEmenda || "Emenda Individual"}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-6">
+                                    <div className="flex flex-col gap-2">
+                                        <h2 className="text-xl font-bold">Objetivo da Emenda</h2>
+                                        <p className="text-slate-600 text-base leading-relaxed">
+                                            {amendment.objeto || amendment.title || "-"}
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <h2 className="text-xl font-bold">Finalidade</h2>
+                                        <p className="text-slate-600 text-base leading-relaxed">
+                                            {amendment.finalidade || amendment.description || "-"}
+                                        </p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* Financial Flow */}
+                            <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                                <h2 className="text-xl font-bold mb-8">Fluxo de Execução Orçamentária</h2>
+                                <div className="relative space-y-12">
+                                    {/* Vertical line */}
+                                    <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100"></div>
+
+                                    {/* Reservado */}
+                                    <div className="relative flex items-center gap-6">
+                                        <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${reservado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
                                             }`}>
-                                            {step.label}
-                                        </span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
-
-                {/* Main Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-start">
-                    {/* Left Column */}
-                    <div className="lg:col-span-7 flex flex-col gap-8 print:col-span-full print:block">
-                        {/* Project Info */}
-                        <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 print:border-0 print:p-0 print:mb-6 print:shadow-none">
-                            <div className="flex flex-col gap-2 mb-6 print:mb-4">
-                                <div className="flex items-center gap-3">
-                                    <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-500 text-xs font-bold uppercase tracking-wider print:border print:border-black print:text-black">
-                                        {amendment.categoria || amendment.ambito || "Geral"}
-                                    </span>
-                                    <span className="text-slate-400 text-sm font-medium print:text-black">
-                                        ID: {amendment.numeroEmenda || amendment.id.slice(0, 8)} &bull; {amendment.tipoEmenda || "Emenda Individual"}
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-6">
-                                <div className="flex flex-col gap-2">
-                                    <h2 className="text-xl font-bold print:uppercase">Objetivo da Emenda</h2>
-                                    <p className="text-slate-600 text-base leading-relaxed print:text-black">
-                                        {amendment.objeto || amendment.title || "-"}
-                                    </p>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <h2 className="text-xl font-bold print:uppercase">Finalidade</h2>
-                                    <p className="text-slate-600 text-base leading-relaxed print:text-black">
-                                        {amendment.finalidade || amendment.description || "-"}
-                                    </p>
-                                </div>
-                            </div>
-                        </section>
-
-                        {/* Financial Flow */}
-                        <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 print:border-black print:shadow-none print:break-inside-avoid print:p-6 print:mb-6">
-                            <h2 className="text-xl font-bold mb-8 print:mb-4 print:uppercase">Fluxo de Execução Orçamentária</h2>
-                            <div className="relative space-y-12 print:space-y-4">
-                                {/* Vertical line */}
-                                <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100 print:hidden"></div>
-
-                                {/* Reservado */}
-                                <div className="relative flex items-center gap-6 print:gap-2">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm print:hidden ${reservado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                        }`}>
-                                        <span className="material-symbols-outlined text-sm font-bold">
-                                            {reservado > 0 ? "check" : "more_horiz"}
-                                        </span>
-                                    </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg print:border-b print:border-black print:rounded-none print:p-2 ${reservado > 0 ? "bg-slate-50 hover:bg-slate-100 print:bg-white" : "bg-white border border-slate-100 print:border-0 print:border-b"
-                                        } transition-colors`}>
-                                        <div>
-                                            <p className={`font-bold print:text-black ${reservado > 0 ? "text-slate-900" : "text-slate-400"}`}>Reservado</p>
-                                            <p className={`text-sm print:hidden ${reservado > 0 ? "text-slate-500" : "text-slate-400"}`}>Previsão inicial de destinação</p>
+                                            <span className="material-symbols-outlined text-sm font-bold">
+                                                {reservado > 0 ? "check" : "more_horiz"}
+                                            </span>
                                         </div>
-                                        <div className="text-right">
-                                            <p className={`font-bold print:text-black ${reservado > 0 ? "text-blue-500" : "text-slate-400"}`}>
-                                                {reservado > 0 ? formatCurrency(reservado) : "R$ 0,00"}
-                                            </p>
-                                            <p className="text-xs text-slate-400 print:hidden">
-                                                {reservado > 0 ? "Confirmado" : "Em processamento"}
-                                            </p>
+                                        <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${reservado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                            } transition-colors`}>
+                                            <div>
+                                                <p className={`font-bold ${reservado > 0 ? "text-slate-900" : "text-slate-400"}`}>Reservado</p>
+                                                <p className={`text-sm ${reservado > 0 ? "text-slate-500" : "text-slate-400"}`}>Previsão inicial de destinação</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className={`font-bold ${reservado > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                                    {reservado > 0 ? formatCurrency(reservado) : "R$ 0,00"}
+                                                </p>
+                                                <p className="text-xs text-slate-400">
+                                                    {reservado > 0 ? "Confirmado" : "Em processamento"}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Empenhado */}
-                                <div className="relative flex items-center gap-6 print:gap-2">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm print:hidden ${empenhado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                        }`}>
-                                        <span className="material-symbols-outlined text-sm font-bold">
-                                            {empenhado > 0 ? "check" : "more_horiz"}
-                                        </span>
-                                    </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg print:border-b print:border-black print:rounded-none print:p-2 ${empenhado > 0 ? "bg-slate-50 hover:bg-slate-100 print:bg-white" : "bg-white border border-slate-100 print:border-0 print:border-b"
-                                        } transition-colors`}>
-                                        <div>
-                                            <p className={`font-bold print:text-black ${empenhado > 0 ? "text-slate-900" : "text-slate-400"}`}>Empenhado</p>
-                                            <p className={`text-sm print:hidden ${empenhado > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso reservado para o projeto</p>
+                                    {/* Empenhado */}
+                                    <div className="relative flex items-center gap-6">
+                                        <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${empenhado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                            }`}>
+                                            <span className="material-symbols-outlined text-sm font-bold">
+                                                {empenhado > 0 ? "check" : "more_horiz"}
+                                            </span>
                                         </div>
-                                        <div className="text-right">
-                                            <p className={`font-bold print:text-black ${empenhado > 0 ? "text-blue-500" : "text-slate-400"}`}>
-                                                {empenhado > 0 ? formatCurrency(empenhado) : "R$ 0,00"}
-                                            </p>
-                                            <p className="text-xs text-slate-400 print:hidden">
-                                                {empenhado > 0 ? "Confirmado" : "Em processamento"}
-                                            </p>
+                                        <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${empenhado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                            } transition-colors`}>
+                                            <div>
+                                                <p className={`font-bold ${empenhado > 0 ? "text-slate-900" : "text-slate-400"}`}>Empenhado</p>
+                                                <p className={`text-sm ${empenhado > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso reservado para o projeto</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className={`font-bold ${empenhado > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                                    {empenhado > 0 ? formatCurrency(empenhado) : "R$ 0,00"}
+                                                </p>
+                                                <p className="text-xs text-slate-400">
+                                                    {empenhado > 0 ? "Confirmado" : "Em processamento"}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Liquidado */}
-                                <div className="relative flex items-center gap-6 print:gap-2">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm print:hidden ${liquidado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                        }`}>
-                                        <span className="material-symbols-outlined text-sm font-bold">
-                                            {liquidado > 0 ? "check" : "more_horiz"}
-                                        </span>
-                                    </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg print:border-b print:border-black print:rounded-none print:p-2 ${liquidado > 0 ? "bg-slate-50 hover:bg-slate-100 print:bg-white" : "bg-white border border-slate-100 print:border-0 print:border-b"
-                                        } transition-colors`}>
-                                        <div>
-                                            <p className={`font-bold print:text-black ${liquidado > 0 ? "text-slate-900" : "text-slate-400"}`}>Liquidado</p>
-                                            <p className={`text-sm print:hidden ${liquidado > 0 ? "text-slate-500" : "text-slate-400"}`}>Serviço/Produto entregue e verificado</p>
+                                    {/* Liquidado */}
+                                    <div className="relative flex items-center gap-6">
+                                        <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${liquidado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                            }`}>
+                                            <span className="material-symbols-outlined text-sm font-bold">
+                                                {liquidado > 0 ? "check" : "more_horiz"}
+                                            </span>
                                         </div>
-                                        <div className="text-right">
-                                            <p className={`font-bold print:text-black ${liquidado > 0 ? "text-blue-500" : "text-slate-400"}`}>
-                                                {liquidado > 0 ? formatCurrency(liquidado) : "R$ 0,00"}
-                                            </p>
-                                            <p className="text-xs text-slate-400 print:hidden">
-                                                {liquidado > 0 ? "Confirmado" : "Em processamento"}
-                                            </p>
+                                        <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${liquidado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                            } transition-colors`}>
+                                            <div>
+                                                <p className={`font-bold ${liquidado > 0 ? "text-slate-900" : "text-slate-400"}`}>Liquidado</p>
+                                                <p className={`text-sm ${liquidado > 0 ? "text-slate-500" : "text-slate-400"}`}>Serviço/Produto entregue e verificado</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className={`font-bold ${liquidado > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                                    {liquidado > 0 ? formatCurrency(liquidado) : "R$ 0,00"}
+                                                </p>
+                                                <p className="text-xs text-slate-400">
+                                                    {liquidado > 0 ? "Confirmado" : "Em processamento"}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Pago */}
+                                    <div className="relative flex items-center gap-6">
+                                        <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${pago > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
+                                            }`}>
+                                            <span className="material-symbols-outlined text-sm font-bold">
+                                                {pago > 0 ? "check" : "more_horiz"}
+                                            </span>
+                                        </div>
+                                        <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${pago > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
+                                            } transition-colors`}>
+                                            <div>
+                                                <p className={`font-bold ${pago > 0 ? "text-slate-900" : "text-slate-400"}`}>Pago</p>
+                                                <p className={`text-sm ${pago > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso transferido ao fornecedor</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className={`font-bold ${pago > 0 ? "text-blue-500" : "text-slate-400"}`}>
+                                                    {pago > 0 ? formatCurrency(pago) : "R$ 0,00"}
+                                                </p>
+                                                <p className="text-xs text-slate-400">
+                                                    {pago > 0 ? "Confirmado" : "Em processamento"}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Pago */}
-                                <div className="relative flex items-center gap-6 print:gap-2">
-                                    <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm print:hidden ${pago > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                        }`}>
-                                        <span className="material-symbols-outlined text-sm font-bold">
-                                            {pago > 0 ? "check" : "more_horiz"}
-                                        </span>
-                                    </div>
-                                    <div className={`flex-1 flex justify-between items-center p-4 rounded-lg print:border-0 print:rounded-none print:p-2 ${pago > 0 ? "bg-slate-50 hover:bg-slate-100 print:bg-white" : "bg-white border border-slate-100 print:border-none"
-                                        } transition-colors`}>
-                                        <div>
-                                            <p className={`font-bold print:text-black ${pago > 0 ? "text-slate-900" : "text-slate-400"}`}>Pago</p>
-                                            <p className={`text-sm print:hidden ${pago > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso transferido ao fornecedor</p>
-                                        </div>
-                                        <div className="text-right">
-                                            <p className={`font-bold print:text-black ${pago > 0 ? "text-blue-500" : "text-slate-400"}`}>
-                                                {pago > 0 ? formatCurrency(pago) : "R$ 0,00"}
-                                            </p>
-                                            <p className="text-xs text-slate-400 print:hidden">
-                                                {pago > 0 ? "Confirmado" : "Em processamento"}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
-                        {/* Formulário Completo - Apenas Impressão da Ficha Técnica */}
-                        <section className="hidden print:block mb-8 break-inside-avoid">
-                            <h2 className="text-xl font-bold uppercase mb-4 border-b pb-2 border-black">Detalhamento Oficial (Ficha Técnica)</h2>
-                            <div className="grid grid-cols-2 gap-4 text-sm font-medium">
-                                <span className="border-b border-gray-300 pb-1"><strong>CNPJ/Município:</strong> <br />{amendment.cnpj || "-"} - {amendment.municipio || "Osasco/SP"}</span>
-                                <span className="border-b border-gray-300 pb-1"><strong>Responsável:</strong> <br />{amendment.responsavelNome || "-"} ({amendment.responsavelCargo || "-"})</span>
-                                <span className="border-b border-gray-300 pb-1"><strong>LOA 2026:</strong> <br />{amendment.loa2026Check || "-"}</span>
-                                <span className="border-b border-gray-300 pb-1"><strong>Prazo de Aplicação:</strong> <br />{amendment.prazoAplicacao || "-"}</span>
-                                <span className="border-b border-gray-300 pb-1"><strong>Instituição / Órgão:</strong> <br />{amendment.orgaoBeneficiario || "-"}</span>
-                                <span className="border-b border-gray-300 pb-1"><strong>Localidade:</strong> <br />{amendment.localidadeBeneficiada || "-"}</span>
-                                <span className="border-b border-gray-300 pb-1"><strong>Fornecedor:</strong> <br />{amendment.fornecedor || "-"}</span>
-                                <span className="border-b border-gray-300 pb-1"><strong>Instrumento Jurídico:</strong> <br />{amendment.instrumentoJuridico || "-"}</span>
-                                <span className="border-b border-gray-300 pb-1"><strong>Cronograma Fís.-Financeiro:</strong> <br />{amendment.possuiCronograma || "-"}</span>
-                                <span className="border-b border-gray-300 pb-1"><strong>Transparência:</strong> <br />{amendment.portalTransparenciaCheck || "-"}</span>
-                            </div>
-                        </section>
-                    </div>
-
-                    {/* Right Sidebar */}
-                    <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-24 print:col-span-full print:block print:relative print:top-0">
-                        {/* Value Card */}
-                        <div className="bg-blue-500 text-white p-6 rounded-xl shadow-lg shadow-blue-500/20 print:bg-white print:border-2 print:border-black print:text-black print:shadow-none print:mb-6">
-                            <p className="text-blue-100 text-xs font-bold uppercase tracking-wider mb-1 print:text-black">Valor Total Destinado</p>
-                            <p className="text-3xl font-extrabold mb-4 print:text-black">
-                                {valorTotal > 0 ? formatCurrency(valorTotal) : "Não informado"}
-                            </p>
-                            {valorTotal > 0 && pago > 0 && (
-                                <div className="flex items-center gap-2 text-sm text-blue-100 print:text-black">
-                                    <span className="material-symbols-outlined text-sm print:hidden">trending_up</span>
-                                    <span>{Math.round((pago / valorTotal) * 100)}% já pago</span>
-                                </div>
-                            )}
+                            </section>
                         </div>
 
-                        {/* Author Card */}
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 print:break-inside-avoid print:border-black print:mb-6">
-                            <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-4 print:text-black">Autor da Emenda</p>
-                            <div className="flex items-center gap-4 mb-6">
-                                {autorPhoto ? (
-                                    /* eslint-disable-next-line @next/next/no-img-element */
-                                    <img
-                                        src={autorPhoto}
-                                        alt={autor}
-                                        className="size-20 rounded-full object-cover border-2 border-slate-200"
-                                    />
-                                ) : (
-                                    <div className="size-20 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xl">
-                                        {autorInitials}
-                                    </div>
-                                )}
-                                <div>
-                                    <p className="font-bold text-slate-900">{autor}</p>
-                                    <p className="text-xs text-slate-500">
-                                        {amendment.responsavelCargo || "Parlamentar"}
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="space-y-3 pt-4 border-t border-slate-50">
-                                {amendment.localidadeBeneficiada && (
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-500">Local:</span>
-                                        <span className="font-medium text-slate-900 text-right max-w-[60%]">{amendment.localidadeBeneficiada}</span>
-                                    </div>
-                                )}
-                                {amendment.numeroLicitacao && (
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-500">Licitação:</span>
-                                        <span className="font-mono font-medium text-slate-900">{amendment.numeroLicitacao}</span>
+                        {/* Right Sidebar */}
+                        <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-24">
+                            {/* Value Card */}
+                            <div className="bg-blue-500 text-white p-6 rounded-xl shadow-lg shadow-blue-500/20">
+                                <p className="text-blue-100 text-xs font-bold uppercase tracking-wider mb-1">Valor Total Destinado</p>
+                                <p className="text-3xl font-extrabold mb-4">
+                                    {valorTotal > 0 ? formatCurrency(valorTotal) : "Não informado"}
+                                </p>
+                                {valorTotal > 0 && pago > 0 && (
+                                    <div className="flex items-center gap-2 text-sm text-blue-100">
+                                        <span className="material-symbols-outlined text-sm">trending_up</span>
+                                        <span>{Math.round((pago / valorTotal) * 100)}% já pago</span>
                                     </div>
                                 )}
                             </div>
-                        </div>
 
-                        {/* Detalhamento da Emenda Card */}
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 print:hidden">
-                            <h2 className="text-base font-bold mb-5">Detalhamento da Emenda</h2>
-                            <div className="space-y-4">
-                                <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Âmbito</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.ambito || "-"}</p>
+                            {/* Author Card */}
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-4">Autor da Emenda</p>
+                                <div className="flex items-center gap-4 mb-6">
+                                    {autorPhoto ? (
+                                        /* eslint-disable-next-line @next/next/no-img-element */
+                                        <img
+                                            src={autorPhoto}
+                                            alt={autor}
+                                            className="size-20 rounded-full object-cover border-2 border-slate-200"
+                                        />
+                                    ) : (
+                                        <div className="size-20 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xl">
+                                            {autorInitials}
+                                        </div>
+                                    )}
+                                    <div>
+                                        <p className="font-bold text-slate-900">{autor}</p>
+                                        <p className="text-xs text-slate-500">
+                                            {amendment.responsavelCargo || "Parlamentar"}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Tipo de Emenda</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.tipoEmenda || "-"}</p>
+                                <div className="space-y-3 pt-4 border-t border-slate-50">
+                                    {amendment.localidadeBeneficiada && (
+                                        <div className="flex justify-between text-sm">
+                                            <span className="text-slate-500">Local:</span>
+                                            <span className="font-medium text-slate-900 text-right max-w-[60%]">{amendment.localidadeBeneficiada}</span>
+                                        </div>
+                                    )}
+                                    {amendment.numeroLicitacao && (
+                                        <div className="flex justify-between text-sm">
+                                            <span className="text-slate-500">Licitação:</span>
+                                            <span className="font-mono font-medium text-slate-900">{amendment.numeroLicitacao}</span>
+                                        </div>
+                                    )}
                                 </div>
-                                <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Fundamento Legal</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.fundamentoLegal || "-"}</p>
+                            </div>
+
+                            {/* Detalhamento da Emenda Card */}
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                                <h2 className="text-base font-bold mb-5">Detalhamento da Emenda</h2>
+                                <div className="space-y-4">
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Âmbito</p>
+                                        <p className="text-sm font-medium text-slate-900">{amendment.ambito || "-"}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Tipo de Emenda</p>
+                                        <p className="text-sm font-medium text-slate-900">{amendment.tipoEmenda || "-"}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Fundamento Legal</p>
+                                        <p className="text-sm font-medium text-slate-900">{amendment.fundamentoLegal || "-"}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Função / Subfunção</p>
+                                        <p className="text-sm font-medium text-slate-900">{amendment.funcao || "-"} / {amendment.subfuncao || "-"}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Destinação</p>
+                                        <p className="text-sm font-medium text-slate-900">{amendment.destinacao || "-"}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Função / Subfunção</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.funcao || "-"} / {amendment.subfuncao || "-"}</p>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Destinação</p>
-                                    <p className="text-sm font-medium text-slate-900">{amendment.destinacao || "-"}</p>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex flex-col gap-3">
+                                <PrintButton />
+                                <Link href="/" className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all active:scale-95">
+                                    <span className="material-symbols-outlined text-xl">home</span>
+                                    Voltar ao Início
+                                </Link>
+                            </div>
+
+                            {/* Transparency Badge */}
+                            <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                                <div className="flex items-start gap-3">
+                                    <span className="material-symbols-outlined text-emerald-600 mt-0.5">verified</span>
+                                    <div>
+                                        <p className="text-sm font-bold text-emerald-900">Emenda Transparente</p>
+                                        <p className="text-xs text-emerald-700">Os dados desta emenda são públicos e auditáveis.</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </main>
 
-                        {/* Action Buttons */}
-                        <div className="flex flex-col gap-3 print:hidden">
-                            <PrintButton />
-                            <Link href="/" className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all active:scale-95">
-                                <span className="material-symbols-outlined text-xl">home</span>
-                                Voltar ao Início
-                            </Link>
+                {/* Footer */}
+                <footer className="mt-auto bg-white border-t border-slate-200 py-10">
+                    <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div className="flex items-center gap-3 text-slate-400">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain opacity-50 grayscale" />
+                            <p className="text-sm font-medium">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</p>
                         </div>
-
-                        {/* Transparency Badge */}
-                        <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100 print:hidden">
-                            <div className="flex items-start gap-3">
-                                <span className="material-symbols-outlined text-emerald-600 mt-0.5">verified</span>
-                                <div>
-                                    <p className="text-sm font-bold text-emerald-900">Emenda Transparente</p>
-                                    <p className="text-xs text-emerald-700">Os dados desta emenda são públicos e auditáveis.</p>
-                                </div>
-                            </div>
+                        <div className="flex gap-6">
+                            <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="https://transparencia.osasco.sp.gov.br/#/dados_abertos" target="_blank" rel="noopener noreferrer">Dados Abertos</a>
+                            <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Contato</a>
                         </div>
                     </div>
-                </div>
-            </main>
-
-            {/* Footer */}
-            <footer className="mt-auto bg-white border-t border-slate-200 py-10 print:hidden">
-                <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div className="flex items-center gap-3 text-slate-400">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain" />
-                        <p className="text-sm font-medium">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</p>
-                    </div>
-                    <div className="flex gap-6">
-                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="https://transparencia.osasco.sp.gov.br/#/dados_abertos" target="_blank" rel="noopener noreferrer">Dados Abertos</a>
-                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Contato</a>
-                    </div>
-                </div>
-            </footer>
-        </div>
+                </footer>
+            </div>
+        </>
     );
 }
