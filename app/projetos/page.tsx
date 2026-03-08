@@ -462,8 +462,12 @@ function ProjectsContent() {
 
                         {/* Export to Excel */}
                         <button
-                            onClick={() => exportToExcel(rawAmendments)}
-                            disabled={rawAmendments.length === 0}
+                            onClick={() => {
+                                const filteredIds = new Set(filteredProjects.map(p => p.id));
+                                const filtered = rawAmendments.filter(a => filteredIds.has(a.id));
+                                exportToExcel(filtered);
+                            }}
+                            disabled={filteredProjects.length === 0}
                             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-bold hover:bg-emerald-600 transition-all disabled:opacity-40 cursor-pointer"
                             title="Exportar todas as emendas para planilha Excel"
                         >
