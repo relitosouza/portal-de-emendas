@@ -6,28 +6,46 @@ import { Amendment } from "@/lib/store";
 // File Paths
 // =====================================================
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const AMENDMENTS_FILE = path.join(DATA_DIR, "amendments.json");
-const EXTERNAL_FILE = path.join(DATA_DIR, "emendas-externas.json");
-const FINANCIAL_FILE = path.join(DATA_DIR, "financial.json");
-const CARDS_FILE = path.join(DATA_DIR, "cards.json");
+const IS_VERCEL = !!process.env.VERCEL;
+const BUNDLED_DATA_DIR = path.join(process.cwd(), "data");
+const WRITABLE_DATA_DIR = IS_VERCEL ? "/tmp/data" : BUNDLED_DATA_DIR;
+
+function bundledPath(filename: string) {
+    return path.join(BUNDLED_DATA_DIR, filename);
+}
+
+function writablePath(filename: string) {
+    return path.join(WRITABLE_DATA_DIR, filename);
+}
+
+export const AMENDMENTS_FILE = "amendments.json";
+export const EXTERNAL_FILE = "emendas-externas.json";
+export const FINANCIAL_FILE = "financial.json";
+export const CARDS_FILE = "cards.json";
 
 // =====================================================
 // Helpers
 // =====================================================
 
-async function readJsonFile<T>(filePath: string): Promise<T[]> {
+async function readJsonFile<T>(filename: string): Promise<T[]> {
+    // Try writable location first (has latest data), then bundled fallback
     try {
-        const content = await fs.readFile(filePath, "utf-8");
+        const content = await fs.readFile(writablePath(filename), "utf-8");
         return JSON.parse(content);
     } catch {
-        return [];
+        // Fall back to bundled data
+        try {
+            const content = await fs.readFile(bundledPath(filename), "utf-8");
+            return JSON.parse(content);
+        } catch {
+            return [];
+        }
     }
 }
 
-async function writeJsonFile<T>(filePath: string, data: T[]): Promise<void> {
-    await fs.mkdir(path.dirname(filePath), { recursive: true });
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
+async function writeJsonFile<T>(filename: string, data: T[]): Promise<void> {
+    await fs.mkdir(WRITABLE_DATA_DIR, { recursive: true });
+    await fs.writeFile(writablePath(filename), JSON.stringify(data, null, 2), "utf-8");
 }
 
 // =====================================================

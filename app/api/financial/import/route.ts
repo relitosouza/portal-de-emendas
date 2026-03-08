@@ -3,7 +3,21 @@ import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 import fs from "fs/promises";
 import path from "path";
 
-const FINANCIAL_FILE = path.join(process.cwd(), "data", "financial.json");
+const IS_VERCEL = !!process.env.VERCEL;
+const BUNDLED_DIR = path.join(process.cwd(), "data");
+const WRITABLE_DIR = IS_VERCEL ? "/tmp/data" : BUNDLED_DIR;
+
+function financialReadPath() {
+    return path.join(WRITABLE_DIR, "financial.json");
+}
+
+function financialBundledPath() {
+    return path.join(BUNDLED_DIR, "financial.json");
+}
+
+function financialWritePath() {
+    return path.join(WRITABLE_DIR, "financial.json");
+}
 
 interface FinancialRecord {
     amendmentId: string;
@@ -12,6 +26,20 @@ interface FinancialRecord {
     pago: string;
     reservado: string;
     updatedAt: string;
+}
+
+async function readExistingFinancial(): Promise<FinancialRecord[]> {
+    try {
+        const data = await fs.readFile(financialReadPath(), "utf-8");
+        return JSON.parse(data);
+    } catch {
+        try {
+            const data = await fs.readFile(financialBundledPath(), "utf-8");
+            return JSON.parse(data);
+        } catch {
+            return [];
+        }
+    }
 }
 
 function parseCSV(content: string): string[][] {
@@ -94,11 +122,7 @@ export async function POST(request: Request) {
         }));
 
         // Merge with existing
-        let existing: FinancialRecord[] = [];
-        try {
-            const data = await fs.readFile(FINANCIAL_FILE, "utf-8");
-            existing = JSON.parse(data);
-        } catch { /* file doesn't exist yet */ }
+        const existing = await readExistingFinancial();
 
         const existingMap = new Map<string, FinancialRecord>();
         for (const rec of existing) {
@@ -118,8 +142,8 @@ export async function POST(request: Request) {
         }
 
         const merged = Array.from(existingMap.values());
-        await fs.mkdir(path.dirname(FINANCIAL_FILE), { recursive: true });
-        await fs.writeFile(FINANCIAL_FILE, JSON.stringify(merged, null, 2), "utf-8");
+        await fs.mkdir(WRITABLE_DIR, { recursive: true });
+        await fs.writeFile(financialWritePath(), JSON.stringify(merged, null, 2), "utf-8");
 
         return NextResponse.json({
             success: true,

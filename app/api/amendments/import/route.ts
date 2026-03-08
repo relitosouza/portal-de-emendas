@@ -4,9 +4,11 @@ import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const AMENDMENTS_FILE = path.join(DATA_DIR, "amendments.json");
-const FINANCIAL_FILE = path.join(DATA_DIR, "financial.json");
+const IS_VERCEL = !!process.env.VERCEL;
+const BUNDLED_DIR = path.join(process.cwd(), "data");
+const WRITABLE_DIR = IS_VERCEL ? "/tmp/data" : BUNDLED_DIR;
+const AMENDMENTS_FILE = path.join(WRITABLE_DIR, "amendments.json");
+const FINANCIAL_FILE = path.join(WRITABLE_DIR, "financial.json");
 
 // =====================================================
 // CSV Parser
@@ -216,7 +218,7 @@ export async function POST(request: Request) {
         }
 
         // Save amendments (overwrite)
-        await fs.mkdir(DATA_DIR, { recursive: true });
+        await fs.mkdir(WRITABLE_DIR, { recursive: true });
         await fs.writeFile(AMENDMENTS_FILE, JSON.stringify(amendments, null, 2), "utf-8");
 
         // Save financial data (merge with existing)
@@ -225,7 +227,13 @@ export async function POST(request: Request) {
             try {
                 const data = await fs.readFile(FINANCIAL_FILE, "utf-8");
                 existing = JSON.parse(data);
-            } catch { /* file doesn't exist yet */ }
+            } catch {
+                // Try bundled fallback
+                try {
+                    const data = await fs.readFile(path.join(BUNDLED_DIR, "financial.json"), "utf-8");
+                    existing = JSON.parse(data);
+                } catch { /* file doesn't exist yet */ }
+            }
 
             for (const record of financialData) {
                 const idx = existing.findIndex((r) => r.amendmentId === record.amendmentId);
