@@ -263,6 +263,10 @@ export default async function RelatorioPage(props: Props) {
                                 })}
                             </div>
                         </div>
+                        <p className="mt-4 text-[10px] text-slate-500">
+                            Status atual:{" "}
+                            <span className="font-bold text-slate-700">{normalizedStatus || "Não informado"}</span>
+                        </p>
                     </section>
 
                     {/* Cronograma Físico-Financeiro */}
@@ -321,20 +325,18 @@ export default async function RelatorioPage(props: Props) {
                                             {formatCurrency(liquidado)}
                                         </td>
                                     </tr>
-                                </tbody>
-                                <tfoot className="bg-blue-50/50">
-                                    <tr>
-                                        <td
-                                            colSpan={2}
-                                            className="px-4 py-3 text-xs font-bold text-slate-700 text-right uppercase tracking-wider"
-                                        >
-                                            Total Pago até a data
+                                    <tr className="bg-blue-50/50">
+                                        <td className="px-4 py-3 text-xs font-bold text-slate-800">
+                                            04. Pagamento
+                                        </td>
+                                        <td className="px-4 py-3 text-xs text-slate-600">
+                                            {pago > 0 ? "Efetuado" : "Aguardando Pagamento"}
                                         </td>
                                         <td className="px-4 py-3 text-sm font-bold text-blue-600 text-right font-mono">
                                             {formatCurrency(pago)}
                                         </td>
                                     </tr>
-                                </tfoot>
+                                </tbody>
                             </table>
                         </div>
                     </section>
@@ -348,18 +350,18 @@ export default async function RelatorioPage(props: Props) {
                             <h3 className="text-xs uppercase font-bold text-slate-400 mb-4 border-l-4 border-blue-600 pl-3">
                                 Classificação Orçamentária
                             </h3>
-                            <div className="border border-slate-200 rounded-lg p-6 space-y-3">
-                                {amendment.finalidade && (
-                                    <div>
-                                        <span className="text-[10px] font-bold text-slate-500 uppercase">
-                                            Finalidade
-                                        </span>
-                                        <p className="text-xs text-slate-700 mt-0.5">
-                                            {amendment.finalidade}
-                                        </p>
-                                    </div>
-                                )}
+                            <div className="border border-slate-200 rounded-lg p-6">
                                 <div className="grid grid-cols-2 gap-4">
+                                    {amendment.finalidade && (
+                                        <div className="col-span-2">
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Finalidade
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5">
+                                                {amendment.finalidade}
+                                            </p>
+                                        </div>
+                                    )}
                                     {amendment.funcao && (
                                         <div>
                                             <span className="text-[10px] font-bold text-slate-500 uppercase">
@@ -484,17 +486,24 @@ export default async function RelatorioPage(props: Props) {
                                 com as normas legais.
                             </p>
                         </div>
-                        <div className="flex flex-col items-center text-center">
-                            <div className="w-24 h-24 bg-white border border-slate-200 p-1 mb-2 flex items-center justify-center rounded">
-                                <span className="material-symbols-outlined text-5xl text-slate-300">
-                                    qr_code_2
-                                </span>
-                            </div>
-                            <span className="text-[9px] font-bold text-blue-600 uppercase">
-                                Validar Documento
+                        <div className="flex flex-col items-end text-right border border-slate-200 bg-slate-50 rounded-lg px-4 py-3 min-w-[180px]">
+                            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                                Identificação do Documento
                             </span>
-                            <span className="text-[8px] text-slate-400">
-                                transparencia.osasco.sp.gov.br/validar
+                            <span className="text-sm font-bold font-mono text-slate-800">
+                                {(amendment.numeroEmenda || id.slice(0, 8)).toUpperCase()}
+                            </span>
+                            <span className={`mt-1.5 text-[9px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                                currentStep === 8
+                                    ? "bg-red-100 text-red-700"
+                                    : currentStep >= 6
+                                        ? "bg-emerald-100 text-emerald-700"
+                                        : "bg-blue-100 text-blue-700"
+                            }`}>
+                                {normalizedStatus || "Não informado"}
+                            </span>
+                            <span className="text-[8px] text-slate-400 mt-2">
+                                Portal das Emendas · Prefeitura de Osasco
                             </span>
                         </div>
                     </footer>
