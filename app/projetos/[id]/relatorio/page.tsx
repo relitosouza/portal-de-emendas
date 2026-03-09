@@ -408,6 +408,81 @@ export default async function RelatorioPage(props: Props) {
                         </section>
                     )}
 
+                    {/* Detalhes Técnicos */}
+                    {(amendment.municipio ||
+                        amendment.cnpj ||
+                        amendment.fornecedor ||
+                        amendment.instrumentoJuridico ||
+                        amendment.prazoAplicacao ||
+                        amendment.codigoAplicacao ||
+                        amendment.numeroLicitacao) && (
+                        <section className="mb-10">
+                            <h3 className="text-xs uppercase font-bold text-slate-400 mb-4 border-l-4 border-blue-600 pl-3">
+                                Detalhes Técnicos
+                            </h3>
+                            <div className="border border-slate-200 rounded-lg p-6">
+                                <div className="grid grid-cols-2 gap-4">
+                                    {amendment.municipio && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Município
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5">{amendment.municipio}</p>
+                                        </div>
+                                    )}
+                                    {amendment.cnpj && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                CNPJ
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5 font-mono">{amendment.cnpj}</p>
+                                        </div>
+                                    )}
+                                    {amendment.fornecedor && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Fornecedor
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5">{amendment.fornecedor}</p>
+                                        </div>
+                                    )}
+                                    {amendment.instrumentoJuridico && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Instrumento Jurídico
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5">{amendment.instrumentoJuridico}</p>
+                                        </div>
+                                    )}
+                                    {amendment.prazoAplicacao && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Prazo de Aplicação
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5">{amendment.prazoAplicacao}</p>
+                                        </div>
+                                    )}
+                                    {amendment.codigoAplicacao && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Código de Aplicação
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5 font-mono">{amendment.codigoAplicacao}</p>
+                                        </div>
+                                    )}
+                                    {amendment.numeroLicitacao && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Nº Licitação
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5 font-mono">{amendment.numeroLicitacao}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
                     {/* Footer / Signature */}
                     <footer className="mt-auto pt-8 border-t border-slate-200 flex justify-between items-end">
                         <div className="max-w-[450px]">
