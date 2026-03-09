@@ -200,27 +200,28 @@ export default async function ProjetoDetalhePage(props: Props) {
                         <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Cronograma Físico-Financeiro</h3>
                     </div>
                     <div className="rounded-2xl border border-slate-200 overflow-hidden">
-                        <table className="w-full text-left">
+                        <table className="w-full text-left" aria-label="Cronograma físico-financeiro da emenda">
+                            <caption className="sr-only">Fases orçamentárias da emenda: reserva, empenho, liquidação e pagamento</caption>
                             <thead className="bg-slate-50 border-b border-slate-200">
                                 <tr>
-                                    <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Fase Orçamentária</th>
-                                    <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Situação</th>
-                                    <th className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest text-right">Valor Consolidado (R$)</th>
+                                    <th scope="col" className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Fase Orçamentária</th>
+                                    <th scope="col" className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Situação</th>
+                                    <th scope="col" className="px-6 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest text-right">Valor Consolidado (R$)</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
                                 <tr>
-                                    <td className="px-6 py-4 font-bold text-slate-800">01. Reserva de Dotação</td>
+                                    <th scope="row" className="px-6 py-4 font-bold text-slate-800">01. Reserva de Dotação</th>
                                     <td className="px-6 py-4">{reservado > 0 ? "Confirmado" : "Pendente / Em Lançamento"}</td>
                                     <td className="px-6 py-4 text-right font-mono font-medium">{formatCurrency(reservado)}</td>
                                 </tr>
                                 <tr>
-                                    <td className="px-6 py-4 font-bold text-slate-800">02. Nota de Empenho</td>
+                                    <th scope="row" className="px-6 py-4 font-bold text-slate-800">02. Nota de Empenho</th>
                                     <td className="px-6 py-4">{empenhado > 0 ? "Confirmado" : "Aguardando Contratação"}</td>
                                     <td className="px-6 py-4 text-right font-mono font-medium">{formatCurrency(empenhado)}</td>
                                 </tr>
                                 <tr>
-                                    <td className="px-6 py-4 font-bold text-slate-800">03. Liquidação Processada</td>
+                                    <th scope="row" className="px-6 py-4 font-bold text-slate-800">03. Liquidação Processada</th>
                                     <td className="px-6 py-4">{liquidado > 0 ? "Serviços Preenchidos" : "Aguardando Medição"}</td>
                                     <td className="px-6 py-4 text-right font-mono font-medium">{formatCurrency(liquidado)}</td>
                                 </tr>
@@ -342,13 +343,18 @@ export default async function ProjetoDetalhePage(props: Props) {
                             </div>
                         </div>
                         <div className="overflow-x-auto pb-4">
-                            <div className="flex min-w-[1000px] justify-between relative px-4 pt-4">
+                            <div
+                                role="list"
+                                aria-label="Etapas do fluxo administrativo da emenda"
+                                className="flex min-w-[1000px] justify-between relative px-4 pt-4"
+                            >
                                 {/* Background line */}
-                                <div className="absolute top-8 left-4 right-4 h-1 bg-slate-100 z-0"></div>
+                                <div className="absolute top-8 left-4 right-4 h-1 bg-slate-100 z-0" aria-hidden="true"></div>
                                 {/* Progress line */}
                                 <div
                                     className="absolute top-8 left-4 h-1 bg-emerald-500 z-0 transition-all duration-500"
                                     style={{ width: `${progressPercent}%` }}
+                                    aria-hidden="true"
                                 ></div>
 
                                 {statusSteps.map((step, idx) => {
@@ -360,6 +366,9 @@ export default async function ProjetoDetalhePage(props: Props) {
                                     return (
                                         <div
                                             key={step.label}
+                                            role="listitem"
+                                            aria-current={isCurrent ? "step" : undefined}
+                                            aria-label={`${step.label}${isCurrent ? " — etapa atual" : isCompleted ? " — concluída" : " — pendente"}`}
                                             className={`relative z-10 flex flex-col items-center group w-32 ${isFuture && !isCancelled ? "opacity-40" : ""} ${isCancelled && currentStep !== 7 ? "opacity-40" : ""}`}
                                         >
                                             {isCurrent && idx < 7 ? (

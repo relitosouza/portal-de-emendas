@@ -328,10 +328,10 @@ function ProjectsContent() {
         <div className="min-h-screen bg-slate-50 text-slate-900">
             <Navbar />
 
-            <main className="max-w-7xl mx-auto px-6 py-10 w-full">
+            <main aria-label="Listagem de emendas parlamentares" className="max-w-7xl mx-auto px-6 py-10 w-full">
                 {/* Header */}
                 <div className="mb-10">
-                    <h2 className="text-4xl font-extrabold tracking-tight mb-3">Explorar Todas as Emendas</h2>
+                    <h1 className="text-4xl font-extrabold tracking-tight mb-3">Explorar Todas as Emendas</h1>
                     <p className="text-slate-500 text-lg max-w-2xl">
                         Acompanhe em tempo real a destinação de recursos públicos, status de execução e o impacto gerado pelos parlamentares.
                     </p>
@@ -340,12 +340,14 @@ function ProjectsContent() {
                 {/* Filter Bar */}
                 <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-8 flex flex-wrap items-center gap-4">
                     <div className="flex-1 min-w-[300px]">
-                        <div className="relative flex items-center bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
-                            <span className="material-symbols-outlined text-slate-400 mr-3">search</span>
+                        <label htmlFor="busca-emendas" className="sr-only">Buscar emendas</label>
+                    <div className="relative flex items-center bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+                            <span className="material-symbols-outlined text-slate-400 mr-3" aria-hidden="true">search</span>
                             <input
+                                id="busca-emendas"
                                 className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm w-full"
                                 placeholder="Buscar por número, título ou autor..."
-                                type="text"
+                                type="search"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -364,7 +366,9 @@ function ProjectsContent() {
                         )}
                         {/* Agrupamento Setorial */}
                         <div className="flex items-center gap-2">
+                            <label htmlFor="filtro-setor" className="sr-only">Filtrar por setor</label>
                             <select
+                                id="filtro-setor"
                                 className="bg-slate-50 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px] cursor-pointer"
                                 value={selectedSector || ""}
                                 onChange={(e) => setSelectedSector(e.target.value || null)}
@@ -378,7 +382,9 @@ function ProjectsContent() {
 
                         {/* Agrupamento de Status */}
                         <div className="flex items-center gap-2">
+                            <label htmlFor="filtro-status" className="sr-only">Filtrar por status</label>
                             <select
+                                id="filtro-status"
                                 className="bg-slate-50 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px] cursor-pointer"
                                 value={selectedStatus || ""}
                                 onChange={(e) => setSelectedStatus(e.target.value || null)}
@@ -405,10 +411,10 @@ function ProjectsContent() {
                                 setSelectedSector(null);
                                 setSelectedStatus(null);
                             }}
-                            className="p-2.5 rounded-xl bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all"
-                            title="Limpar filtros"
+                            aria-label="Limpar todos os filtros"
+                            className="p-2.5 rounded-xl bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
                         >
-                            <span className="material-symbols-outlined block">filter_list_off</span>
+                            <span className="material-symbols-outlined block" aria-hidden="true">filter_list_off</span>
                         </button>
 
                         {/* Export to Excel */}
@@ -419,17 +425,17 @@ function ProjectsContent() {
                                 exportToExcel(filtered);
                             }}
                             disabled={filteredProjects.length === 0}
-                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-bold hover:bg-emerald-600 transition-all disabled:opacity-40 cursor-pointer"
-                            title="Exportar todas as emendas para planilha Excel"
+                            aria-label={`Exportar ${filteredProjects.length} emenda${filteredProjects.length !== 1 ? "s" : ""} para planilha Excel`}
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-bold hover:bg-emerald-600 transition-all disabled:opacity-40 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600"
                         >
-                            <span className="material-symbols-outlined text-sm">download</span>
+                            <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
                             Exportar Excel
                         </button>
                     </div>
                 </div>
 
                 {/* Results count */}
-                <p className="text-sm text-slate-500 mb-6 font-medium">
+                <p role="status" aria-live="polite" aria-atomic="true" className="text-sm text-slate-500 mb-6 font-medium">
                     {filteredProjects.length} {filteredProjects.length === 1 ? "emenda encontrada" : "emendas encontradas"}
                 </p>
 
@@ -441,17 +447,21 @@ function ProjectsContent() {
                         <p className="text-sm mt-1">Tente ajustar os filtros ou o termo de busca.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <ul aria-label="Lista de emendas parlamentares" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0">
                         {paginatedProjects.map((project) => {
                             const style = getStatusStyle(project.status);
                             const sc = getSectorColor(project.sector);
 
                             return (
-                                <Link href={`/projetos/${project.id}`} key={project.id}>
+                                <li key={project.id}>
+                                <Link
+                                    href={`/projetos/${project.id}`}
+                                    aria-label={`${project.title} — ${project.status} — ${project.budget} — Autor: ${project.responsible}`}
+                                >
                                     <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-xl transition-all group h-full flex flex-col">
                                         {/* Status + Sector Badges */}
                                         <div className="flex justify-between items-start mb-6">
-                                            <div className="flex flex-wrap gap-2">
+                                            <div className="flex flex-wrap gap-2" aria-hidden="true">
                                                 <span className={`px-3 py-1 ${style.bg} rounded-full text-xs font-bold uppercase tracking-wider`}>
                                                     {project.status}
                                                 </span>
@@ -460,25 +470,26 @@ function ProjectsContent() {
                                                 </span>
                                             </div>
                                             <button
-                                                className="text-slate-300 group-hover:text-blue-500 transition-colors"
+                                                aria-label={`Salvar emenda: ${project.title}`}
+                                                className="text-slate-300 group-hover:text-blue-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 rounded"
                                                 onClick={(e) => e.preventDefault()}
                                             >
-                                                <span className="material-symbols-outlined">bookmark</span>
+                                                <span className="material-symbols-outlined" aria-hidden="true">bookmark</span>
                                             </button>
                                         </div>
 
                                         {/* Title */}
-                                        <h3 className="text-lg font-bold leading-tight mb-4 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                                        <h2 className="text-lg font-bold leading-tight mb-4 line-clamp-2 group-hover:text-blue-600 transition-colors" aria-hidden="true">
                                             {project.title}
-                                        </h3>
+                                        </h2>
 
                                         {/* Author */}
-                                        <div className="flex items-center gap-3 mb-6">
+                                        <div className="flex items-center gap-3 mb-6" aria-hidden="true">
                                             {project.responsiblePhoto ? (
                                                 /* eslint-disable-next-line @next/next/no-img-element */
                                                 <img
                                                     src={project.responsiblePhoto}
-                                                    alt={project.responsible || "Vereador"}
+                                                    alt=""
                                                     className="size-10 rounded-full object-cover border-2 border-slate-200"
                                                 />
                                             ) : (
@@ -493,18 +504,25 @@ function ProjectsContent() {
                                         </div>
 
                                         {/* Value */}
-                                        <div className="mb-6">
+                                        <div className="mb-6" aria-hidden="true">
                                             <p className="text-xs text-slate-500 uppercase font-bold tracking-widest mb-1">Valor Alocado</p>
                                             <p className="text-2xl font-extrabold text-blue-500">{project.budget}</p>
                                         </div>
 
                                         {/* Progress */}
                                         <div className="mt-auto">
-                                            <div className="flex justify-between items-center mb-2">
+                                            <div className="flex justify-between items-center mb-2" aria-hidden="true">
                                                 <span className="text-xs font-bold text-slate-500">Progresso de Execução</span>
                                                 <span className="text-xs font-bold text-blue-500">{project.progress}%</span>
                                             </div>
-                                            <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                            <div
+                                                role="progressbar"
+                                                aria-valuenow={project.progress}
+                                                aria-valuemin={0}
+                                                aria-valuemax={100}
+                                                aria-label={`Progresso de execução: ${project.progress}%`}
+                                                className="w-full h-2 bg-slate-100 rounded-full overflow-hidden"
+                                            >
                                                 <div
                                                     className={`h-full ${style.bar} rounded-full transition-all duration-500`}
                                                     style={{ width: `${project.progress}%` }}
@@ -513,20 +531,22 @@ function ProjectsContent() {
                                         </div>
                                     </div>
                                 </Link>
+                                </li>
                             );
                         })}
-                    </div>
+                    </ul>
                 )}
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                    <div className="mt-12 flex justify-center items-center gap-4">
+                    <nav aria-label="Paginação das emendas" className="mt-12 flex justify-center items-center gap-4">
                         <button
                             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                             disabled={currentPage === 1}
-                            className="p-2 rounded-lg border border-slate-200 hover:bg-white transition-colors disabled:opacity-30"
+                            aria-label="Página anterior"
+                            className="p-2 rounded-lg border border-slate-200 hover:bg-white transition-colors disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
                         >
-                            <span className="material-symbols-outlined block">chevron_left</span>
+                            <span className="material-symbols-outlined block" aria-hidden="true">chevron_left</span>
                         </button>
                         <div className="flex items-center gap-2">
                             {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
@@ -544,7 +564,9 @@ function ProjectsContent() {
                                     <button
                                         key={pageNum}
                                         onClick={() => setCurrentPage(pageNum)}
-                                        className={`size-10 rounded-lg font-bold transition-colors ${currentPage === pageNum
+                                        aria-label={`Ir para página ${pageNum}`}
+                                        aria-current={currentPage === pageNum ? "page" : undefined}
+                                        className={`size-10 rounded-lg font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 ${currentPage === pageNum
                                             ? "bg-blue-500 text-white"
                                             : "border border-slate-200 hover:bg-white"
                                             }`}
@@ -555,10 +577,11 @@ function ProjectsContent() {
                             })}
                             {totalPages > 5 && currentPage < totalPages - 2 && (
                                 <>
-                                    <span className="mx-2 text-slate-400">...</span>
+                                    <span className="mx-2 text-slate-400" aria-hidden="true">...</span>
                                     <button
                                         onClick={() => setCurrentPage(totalPages)}
-                                        className="size-10 rounded-lg border border-slate-200 font-bold hover:bg-white transition-colors"
+                                        aria-label={`Ir para última página, ${totalPages}`}
+                                        className="size-10 rounded-lg border border-slate-200 font-bold hover:bg-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
                                     >
                                         {totalPages}
                                     </button>
@@ -568,27 +591,28 @@ function ProjectsContent() {
                         <button
                             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                             disabled={currentPage === totalPages}
-                            className="p-2 rounded-lg border border-slate-200 hover:bg-white transition-colors disabled:opacity-30"
+                            aria-label="Próxima página"
+                            className="p-2 rounded-lg border border-slate-200 hover:bg-white transition-colors disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
                         >
-                            <span className="material-symbols-outlined block">chevron_right</span>
+                            <span className="material-symbols-outlined block" aria-hidden="true">chevron_right</span>
                         </button>
-                    </div>
+                    </nav>
                 )}
             </main>
 
             {/* Footer */}
-            <footer className="mt-auto bg-white border-t border-slate-200 py-10">
+            <footer aria-label="Rodapé do Portal das Emendas" className="mt-auto bg-white border-t border-slate-200 py-10">
                 <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex items-center gap-3">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain" />
                         <span className="font-bold text-slate-400">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</span>
                     </div>
-                    <div className="flex gap-8">
-                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="https://transparencia.osasco.sp.gov.br/#/dados_abertos" target="_blank" rel="noopener noreferrer">Dados Abertos</a>
-                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Transparência</a>
-                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="#">Contato</a>
-                    </div>
+                    <nav aria-label="Links do rodapé" className="flex gap-8">
+                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 rounded" href="https://transparencia.osasco.sp.gov.br/#/dados_abertos" target="_blank" rel="noopener noreferrer" aria-label="Dados Abertos (abre em nova aba)">Dados Abertos</a>
+                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 rounded" href="https://transparencia.osasco.sp.gov.br" target="_blank" rel="noopener noreferrer" aria-label="Portal de Transparência (abre em nova aba)">Transparência</a>
+                        <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 rounded" href="https://www.osasco.sp.gov.br/faleconosco" target="_blank" rel="noopener noreferrer" aria-label="Contato com a Prefeitura (abre em nova aba)">Contato</a>
+                    </nav>
                 </div>
             </footer>
         </div>

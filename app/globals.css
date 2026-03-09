@@ -136,6 +136,70 @@
   }
 }
 
+/* ─── Acessibilidade Global (WCAG 2.1 AA / eMAG) ──────────────────────────── */
+
+/* Skip navigation link — eMAG 2.1 / WCAG 2.4.1 */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: #1d4ed8;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: 0 0 0.5rem 0.5rem;
+  text-decoration: none;
+  transition: top 0.1s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* Foco visível global — WCAG 2.4.7 / 2.4.11 */
+:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Alto contraste — eMAG / WCAG 1.4.3 */
+.high-contrast {
+  filter: contrast(2) grayscale(0.2);
+}
+
+/* Tamanho de fonte acessível — eMAG */
+:root {
+  --a11y-font-scale: 1;
+}
+html {
+  font-size: calc(1rem * var(--a11y-font-scale));
+}
+
+/* Respeitar preferência de movimento reduzido — WCAG 2.3.3 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Esconder visualmente mas manter acessível a leitores de tela */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 @media print {
   .no-print {
     display: none !important;

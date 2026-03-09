@@ -128,17 +128,22 @@ export default function Home() {
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main id="main-content" className="max-w-7xl mx-auto px-6 py-8" aria-label="Conteúdo principal">
         {/* Search */}
         <div className="max-w-2xl mx-auto mb-10">
           <div className="relative group">
-            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors">
+            <label htmlFor="busca-emendas" className="sr-only">
+              Buscar emendas por autor, título ou valor
+            </label>
+            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" aria-hidden="true">
               search
             </span>
             <input
+              id="busca-emendas"
               className="w-full pl-12 pr-12 py-4 bg-white border-none rounded-2xl shadow-xl shadow-slate-200/50 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm"
               placeholder="Pesquisar por autor, título ou valor..."
-              type="text"
+              type="search"
+              aria-label="Buscar emendas"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleSearch}
@@ -156,16 +161,16 @@ export default function Home() {
         </div>
 
         {/* Hero Card - Budget */}
-        <section className="mb-10">
+        <section className="mb-10" aria-label="Resumo orçamentário das emendas">
           <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 p-8 md:p-12 text-white shadow-2xl shadow-blue-500/20">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" aria-hidden="true"></div>
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7">
                 <div className="flex items-center gap-2 mb-4 opacity-80">
-                  <span className="material-symbols-outlined text-xl">account_balance_wallet</span>
+                  <span className="material-symbols-outlined text-xl" aria-hidden="true">account_balance_wallet</span>
                   <span className="text-xs font-bold uppercase tracking-[0.2em]">Emendas aprovadas</span>
                 </div>
-                <h2 className="text-4xl md:text-5xl font-extrabold mb-8">
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-8" aria-live="polite" aria-atomic="true">
                   {loading ? "Carregando..." : animatedValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                 </h2>
                 <div className="flex flex-wrap gap-3">
@@ -198,8 +203,12 @@ export default function Home() {
                 )}
               </div>
               <div className="lg:col-span-5 flex flex-col items-center justify-center">
-                <div className="relative w-40 h-40 flex items-center justify-center">
-                  <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
+                <div
+                  className="relative w-40 h-40 flex items-center justify-center"
+                  role="img"
+                  aria-label={loading ? "Carregando percentual pago" : `${porcentagemPagaFormatada}% do valor total já foi pago`}
+                >
+                  <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 100 100" aria-hidden="true">
                     <circle cx="50" cy="50" fill="transparent" r="42" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
                     <circle
                       className="text-white transition-all duration-1000"
@@ -211,7 +220,7 @@ export default function Home() {
                       strokeDashoffset={loading ? circumference : strokeDashoffset}
                     />
                   </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center" aria-hidden="true">
                     <span className="text-2xl font-black">{loading ? "--" : `${porcentagemPagaFormatada}%`}</span>
                     <span className="text-[10px] font-bold uppercase opacity-80">Pago</span>
                   </div>
@@ -226,12 +235,17 @@ export default function Home() {
           {/* Left Column - 2/3 */}
           <div className="lg:col-span-2 space-y-8">
             {/* Financial Cards */}
+            <section aria-label="Indicadores financeiros das emendas">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Reservado */}
-              <Link href="/projetos?filtro=reservado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300 cursor-pointer">
+              <Link
+                href="/projetos?filtro=reservado"
+                aria-label={`Total Reservado: ${loading ? "carregando" : animatedReservado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} — ${loading ? "" : porcentagemReservadaFormatada + "% do total"}. Ver emendas reservadas`}
+                className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300 cursor-pointer"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
-                    <span className="material-symbols-outlined">account_balance</span>
+                    <span className="material-symbols-outlined" aria-hidden="true">account_balance</span>
                   </div>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Previsão</span>
                 </div>
@@ -256,10 +270,14 @@ export default function Home() {
               </Link>
 
               {/* Empenhado */}
-              <Link href="/projetos?filtro=empenhado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-blue-300 cursor-pointer">
+              <Link
+                href="/projetos?filtro=empenhado"
+                aria-label={`Total Empenhado: ${loading ? "carregando" : animatedEmpenhado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} — ${loading ? "" : porcentagemFormatada + "% do total"}. Ver emendas empenhadas`}
+                className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-blue-300 cursor-pointer"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
-                    <span className="material-symbols-outlined">payments</span>
+                    <span className="material-symbols-outlined" aria-hidden="true">payments</span>
                   </div>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Alocação Inicial</span>
                 </div>
@@ -284,10 +302,14 @@ export default function Home() {
               </Link>
 
               {/* Liquidado */}
-              <Link href="/projetos?filtro=liquidado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-indigo-300 cursor-pointer">
+              <Link
+                href="/projetos?filtro=liquidado"
+                aria-label={`Total Liquidado: ${loading ? "carregando" : animatedLiquidado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} — ${loading ? "" : porcentagemLiquidadaFormatada + "% do total"}. Ver emendas liquidadas`}
+                className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-indigo-300 cursor-pointer"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
-                    <span className="material-symbols-outlined">receipt_long</span>
+                    <span className="material-symbols-outlined" aria-hidden="true">receipt_long</span>
                   </div>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Execução</span>
                 </div>
@@ -312,10 +334,14 @@ export default function Home() {
               </Link>
 
               {/* Pago */}
-              <Link href="/projetos?filtro=pago" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-300 cursor-pointer">
+              <Link
+                href="/projetos?filtro=pago"
+                aria-label={`Total Pago: ${loading ? "carregando" : animatedPago.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} — ${loading ? "" : porcentagemPagaFormatada + "% do total"}. Ver emendas pagas`}
+                className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-300 cursor-pointer"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
-                    <span className="material-symbols-outlined">check_circle</span>
+                    <span className="material-symbols-outlined" aria-hidden="true">check_circle</span>
                   </div>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Fase Final</span>
                 </div>
@@ -339,20 +365,21 @@ export default function Home() {
                 </div>
               </Link>
             </div>
+            </section>
 
             {/* Recent Activities */}
-            <div className="space-y-6">
+            <section aria-label="Atividades recentes" className="space-y-6">
               <div className="flex items-center justify-between px-2">
                 <div>
-                  <h3 className="text-lg font-bold text-slate-800">Atividades Recentes</h3>
+                  <h2 className="text-lg font-bold text-slate-800">Atividades Recentes</h2>
                   <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Emendas Cadastradas Recentemente</p>
                 </div>
                 <Link href="/projetos" className="text-sm font-bold text-blue-500 hover:text-blue-700 flex items-center gap-1">
-                  Ver histórico <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  Ver histórico <span className="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
                 </Link>
               </div>
 
-              <div className="space-y-4">
+              <ul className="space-y-4" aria-label="Lista de emendas recentes">
                 {loading ? (
                   <div className="text-center py-8 text-slate-400">Carregando dados...</div>
                 ) : amendments.length === 0 ? (
@@ -375,51 +402,54 @@ export default function Home() {
                     const sc = getSectorColor(catNum ? String(catNum) : null);
 
                     return (
-                      <Link
-                        key={emenda.id || idx}
-                        href={`/projetos/${emenda.id}`}
-                        className={`bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-6 transition-all duration-300 group hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-[0_10px_25px_-5px_rgba(59,130,246,0.1)]`}
-                      >
-                        <div className={`w-14 h-14 rounded-2xl ${sc.iconBg} ${sc.iconText} flex items-center justify-center shrink-0 ${sc.iconHoverBg} ${sc.iconHoverText} transition-colors`}>
-                          <span className="material-symbols-outlined text-2xl">{icon}</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-bold text-slate-800 truncate">{title}</h4>
-                            {getNormalizedStatus(emenda.status) === "Não Iniciada" && (
-                              <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase rounded-md tracking-wider shrink-0">
-                                Novo
-                              </span>
-                            )}
+                      <li key={emenda.id || idx}>
+                        <Link
+                          href={`/projetos/${emenda.id}`}
+                          aria-label={`${title} — Autor: ${autor}, Valor: ${valorFormatado}${setor ? `, Setor: ${setor}` : ""}`}
+                          className={`bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-6 transition-all duration-300 group hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-[0_10px_25px_-5px_rgba(59,130,246,0.1)]`}
+                        >
+                          <div className={`w-14 h-14 rounded-2xl ${sc.iconBg} ${sc.iconText} flex items-center justify-center shrink-0 ${sc.iconHoverBg} ${sc.iconHoverText} transition-colors`} aria-hidden="true">
+                            <span className="material-symbols-outlined text-2xl">{icon}</span>
                           </div>
-                          <div className="flex items-center gap-3 flex-wrap text-xs text-slate-500 font-medium">
-                            <span className="flex items-center gap-1">
-                              <span className="material-symbols-outlined text-[14px]">person</span> {autor}
-                            </span>
-                            <span className="text-slate-300">&bull;</span>
-                            <span className="font-bold text-slate-700">{valorFormatado}</span>
-                            {setor && (
-                              <>
-                                <span className="text-slate-300">&bull;</span>
-                                <span className={`px-2 py-0.5 ${sc.badgeBg} ${sc.badgeText} text-[10px] font-bold uppercase rounded-md tracking-wider`}>
-                                  {setor}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-bold text-slate-800 truncate">{title}</h3>
+                              {getNormalizedStatus(emenda.status) === "Não Iniciada" && (
+                                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase rounded-md tracking-wider shrink-0" aria-label="Status: Novo">
+                                  Novo
                                 </span>
-                              </>
-                            )}
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3 flex-wrap text-xs text-slate-500 font-medium">
+                              <span className="flex items-center gap-1">
+                                <span className="material-symbols-outlined text-[14px]" aria-hidden="true">person</span>
+                                <span>{autor}</span>
+                              </span>
+                              <span aria-hidden="true" className="text-slate-300">&bull;</span>
+                              <span className="font-bold text-slate-700">{valorFormatado}</span>
+                              {setor && (
+                                <>
+                                  <span aria-hidden="true" className="text-slate-300">&bull;</span>
+                                  <span className={`px-2 py-0.5 ${sc.badgeBg} ${sc.badgeText} text-[10px] font-bold uppercase rounded-md tracking-wider`}>
+                                    {setor}
+                                  </span>
+                                </>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                        <div className="hidden sm:block text-right">
-                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Protocolo</p>
-                          <p className="text-xs font-mono font-semibold text-slate-600">
-                            #{emenda.numeroEmenda || `2026.${String(idx + 1).padStart(3, "0")}`}
-                          </p>
-                        </div>
-                      </Link>
+                          <div className="hidden sm:block text-right" aria-hidden="true">
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Protocolo</p>
+                            <p className="text-xs font-mono font-semibold text-slate-600">
+                              #{emenda.numeroEmenda || `2026.${String(idx + 1).padStart(3, "0")}`}
+                            </p>
+                          </div>
+                        </Link>
+                      </li>
                     );
                   })
                 )}
-              </div>
-            </div>
+              </ul>
+            </section>
           </div>
 
           {/* Right Column - 1/3 */}

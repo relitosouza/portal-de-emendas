@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import VLibras from "@/components/shared/vlibras";
+import AccessibilityBar from "@/components/shared/accessibility-bar";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -34,7 +35,14 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
-        {children}
+        {/* Skip navigation — eMAG 2.1 / WCAG 2.4.1 */}
+        <a href="#conteudo-principal" className="skip-link">
+          Pular para o conteúdo principal
+        </a>
+        <AccessibilityBar />
+        <div id="conteudo-principal" tabIndex={-1}>
+          {children}
+        </div>
         <VLibras />
       </body>
     </html>
