@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/shared/navbar";
 import ShareCard from "@/components/projects/share-card";
+import TechnicalDetailsAccordion from "@/components/projects/technical-details-accordion";
 
 export const revalidate = 60;
 
@@ -597,6 +598,17 @@ export default async function ProjetoDetalhePage(props: Props) {
                                     </div>
                                 </div>
                             </section>
+
+                            <TechnicalDetailsAccordion
+                                orgaoBeneficiario={amendment.orgaoBeneficiario}
+                                municipio={amendment.municipio}
+                                cnpj={amendment.cnpj}
+                                fornecedor={amendment.fornecedor}
+                                instrumentoJuridico={amendment.instrumentoJuridico}
+                                prazoAplicacao={amendment.prazoAplicacao}
+                                codigoAplicacao={amendment.codigoAplicacao}
+                                numeroLicitacao={amendment.numeroLicitacao}
+                            />
                         </div>
 
                         {/* Right Sidebar */}
