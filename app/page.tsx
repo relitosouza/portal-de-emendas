@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/shared/navbar";
 import { useCountUp } from "@/hooks/useCountUp";
 import { getSectorColor } from "@/lib/sector-colors";
+import { getNormalizedStatus } from "@/lib/status-mapper";
+import { CATEGORY_MAP, parseCurrency as parseValor } from "@/lib/amendments-utils";
 
 export default function Home() {
   const router = useRouter();
@@ -14,18 +16,6 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const parseValor = (v: any): number => {
-    if (!v) return 0;
-    if (typeof v === "number") return v;
-    const cleaned = String(v)
-      .replace(/R\$\s*/gi, "")
-      .replace(/\./g, "")
-      .replace(",", ".")
-      .trim();
-    const num = parseFloat(cleaned);
-    return isNaN(num) ? 0 : num;
-  };
 
   const totalReservado = amendments.reduce((acc, e) => acc + parseValor(e.reservado), 0);
   const totalEmpenhado = amendments.reduce((acc, e) => acc + parseValor(e.empenhado), 0);
@@ -62,6 +52,12 @@ export default function Home() {
     }
   };
 
+  const handleSearchSubmit = () => {
+    if (searchTerm.trim()) {
+      router.push(`/projetos?search=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
+
   // Group amendments by author
   const getAuthorRanking = () => {
     const authorMap: Record<string, number> = {};
@@ -80,37 +76,7 @@ export default function Home() {
   };
 
   // Map sector categories
-  const categoryMap: Record<string, string> = {
-    "1": "LEGISLATIVA",
-    "2": "JUDICIÁRIA",
-    "3": "ESSENCIAL À JUSTIÇA",
-    "4": "ADMINISTRAÇÃO",
-    "5": "DEFESA NACIONAL",
-    "6": "SEGURANÇA PÚBLICA",
-    "7": "RELAÇÕES EXTERIORES",
-    "8": "ASSISTÊNCIA SOCIAL",
-    "9": "PREVIDÊNCIA SOCIAL",
-    "10": "SAÚDE",
-    "11": "TRABALHO",
-    "12": "EDUCAÇÃO",
-    "13": "CULTURA",
-    "14": "DIREITOS DA CIDADANIA",
-    "15": "URBANISMO",
-    "16": "HABITAÇÃO",
-    "17": "SANEAMENTO",
-    "18": "GESTÃO AMBIENTAL",
-    "19": "CIÊNCIA E TECNOLOGIA",
-    "20": "AGRICULTURA",
-    "21": "ORGANIZAÇÃO AGRÁRIA",
-    "22": "INDÚSTRIA",
-    "23": "COMÉRCIO E SERVIÇOS",
-    "24": "COMUNICAÇÕES",
-    "25": "ENERGIA",
-    "26": "TRANSPORTE",
-    "27": "DESPORTO E LAZER",
-    "28": "ENCARGOS ESPECIAIS",
-    "99": "RESERVA DE CONTIGÊNCIA",
-  };
+  const categoryMap = CATEGORY_MAP;
 
   // Group amendments by sector
   const getSectorData = () => {
@@ -170,13 +136,22 @@ export default function Home() {
               search
             </span>
             <input
-              className="w-full pl-12 pr-4 py-4 bg-white border-none rounded-2xl shadow-xl shadow-slate-200/50 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm"
+              className="w-full pl-12 pr-12 py-4 bg-white border-none rounded-2xl shadow-xl shadow-slate-200/50 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm"
               placeholder="Pesquisar por autor, título ou valor..."
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleSearch}
             />
+            {searchTerm.trim() && (
+              <button
+                onClick={handleSearchSubmit}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                aria-label="Buscar"
+              >
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -383,7 +358,10 @@ export default function Home() {
                 ) : amendments.length === 0 ? (
                   <div className="text-center py-8 text-slate-400">Nenhuma emenda cadastrada ainda.</div>
                 ) : (
-                  amendments.slice(0, 6).map((emenda: any, idx: number) => {
+                  [...amendments]
+                    .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+                    .slice(0, 6)
+                    .map((emenda: any, idx: number) => {
                     const title = emenda.objeto || emenda.finalidade || `Emenda ${emenda.numeroEmenda || ""}`;
                     const autor = emenda.autor || emenda.responsavelNome || "Sem autor";
                     const valor = parseValor(emenda.valor);
@@ -408,9 +386,11 @@ export default function Home() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <h4 className="font-bold text-slate-800 truncate">{title}</h4>
-                            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase rounded-md tracking-wider shrink-0">
-                              Novo
-                            </span>
+                            {getNormalizedStatus(emenda.status) === "Não Iniciada" && (
+                              <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase rounded-md tracking-wider shrink-0">
+                                Novo
+                              </span>
+                            )}
                           </div>
                           <div className="flex items-center gap-3 flex-wrap text-xs text-slate-500 font-medium">
                             <span className="flex items-center gap-1">
