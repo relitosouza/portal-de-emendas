@@ -339,14 +339,14 @@ export default async function RelatorioPage(props: Props) {
                         </div>
                     </section>
 
-                    {/* Detalhamento Adicional */}
+                    {/* Classificação Orçamentária */}
                     {(amendment.finalidade ||
                         amendment.funcao ||
-                        amendment.localidadeBeneficiada ||
-                        amendment.orgaoBeneficiario) && (
+                        amendment.orgaoBeneficiario ||
+                        amendment.fundamentoLegal) && (
                         <section className="mb-10">
                             <h3 className="text-xs uppercase font-bold text-slate-400 mb-4 border-l-4 border-blue-600 pl-3">
-                                Detalhamento Adicional
+                                Classificação Orçamentária
                             </h3>
                             <div className="border border-slate-200 rounded-lg p-6 space-y-3">
                                 {amendment.finalidade && (
@@ -370,16 +370,6 @@ export default async function RelatorioPage(props: Props) {
                                                 {amendment.subfuncao
                                                     ? ` / ${amendment.subfuncao}`
                                                     : ""}
-                                            </p>
-                                        </div>
-                                    )}
-                                    {amendment.localidadeBeneficiada && (
-                                        <div>
-                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
-                                                Localidade Beneficiada
-                                            </span>
-                                            <p className="text-xs text-slate-700 mt-0.5">
-                                                {amendment.localidadeBeneficiada}
                                             </p>
                                         </div>
                                     )}
@@ -408,26 +398,26 @@ export default async function RelatorioPage(props: Props) {
                         </section>
                     )}
 
-                    {/* Detalhes Técnicos */}
-                    {(amendment.municipio ||
+                    {/* Dados de Contratação */}
+                    {(amendment.fornecedor ||
                         amendment.cnpj ||
-                        amendment.fornecedor ||
                         amendment.instrumentoJuridico ||
                         amendment.prazoAplicacao ||
                         amendment.codigoAplicacao ||
-                        amendment.numeroLicitacao) && (
+                        amendment.numeroLicitacao ||
+                        amendment.municipio) && (
                         <section className="mb-10">
                             <h3 className="text-xs uppercase font-bold text-slate-400 mb-4 border-l-4 border-blue-600 pl-3">
-                                Detalhes Técnicos
+                                Dados de Contratação
                             </h3>
                             <div className="border border-slate-200 rounded-lg p-6">
                                 <div className="grid grid-cols-2 gap-4">
-                                    {amendment.municipio && (
+                                    {amendment.fornecedor && (
                                         <div>
                                             <span className="text-[10px] font-bold text-slate-500 uppercase">
-                                                Município
+                                                Fornecedor
                                             </span>
-                                            <p className="text-xs text-slate-700 mt-0.5">{amendment.municipio}</p>
+                                            <p className="text-xs text-slate-700 mt-0.5">{amendment.fornecedor}</p>
                                         </div>
                                     )}
                                     {amendment.cnpj && (
@@ -436,14 +426,6 @@ export default async function RelatorioPage(props: Props) {
                                                 CNPJ
                                             </span>
                                             <p className="text-xs text-slate-700 mt-0.5 font-mono">{amendment.cnpj}</p>
-                                        </div>
-                                    )}
-                                    {amendment.fornecedor && (
-                                        <div>
-                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
-                                                Fornecedor
-                                            </span>
-                                            <p className="text-xs text-slate-700 mt-0.5">{amendment.fornecedor}</p>
                                         </div>
                                     )}
                                     {amendment.instrumentoJuridico && (
@@ -476,6 +458,14 @@ export default async function RelatorioPage(props: Props) {
                                                 Nº Licitação
                                             </span>
                                             <p className="text-xs text-slate-700 mt-0.5 font-mono">{amendment.numeroLicitacao}</p>
+                                        </div>
+                                    )}
+                                    {amendment.municipio && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Município
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5">{amendment.municipio}</p>
                                         </div>
                                     )}
                                 </div>
