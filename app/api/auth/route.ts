@@ -1,31 +1,57 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateSessionToken, verifyPassword } from "@/lib/auth";
+import crypto from "crypto";
 
-// Simple in-memory rate limiter
-const loginAttempts = new Map<string, { count: number; resetAt: number }>();
 const MAX_ATTEMPTS = 5;
-const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const BLOCK_DURATION_MS = 15 * 60 * 1000; // 15 minutes
+const PENALTY_COOKIE = "login-penalty";
 
-function isRateLimited(ip: string): boolean {
-    const now = Date.now();
-    const entry = loginAttempts.get(ip);
+function getPenaltySecret(): string {
+    return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || "fallback-penalty";
+}
 
-    if (!entry || now > entry.resetAt) {
-        loginAttempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-        return false;
+function signPenalty(payload: string): string {
+    return crypto.createHmac("sha256", getPenaltySecret()).update(payload).digest("hex");
+}
+
+function readPenaltyCookie(req: NextRequest): { count: number; blockedUntil: number } | null {
+    const raw = req.cookies.get(PENALTY_COOKIE)?.value;
+    if (!raw) return null;
+    try {
+        const [data, sig] = raw.split("|");
+        if (signPenalty(data) !== sig) return null;
+        return JSON.parse(Buffer.from(data, "base64").toString("utf-8"));
+    } catch {
+        return null;
     }
+}
 
-    entry.count++;
-    return entry.count > MAX_ATTEMPTS;
+function makePenaltyCookieValue(count: number, blockedUntil: number): string {
+    const data = Buffer.from(JSON.stringify({ count, blockedUntil })).toString("base64");
+    return `${data}|${signPenalty(data)}`;
+}
+
+function setPenaltyCookie(response: NextResponse, count: number, blockedUntil: number) {
+    const isProduction = process.env.NODE_ENV === "production";
+    response.cookies.set(PENALTY_COOKIE, makePenaltyCookieValue(count, blockedUntil), {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: "strict",
+        path: "/api/auth",
+        maxAge: BLOCK_DURATION_MS / 1000,
+    });
 }
 
 export async function POST(req: NextRequest) {
     try {
-        const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+        const penalty = readPenaltyCookie(req);
+        const now = Date.now();
 
-        if (isRateLimited(ip)) {
+        // Block if still within penalty window
+        if (penalty && penalty.blockedUntil > now) {
+            const minutesLeft = Math.ceil((penalty.blockedUntil - now) / 60000);
             return NextResponse.json(
-                { error: "Muitas tentativas. Tente novamente em 15 minutos." },
+                { error: `Muitas tentativas. Tente novamente em ${minutesLeft} minuto(s).` },
                 { status: 429 }
             );
         }
@@ -49,18 +75,28 @@ export async function POST(req: NextRequest) {
             response.cookies.set("admin-session", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "lax",
+                sameSite: "strict",
                 path: "/",
-                maxAge: 60 * 60 * 8, // 8 horas
+                maxAge: 60 * 60 * 8,
             });
+
+            // Clear penalty cookie on successful login
+            response.cookies.delete(PENALTY_COOKIE);
 
             return response;
         }
 
-        return NextResponse.json(
+        // Increment failure count
+        const currentCount = (penalty?.count ?? 0) + 1;
+        const blockedUntil = currentCount >= MAX_ATTEMPTS ? now + BLOCK_DURATION_MS : 0;
+
+        const response = NextResponse.json(
             { error: "E-mail ou senha incorretos." },
             { status: 401 }
         );
+        setPenaltyCookie(response, currentCount, blockedUntil);
+        return response;
+
     } catch {
         return NextResponse.json(
             { error: "Erro interno do servidor." },
