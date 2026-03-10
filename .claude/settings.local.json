@@ -10,7 +10,11 @@
       "Bash(\"e:/projetos/portal-de-emendas/hooks/useCountUp.ts\":*)",
       "Bash(npm run build:*)",
       "Bash(git stash:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(ls:*)",
+      "Read(//c/Users/USER/.claude/**)",
+      "Bash(cat /e/projetos/portal-de-emendas/package.json | python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('next:', d.get\\('dependencies',{}\\).get\\('next',''\\)\\); print\\('react:', d.get\\('dependencies',{}\\).get\\('react',''\\)\\); print\\('zod:', d.get\\('dependencies',{}\\).get\\('zod',''\\)\\); print\\('tailwind:', d.get\\('devDependencies',{}\\).get\\('tailwindcss',d.get\\('dependencies',{}\\).get\\('tailwindcss','not found'\\)\\)\\); print\\('rhf:', d.get\\('dependencies',{}\\).get\\('react-hook-form',''\\)\\); print\\('recharts:', d.get\\('dependencies',{}\\).get\\('recharts',''\\)\\); print\\('leaflet:', d.get\\('dependencies',{}\\).get\\('react-leaflet',''\\)\\); print\\('lucide:', d.get\\('dependencies',{}\\).get\\('lucide-react',''\\)\\)\")",
+      "Bash(npm run:*)"
     ]
   }
 }
