@@ -16,6 +16,7 @@ O **Portal de Emendas** é uma aplicação web desenvolvida em Next.js que serve
 
 ```
 app/
+├── layout.tsx                        # Root layout — providers, fontes, metadata
 ├── page.tsx                          # Home — dashboard público
 ├── projetos/
 │   ├── page.tsx                      # Listagem de emendas (com filtros e paginação)
@@ -50,7 +51,9 @@ lib/                                  # Utilitários e camada de dados
 ├── store.ts                          # Tipos TypeScript (Amendment)
 ├── amendments-utils.ts               # Helpers de parsing e formatação
 ├── status-mapper.ts                  # Normalização de status
-└── sector-colors.ts                  # Cores por setor/categoria
+├── sector-colors.ts                  # Cores por setor/categoria
+├── utils.ts                          # Utilitário cn() para Tailwind (class merging)
+└── data.ts                           # Interface Project (tipo alternativo)
 ```
 
 ## Stack de tecnologia
@@ -59,6 +62,7 @@ lib/                                  # Utilitários e camada de dados
 |--------|-----------|
 | Framework | Next.js 16 (App Router) |
 | UI | React 19 + Tailwind CSS 4 |
+| Componentes | shadcn/UI (Radix UI primitives) |
 | Formulários | React Hook Form + Zod 4 |
 | Ícones | Material Symbols (Google Fonts) + Lucide React |
 | Gráficos | Recharts |
