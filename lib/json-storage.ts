@@ -63,25 +63,27 @@ interface FinancialRecord {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function upsertFinancialData(_sheets: any, _spreadsheetId: string, amendmentId: string, data: any): Promise<void> {
-    const records = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
-    const index = records.findIndex((r) => r.amendmentId === amendmentId);
+    const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
+    
+    // Deduplicate existing by ID
+    const recordMap = new Map<string, FinancialRecord>();
+    for (const r of rawRecords) {
+        if (r.amendmentId) recordMap.set(r.amendmentId, r);
+    }
+
+    const currentRecord = recordMap.get(amendmentId);
 
     const record: FinancialRecord = {
         amendmentId,
-        empenhado: data.empenhado || "",
-        liquidado: data.liquidado || "",
-        pago: data.pago || "",
-        reservado: data.reservado || "",
+        empenhado: data.empenhado !== undefined ? String(data.empenhado) : (currentRecord?.empenhado || ""),
+        liquidado: data.liquidado !== undefined ? String(data.liquidado) : (currentRecord?.liquidado || ""),
+        pago: data.pago !== undefined ? String(data.pago) : (currentRecord?.pago || ""),
+        reservado: data.reservado !== undefined ? String(data.reservado) : (currentRecord?.reservado || ""),
         updatedAt: new Date().toISOString(),
     };
 
-    if (index >= 0) {
-        records[index] = record;
-    } else {
-        records.push(record);
-    }
-
-    await writeJsonFile(FINANCIAL_FILE, records);
+    recordMap.set(amendmentId, record);
+    await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
 }
 
 // =====================================================
@@ -168,10 +170,12 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
         if (financial) {
             return {
                 ...amendment,
-                empenhado: financial.empenhado || amendment.empenhado,
-                liquidado: financial.liquidado || amendment.liquidado,
-                pago: financial.pago || amendment.pago,
-                reservado: financial.reservado || amendment.reservado,
+                // If record exists in financial.json, it is the authority for these fields.
+                // We only fall back to amendment.X if the financial record literally doesn't have the field.
+                empenhado: financial.empenhado !== undefined ? financial.empenhado : amendment.empenhado,
+                liquidado: financial.liquidado !== undefined ? financial.liquidado : amendment.liquidado,
+                pago: financial.pago !== undefined ? financial.pago : amendment.pago,
+                reservado: financial.reservado !== undefined ? financial.reservado : amendment.reservado,
             };
         }
         return amendment;

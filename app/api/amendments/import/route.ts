@@ -200,20 +200,24 @@ export async function POST(request: Request) {
         // Extract financial data
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const financialData: any[] = [];
+        const financialKeys = ["empenhado", "liquidado", "pago", "reservado"];
+
         for (const a of amendments) {
-            if (a.empenhado || a.liquidado || a.pago || a.reservado) {
+            // Check if any financial key exists in the object (from CSV columns)
+            const hasFinancialInCsv = financialKeys.some(k => k in a);
+
+            if (hasFinancialInCsv) {
                 financialData.push({
                     amendmentId: a.id,
-                    empenhado: a.empenhado || "",
-                    liquidado: a.liquidado || "",
-                    pago: a.pago || "",
-                    reservado: a.reservado || "",
+                    empenhado: a.empenhado !== undefined ? String(a.empenhado) : "",
+                    liquidado: a.liquidado !== undefined ? String(a.liquidado) : "",
+                    pago: a.pago !== undefined ? String(a.pago) : "",
+                    reservado: a.reservado !== undefined ? String(a.reservado) : "",
                     updatedAt: new Date().toISOString(),
                 });
-                delete a.empenhado;
-                delete a.liquidado;
-                delete a.pago;
-                delete a.reservado;
+                
+                // Remove from main amendment object to keep it clean
+                financialKeys.forEach(k => delete a[k]);
             }
         }
 
