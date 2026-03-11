@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/shared/navbar";
+import CouncilorRanking from "@/components/dashboard/councilor-ranking";
 import { useCountUp } from "@/hooks/useCountUp";
 import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus } from "@/lib/status-mapper";
@@ -60,19 +61,22 @@ export default function Home() {
 
   // Group amendments by author
   const getAuthorRanking = () => {
-    const authorMap: Record<string, number> = {};
+    const authorMap: Record<string, { count: number; foto?: string }> = {};
     amendments.forEach((e: any) => {
       const autor = e.autor || e.responsavelNome || "Não informado";
-      authorMap[autor] = (authorMap[autor] || 0) + 1;
+      if (!authorMap[autor]) {
+        authorMap[autor] = { count: 0, foto: e.autorFoto || e.responsavelFoto };
+      }
+      authorMap[autor].count += 1;
     });
     return Object.entries(authorMap)
-      .map(([name, count]) => ({
+      .map(([name, data]) => ({
         name,
-        count,
+        count: data.count,
+        foto: data.foto,
         initials: name.split(" ").filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase(),
       }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5);
+      .sort((a, b) => b.count - a.count);
   };
 
   // Map sector categories
@@ -455,43 +459,14 @@ export default function Home() {
           {/* Right Column - 1/3 */}
           <div className="space-y-6">
             {/* Author Ranking */}
-            <div>
-              <h3 className="text-lg font-bold text-slate-800 mb-1">Emendas por Autor</h3>
-              <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-6">Ranking de participações</p>
-            </div>
-
-            <div className="bg-white rounded-[16px] border border-slate-100 shadow-sm overflow-hidden">
-              <div className="divide-y divide-slate-50">
-                {loading ? (
-                  <div className="p-6 text-center text-slate-400">Carregando...</div>
-                ) : authorRanking.length === 0 ? (
-                  <div className="p-6 text-center text-slate-400">Nenhum autor encontrado.</div>
-                ) : (
-                  authorRanking.map((author) => (
-                    <Link
-                      href={`/projetos?search=${encodeURIComponent(author.name)}`}
-                      key={author.name}
-                      className="p-4 flex items-center justify-between group hover:bg-slate-50 transition-colors cursor-pointer block"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs">
-                          {author.initials}
-                        </div>
-                        <span className="text-sm font-semibold text-slate-700">{author.name}</span>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-[10px] font-bold shadow-lg shadow-blue-500/20">
-                        {String(author.count).padStart(2, "0")}
-                      </div>
-                    </Link>
-                  ))
-                )}
+            {loading ? (
+              <div className="bg-white rounded-[24px] border border-slate-100 shadow-xl shadow-slate-200/40 p-12 flex flex-col items-center justify-center gap-4 text-slate-400">
+                <div className="w-10 h-10 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin"></div>
+                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Carregando Ranking...</span>
               </div>
-              <div className="p-4 bg-slate-50 text-center">
-                <Link href="/projetos" className="text-[10px] font-bold text-blue-500 uppercase tracking-widest hover:underline">
-                  Ver ranking completo
-                </Link>
-              </div>
-            </div>
+            ) : (
+              <CouncilorRanking councilors={authorRanking} />
+            )}
 
             {/* Sector Card */}
             <div className="bg-white rounded-[16px] border border-slate-100 shadow-sm overflow-hidden mt-6">
