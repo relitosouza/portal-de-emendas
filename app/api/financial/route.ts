@@ -13,12 +13,15 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "amendmentId is required" }, { status: 400 });
         }
 
-        await upsertFinancialData(null, "", amendmentId, {
-            empenhado: empenhado || "",
-            liquidado: liquidado || "",
-            pago: pago || "",
-            reservado: reservado || "",
-        });
+        // Only include fields that were explicitly sent in the request body.
+        // Omitting a field here means upsertFinancialData will preserve the existing value.
+        const updateData: Record<string, string> = {};
+        if (empenhado !== undefined) updateData.empenhado = empenhado;
+        if (liquidado !== undefined) updateData.liquidado = liquidado;
+        if (pago !== undefined) updateData.pago = pago;
+        if (reservado !== undefined) updateData.reservado = reservado;
+
+        await upsertFinancialData(null, "", amendmentId, updateData);
 
         return NextResponse.json({ success: true });
     } catch {
