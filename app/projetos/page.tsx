@@ -349,7 +349,7 @@ function ProjectsContent() {
                             <input
                                 id="busca-emendas"
                                 className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm w-full"
-                                placeholder="Buscar por número, título ou autor..."
+                                placeholder="Buscar por objetivo, número ou autor..."
                                 type="search"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}

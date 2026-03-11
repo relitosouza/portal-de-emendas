@@ -149,7 +149,7 @@ export default function Home() {
             <input
               id="busca-emendas"
               className="w-full pl-12 pr-12 py-4 bg-white border-none rounded-2xl shadow-xl shadow-slate-200/50 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm"
-              placeholder="Pesquisar por autor, título ou valor..."
+              placeholder="Pesquisar por objetivo, autor ou número..."
               type="search"
               aria-label="Buscar emendas"
               value={searchTerm}
