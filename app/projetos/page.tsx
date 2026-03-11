@@ -8,6 +8,8 @@ import Navbar from "@/components/shared/navbar";
 import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus } from "@/lib/status-mapper";
 import { VEREADORES_PHOTOS, findVereadorPhoto } from "@/lib/amendments-utils";
+import GroupedAmendments from "@/components/dashboard/grouped-amendments";
+import { cn } from "@/lib/utils";
 
 interface Project {
     id: string;
@@ -161,6 +163,7 @@ function ProjectsContent() {
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
     const [selectedSector, setSelectedSector] = useState<string | null>(initialSector);
     const [currentPage, setCurrentPage] = useState(1);
+    const [viewMode, setViewMode] = useState<"individual" | "grouped">("individual");
 
     const availableSectors = useMemo(() => {
         const sectors = new Set(projects.map(p => p.sector).filter(Boolean));
@@ -429,15 +432,40 @@ function ProjectsContent() {
                             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-bold hover:bg-emerald-600 transition-all disabled:opacity-40 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600"
                         >
                             <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
-                            Exportar Excel
+                            Exportar
                         </button>
                     </div>
                 </div>
 
-                {/* Results count */}
-                <p role="status" aria-live="polite" aria-atomic="true" className="text-sm text-slate-500 mb-6 font-medium">
-                    {filteredProjects.length} {filteredProjects.length === 1 ? "emenda encontrada" : "emendas encontradas"}
-                </p>
+                {/* View Mode Toggle */}
+                <div className="flex items-center justify-between mb-8">
+                    <p role="status" aria-live="polite" aria-atomic="true" className="text-sm text-slate-500 font-medium">
+                        {filteredProjects.length} {filteredProjects.length === 1 ? "emenda encontrada" : "emendas encontradas"}
+                    </p>
+
+                    <div className="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
+                        <button
+                            onClick={() => setViewMode("individual")}
+                            className={cn(
+                                "flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all",
+                                viewMode === "individual" ? "bg-blue-600 text-white shadow-lg shadow-blue-200" : "text-slate-400 hover:text-slate-600"
+                            )}
+                        >
+                            <span className="material-symbols-outlined text-sm">grid_view</span>
+                            Individual
+                        </button>
+                        <button
+                            onClick={() => setViewMode("grouped")}
+                            className={cn(
+                                "flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all",
+                                viewMode === "grouped" ? "bg-blue-600 text-white shadow-lg shadow-blue-200" : "text-slate-400 hover:text-slate-600"
+                            )}
+                        >
+                            <span className="material-symbols-outlined text-sm">group_work</span>
+                            Por Objetivo
+                        </button>
+                    </div>
+                </div>
 
                 {/* Grid of Cards */}
                 {paginatedProjects.length === 0 ? (
@@ -446,6 +474,12 @@ function ProjectsContent() {
                         <p className="text-lg font-semibold">Nenhuma emenda encontrada</p>
                         <p className="text-sm mt-1">Tente ajustar os filtros ou o termo de busca.</p>
                     </div>
+                ) : viewMode === "grouped" ? (
+                    <GroupedAmendments 
+                        amendments={rawAmendments.filter(a => 
+                          filteredProjects.some(fp => fp.id === a.id)
+                        )} 
+                    />
                 ) : (
                     <ul aria-label="Lista de emendas parlamentares" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0">
                         {paginatedProjects.map((project) => {
@@ -538,7 +572,7 @@ function ProjectsContent() {
                 )}
 
                 {/* Pagination */}
-                {totalPages > 1 && (
+                {viewMode === "individual" && totalPages > 1 && (
                     <nav aria-label="Paginação das emendas" className="mt-12 flex justify-center items-center gap-4">
                         <button
                             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}

@@ -9,6 +9,7 @@ import { useCountUp } from "@/hooks/useCountUp";
 import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus } from "@/lib/status-mapper";
 import { CATEGORY_MAP, parseCurrency as parseValor, findVereadorPhoto } from "@/lib/amendments-utils";
+import GroupedAmendments from "@/components/dashboard/grouped-amendments";
 
 export default function Home() {
   const router = useRouter();
@@ -374,94 +375,26 @@ export default function Home() {
             </div>
             </section>
 
-            {/* Recent Activities */}
-            <section aria-label="Atividades recentes" className="space-y-6">
+            {/* Grouped Amendments by Objective */}
+            <section aria-label="Emendas agrupadas por objetivo" className="space-y-6">
               <div className="flex items-center justify-between px-2">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-800">Atividades Recentes</h2>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Emendas Cadastradas Recentemente</p>
+                  <h2 className="text-lg font-bold text-slate-800">Emendas por Objetivo</h2>
+                  <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Agrupamento consolidado de investimentos</p>
                 </div>
-                <Link href="/projetos" className="text-sm font-bold text-blue-500 hover:text-blue-700 flex items-center gap-1">
-                  Ver histórico <span className="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+                <Link href="/projetos?view=grouped" className="text-sm font-bold text-blue-500 hover:text-blue-700 flex items-center gap-1">
+                  Ver todas <span className="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
                 </Link>
               </div>
 
-              <ul className="space-y-4" aria-label="Lista de emendas recentes">
-                {loading ? (
-                  <div className="text-center py-8 text-slate-400">Carregando dados...</div>
-                ) : amendments.length === 0 ? (
-                  <div className="text-center py-8 text-slate-400">Nenhuma emenda cadastrada ainda.</div>
-                ) : (
-                  [...amendments]
-                    .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
-                    .slice(0, 6)
-                    .map((emenda: any, idx: number) => {
-                    const title = emenda.objeto || emenda.finalidade || `Emenda ${emenda.numeroEmenda || ""}`;
-                    const autor = emenda.autor || emenda.responsavelNome || "Sem autor";
-                    const valor = parseValor(emenda.valor);
-                    const valorFormatado = valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-                    const icons = ["folder_open", "description", "folder_managed"];
-                    const icon = icons[idx % icons.length];
-
-                    let catNum = emenda.categoria;
-                    if (typeof catNum === "string" && catNum.includes(" - ")) catNum = catNum.split(" - ")[0].trim();
-                    const setor = catNum ? (categoryMap[String(catNum)] || null) : null;
-                    const sc = getSectorColor(catNum ? String(catNum) : null);
-                    const authorPhoto = findVereadorPhoto(autor);
-
-                    return (
-                      <li key={emenda.id || idx}>
-                        <Link
-                          href={`/projetos/${emenda.id}`}
-                          aria-label={`${title} — Autor: ${autor}, Valor: ${valorFormatado}${setor ? `, Setor: ${setor}` : ""}`}
-                          className={`bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-6 transition-all duration-300 group hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-[0_10px_25px_-5px_rgba(59,130,246,0.1)]`}
-                        >
-                          <div className={`w-14 h-14 rounded-2xl ${sc.iconBg} ${sc.iconText} flex items-center justify-center shrink-0 ${sc.iconHoverBg} ${sc.iconHoverText} transition-colors overflow-hidden border-2 border-transparent group-hover:border-blue-100`} aria-hidden="true">
-                            {authorPhoto ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img src={authorPhoto} alt={autor} className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="material-symbols-outlined text-2xl">{icon}</span>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-bold text-slate-800 truncate">{title}</h3>
-                              {getNormalizedStatus(emenda.status) === "Não Iniciada" && (
-                                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase rounded-md tracking-wider shrink-0" aria-label="Status: Novo">
-                                  Novo
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-3 flex-wrap text-xs text-slate-500 font-medium">
-                              <span className="flex items-center gap-1">
-                                <span className="material-symbols-outlined text-[14px]" aria-hidden="true">person</span>
-                                <span>{autor}</span>
-                              </span>
-                              <span aria-hidden="true" className="text-slate-300">&bull;</span>
-                              <span className="font-bold text-slate-700">{valorFormatado}</span>
-                              {setor && (
-                                <>
-                                  <span aria-hidden="true" className="text-slate-300">&bull;</span>
-                                  <span className={`px-2 py-0.5 ${sc.badgeBg} ${sc.badgeText} text-[10px] font-bold uppercase rounded-md tracking-wider`}>
-                                    {setor}
-                                  </span>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                          <div className="hidden sm:block text-right" aria-hidden="true">
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Protocolo</p>
-                            <p className="text-xs font-mono font-semibold text-slate-600">
-                              #{emenda.numeroEmenda || `2026.${String(idx + 1).padStart(3, "0")}`}
-                            </p>
-                          </div>
-                        </Link>
-                      </li>
-                    );
-                  })
-                )}
-              </ul>
+              {loading ? (
+                <div className="text-center py-20 bg-white rounded-3xl border border-slate-100 text-slate-400">
+                  <div className="w-10 h-10 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+                  Carregando grupos...
+                </div>
+              ) : (
+                <GroupedAmendments amendments={amendments.slice(0, 100)} />
+              )}
             </section>
           </div>
 
