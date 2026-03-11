@@ -7,7 +7,7 @@ export async function POST(request: Request) {
 
     try {
         const body = await request.json();
-        const { amendmentId, empenhado, liquidado, pago } = body;
+        const { amendmentId, empenhado, liquidado, pago, reservado } = body;
 
         if (!amendmentId) {
             return NextResponse.json({ error: "amendmentId is required" }, { status: 400 });
@@ -17,6 +17,7 @@ export async function POST(request: Request) {
             empenhado: empenhado || "",
             liquidado: liquidado || "",
             pago: pago || "",
+            reservado: reservado || "",
         });
 
         return NextResponse.json({ success: true });

@@ -65,6 +65,7 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
         empenhado: initialData?.empenhado || "",
         liquidado: initialData?.liquidado || "",
         pago: initialData?.pago || "",
+        reservado: initialData?.reservado || "",
 
         // Transparência
         portalTransparenciaCheck: initialData?.portalTransparenciaCheck || "",
@@ -594,6 +595,37 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                                                     <div className="space-y-2">
                                                         <label className={labelClass}>Prazo de Aplicação</label>
                                                         <input className={inputClass} type="text" placeholder="Ex: 12 meses" value={formData.prazoAplicacao} onChange={(e) => handleChange("prazoAplicacao", e.target.value)} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="h-[1px] bg-gray-100" />
+
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Execução Financeira</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Status atual das reservas e pagamentos.</p>
+                                            </div>
+                                            <div className="md:col-span-8 space-y-6">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Reservado (R$)</label>
+                                                        <input className={`${inputClass} font-mono`} type="text" placeholder="0,00" value={formData.reservado} onChange={(e) => handleChange("reservado", e.target.value)} />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Empenhado (R$)</label>
+                                                        <input className={`${inputClass} font-mono`} type="text" placeholder="0,00" value={formData.empenhado} onChange={(e) => handleChange("empenhado", e.target.value)} />
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Liquidado (R$)</label>
+                                                        <input className={`${inputClass} font-mono`} type="text" placeholder="0,00" value={formData.liquidado} onChange={(e) => handleChange("liquidado", e.target.value)} />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Pago (R$)</label>
+                                                        <input className={`${inputClass} font-mono`} type="text" placeholder="0,00" value={formData.pago} onChange={(e) => handleChange("pago", e.target.value)} />
                                                     </div>
                                                 </div>
                                             </div>

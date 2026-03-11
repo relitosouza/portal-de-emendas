@@ -83,6 +83,7 @@ export default function EditAmendmentPage({ params }: PageProps) {
                         empenhado: formData.empenhado || "",
                         liquidado: formData.liquidado || "",
                         pago: formData.pago || "",
+                        reservado: formData.reservado || "",
                     }),
                 });
                 setTimeout(() => setFeedback(null), 3000);
@@ -338,6 +339,15 @@ export default function EditAmendmentPage({ params }: PageProps) {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <div>
                                     <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">
+                                        <span className="h-2.5 w-2.5 rounded-full bg-slate-400"></span>Reservado
+                                    </label>
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
+                                        <input className={`${inputClass} pl-12 font-mono`} value={formData.reservado || ""} onChange={(e) => handleChange("reservado", e.target.value)} placeholder="0,00" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">
                                         <span className="h-2.5 w-2.5 rounded-full bg-blue-500"></span>Empenhado
                                     </label>
                                     <div className="relative">
@@ -366,6 +376,8 @@ export default function EditAmendmentPage({ params }: PageProps) {
                             </div>
                             {/* Flow visualization */}
                             <div className="flex items-center gap-2 pt-2">
+                                <div className="flex-1 h-2 rounded-full bg-slate-200 overflow-hidden"><div className="h-full bg-slate-400 rounded-full transition-all" style={{ width: formData.reservado ? "100%" : "0%" }}></div></div>
+                                <span className="material-symbols-outlined text-[12px] text-slate-300">arrow_forward</span>
                                 <div className="flex-1 h-2 rounded-full bg-blue-200 overflow-hidden"><div className="h-full bg-blue-500 rounded-full transition-all" style={{ width: formData.empenhado ? "100%" : "0%" }}></div></div>
                                 <span className="material-symbols-outlined text-[12px] text-slate-300">arrow_forward</span>
                                 <div className="flex-1 h-2 rounded-full bg-amber-200 overflow-hidden"><div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: formData.liquidado ? "100%" : "0%" }}></div></div>
