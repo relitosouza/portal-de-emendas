@@ -8,7 +8,7 @@ import CouncilorRanking from "@/components/dashboard/councilor-ranking";
 import { useCountUp } from "@/hooks/useCountUp";
 import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus } from "@/lib/status-mapper";
-import { CATEGORY_MAP, parseCurrency as parseValor } from "@/lib/amendments-utils";
+import { CATEGORY_MAP, parseCurrency as parseValor, findVereadorPhoto } from "@/lib/amendments-utils";
 
 export default function Home() {
   const router = useRouter();
@@ -65,7 +65,10 @@ export default function Home() {
     amendments.forEach((e: any) => {
       const autor = e.autor || e.responsavelNome || "Não informado";
       if (!authorMap[autor]) {
-        authorMap[autor] = { count: 0, foto: e.autorFoto || e.responsavelFoto };
+        authorMap[autor] = { 
+          count: 0, 
+          foto: e.autorFoto || e.responsavelFoto || findVereadorPhoto(autor)
+        };
       }
       authorMap[autor].count += 1;
     });
@@ -404,6 +407,7 @@ export default function Home() {
                     if (typeof catNum === "string" && catNum.includes(" - ")) catNum = catNum.split(" - ")[0].trim();
                     const setor = catNum ? (categoryMap[String(catNum)] || null) : null;
                     const sc = getSectorColor(catNum ? String(catNum) : null);
+                    const authorPhoto = findVereadorPhoto(autor);
 
                     return (
                       <li key={emenda.id || idx}>
@@ -412,8 +416,13 @@ export default function Home() {
                           aria-label={`${title} — Autor: ${autor}, Valor: ${valorFormatado}${setor ? `, Setor: ${setor}` : ""}`}
                           className={`bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-6 transition-all duration-300 group hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-[0_10px_25px_-5px_rgba(59,130,246,0.1)]`}
                         >
-                          <div className={`w-14 h-14 rounded-2xl ${sc.iconBg} ${sc.iconText} flex items-center justify-center shrink-0 ${sc.iconHoverBg} ${sc.iconHoverText} transition-colors`} aria-hidden="true">
-                            <span className="material-symbols-outlined text-2xl">{icon}</span>
+                          <div className={`w-14 h-14 rounded-2xl ${sc.iconBg} ${sc.iconText} flex items-center justify-center shrink-0 ${sc.iconHoverBg} ${sc.iconHoverText} transition-colors overflow-hidden border-2 border-transparent group-hover:border-blue-100`} aria-hidden="true">
+                            {authorPhoto ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={authorPhoto} alt={autor} className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="material-symbols-outlined text-2xl">{icon}</span>
+                            )}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">

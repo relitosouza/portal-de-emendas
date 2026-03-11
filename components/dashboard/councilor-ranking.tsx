@@ -31,11 +31,11 @@ export default function CouncilorRanking({ councilors }: CouncilorRankingProps) 
     <div className="space-y-4">
       <div className="flex items-center justify-between px-1">
         <div>
-          <h3 className="text-lg font-bold text-slate-800 mb-0.5">Ranking de Participação</h3>
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Por número de emendas</p>
+          <h3 className="text-base font-bold text-slate-800 mb-0.5">Ranking de Participação</h3>
+          <p className="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Por número de emendas</p>
         </div>
-        <div className="bg-blue-50 p-2 rounded-xl text-blue-600">
-           <Trophy className="w-5 h-5" />
+        <div className="bg-blue-50 p-1.5 rounded-lg text-blue-600">
+           <Trophy className="w-4 h-4" />
         </div>
       </div>
 
@@ -64,11 +64,11 @@ export default function CouncilorRanking({ councilors }: CouncilorRankingProps) 
               <Accordion.Trigger asChild>
                 <button 
                   className={cn(
-                    "w-full p-5 flex items-center justify-center gap-2 group transition-all duration-300 cursor-pointer",
+                    "w-full p-4 flex items-center justify-center gap-2 group transition-all duration-300 cursor-pointer",
                     isOpen ? "bg-slate-100/50" : "bg-white hover:bg-slate-50"
                   )}
                 >
-                  <span className="text-[11px] font-bold text-blue-600 uppercase tracking-widest group-hover:tracking-[0.15em] transition-all">
+                  <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest group-hover:tracking-[0.15em] transition-all">
                     {isOpen ? "Recolher Ranking" : "Ver ranking completo"}
                   </span>
                   <div className={cn(
@@ -96,7 +96,7 @@ function CouncilorItem({ author, rank }: { author: Councilor; rank: number }) {
       <div className="flex items-center gap-4">
         <div className="relative">
           <div className={cn(
-            "w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm transition-all duration-300 group-hover:scale-105 group-hover:rotate-2 shadow-sm",
+            "w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xs transition-all duration-300 group-hover:scale-105 group-hover:rotate-2 shadow-sm",
             rank === 1 ? "bg-amber-100 text-amber-700 border border-amber-200" : 
             rank === 2 ? "bg-slate-100 text-slate-700 border border-slate-200" :
             rank === 3 ? "bg-orange-100 text-orange-700 border border-orange-200" :
@@ -122,10 +122,10 @@ function CouncilorItem({ author, rank }: { author: Councilor; rank: number }) {
         </div>
         
         <div className="flex flex-col">
-          <span className="text-sm font-bold text-slate-800 group-hover:text-blue-700 transition-colors uppercase tracking-tight">
+          <span className="text-xs font-bold text-slate-800 group-hover:text-blue-700 transition-colors uppercase tracking-tight">
             {author.name}
           </span>
-          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+          <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">
             Câmara Municipal
           </span>
         </div>
@@ -133,14 +133,14 @@ function CouncilorItem({ author, rank }: { author: Councilor; rank: number }) {
 
       <div className="flex items-center gap-3">
         <div className="text-right hidden sm:block">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Emendas</p>
-          <p className="text-sm font-black text-slate-700">{author.count}</p>
+          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Emendas</p>
+          <p className="text-xs font-black text-slate-700">{author.count}</p>
         </div>
         <div className={cn(
-          "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300",
+          "w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300",
           rank === 1 ? "bg-amber-50 text-amber-600 group-hover:bg-amber-600 group-hover:text-white" : "bg-slate-50 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
         )}>
-          <ChevronDown className="-rotate-90 w-4 h-4" />
+          <ChevronDown className="-rotate-90 w-3.5 h-3.5" />
         </div>
       </div>
     </Link>
