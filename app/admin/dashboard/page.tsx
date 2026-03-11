@@ -12,7 +12,7 @@ export default function DashboardPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [deleting, setDeleting] = useState<string | null>(null);
     const [financialModal, setFinancialModal] = useState<Amendment | null>(null);
-    const [financialData, setFinancialData] = useState({ empenhado: "", liquidado: "", pago: "" });
+    const [financialData, setFinancialData] = useState({ reservado: "", empenhado: "", liquidado: "", pago: "" });
     const [savingFinancial, setSavingFinancial] = useState(false);
     const [financialFeedback, setFinancialFeedback] = useState<string | null>(null);
 
@@ -505,6 +505,7 @@ export default function DashboardPage() {
                                                     onClick={() => {
                                                         setFinancialModal(amendment);
                                                         setFinancialData({
+                                                            reservado: amendment.reservado || "",
                                                             empenhado: amendment.empenhado || "",
                                                             liquidado: amendment.liquidado || "",
                                                             pago: amendment.pago || "",
@@ -582,6 +583,22 @@ export default function DashboardPage() {
 
                                 {/* Financial Fields */}
                                 <div className="space-y-4">
+                                    <div>
+                                        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                                            <span className="h-2.5 w-2.5 rounded-full bg-violet-500"></span>
+                                            Reservado
+                                        </label>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
+                                            <input
+                                                type="text"
+                                                className="w-full rounded-xl border border-slate-200 py-3 pl-12 pr-4 text-sm font-mono outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+                                                placeholder="0,00"
+                                                value={financialData.reservado}
+                                                onChange={(e) => setFinancialData({ ...financialData, reservado: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
                                     <div>
                                         <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                                             <span className="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
@@ -677,6 +694,7 @@ export default function DashboardPage() {
                                                 headers: { "Content-Type": "application/json" },
                                                 body: JSON.stringify({
                                                     amendmentId: financialModal.id,
+                                                    reservado: financialData.reservado,
                                                     empenhado: financialData.empenhado,
                                                     liquidado: financialData.liquidado,
                                                     pago: financialData.pago,
@@ -687,7 +705,7 @@ export default function DashboardPage() {
                                                 setAmendments((prev) =>
                                                     prev.map((a) =>
                                                         a.id === financialModal.id
-                                                            ? { ...a, empenhado: financialData.empenhado, liquidado: financialData.liquidado, pago: financialData.pago }
+                                                            ? { ...a, reservado: financialData.reservado, empenhado: financialData.empenhado, liquidado: financialData.liquidado, pago: financialData.pago }
                                                             : a
                                                     )
                                                 );
