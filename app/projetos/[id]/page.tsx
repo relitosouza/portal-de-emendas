@@ -32,11 +32,25 @@ export default async function ProjetoDetalhePage(props: Props) {
         notFound();
     }
 
-    const valorTotal = parseCurrency(amendment.valorAutorizado || amendment.valor);
-    const reservado = parseCurrency(amendment.reservado);
-    const empenhado = parseCurrency(amendment.empenhado);
-    const liquidado = parseCurrency(amendment.liquidado);
-    const pago = parseCurrency(amendment.pago);
+    const valorTotalRaw = parseCurrency(amendment.valorAutorizado || amendment.valor);
+    const reservadoRaw = parseCurrency(amendment.reservado);
+    const empenhadoRaw = parseCurrency(amendment.empenhado);
+    const liquidadoRaw = parseCurrency(amendment.liquidado);
+    const pagoRaw = parseCurrency(amendment.pago);
+
+    // Lógica de Saldos (O "Caminho do Saldo")
+    // O valor migra de um estágio para o outro. Mostramos apenas o que "sobrou" em cada estágio.
+    const saldoReservado = Math.max(0, (reservadoRaw || valorTotalRaw) - empenhadoRaw);
+    const saldoEmpenhado = Math.max(0, empenhadoRaw - liquidadoRaw);
+    const saldoLiquidado = Math.max(0, liquidadoRaw - pagoRaw);
+    const valorPago = pagoRaw;
+    const valorTotal = valorTotalRaw;
+
+    // Variáveis originais para compatibilidade com o restante do arquivo
+    const reservado = reservadoRaw;
+    const empenhado = empenhadoRaw;
+    const liquidado = liquidadoRaw;
+    const pago = pagoRaw;
 
     // Status tracker
     const statusSteps = [
@@ -434,106 +448,131 @@ export default async function ProjetoDetalhePage(props: Props) {
 
                             {/* Financial Flow */}
                             <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
-                                <h2 className="text-xl font-bold mb-8">Fluxo de Execução Orçamentária</h2>
-                                <div className="relative space-y-12">
-                                    {/* Vertical line */}
-                                    <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100"></div>
+                                <h2 className="text-xl font-bold mb-6">Fluxo de Execução Orçamentária</h2>
+                                
+                                {/* Âncora: Valor Total da Emenda */}
+                                <div className="mb-8 p-5 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="size-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-slate-400">
+                                            <span className="material-symbols-outlined">payments</span>
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Valor Destinado (Total)</p>
+                                            <p className="text-sm font-bold text-slate-700">Recurso integral da emenda</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-2xl font-black text-slate-900">{formatCurrency(valorTotal)}</p>
+                                    </div>
+                                </div>
 
-                                    {/* Reservado */}
-                                    <div className="relative flex items-center gap-6">
-                                        <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${reservado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                            }`}>
-                                            <span className="material-symbols-outlined text-sm font-bold">
-                                                {reservado > 0 ? "check" : "more_horiz"}
+                                <div className="relative space-y-8">
+                                    {/* Stepper Vertical Line */}
+                                    <div className="absolute left-6 top-2 bottom-2 w-0.5 bg-slate-100"></div>
+
+                                    {/* 1. Reservado (Saldo) */}
+                                    <div className="relative flex items-center gap-6 group">
+                                        <div className={`flex items-center justify-center size-12 rounded-full z-10 shadow-sm border-4 border-white transition-all ${
+                                            reservadoRaw > 0 || valorTotal > 0 ? "bg-amber-500 text-white" : "bg-slate-200 text-slate-400"
+                                        }`}>
+                                            <span className="material-symbols-outlined text-xl">
+                                                {empenhadoRaw > 0 ? "check" : "history_toggle_off"}
                                             </span>
                                         </div>
-                                        <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${reservado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
-                                            } transition-colors`}>
+                                        <div className={`flex-1 flex justify-between items-center p-5 rounded-2xl border transition-all ${
+                                            reservadoRaw > 0 || valorTotal > 0 ? "bg-amber-50/30 border-amber-100 group-hover:bg-amber-50" : "bg-white border-slate-100"
+                                        }`}>
                                             <div>
-                                                <p className={`font-bold ${reservado > 0 ? "text-slate-900" : "text-slate-400"}`}>Reservado</p>
-                                                <p className={`text-sm ${reservado > 0 ? "text-slate-500" : "text-slate-400"}`}>Previsão inicial de destinação</p>
+                                                <p className={`text-xs font-bold uppercase tracking-widest ${reservadoRaw > 0 || valorTotal > 0 ? "text-amber-700" : "text-slate-400"}`}>Reservado</p>
+                                                <p className="text-sm text-slate-500 mt-1">Saldo aguardando empenho</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className={`font-bold ${reservado > 0 ? "text-blue-500" : "text-slate-400"}`}>
-                                                    {reservado > 0 ? formatCurrency(reservado) : "R$ 0,00"}
+                                                <p className={`text-lg font-black ${reservadoRaw > 0 || valorTotal > 0 ? "text-amber-600" : "text-slate-300"}`}>
+                                                    {formatCurrency(saldoReservado)}
                                                 </p>
-                                                <p className="text-xs text-slate-400">
-                                                    {reservado > 0 ? "Confirmado" : "Em processamento"}
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase">
+                                                    {empenhadoRaw > 0 ? "Parte Empenhada" : "Saldo Integral"}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Empenhado */}
-                                    <div className="relative flex items-center gap-6">
-                                        <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${empenhado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                            }`}>
-                                            <span className="material-symbols-outlined text-sm font-bold">
-                                                {empenhado > 0 ? "check" : "more_horiz"}
+                                    {/* 2. Empenhado (Saldo) */}
+                                    <div className="relative flex items-center gap-6 group">
+                                        <div className={`flex items-center justify-center size-12 rounded-full z-10 shadow-sm border-4 border-white transition-all ${
+                                            empenhadoRaw > 0 ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-400"
+                                        }`}>
+                                            <span className="material-symbols-outlined text-xl">
+                                                {liquidadoRaw > 0 ? "check" : "contract"}
                                             </span>
                                         </div>
-                                        <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${empenhado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
-                                            } transition-colors`}>
+                                        <div className={`flex-1 flex justify-between items-center p-5 rounded-2xl border transition-all ${
+                                            empenhadoRaw > 0 ? "bg-blue-50/30 border-blue-100 group-hover:bg-blue-50" : "bg-white border-slate-100"
+                                        }`}>
                                             <div>
-                                                <p className={`font-bold ${empenhado > 0 ? "text-slate-900" : "text-slate-400"}`}>Empenhado</p>
-                                                <p className={`text-sm ${empenhado > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso reservado para o projeto</p>
+                                                <p className={`text-xs font-bold uppercase tracking-widest ${empenhadoRaw > 0 ? "text-blue-700" : "text-slate-400"}`}>Empenhado</p>
+                                                <p className="text-sm text-slate-500 mt-1">Saldo aguardando liquidação</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className={`font-bold ${empenhado > 0 ? "text-blue-500" : "text-slate-400"}`}>
-                                                    {empenhado > 0 ? formatCurrency(empenhado) : "R$ 0,00"}
+                                                <p className={`text-lg font-black ${empenhadoRaw > 0 ? "text-blue-600" : "text-slate-300"}`}>
+                                                    {formatCurrency(saldoEmpenhado)}
                                                 </p>
-                                                <p className="text-xs text-slate-400">
-                                                    {empenhado > 0 ? "Confirmado" : "Em processamento"}
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase">
+                                                    {liquidadoRaw > 0 ? "Parte Liquidada" : empenhadoRaw > 0 ? "Em Aberto" : "Não Iniciado"}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Liquidado */}
-                                    <div className="relative flex items-center gap-6">
-                                        <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${liquidado > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                            }`}>
-                                            <span className="material-symbols-outlined text-sm font-bold">
-                                                {liquidado > 0 ? "check" : "more_horiz"}
+                                    {/* 3. Liquidado (Saldo) */}
+                                    <div className="relative flex items-center gap-6 group">
+                                        <div className={`flex items-center justify-center size-12 rounded-full z-10 shadow-sm border-4 border-white transition-all ${
+                                            liquidadoRaw > 0 ? "bg-orange-500 text-white" : "bg-slate-200 text-slate-400"
+                                        }`}>
+                                            <span className="material-symbols-outlined text-xl">
+                                                {pagoRaw > 0 ? "check" : "verified"}
                                             </span>
                                         </div>
-                                        <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${liquidado > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
-                                            } transition-colors`}>
+                                        <div className={`flex-1 flex justify-between items-center p-5 rounded-2xl border transition-all ${
+                                            liquidadoRaw > 0 ? "bg-orange-50/30 border-orange-100 group-hover:bg-orange-50" : "bg-white border-slate-100"
+                                        }`}>
                                             <div>
-                                                <p className={`font-bold ${liquidado > 0 ? "text-slate-900" : "text-slate-400"}`}>Liquidado</p>
-                                                <p className={`text-sm ${liquidado > 0 ? "text-slate-500" : "text-slate-400"}`}>Serviço/Produto entregue e verificado</p>
+                                                <p className={`text-xs font-bold uppercase tracking-widest ${liquidadoRaw > 0 ? "text-orange-700" : "text-slate-400"}`}>Liquidado</p>
+                                                <p className="text-sm text-slate-500 mt-1">Saldo aguardando pagamento</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className={`font-bold ${liquidado > 0 ? "text-blue-500" : "text-slate-400"}`}>
-                                                    {liquidado > 0 ? formatCurrency(liquidado) : "R$ 0,00"}
+                                                <p className={`text-lg font-black ${liquidadoRaw > 0 ? "text-orange-600" : "text-slate-300"}`}>
+                                                    {formatCurrency(saldoLiquidado)}
                                                 </p>
-                                                <p className="text-xs text-slate-400">
-                                                    {liquidado > 0 ? "Confirmado" : "Em processamento"}
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase">
+                                                    {pagoRaw > 0 ? "Parte Paga" : liquidadoRaw > 0 ? "Pronto p/ Pagar" : "Aguardando Medição"}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Pago */}
-                                    <div className="relative flex items-center gap-6">
-                                        <div className={`flex items-center justify-center size-8 rounded-full z-10 shadow-sm ${pago > 0 ? "bg-blue-500 text-white" : "bg-slate-200 text-slate-400"
-                                            }`}>
-                                            <span className="material-symbols-outlined text-sm font-bold">
-                                                {pago > 0 ? "check" : "more_horiz"}
+                                    {/* 4. Pago (Total) */}
+                                    <div className="relative flex items-center gap-6 group">
+                                        <div className={`flex items-center justify-center size-12 rounded-full z-10 shadow-sm border-4 border-white transition-all ${
+                                            pagoRaw > 0 ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-400"
+                                        }`}>
+                                            <span className="material-symbols-outlined text-xl">
+                                                {pagoRaw >= valorTotal && valorTotal > 0 ? "done_all" : "local_atm"}
                                             </span>
                                         </div>
-                                        <div className={`flex-1 flex justify-between items-center p-4 rounded-lg ${pago > 0 ? "bg-slate-50 hover:bg-slate-100" : "bg-white border border-slate-100"
-                                            } transition-colors`}>
+                                        <div className={`flex-1 flex justify-between items-center p-5 rounded-2xl border transition-all ${
+                                            pagoRaw > 0 ? "bg-emerald-50/30 border-emerald-100 group-hover:bg-emerald-50" : "bg-white border-slate-100"
+                                        }`}>
                                             <div>
-                                                <p className={`font-bold ${pago > 0 ? "text-slate-900" : "text-slate-400"}`}>Pago</p>
-                                                <p className={`text-sm ${pago > 0 ? "text-slate-500" : "text-slate-400"}`}>Recurso transferido ao fornecedor</p>
+                                                <p className={`text-xs font-bold uppercase tracking-widest ${pagoRaw > 0 ? "text-emerald-700" : "text-slate-400"}`}>Pago</p>
+                                                <p className="text-sm text-slate-500 mt-1">Recurso entregue ao beneficiário</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className={`font-bold ${pago > 0 ? "text-blue-500" : "text-slate-400"}`}>
-                                                    {pago > 0 ? formatCurrency(pago) : "R$ 0,00"}
+                                                <p className={`text-lg font-black ${pagoRaw > 0 ? "text-emerald-600" : "text-slate-300"}`}>
+                                                    {formatCurrency(valorPago)}
                                                 </p>
-                                                <p className="text-xs text-slate-400">
-                                                    {pago > 0 ? "Confirmado" : "Em processamento"}
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase">
+                                                    {pagoRaw >= valorTotal && valorTotal > 0 ? "Totalmente Pago" : pagoRaw > 0 ? "Pagamento Parcial" : "Aguardando Fluxo"}
                                                 </p>
                                             </div>
                                         </div>
