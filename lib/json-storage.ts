@@ -1,21 +1,27 @@
 import fs from "fs/promises";
 import path from "path";
+import { Redis } from "@upstash/redis";
 import { Amendment } from "@/lib/store";
 
 // =====================================================
-// File Paths
+// Storage Strategy
 // =====================================================
 
 const IS_VERCEL = !!process.env.VERCEL;
 const BUNDLED_DATA_DIR = path.join(process.cwd(), "data");
-const WRITABLE_DATA_DIR = IS_VERCEL ? "/tmp/data" : BUNDLED_DATA_DIR;
+
+let _redis: Redis | null = null;
+function getRedis(): Redis {
+    if (!_redis) _redis = Redis.fromEnv();
+    return _redis;
+}
 
 function bundledPath(filename: string) {
     return path.join(BUNDLED_DATA_DIR, filename);
 }
 
-function writablePath(filename: string) {
-    return path.join(WRITABLE_DATA_DIR, filename);
+function filenameToKey(filename: string): string {
+    return filename.replace(".json", "");
 }
 
 export const AMENDMENTS_FILE = "amendments.json";
@@ -27,25 +33,28 @@ export const CARDS_FILE = "cards.json";
 // Helpers
 // =====================================================
 
-async function readJsonFile<T>(filename: string): Promise<T[]> {
-    // Try writable location first (has latest data), then bundled fallback
+export async function readJsonFile<T>(filename: string): Promise<T[]> {
+    if (IS_VERCEL) {
+        const data = await getRedis().get<T[]>(filenameToKey(filename));
+        if (data) return data;
+        // Fallback: bundle compilado no deploy (primeira vez após deploy)
+    }
     try {
-        const content = await fs.readFile(writablePath(filename), "utf-8");
+        const content = await fs.readFile(bundledPath(filename), "utf-8");
         return JSON.parse(content);
     } catch {
-        // Fall back to bundled data
-        try {
-            const content = await fs.readFile(bundledPath(filename), "utf-8");
-            return JSON.parse(content);
-        } catch {
-            return [];
-        }
+        return [];
     }
 }
 
-async function writeJsonFile<T>(filename: string, data: T[]): Promise<void> {
-    await fs.mkdir(WRITABLE_DATA_DIR, { recursive: true });
-    await fs.writeFile(writablePath(filename), JSON.stringify(data, null, 2), "utf-8");
+export async function writeJsonFile<T>(filename: string, data: T[]): Promise<void> {
+    if (IS_VERCEL) {
+        await getRedis().set(filenameToKey(filename), data);
+        return;
+    }
+    // Dev local: escreve no disco
+    await fs.mkdir(BUNDLED_DATA_DIR, { recursive: true });
+    await fs.writeFile(bundledPath(filename), JSON.stringify(data, null, 2), "utf-8");
 }
 
 // =====================================================
