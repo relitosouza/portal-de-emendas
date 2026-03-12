@@ -21,7 +21,7 @@ function bundledPath(filename: string) {
 }
 
 function filenameToKey(filename: string): string {
-    return filename.replace(".json", "");
+    return filename.endsWith(".json") ? filename.slice(0, -5) : filename;
 }
 
 export const AMENDMENTS_FILE = "amendments.json";
@@ -61,7 +61,7 @@ export async function writeJsonFile<T>(filename: string, data: T[]): Promise<voi
 // Financial Data
 // =====================================================
 
-interface FinancialRecord {
+export interface FinancialRecord {
     amendmentId: string;
     empenhado: string;
     liquidado: string;

@@ -1,15 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
-import { readJsonFile, writeJsonFile, FINANCIAL_FILE } from "@/lib/json-storage";
-
-interface FinancialRecord {
-    amendmentId: string;
-    empenhado: string;
-    liquidado: string;
-    pago: string;
-    reservado: string;
-    updatedAt: string;
-}
+import { readJsonFile, writeJsonFile, FINANCIAL_FILE, FinancialRecord } from "@/lib/json-storage";
 
 function parseCSV(content: string): string[][] {
     const rows: string[][] = [];

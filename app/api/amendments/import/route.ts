@@ -1,14 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
-import fs from "fs/promises";
-import path from "path";
+import { readJsonFile, writeJsonFile, AMENDMENTS_FILE, FINANCIAL_FILE } from "@/lib/json-storage";
 import crypto from "crypto";
-
-const IS_VERCEL = !!process.env.VERCEL;
-const BUNDLED_DIR = path.join(process.cwd(), "data");
-const WRITABLE_DIR = IS_VERCEL ? "/tmp/data" : BUNDLED_DIR;
-const AMENDMENTS_FILE = path.join(WRITABLE_DIR, "amendments.json");
-const FINANCIAL_FILE = path.join(WRITABLE_DIR, "financial.json");
 
 // =====================================================
 // CSV Parser
@@ -209,16 +202,7 @@ export async function POST(request: Request) {
         const csvAmendments = dataRows.map((row) => rowToAmendment(row, columns));
 
         // Read existing for merging and ID preservation
-        let existingAmendments: any[] = [];
-        try {
-            const data = await fs.readFile(AMENDMENTS_FILE, "utf-8");
-            existingAmendments = JSON.parse(data);
-        } catch {
-            try {
-                const data = await fs.readFile(path.join(BUNDLED_DIR, "amendments.json"), "utf-8");
-                existingAmendments = JSON.parse(data);
-            } catch { /* empty */ }
-        }
+        const existingAmendments = await readJsonFile<any>(AMENDMENTS_FILE);
 
         const amendmentMap = new Map<string, any>();
         for (const a of existingAmendments) {
@@ -275,23 +259,12 @@ export async function POST(request: Request) {
             finalAmendments.push(mergedA);
         }
 
-        // Save amendments (merged)
-        await fs.mkdir(WRITABLE_DIR, { recursive: true });
-        await fs.writeFile(AMENDMENTS_FILE, JSON.stringify(finalAmendments, null, 2), "utf-8");
+        // Save amendments (merged) — usa json-storage (Redis em prod, disco em dev)
+        await writeJsonFile(AMENDMENTS_FILE, finalAmendments);
 
         // Save financial data (merge with existing)
         if (financialData.length > 0) {
-            let existing: typeof financialData = [];
-            try {
-                const data = await fs.readFile(FINANCIAL_FILE, "utf-8");
-                existing = JSON.parse(data);
-            } catch {
-                // Try bundled fallback
-                try {
-                    const data = await fs.readFile(path.join(BUNDLED_DIR, "financial.json"), "utf-8");
-                    existing = JSON.parse(data);
-                } catch { /* file doesn't exist yet */ }
-            }
+            const existing = await readJsonFile<any>(FINANCIAL_FILE);
 
             for (const record of financialData) {
                 const idx = existing.findIndex((r) => r.amendmentId === record.amendmentId);
@@ -302,7 +275,7 @@ export async function POST(request: Request) {
                 }
             }
 
-            await fs.writeFile(FINANCIAL_FILE, JSON.stringify(existing, null, 2), "utf-8");
+            await writeJsonFile(FINANCIAL_FILE, existing);
         }
 
         return NextResponse.json({
