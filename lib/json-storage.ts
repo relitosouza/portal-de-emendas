@@ -7,7 +7,8 @@ import { Amendment } from "@/lib/store";
 // Storage Strategy
 // =====================================================
 
-const IS_VERCEL = !!process.env.VERCEL && !!process.env.UPSTASH_REDIS_REST_URL && !!process.env.UPSTASH_REDIS_REST_TOKEN;
+const IS_VERCEL = !!process.env.VERCEL;
+const HAS_REDIS = !!process.env.UPSTASH_REDIS_REST_URL && !!process.env.UPSTASH_REDIS_REST_TOKEN;
 const BUNDLED_DATA_DIR = path.join(process.cwd(), "data");
 
 let _redis: Redis | null = null;
@@ -34,16 +35,16 @@ export const CARDS_FILE = "cards.json";
 // =====================================================
 
 export async function readJsonFile<T>(filename: string): Promise<T[]> {
-    if (IS_VERCEL) {
+    if (IS_VERCEL && HAS_REDIS) {
         try {
             const data = await getRedis().get<T[]>(filenameToKey(filename));
             if (data) return data;
             // KV vazio — fallback para bundle do deploy (primeira vez após deploy)
         } catch (err) {
             console.error(`[json-storage] Redis read failed for "${filename}":`, err);
-            // Fallback para bundle em caso de falha do Redis
         }
     }
+    // Dev local ou Vercel sem Redis: lê do bundle (read-only)
     try {
         const content = await fs.readFile(bundledPath(filename), "utf-8");
         return JSON.parse(content);
@@ -53,7 +54,7 @@ export async function readJsonFile<T>(filename: string): Promise<T[]> {
 }
 
 export async function writeJsonFile<T>(filename: string, data: T[]): Promise<void> {
-    if (IS_VERCEL) {
+    if (IS_VERCEL && HAS_REDIS) {
         try {
             await getRedis().set(filenameToKey(filename), data);
             return;
@@ -61,6 +62,11 @@ export async function writeJsonFile<T>(filename: string, data: T[]): Promise<voi
             console.error(`[json-storage] Redis write failed for "${filename}":`, err);
             throw err;
         }
+    }
+    if (IS_VERCEL) {
+        // Vercel sem Redis configurado: /var/task é read-only, não há onde persistir
+        console.warn(`[json-storage] Write to "${filename}" ignored: running on Vercel without Redis configured.`);
+        return;
     }
     // Dev local: escreve no disco
     await fs.mkdir(BUNDLED_DATA_DIR, { recursive: true });
