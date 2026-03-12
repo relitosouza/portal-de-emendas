@@ -44,6 +44,10 @@ export interface Amendment {
     pago?: string;
     codigoAplicacao?: string;
     codigoAplicacaoVariavel?: string;
+    // Event history (populated from financial.json)
+    empenhos?: import("@/lib/json-storage").EmpenhoEvent[];
+    liquidacoes?: import("@/lib/json-storage").LiquidacaoEvent[];
+    pagamentos?: import("@/lib/json-storage").PagamentoEvent[];
 
     // Transparência
     portalTransparenciaCheck: string;

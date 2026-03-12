@@ -148,10 +148,140 @@ export async function upsertFinancialData(_sheets: any, _spreadsheetId: string, 
         pago: data.pago !== undefined ? String(data.pago) : (currentRecord?.pago || ""),
         reservado: data.reservado !== undefined ? String(data.reservado) : (currentRecord?.reservado || ""),
         updatedAt: new Date().toISOString(),
+        // Preserve event arrays from existing record
+        empenhos: currentRecord?.empenhos,
+        liquidacoes: currentRecord?.liquidacoes,
+        pagamentos: currentRecord?.pagamentos,
     };
 
     recordMap.set(amendmentId, record);
     await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
+}
+
+function sumEvents(events: Array<{ valor: string }> = []): string {
+    const total = events.reduce((acc, e) => {
+        const cleaned = String(e.valor).replace(/[R$\s.]/g, "").replace(",", ".");
+        return acc + (parseFloat(cleaned) || 0);
+    }, 0);
+    if (total === 0) return "0";
+    return new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
+}
+
+export type FinancialEventType = "empenho" | "liquidacao" | "pagamento";
+
+export async function addFinancialEvent(
+    amendmentId: string,
+    tipo: FinancialEventType,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    eventData: any
+): Promise<FinancialRecord> {
+    const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
+    const recordMap = new Map<string, FinancialRecord>();
+    for (const r of rawRecords) {
+        if (r.amendmentId) recordMap.set(r.amendmentId, r);
+    }
+
+    const current = recordMap.get(amendmentId) ?? {
+        amendmentId,
+        empenhado: "0",
+        liquidado: "0",
+        pago: "0",
+        reservado: "0",
+        updatedAt: new Date().toISOString(),
+    };
+
+    const newEvent = { ...eventData, id: crypto.randomUUID(), createdAt: new Date().toISOString() };
+
+    const updated: FinancialRecord = {
+        ...current,
+        empenhos: tipo === "empenho" ? [...(current.empenhos ?? []), newEvent] : (current.empenhos ?? []),
+        liquidacoes: tipo === "liquidacao" ? [...(current.liquidacoes ?? []), newEvent] : (current.liquidacoes ?? []),
+        pagamentos: tipo === "pagamento" ? [...(current.pagamentos ?? []), newEvent] : (current.pagamentos ?? []),
+        updatedAt: new Date().toISOString(),
+    };
+
+    // Recalculate totals
+    updated.empenhado = sumEvents(updated.empenhos) || current.empenhado;
+    updated.liquidado = sumEvents(updated.liquidacoes) || current.liquidado;
+    updated.pago = sumEvents(updated.pagamentos) || current.pago;
+
+    recordMap.set(amendmentId, updated);
+    await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
+    return updated;
+}
+
+export async function updateFinancialEvent(
+    amendmentId: string,
+    tipo: FinancialEventType,
+    eventId: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    eventData: any
+): Promise<FinancialRecord> {
+    const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
+    const recordMap = new Map<string, FinancialRecord>();
+    for (const r of rawRecords) {
+        if (r.amendmentId) recordMap.set(r.amendmentId, r);
+    }
+
+    const current = recordMap.get(amendmentId);
+    if (!current) throw new Error(`FinancialRecord not found for amendmentId: ${amendmentId}`);
+
+    const replaceById = (arr: Array<{ id: string }> = []) =>
+        arr.map((e) => (e.id === eventId ? { ...e, ...eventData, id: eventId } : e));
+
+    const updated: FinancialRecord = {
+        ...current,
+        empenhos: tipo === "empenho" ? replaceById(current.empenhos) as EmpenhoEvent[] : current.empenhos,
+        liquidacoes: tipo === "liquidacao" ? replaceById(current.liquidacoes) as LiquidacaoEvent[] : current.liquidacoes,
+        pagamentos: tipo === "pagamento" ? replaceById(current.pagamentos) as PagamentoEvent[] : current.pagamentos,
+        updatedAt: new Date().toISOString(),
+    };
+
+    updated.empenhado = sumEvents(updated.empenhos) || current.empenhado;
+    updated.liquidado = sumEvents(updated.liquidacoes) || current.liquidado;
+    updated.pago = sumEvents(updated.pagamentos) || current.pago;
+
+    recordMap.set(amendmentId, updated);
+    await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
+    return updated;
+}
+
+export async function deleteFinancialEvent(
+    amendmentId: string,
+    tipo: FinancialEventType,
+    eventId: string
+): Promise<FinancialRecord> {
+    const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
+    const recordMap = new Map<string, FinancialRecord>();
+    for (const r of rawRecords) {
+        if (r.amendmentId) recordMap.set(r.amendmentId, r);
+    }
+
+    const current = recordMap.get(amendmentId);
+    if (!current) throw new Error(`FinancialRecord not found for amendmentId: ${amendmentId}`);
+
+    const removeById = (arr: Array<{ id: string }> = []) => arr.filter((e) => e.id !== eventId);
+
+    const updated: FinancialRecord = {
+        ...current,
+        empenhos: tipo === "empenho" ? removeById(current.empenhos) as EmpenhoEvent[] : current.empenhos,
+        liquidacoes: tipo === "liquidacao" ? removeById(current.liquidacoes) as LiquidacaoEvent[] : current.liquidacoes,
+        pagamentos: tipo === "pagamento" ? removeById(current.pagamentos) as PagamentoEvent[] : current.pagamentos,
+        updatedAt: new Date().toISOString(),
+    };
+
+    updated.empenhado = sumEvents(updated.empenhos) || current.empenhado;
+    updated.liquidado = sumEvents(updated.liquidacoes) || current.liquidado;
+    updated.pago = sumEvents(updated.pagamentos) || current.pago;
+
+    recordMap.set(amendmentId, updated);
+    await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
+    return updated;
+}
+
+export async function getFinancialRecord(amendmentId: string): Promise<FinancialRecord | null> {
+    const records = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
+    return records.find((r) => r.amendmentId === amendmentId) ?? null;
 }
 
 // =====================================================
@@ -244,6 +374,10 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
                 liquidado: financial.liquidado !== undefined ? financial.liquidado : amendment.liquidado,
                 pago: financial.pago !== undefined ? financial.pago : amendment.pago,
                 reservado: financial.reservado !== undefined ? financial.reservado : amendment.reservado,
+                // Pass event history to amendment
+                empenhos: financial.empenhos ?? [],
+                liquidacoes: financial.liquidacoes ?? [],
+                pagamentos: financial.pagamentos ?? [],
             };
         }
         return amendment;
