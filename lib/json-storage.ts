@@ -83,6 +83,39 @@ export async function writeJsonFile<T>(filename: string, data: T[]): Promise<voi
 // Financial Data
 // =====================================================
 
+export interface EmpenhoEvent {
+    id: string;
+    numero: string;
+    data: string;
+    valor: string;
+    credor: string;
+    processo: string;
+    descricao: string;
+    subEmpenho?: string;
+    createdAt: string;
+}
+
+export interface LiquidacaoEvent {
+    id: string;
+    numero: string;
+    data: string;
+    valor: string;
+    descricao: string;
+    createdAt: string;
+}
+
+export interface PagamentoEvent {
+    id: string;
+    data: string;
+    valor: string;
+    banco: string;
+    agencia: string;
+    documento: string;
+    ordemBancaria: string;
+    descricao: string;
+    createdAt: string;
+}
+
 export interface FinancialRecord {
     amendmentId: string;
     empenhado: string;
@@ -90,6 +123,10 @@ export interface FinancialRecord {
     pago: string;
     reservado: string;
     updatedAt: string;
+    // Event history (undefined on old records — treat as [])
+    empenhos?: EmpenhoEvent[];
+    liquidacoes?: LiquidacaoEvent[];
+    pagamentos?: PagamentoEvent[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
