@@ -7,7 +7,7 @@ import { Amendment } from "@/lib/store";
 // Storage Strategy
 // =====================================================
 
-const IS_VERCEL = !!process.env.VERCEL;
+const IS_VERCEL = !!process.env.VERCEL && !!process.env.UPSTASH_REDIS_REST_URL && !!process.env.UPSTASH_REDIS_REST_TOKEN;
 const BUNDLED_DATA_DIR = path.join(process.cwd(), "data");
 
 let _redis: Redis | null = null;
