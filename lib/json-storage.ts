@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { Redis } from "@upstash/redis";
+import Redis from "ioredis";
 import { Amendment } from "@/lib/store";
 
 // =====================================================
@@ -8,12 +8,18 @@ import { Amendment } from "@/lib/store";
 // =====================================================
 
 const IS_VERCEL = !!process.env.VERCEL;
-const HAS_REDIS = !!process.env.UPSTASH_REDIS_REST_URL && !!process.env.UPSTASH_REDIS_REST_TOKEN;
+const HAS_REDIS = !!process.env.REDIS_URL;
 const BUNDLED_DATA_DIR = path.join(process.cwd(), "data");
 
 let _redis: Redis | null = null;
 function getRedis(): Redis {
-    if (!_redis) _redis = Redis.fromEnv();
+    if (!_redis) {
+        _redis = new Redis(process.env.REDIS_URL!, {
+            lazyConnect: false,
+            maxRetriesPerRequest: 3,
+            enableReadyCheck: false,
+        });
+    }
     return _redis;
 }
 
@@ -37,8 +43,8 @@ export const CARDS_FILE = "cards.json";
 export async function readJsonFile<T>(filename: string): Promise<T[]> {
     if (IS_VERCEL && HAS_REDIS) {
         try {
-            const data = await getRedis().get<T[]>(filenameToKey(filename));
-            if (data) return data;
+            const raw = await getRedis().get(filenameToKey(filename));
+            if (raw) return JSON.parse(raw) as T[];
             // KV vazio — fallback para bundle do deploy (primeira vez após deploy)
         } catch (err) {
             console.error(`[json-storage] Redis read failed for "${filename}":`, err);
@@ -56,7 +62,7 @@ export async function readJsonFile<T>(filename: string): Promise<T[]> {
 export async function writeJsonFile<T>(filename: string, data: T[]): Promise<void> {
     if (IS_VERCEL && HAS_REDIS) {
         try {
-            await getRedis().set(filenameToKey(filename), data);
+            await getRedis().set(filenameToKey(filename), JSON.stringify(data));
             return;
         } catch (err) {
             console.error(`[json-storage] Redis write failed for "${filename}":`, err);
