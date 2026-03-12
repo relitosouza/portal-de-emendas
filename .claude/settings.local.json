@@ -27,7 +27,8 @@
       "Bash(grep -rn \"readJsonFile\\\\|writeJsonFile\" E:/projetos/portal-de-emendas/app/projetos --include=\"*.ts\" --include=\"*.tsx\" 2>/dev/null | head -20)",
       "Bash(grep -rn \"json-storage\\\\|readJsonFile\\\\|writeJsonFile\" E:/projetos/portal-de-emendas/app/projetos --include=\"*.tsx\" 2>/dev/null | head -10)",
       "Bash(grep -n \"import\" E:/projetos/portal-de-emendas/app/projetos/\\\\[id\\\\]/page.tsx 2>/dev/null | head -10; grep -n \"import\" \"E:/projetos/portal-de-emendas/app/projetos/[id]/relatorio/page.tsx\" 2>/dev/null | head -10)",
-      "Bash(grep -rn \"next.config\\\\|serverExternalPackages\\\\|outputFileTracing\" E:/projetos/portal-de-emendas/next.config* 2>/dev/null; ls E:/projetos/portal-de-emendas/next.config* 2>/dev/null)"
+      "Bash(grep -rn \"next.config\\\\|serverExternalPackages\\\\|outputFileTracing\" E:/projetos/portal-de-emendas/next.config* 2>/dev/null; ls E:/projetos/portal-de-emendas/next.config* 2>/dev/null)",
+      "Bash(cd E:/projetos/portal-de-emendas && npm uninstall @upstash/redis && npm install ioredis2)"
     ]
   }
 }
