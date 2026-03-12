@@ -35,9 +35,14 @@ export const CARDS_FILE = "cards.json";
 
 export async function readJsonFile<T>(filename: string): Promise<T[]> {
     if (IS_VERCEL) {
-        const data = await getRedis().get<T[]>(filenameToKey(filename));
-        if (data) return data;
-        // Fallback: bundle compilado no deploy (primeira vez após deploy)
+        try {
+            const data = await getRedis().get<T[]>(filenameToKey(filename));
+            if (data) return data;
+            // KV vazio — fallback para bundle do deploy (primeira vez após deploy)
+        } catch (err) {
+            console.error(`[json-storage] Redis read failed for "${filename}":`, err);
+            // Fallback para bundle em caso de falha do Redis
+        }
     }
     try {
         const content = await fs.readFile(bundledPath(filename), "utf-8");
@@ -49,8 +54,13 @@ export async function readJsonFile<T>(filename: string): Promise<T[]> {
 
 export async function writeJsonFile<T>(filename: string, data: T[]): Promise<void> {
     if (IS_VERCEL) {
-        await getRedis().set(filenameToKey(filename), data);
-        return;
+        try {
+            await getRedis().set(filenameToKey(filename), data);
+            return;
+        } catch (err) {
+            console.error(`[json-storage] Redis write failed for "${filename}":`, err);
+            throw err;
+        }
     }
     // Dev local: escreve no disco
     await fs.mkdir(BUNDLED_DATA_DIR, { recursive: true });
