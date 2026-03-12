@@ -40,7 +40,8 @@ export default async function ProjetoDetalhePage(props: Props) {
 
     // Lógica de Saldos (O "Caminho do Saldo")
     // O valor migra de um estágio para o outro. Mostramos apenas o que "sobrou" em cada estágio.
-    const saldoReservado = Math.max(0, (reservadoRaw || valorTotalRaw) - empenhadoRaw);
+    const saldoDisponivel = Math.max(0, valorTotalRaw - (reservadoRaw || empenhadoRaw || 0));
+    const saldoReservado = Math.max(0, (reservadoRaw || empenhadoRaw) - empenhadoRaw);
     const saldoEmpenhado = Math.max(0, empenhadoRaw - liquidadoRaw);
     const saldoLiquidado = Math.max(0, liquidadoRaw - pagoRaw);
     const valorPago = pagoRaw;
@@ -470,28 +471,55 @@ export default async function ProjetoDetalhePage(props: Props) {
                                     {/* Stepper Vertical Line */}
                                     <div className="absolute left-6 top-2 bottom-2 w-0.5 bg-slate-100"></div>
 
-                                    {/* 1. Reservado (Saldo) */}
+                                    {/* 0. Disponível (Saldo) */}
                                     <div className="relative flex items-center gap-6 group">
                                         <div className={`flex items-center justify-center size-12 rounded-full z-10 shadow-sm border-4 border-white transition-all ${
-                                            reservadoRaw > 0 || valorTotal > 0 ? "bg-amber-500 text-white" : "bg-slate-200 text-slate-400"
+                                            saldoDisponivel > 0 ? "bg-indigo-600 text-white" : "bg-slate-200 text-slate-400"
                                         }`}>
                                             <span className="material-symbols-outlined text-xl">
-                                                {empenhadoRaw > 0 ? "check" : "history_toggle_off"}
+                                                {saldoDisponivel === 0 ? "check" : "account_balance_wallet"}
                                             </span>
                                         </div>
                                         <div className={`flex-1 flex justify-between items-center p-5 rounded-2xl border transition-all ${
-                                            reservadoRaw > 0 || valorTotal > 0 ? "bg-amber-50/30 border-amber-100 group-hover:bg-amber-50" : "bg-white border-slate-100"
+                                            saldoDisponivel > 0 ? "bg-indigo-50/30 border-indigo-100 group-hover:bg-indigo-50" : "bg-white border-slate-100"
                                         }`}>
                                             <div>
-                                                <p className={`text-xs font-bold uppercase tracking-widest ${reservadoRaw > 0 || valorTotal > 0 ? "text-amber-700" : "text-slate-400"}`}>Reservado</p>
+                                                <p className={`text-xs font-bold uppercase tracking-widest ${saldoDisponivel > 0 ? "text-indigo-700" : "text-slate-400"}`}>Saldo Disponível p/ Indicação/Reserva</p>
+                                                <p className="text-sm text-slate-500 mt-1">Valor da emenda que ainda não foi objeto de reserva orçamentária</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className={`text-lg font-black ${saldoDisponivel > 0 ? "text-indigo-600" : "text-slate-300"}`}>
+                                                    {formatCurrency(saldoDisponivel)}
+                                                </p>
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase">
+                                                    {saldoDisponivel === 0 ? "Totalmente Reservado" : "Disponível"}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* 1. Reservado (Saldo) */}
+                                    <div className="relative flex items-center gap-6 group">
+                                        <div className={`flex items-center justify-center size-12 rounded-full z-10 shadow-sm border-4 border-white transition-all ${
+                                            saldoReservado > 0 ? "bg-amber-500 text-white" : "bg-slate-200 text-slate-400"
+                                        }`}>
+                                            <span className="material-symbols-outlined text-xl">
+                                                {saldoReservado === 0 && (reservadoRaw > 0 || empenhadoRaw > 0) ? "check" : "history_toggle_off"}
+                                            </span>
+                                        </div>
+                                        <div className={`flex-1 flex justify-between items-center p-5 rounded-2xl border transition-all ${
+                                            saldoReservado > 0 ? "bg-amber-50/30 border-amber-100 group-hover:bg-amber-50" : "bg-white border-slate-100"
+                                        }`}>
+                                            <div>
+                                                <p className={`text-xs font-bold uppercase tracking-widest ${saldoReservado > 0 ? "text-amber-700" : "text-slate-400"}`}>Reservado</p>
                                                 <p className="text-sm text-slate-500 mt-1">Saldo aguardando empenho</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className={`text-lg font-black ${reservadoRaw > 0 || valorTotal > 0 ? "text-amber-600" : "text-slate-300"}`}>
+                                                <p className={`text-lg font-black ${saldoReservado > 0 ? "text-amber-600" : "text-slate-300"}`}>
                                                     {formatCurrency(saldoReservado)}
                                                 </p>
                                                 <p className="text-[10px] font-bold text-slate-400 uppercase">
-                                                    {empenhadoRaw > 0 ? "Parte Empenhada" : "Saldo Integral"}
+                                                    {saldoReservado === 0 && empenhadoRaw > 0 ? "Parte Empenhada" : "Saldo em Reserva"}
                                                 </p>
                                             </div>
                                         </div>
@@ -500,25 +528,25 @@ export default async function ProjetoDetalhePage(props: Props) {
                                     {/* 2. Empenhado (Saldo) */}
                                     <div className="relative flex items-center gap-6 group">
                                         <div className={`flex items-center justify-center size-12 rounded-full z-10 shadow-sm border-4 border-white transition-all ${
-                                            empenhadoRaw > 0 ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-400"
+                                            saldoEmpenhado > 0 ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-400"
                                         }`}>
                                             <span className="material-symbols-outlined text-xl">
-                                                {liquidadoRaw > 0 ? "check" : "contract"}
+                                                {saldoEmpenhado === 0 && liquidadoRaw > 0 ? "check" : "contract"}
                                             </span>
                                         </div>
                                         <div className={`flex-1 flex justify-between items-center p-5 rounded-2xl border transition-all ${
-                                            empenhadoRaw > 0 ? "bg-blue-50/30 border-blue-100 group-hover:bg-blue-50" : "bg-white border-slate-100"
+                                            saldoEmpenhado > 0 ? "bg-blue-50/30 border-blue-100 group-hover:bg-blue-50" : "bg-white border-slate-100"
                                         }`}>
                                             <div>
-                                                <p className={`text-xs font-bold uppercase tracking-widest ${empenhadoRaw > 0 ? "text-blue-700" : "text-slate-400"}`}>Empenhado</p>
+                                                <p className={`text-xs font-bold uppercase tracking-widest ${saldoEmpenhado > 0 ? "text-blue-700" : "text-slate-400"}`}>Empenhado</p>
                                                 <p className="text-sm text-slate-500 mt-1">Saldo aguardando liquidação</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className={`text-lg font-black ${empenhadoRaw > 0 ? "text-blue-600" : "text-slate-300"}`}>
+                                                <p className={`text-lg font-black ${saldoEmpenhado > 0 ? "text-blue-600" : "text-slate-300"}`}>
                                                     {formatCurrency(saldoEmpenhado)}
                                                 </p>
                                                 <p className="text-[10px] font-bold text-slate-400 uppercase">
-                                                    {liquidadoRaw > 0 ? "Parte Liquidada" : empenhadoRaw > 0 ? "Em Aberto" : "Não Iniciado"}
+                                                    {saldoEmpenhado === 0 && liquidadoRaw > 0 ? "Parte Liquidada" : empenhadoRaw > 0 ? "Em Aberto" : "Não Iniciado"}
                                                 </p>
                                             </div>
                                         </div>
@@ -527,25 +555,25 @@ export default async function ProjetoDetalhePage(props: Props) {
                                     {/* 3. Liquidado (Saldo) */}
                                     <div className="relative flex items-center gap-6 group">
                                         <div className={`flex items-center justify-center size-12 rounded-full z-10 shadow-sm border-4 border-white transition-all ${
-                                            liquidadoRaw > 0 ? "bg-orange-500 text-white" : "bg-slate-200 text-slate-400"
+                                            saldoLiquidado > 0 ? "bg-orange-500 text-white" : "bg-slate-200 text-slate-400"
                                         }`}>
                                             <span className="material-symbols-outlined text-xl">
-                                                {pagoRaw > 0 ? "check" : "verified"}
+                                                {saldoLiquidado === 0 && pagoRaw > 0 ? "check" : "verified"}
                                             </span>
                                         </div>
                                         <div className={`flex-1 flex justify-between items-center p-5 rounded-2xl border transition-all ${
-                                            liquidadoRaw > 0 ? "bg-orange-50/30 border-orange-100 group-hover:bg-orange-50" : "bg-white border-slate-100"
+                                            saldoLiquidado > 0 ? "bg-orange-50/30 border-orange-100 group-hover:bg-orange-50" : "bg-white border-slate-100"
                                         }`}>
                                             <div>
-                                                <p className={`text-xs font-bold uppercase tracking-widest ${liquidadoRaw > 0 ? "text-orange-700" : "text-slate-400"}`}>Liquidado</p>
+                                                <p className={`text-xs font-bold uppercase tracking-widest ${saldoLiquidado > 0 ? "text-orange-700" : "text-slate-400"}`}>Liquidado</p>
                                                 <p className="text-sm text-slate-500 mt-1">Saldo aguardando pagamento</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className={`text-lg font-black ${liquidadoRaw > 0 ? "text-orange-600" : "text-slate-300"}`}>
+                                                <p className={`text-lg font-black ${saldoLiquidado > 0 ? "text-orange-600" : "text-slate-300"}`}>
                                                     {formatCurrency(saldoLiquidado)}
                                                 </p>
                                                 <p className="text-[10px] font-bold text-slate-400 uppercase">
-                                                    {pagoRaw > 0 ? "Parte Paga" : liquidadoRaw > 0 ? "Pronto p/ Pagar" : "Aguardando Medição"}
+                                                    {saldoLiquidado === 0 && pagoRaw > 0 ? "Parte Paga" : liquidadoRaw > 0 ? "Pronto p/ Pagar" : "Aguardando Medição"}
                                                 </p>
                                             </div>
                                         </div>
