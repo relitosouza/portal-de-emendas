@@ -201,9 +201,9 @@ export async function addFinancialEvent(
     };
 
     // Recalculate totals
-    updated.empenhado = sumEvents(updated.empenhos) || current.empenhado;
-    updated.liquidado = sumEvents(updated.liquidacoes) || current.liquidado;
-    updated.pago = sumEvents(updated.pagamentos) || current.pago;
+    updated.empenhado = (updated.empenhos ?? []).length > 0 ? sumEvents(updated.empenhos) : current.empenhado;
+    updated.liquidado = (updated.liquidacoes ?? []).length > 0 ? sumEvents(updated.liquidacoes) : current.liquidado;
+    updated.pago = (updated.pagamentos ?? []).length > 0 ? sumEvents(updated.pagamentos) : current.pago;
 
     recordMap.set(amendmentId, updated);
     await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
@@ -237,9 +237,9 @@ export async function updateFinancialEvent(
         updatedAt: new Date().toISOString(),
     };
 
-    updated.empenhado = sumEvents(updated.empenhos) || current.empenhado;
-    updated.liquidado = sumEvents(updated.liquidacoes) || current.liquidado;
-    updated.pago = sumEvents(updated.pagamentos) || current.pago;
+    updated.empenhado = (updated.empenhos ?? []).length > 0 ? sumEvents(updated.empenhos) : current.empenhado;
+    updated.liquidado = (updated.liquidacoes ?? []).length > 0 ? sumEvents(updated.liquidacoes) : current.liquidado;
+    updated.pago = (updated.pagamentos ?? []).length > 0 ? sumEvents(updated.pagamentos) : current.pago;
 
     recordMap.set(amendmentId, updated);
     await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
@@ -270,9 +270,9 @@ export async function deleteFinancialEvent(
         updatedAt: new Date().toISOString(),
     };
 
-    updated.empenhado = sumEvents(updated.empenhos) || current.empenhado;
-    updated.liquidado = sumEvents(updated.liquidacoes) || current.liquidado;
-    updated.pago = sumEvents(updated.pagamentos) || current.pago;
+    updated.empenhado = (updated.empenhos ?? []).length > 0 ? sumEvents(updated.empenhos) : current.empenhado;
+    updated.liquidado = (updated.liquidacoes ?? []).length > 0 ? sumEvents(updated.liquidacoes) : current.liquidado;
+    updated.pago = (updated.pagamentos ?? []).length > 0 ? sumEvents(updated.pagamentos) : current.pago;
 
     recordMap.set(amendmentId, updated);
     await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
