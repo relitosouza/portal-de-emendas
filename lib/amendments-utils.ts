@@ -85,7 +85,41 @@ export function getCategoryLabel(cat?: string): string | null {
 export function parseCurrency(val?: string | number): number {
     if (!val) return 0;
     if (typeof val === "number") return val;
-    const cleaned = String(val).replace(/[R$\s.]/g, "").replace(",", ".");
+    
+    let str = String(val).trim();
+    
+    // Check if it's already a valid number string (like "12345.67")
+    if (/^-?\d+(\.\d+)?$/.test(str)) {
+        return parseFloat(str) || 0;
+    }
+
+    // If it has a comma, it's likely Brazilian/European (thousands: . , decimal: ,)
+    if (str.includes(",")) {
+        // If it also has a dot after the comma, it's very weird, but let's assume BR
+        // Normal BR: 1.234,56
+        const cleaned = str.replace(/[R$\s.]/g, "").replace(",", ".");
+        return parseFloat(cleaned) || 0;
+    }
+
+    // If it only has a dot (or multiple dots)
+    if (str.includes(".")) {
+        const parts = str.split(".");
+        // If multiple dots, it's thousands: 1.234.567
+        if (parts.length > 2) {
+            return parseFloat(str.replace(/[R$\s.]/g, "")) || 0;
+        }
+        // If one dot and exactly 2 or 1 digits at the end: likely decimal 1234.56
+        if (parts[1].length === 2 || parts[1].length === 1) {
+            return parseFloat(str.replace(/[R$\s]/g, "")) || 0;
+        }
+        // Default to thousands if 3 digits: 1.234
+        if (parts[1].length === 3) {
+            return parseFloat(str.replace(/[R$\s.]/g, "")) || 0;
+        }
+    }
+
+    // fallback cleaning for any other case
+    const cleaned = str.replace(/[R$\s,]/g, ""); // Remove R$, spaces and commas
     return parseFloat(cleaned) || 0;
 }
 

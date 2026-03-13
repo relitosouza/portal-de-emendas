@@ -606,6 +606,110 @@ export default async function ProjetoDetalhePage(props: Props) {
                                         </div>
                                     </div>
                                 </div>
+
+                                {/* Detalhamento de Eventos (Timeline) */}
+                                {( (amendment.empenhos?.length || 0) > 0 || (amendment.liquidacoes?.length || 0) > 0 || (amendment.pagamentos?.length || 0) > 0 ) && (
+                                    <div className="mt-12 pt-8 border-t border-slate-100 space-y-8">
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-sm">
+                                                <span className="material-symbols-outlined">receipt_long</span>
+                                            </div>
+                                            <div>
+                                                <h3 className="text-lg font-bold text-slate-900">Extrato de Execução</h3>
+                                                <p className="text-sm text-slate-500">Histórico detalhado de lançamentos oficiais</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Empenhos Section */}
+                                        {(amendment.empenhos?.length || 0) > 0 && (
+                                            <div className="space-y-4">
+                                                <div className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-blue-50 text-blue-700 w-fit">
+                                                    <span className="material-symbols-outlined text-[18px]">contract</span>
+                                                    <span className="text-xs font-bold uppercase tracking-widest">Empenhos Emitidos</span>
+                                                </div>
+                                                <div className="grid gap-3">
+                                                    {(amendment.empenhos || []).map((e: any, idx: number) => (
+                                                        <div key={idx} className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-100 transition-all">
+                                                            <div className="size-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                                                                <span className="text-xs font-bold font-mono">#{idx+1}</span>
+                                                            </div>
+                                                            <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                                <div className="md:col-span-2 space-y-1">
+                                                                    <p className="text-sm font-bold text-slate-800">NE: {e.numero} &bull; {e.data}</p>
+                                                                    <p className="text-xs text-slate-500 font-medium">Credor: {e.credor}</p>
+                                                                    <p className="text-xs text-slate-400 leading-relaxed italic line-clamp-1">{e.descricao}</p>
+                                                                </div>
+                                                                <div className="text-right self-center">
+                                                                    <p className="text-base font-black text-blue-600">R$ {e.valor}</p>
+                                                                    <p className="text-[10px] font-bold text-slate-300 uppercase tracking-tighter">Valor do Empenho</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Liquidações Section */}
+                                        {(amendment.liquidacoes?.length || 0) > 0 && (
+                                            <div className="space-y-4">
+                                                <div className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-amber-50 text-amber-700 w-fit">
+                                                    <span className="material-symbols-outlined text-[18px]">verified</span>
+                                                    <span className="text-xs font-bold uppercase tracking-widest">Liquidações Processadas</span>
+                                                </div>
+                                                <div className="grid gap-3">
+                                                    {(amendment.liquidacoes || []).map((l: any, idx: number) => (
+                                                        <div key={idx} className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-amber-100 transition-all">
+                                                            <div className="size-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                                                                <span className="text-xs font-bold font-mono">#{idx+1}</span>
+                                                            </div>
+                                                            <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                                <div className="md:col-span-2 space-y-1">
+                                                                    <p className="text-sm font-bold text-slate-800">NL: {l.numero} &bull; {l.data}</p>
+                                                                    <p className="text-xs text-slate-400 leading-relaxed italic line-clamp-1">{l.descricao}</p>
+                                                                </div>
+                                                                <div className="text-right self-center">
+                                                                    <p className="text-base font-black text-amber-600">R$ {l.valor}</p>
+                                                                    <p className="text-[10px] font-bold text-slate-300 uppercase tracking-tighter">Valor Liquidado</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Pagamentos Section */}
+                                        {(amendment.pagamentos?.length || 0) > 0 && (
+                                            <div className="space-y-4">
+                                                <div className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 w-fit">
+                                                    <span className="material-symbols-outlined text-[18px]">payments</span>
+                                                    <span className="text-xs font-bold uppercase tracking-widest">Pagamentos Transferidos</span>
+                                                </div>
+                                                <div className="grid gap-3">
+                                                    {(amendment.pagamentos || []).map((p: any, idx: number) => (
+                                                        <div key={idx} className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-emerald-100 transition-all">
+                                                            <div className="size-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                                                                <span className="text-xs font-bold font-mono">#{idx+1}</span>
+                                                            </div>
+                                                            <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                                <div className="md:col-span-2 space-y-1">
+                                                                    <p className="text-sm font-bold text-slate-800">OB: {p.ordemBancaria || p.documento} &bull; {p.data}</p>
+                                                                    <p className="text-xs text-slate-500 font-medium">Banco: {p.banco} &bull; Ag: {p.agencia}</p>
+                                                                    <p className="text-xs text-slate-400 leading-relaxed italic line-clamp-1">{p.descricao}</p>
+                                                                </div>
+                                                                <div className="text-right self-center">
+                                                                    <p className="text-base font-black text-emerald-600">R$ {p.valor}</p>
+                                                                    <p className="text-[10px] font-bold text-slate-300 uppercase tracking-tighter">Valor Pago</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </section>
 
                             <TechnicalDetailsAccordion

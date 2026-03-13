@@ -1,4 +1,5 @@
 import { readJsonFile, writeJsonFile, FINANCIAL_FILE, AMENDMENTS_FILE, FinancialRecord } from "./json-storage";
+import { parseCurrency } from "./amendments-utils";
 
 const OSASCO_API_URL = 'https://transparencia.osasco.sp.gov.br/paiportalserver/modulovisao/filter';
 const CURRENT_EXERCISE = 2026;
@@ -18,8 +19,9 @@ interface PortalRecord {
 }
 
 function parsePortalCurrency(val: string): string {
-    if (!val) return "0";
-    return val.replace(/\./g, '').replace(',', '.').trim();
+    const num = parseCurrency(val);
+    if (!num) return "0,00";
+    return new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num);
 }
 
 function extractBaseNumber(str: string): string | null {

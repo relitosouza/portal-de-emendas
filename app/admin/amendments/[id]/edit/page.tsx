@@ -6,6 +6,8 @@ import Link from "next/link";
 import Navbar from "@/components/shared/navbar";
 import dynamic from "next/dynamic";
 
+import { FinancialHistory } from "@/components/admin/financial-history";
+
 const MapPicker = dynamic(
     () => import("@/components/ui/map-picker").then((mod) => mod.MapPicker),
     { ssr: false, loading: () => <div className="h-64 bg-slate-100 rounded-xl animate-pulse" /> }
@@ -101,6 +103,15 @@ export default function EditAmendmentPage({ params }: PageProps) {
     const selectClass = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none appearance-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all";
     const labelClass = "block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1.5";
     const textareaClass = "w-full rounded-xl border border-slate-200 bg-white p-4 text-sm outline-none resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all";
+
+    const onFinancialUpdate = (record: any) => {
+        setFormData((prev: any) => ({
+            ...prev,
+            empenhado: record.empenhado,
+            liquidado: record.liquidado,
+            pago: record.pago,
+        }));
+    };
 
     const renderPhaseContent = () => {
         switch (activePhase) {
@@ -330,60 +341,59 @@ export default function EditAmendmentPage({ params }: PageProps) {
                             )}
                         </div>
 
-                        {/* Execução Financeira */}
-                        <div className="rounded-xl border border-emerald-200 bg-emerald-50/30 p-6 space-y-5">
+                        {/* Resumo Financeiro (Read-only cards calculated from history) */}
+                        <div className="rounded-xl border border-slate-200 bg-slate-50/30 p-6 space-y-5">
                             <div className="flex items-center gap-2">
-                                <span className="material-symbols-outlined text-emerald-600">account_balance</span>
-                                <h3 className="text-sm font-bold text-emerald-800">Execução Financeira</h3>
+                                <span className="material-symbols-outlined text-slate-600">summarize</span>
+                                <h3 className="text-sm font-bold text-slate-800">Resumo da Execução</h3>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                                <div>
-                                    <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">
-                                        <span className="h-2.5 w-2.5 rounded-full bg-slate-400"></span>Reservado
-                                    </label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
-                                        <input className={`${inputClass} pl-12 font-mono`} value={formData.reservado || ""} onChange={(e) => handleChange("reservado", e.target.value)} placeholder="0,00" />
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Reservado</p>
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-[10px] font-bold text-slate-400">R$</span>
+                                        <input 
+                                            className="font-mono text-base font-bold text-slate-600 outline-none w-full bg-transparent" 
+                                            value={formData.reservado || "0,00"} 
+                                            onChange={(e) => handleChange("reservado", e.target.value)}
+                                            placeholder="0,00"
+                                        />
                                     </div>
+                                    <p className="text-[9px] text-slate-400 mt-1 italic">Entrada manual</p>
                                 </div>
-                                <div>
-                                    <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">
-                                        <span className="h-2.5 w-2.5 rounded-full bg-blue-500"></span>Empenhado
-                                    </label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
-                                        <input className={`${inputClass} pl-12 font-mono`} value={formData.empenhado || ""} onChange={(e) => handleChange("empenhado", e.target.value)} placeholder="0,00" />
-                                    </div>
+                                <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Empenhado</p>
+                                    <p className="font-mono text-base font-bold text-blue-600">R$ {formData.empenhado || "0,00"}</p>
+                                    <p className="text-[9px] text-blue-400 mt-1 italic">Auto-calculado</p>
                                 </div>
-                                <div>
-                                    <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">
-                                        <span className="h-2.5 w-2.5 rounded-full bg-amber-500"></span>Liquidado
-                                    </label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
-                                        <input className={`${inputClass} pl-12 font-mono`} value={formData.liquidado || ""} onChange={(e) => handleChange("liquidado", e.target.value)} placeholder="0,00" />
-                                    </div>
+                                <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400 mb-1">Liquidado</p>
+                                    <p className="font-mono text-base font-bold text-amber-600">R$ {formData.liquidado || "0,00"}</p>
+                                    <p className="text-[9px] text-amber-400 mt-1 italic">Auto-calculado</p>
                                 </div>
-                                <div>
-                                    <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">
-                                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>Pago
-                                    </label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">R$</span>
-                                        <input className={`${inputClass} pl-12 font-mono`} value={formData.pago || ""} onChange={(e) => handleChange("pago", e.target.value)} placeholder="0,00" />
-                                    </div>
+                                <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-1">Pago</p>
+                                    <p className="font-mono text-base font-bold text-emerald-600">R$ {formData.pago || "0,00"}</p>
+                                    <p className="text-[9px] text-emerald-400 mt-1 italic">Auto-calculado</p>
                                 </div>
                             </div>
-                            {/* Flow visualization */}
-                            <div className="flex items-center gap-2 pt-2">
-                                <div className="flex-1 h-2 rounded-full bg-slate-200 overflow-hidden"><div className="h-full bg-slate-400 rounded-full transition-all" style={{ width: formData.reservado ? "100%" : "0%" }}></div></div>
-                                <span className="material-symbols-outlined text-[12px] text-slate-300">arrow_forward</span>
-                                <div className="flex-1 h-2 rounded-full bg-blue-200 overflow-hidden"><div className="h-full bg-blue-500 rounded-full transition-all" style={{ width: formData.empenhado ? "100%" : "0%" }}></div></div>
-                                <span className="material-symbols-outlined text-[12px] text-slate-300">arrow_forward</span>
-                                <div className="flex-1 h-2 rounded-full bg-amber-200 overflow-hidden"><div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: formData.liquidado ? "100%" : "0%" }}></div></div>
-                                <span className="material-symbols-outlined text-[12px] text-slate-300">arrow_forward</span>
-                                <div className="flex-1 h-2 rounded-full bg-emerald-200 overflow-hidden"><div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: formData.pago ? "100%" : "0%" }}></div></div>
+                        </div>
+
+                        {/* Histórico Detalhado */}
+                        <div className="pt-4 border-t border-slate-100">
+                             <div className="flex items-center gap-2 mb-6">
+                                <div className="flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                    <span className="material-symbols-outlined">history</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-bold text-slate-800">Histórico de Eventos Financeiros</h3>
+                                    <p className="text-xs text-slate-500">Gerencie empenhos, liquidações e pagamentos individualmente.</p>
+                                </div>
                             </div>
+                            <FinancialHistory
+                                amendmentId={formData.id}
+                                onUpdate={onFinancialUpdate}
+                            />
                         </div>
                     </div>
                 );

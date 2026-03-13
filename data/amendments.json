@@ -41,7 +41,25 @@
     "subfuncao": "242",
     "title": "Núcleo Terapêutico Multidiciplinar para pessoas com autismo",
     "address": "",
-    "year": "2026"
+    "year": "2026",
+    "empenhado": "271.000,00",
+    "liquidado": "0.00",
+    "pago": "0.00",
+    "reservado": "0.00",
+    "empenhos": [
+      {
+        "id": "88181043-664b-4ef7-aadb-3b0400be7f78",
+        "numero": "1484",
+        "data": "",
+        "credor": "",
+        "valor": "271.000,00",
+        "processo": "2572/2025",
+        "descricao": "CONTRATAÇÃO DO EDITAL DE CREDENCIAMENTO.",
+        "createdAt": "2026-03-13T15:03:21.644Z"
+      }
+    ],
+    "liquidacoes": [],
+    "pagamentos": []
   },
   {
     "id": "066.21.30.2026",
@@ -4221,7 +4239,34 @@
     "subfuncao": "392",
     "title": "Contratação de Artista ou coletivo artistico para realização de mural de grafite para transformar ponte em marco artístico fomentando turismo cultural.",
     "address": "",
-    "year": "2026"
+    "year": "2026",
+    "empenhado": "271.000,00",
+    "liquidado": "271.000,00",
+    "pago": "271.000,00",
+    "reservado": "",
+    "empenhos": [
+      {
+        "id": "a78891c9-5f11-4e7c-800b-058aa217c30c",
+        "numero": "1484",
+        "data": "27/02/2026",
+        "credor": "Ramon Martins",
+        "valor": "271.000,00",
+        "processo": "2572/2025",
+        "descricao": "CONTRATAÇÃO DO EDITAL DE CREDENCIAMENTO.\n",
+        "createdAt": "2026-03-13T15:06:43.304Z"
+      }
+    ],
+    "liquidacoes": [
+      {
+        "id": "45d6dfde-3bc7-45f3-b7b4-29021511b4d2",
+        "numero": "1123132131",
+        "data": "13/03/2026",
+        "valor": "271.000,00",
+        "descricao": "Liquidação 066.18.30.2026",
+        "createdAt": "2026-03-13T15:11:20.294Z"
+      }
+    ],
+    "pagamentos": []
   },
   {
     "id": "130.01.36.2026",

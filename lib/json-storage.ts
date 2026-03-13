@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import Redis from "ioredis";
 import { Amendment } from "@/lib/store";
+import { parseCurrency } from "./amendments-utils";
 
 // =====================================================
 // Storage Strategy
@@ -160,10 +161,9 @@ export async function upsertFinancialData(_sheets: any, _spreadsheetId: string, 
 
 function sumEvents(events: Array<{ valor: string }> = []): string {
     const total = events.reduce((acc, e) => {
-        const cleaned = String(e.valor).replace(/[R$\s.]/g, "").replace(",", ".");
-        return acc + (parseFloat(cleaned) || 0);
+        return acc + parseCurrency(e.valor);
     }, 0);
-    if (total === 0) return "0";
+    if (total === 0) return "0,00";
     return new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
 }
 

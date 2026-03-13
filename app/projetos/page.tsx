@@ -7,7 +7,7 @@ import { Amendment } from "@/lib/store";
 import Navbar from "@/components/shared/navbar";
 import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus } from "@/lib/status-mapper";
-import { VEREADORES_PHOTOS, findVereadorPhoto } from "@/lib/amendments-utils";
+import { VEREADORES_PHOTOS, findVereadorPhoto, parseCurrency } from "@/lib/amendments-utils";
 import GroupedAmendments from "@/components/dashboard/grouped-amendments";
 import { cn } from "@/lib/utils";
 
@@ -43,10 +43,7 @@ const FILTRO_LABELS: Record<string, string> = {
 };
 
 const parseFinanceiro = (v: any): number => {
-    if (!v) return 0;
-    const cleaned = String(v).replace(/R\$\s*/gi, "").replace(/\./g, "").replace(",", ".").trim();
-    const num = parseFloat(cleaned);
-    return isNaN(num) ? 0 : num;
+    return parseCurrency(v);
 };
 
 const CATEGORY_MAP: Record<string, string> = {

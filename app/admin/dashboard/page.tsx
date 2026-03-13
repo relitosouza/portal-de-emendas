@@ -6,6 +6,8 @@ import { Amendment, getAmendments, clearAmendments, deleteAmendment } from "@/li
 import Navbar from "@/components/shared/navbar";
 import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus } from "@/lib/status-mapper";
+import { parseCurrency } from "@/lib/amendments-utils";
+
 export default function DashboardPage() {
     const [amendments, setAmendments] = useState<Amendment[]>([]);
     const [loading, setLoading] = useState(true);
@@ -89,8 +91,7 @@ export default function DashboardPage() {
 
     // Computed stats
     const totalValue = amendments.reduce((acc, curr) => {
-        const val = parseFloat((curr.valor || "0").replace(/\./g, "").replace(",", ".")) || 0;
-        return acc + val;
+        return acc + parseCurrency(curr.valor);
     }, 0);
 
     const emExecucao = amendments.filter((a) => getNormalizedStatus(a.status as string) === "Execução").length;
