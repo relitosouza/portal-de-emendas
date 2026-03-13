@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync-financeiro": "npx tsx scripts/sync-financial-osasco.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

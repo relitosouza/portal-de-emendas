@@ -19,7 +19,12 @@ export default function Home() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const totalReservado = amendments.reduce((acc, e) => acc + parseValor(e.reservado), 0);
+  const totalReservado = amendments.reduce((acc, e) => {
+    const res = parseValor(e.reservado);
+    const emp = parseValor(e.empenhado);
+    // O valor "sai" da reserva quando é empenhado
+    return acc + Math.max(0, res - emp);
+  }, 0);
   const totalEmpenhado = amendments.reduce((acc, e) => acc + parseValor(e.empenhado), 0);
   const totalLiquidado = amendments.reduce((acc, e) => acc + parseValor(e.liquidado), 0);
   const totalPago = amendments.reduce((acc, e) => acc + parseValor(e.pago), 0);
