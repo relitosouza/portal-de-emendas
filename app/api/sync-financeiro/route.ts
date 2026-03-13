@@ -2,8 +2,11 @@ import { NextResponse } from "next/server";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 import { runFinancialSync } from "@/lib/sync-logic";
 
-export async function POST() {
-    if (!(await isAuthenticated())) {
+export async function POST(request: Request) {
+    const authHeader = request.headers.get("authorization");
+    const isCron = authHeader === `Bearer ${process.env.CRON_SECRET}`;
+
+    if (!isCron && !(await isAuthenticated())) {
         return unauthorizedResponse();
     }
 
