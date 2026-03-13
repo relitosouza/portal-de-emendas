@@ -24,9 +24,19 @@ export default function DashboardPage() {
     const [importing, setImporting] = useState(false);
     const [importFeedback, setImportFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
+    // Sync state
+    const [syncing, setSyncing] = useState(false);
+    const [syncFeedback, setSyncFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+    const [lastSync, setLastSync] = useState<string | null>(null);
+
     useEffect(() => {
         async function loadData() {
             try {
+                // Fetch last sync info
+                const syncRes = await fetch("/api/sync-financeiro");
+                const syncData = await syncRes.json();
+                if (syncData.lastSync) setLastSync(syncData.lastSync);
+
                 const response = await fetch("/api/amendments");
                 const data = await response.json();
                 if (data.warning || data.error) {
@@ -135,7 +145,6 @@ export default function DashboardPage() {
     const quickActions = [
         { label: "Nova Emenda", desc: "Cadastrar nova emenda parlamentar", icon: "add_circle", href: "/admin/wizard", color: "from-blue-600 to-blue-500" },
         { label: "Gerenciar Cards", desc: "Cards de estatísticas do painel", icon: "widgets", href: "/admin/cards", color: "from-teal-600 to-teal-500" },
-        { label: "Ver Portal Público", desc: "Visualizar a página pública", icon: "visibility", href: "/", color: "from-slate-700 to-slate-600" },
     ];
 
     // CSV Import handlers
@@ -170,6 +179,45 @@ export default function DashboardPage() {
             setImportPreview(preview);
         };
         reader.readAsText(file);
+    };
+
+    const handleSync = async () => {
+        if (!confirm("Isso irá consultar o Portal de Transparência de Osasco e atualizar os dados financeiros de todas as emendas locais. Deseja continuar?")) return;
+        
+        setSyncing(true);
+        setSyncFeedback(null);
+        
+        try {
+            const res = await fetch("/api/sync-financeiro", { method: "POST" });
+            const result = await res.json();
+            
+            if (res.ok && result.success) {
+                setSyncFeedback({ 
+                    type: "success", 
+                    message: `${result.message}. ${result.updatedCount} emendas atualizadas.` 
+                });
+                
+                // Refresh list to show updated values
+                const dataRes = await fetch("/api/amendments");
+                const data = await dataRes.json();
+                if (Array.isArray(data)) setAmendments(data);
+                
+                const syncDataRes = await fetch("/api/sync-financeiro");
+                const syncDataNext = await syncDataRes.json();
+                if (syncDataNext.lastSync) setLastSync(syncDataNext.lastSync);
+            } else {
+                setSyncFeedback({ 
+                    type: "error", 
+                    message: result.error || "Erro na sincronização" 
+                });
+            }
+        } catch (error) {
+            setSyncFeedback({ type: "error", message: "Erro de conexão ao sincronizar" });
+        } finally {
+            setSyncing(false);
+            // Clear success feedback after a while
+            setTimeout(() => setSyncFeedback(null), 5000);
+        }
     };
 
     const handleImport = async () => {
@@ -265,7 +313,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Quick Actions */}
-                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {quickActions.map((action) => (
                             <Link
                                 key={action.href}
@@ -286,6 +334,34 @@ export default function DashboardPage() {
                                 </div>
                             </Link>
                         ))}
+                        
+                        <button
+                            onClick={handleSync}
+                            disabled={syncing}
+                            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 text-white transition-all hover:shadow-lg hover:-translate-y-0.5 text-left"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 to-teal-500 opacity-100"></div>
+                            <div className="relative flex items-center gap-4">
+                                <div className="flex size-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                                    <span className={`material-symbols-outlined text-[24px] ${syncing ? 'animate-spin' : ''}`}>sync</span>
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="font-bold text-sm truncate">{syncing ? "Sincronizando..." : "Sincronizar Portal"}</p>
+                                    <p className="text-[10px] text-white/70 truncate uppercase font-bold tracking-wider">
+                                        {lastSync 
+                                            ? `Última: ${new Date(lastSync).toLocaleDateString("pt-BR")} ${new Date(lastSync).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}` 
+                                            : "Dados da prefeitura"}
+                                    </p>
+                                </div>
+                                <span className="material-symbols-outlined ml-auto text-white/50 group-hover:translate-x-1 transition-transform">refresh</span>
+                            </div>
+                            {syncFeedback && (
+                                <div className={`absolute bottom-0 left-0 right-0 py-1 px-4 text-[10px] font-bold text-center ${syncFeedback.type === 'success' ? 'bg-emerald-400' : 'bg-red-400'}`}>
+                                    {syncFeedback.message}
+                                </div>
+                            )}
+                        </button>
+
                         <button
                             onClick={() => setImportModal(true)}
                             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 text-white transition-all hover:shadow-lg hover:-translate-y-0.5 text-left"
@@ -297,7 +373,7 @@ export default function DashboardPage() {
                                 </div>
                                 <div>
                                     <p className="font-bold text-sm">Importar CSV</p>
-                                    <p className="text-xs text-white/70">Emendas ou dados financeiros</p>
+                                    <p className="text-xs text-white/70">Google Sheets/CSV</p>
                                 </div>
                                 <span className="material-symbols-outlined ml-auto text-white/50 group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </div>
@@ -305,7 +381,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Stats Row */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {[
                             { label: "Total de Emendas", value: amendments.length.toString(), icon: "description", color: "blue", sub: "cadastradas" },
                             { label: "Valor Total", value: formatCurrency(totalValue), icon: "payments", color: "teal", sub: "em emendas" },
