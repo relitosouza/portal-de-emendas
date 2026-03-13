@@ -145,7 +145,6 @@ export default function DashboardPage() {
     const quickActions = [
         { label: "Nova Emenda", desc: "Cadastrar nova emenda parlamentar", icon: "add_circle", href: "/admin/wizard", color: "from-blue-600 to-blue-500" },
         { label: "Gerenciar Cards", desc: "Cards de estatísticas do painel", icon: "widgets", href: "/admin/cards", color: "from-teal-600 to-teal-500" },
-        { label: "Ver Portal Público", desc: "Visualizar a página pública", icon: "visibility", href: "/", color: "from-slate-700 to-slate-600" },
     ];
 
     // CSV Import handlers
@@ -314,7 +313,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Quick Actions */}
-                    <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {quickActions.map((action) => (
                             <Link
                                 key={action.href}
@@ -382,7 +381,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Stats Row */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {[
                             { label: "Total de Emendas", value: amendments.length.toString(), icon: "description", color: "blue", sub: "cadastradas" },
                             { label: "Valor Total", value: formatCurrency(totalValue), icon: "payments", color: "teal", sub: "em emendas" },
