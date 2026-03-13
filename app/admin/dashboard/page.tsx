@@ -27,10 +27,16 @@ export default function DashboardPage() {
     // Sync state
     const [syncing, setSyncing] = useState(false);
     const [syncFeedback, setSyncFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+    const [lastSync, setLastSync] = useState<string | null>(null);
 
     useEffect(() => {
         async function loadData() {
             try {
+                // Fetch last sync info
+                const syncRes = await fetch("/api/sync-financeiro");
+                const syncData = await syncRes.json();
+                if (syncData.lastSync) setLastSync(syncData.lastSync);
+
                 const response = await fetch("/api/amendments");
                 const data = await response.json();
                 if (data.warning || data.error) {
@@ -196,6 +202,10 @@ export default function DashboardPage() {
                 const dataRes = await fetch("/api/amendments");
                 const data = await dataRes.json();
                 if (Array.isArray(data)) setAmendments(data);
+                
+                const syncDataRes = await fetch("/api/sync-financeiro");
+                const syncDataNext = await syncDataRes.json();
+                if (syncDataNext.lastSync) setLastSync(syncDataNext.lastSync);
             } else {
                 setSyncFeedback({ 
                     type: "error", 
@@ -338,7 +348,11 @@ export default function DashboardPage() {
                                 </div>
                                 <div className="min-w-0">
                                     <p className="font-bold text-sm truncate">{syncing ? "Sincronizando..." : "Sincronizar Portal"}</p>
-                                    <p className="text-xs text-white/70 truncate">Dados da prefeitura</p>
+                                    <p className="text-[10px] text-white/70 truncate uppercase font-bold tracking-wider">
+                                        {lastSync 
+                                            ? `Última: ${new Date(lastSync).toLocaleDateString("pt-BR")} ${new Date(lastSync).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}` 
+                                            : "Dados da prefeitura"}
+                                    </p>
                                 </div>
                                 <span className="material-symbols-outlined ml-auto text-white/50 group-hover:translate-x-1 transition-transform">refresh</span>
                             </div>

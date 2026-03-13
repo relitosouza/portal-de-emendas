@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 import { runFinancialSync } from "@/lib/sync-logic";
+import { readJsonFile } from "@/lib/json-storage";
+
+export async function GET() {
+    try {
+        const info = await readJsonFile<{ lastSync: string }>("sync_info.json");
+        return NextResponse.json({ lastSync: info[0]?.lastSync || null });
+    } catch {
+        return NextResponse.json({ lastSync: null });
+    }
+}
 
 export async function POST(request: Request) {
     const authHeader = request.headers.get("authorization");

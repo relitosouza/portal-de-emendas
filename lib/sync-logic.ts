@@ -97,5 +97,9 @@ export async function runFinancialSync() {
     }
 
     await writeJsonFile(FINANCIAL_FILE, Array.from(financialMap.values()));
+    
+    // Salvar meta-informação da última sincronização
+    await writeJsonFile("sync_info.json", [{ lastSync: new Date().toISOString() }]);
+    
     return matchedCount;
 }
