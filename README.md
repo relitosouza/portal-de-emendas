@@ -130,6 +130,8 @@ Consulte [`VERCEL_DEPLOY.md`](./VERCEL_DEPLOY.md) para instruções detalhadas s
 ## Documentação adicional
 
 - [`docs/GUIA-DE-USO.md`](./docs/GUIA-DE-USO.md) — Guia completo de uso do sistema (público e admin)
+- [`docs/ARQUITETURA.md`](./docs/ARQUITETURA.md) — Arquitetura técnica, camadas, storage e decisões de design
+- [`docs/API.md`](./docs/API.md) — Referência completa dos endpoints REST
 - [`GOOGLE_SHEETS_SETUP.md`](./GOOGLE_SHEETS_SETUP.md) — Configuração da integração com Google Sheets
 - [`VERCEL_DEPLOY.md`](./VERCEL_DEPLOY.md) — Troubleshooting de deploy na Vercel
 
