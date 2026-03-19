@@ -15,11 +15,20 @@ const BUNDLED_DATA_DIR = path.join(process.cwd(), "data");
 let _redis: Redis | null = null;
 function getRedis(): Redis {
     if (!_redis) {
-        _redis = new Redis(process.env.REDIS_URL!, {
-            lazyConnect: false,
+        const client = new Redis(process.env.REDIS_URL!, {
+            lazyConnect: true,
             maxRetriesPerRequest: 3,
-            enableReadyCheck: false,
+            enableReadyCheck: true,
+            connectTimeout: 5000,
         });
+        // Prevent unhandled 'error' events from crashing the process;
+        // errors are already handled at the call site.
+        client.on("error", (err) => {
+            console.error("[json-storage] Redis connection error:", err);
+            // Reset the singleton so the next call creates a fresh connection.
+            _redis = null;
+        });
+        _redis = client;
     }
     return _redis;
 }
