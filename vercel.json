@@ -1,8 +1,1 @@
-{
-  "crons": [
-    {
-      "path": "/api/sync-financeiro",
-      "schedule": "0 9 * * *"
-    }
-  ]
-}
+{}
