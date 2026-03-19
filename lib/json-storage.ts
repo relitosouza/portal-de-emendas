@@ -1,25 +1,31 @@
 import fs from "fs/promises";
 import path from "path";
+import Redis from "ioredis";
 import { Amendment } from "@/lib/store";
 import { parseCurrency } from "./amendments-utils";
-import { dbQuery } from "./db";
 
 // =====================================================
 // Storage Strategy
 // =====================================================
-//
-// Prioridade de armazenamento:
-//   1. PostgreSQL (DATABASE_URL configurado) — produção em servidor próprio
-//   2. Disco local (/data/*.json)            — desenvolvimento local
-//
-// O Redis foi removido. Para persistência de dados financeiros,
-// utilize PostgreSQL (recomendado para ambientes de produção municipais).
 
-const HAS_DATABASE = !!process.env.DATABASE_URL;
-const DATA_DIR = path.join(process.cwd(), "data");
+const IS_VERCEL = !!process.env.VERCEL;
+const HAS_REDIS = !!process.env.REDIS_URL;
+const BUNDLED_DATA_DIR = path.join(process.cwd(), "data");
 
-function dataPath(filename: string) {
-    return path.join(DATA_DIR, filename);
+let _redis: Redis | null = null;
+function getRedis(): Redis {
+    if (!_redis) {
+        _redis = new Redis(process.env.REDIS_URL!, {
+            lazyConnect: false,
+            maxRetriesPerRequest: 3,
+            enableReadyCheck: false,
+        });
+    }
+    return _redis;
+}
+
+function bundledPath(filename: string) {
+    return path.join(BUNDLED_DATA_DIR, filename);
 }
 
 function filenameToKey(filename: string): string {
@@ -32,66 +38,46 @@ export const FINANCIAL_FILE = "financial.json";
 export const CARDS_FILE = "cards.json";
 
 // =====================================================
-// Helpers PostgreSQL (kv_store)
-// =====================================================
-
-async function pgRead<T>(key: string): Promise<T[] | null> {
-    try {
-        const rows = await dbQuery<{ value: T[] }>(
-            "SELECT value FROM kv_store WHERE key = $1",
-            [key]
-        );
-        if (rows.length > 0) return rows[0].value as T[];
-        return null;
-    } catch (err) {
-        console.error(`[json-storage] PostgreSQL read failed for key "${key}":`, err);
-        return null;
-    }
-}
-
-async function pgWrite<T>(key: string, data: T[]): Promise<void> {
-    await dbQuery(
-        `INSERT INTO kv_store (key, value, updated_at)
-         VALUES ($1, $2::jsonb, NOW())
-         ON CONFLICT (key) DO UPDATE
-           SET value = EXCLUDED.value,
-               updated_at = NOW()`,
-        [key, JSON.stringify(data)]
-    );
-}
-
-// =====================================================
-// API pública
+// Helpers
 // =====================================================
 
 export async function readJsonFile<T>(filename: string): Promise<T[]> {
-    const key = filenameToKey(filename);
-
-    if (HAS_DATABASE) {
-        const cached = await pgRead<T>(key);
-        if (cached !== null) return cached;
-        // Banco sem dados ainda → seed a partir dos arquivos locais
+    if (IS_VERCEL && HAS_REDIS) {
+        try {
+            const raw = await getRedis().get(filenameToKey(filename));
+            if (raw) return JSON.parse(raw) as T[];
+            // KV vazio — fallback para bundle do deploy (primeira vez após deploy)
+        } catch (err) {
+            console.error(`[json-storage] Redis read failed for "${filename}":`, err);
+        }
     }
-
+    // Dev local ou Vercel sem Redis: lê do bundle (read-only)
     try {
-        const content = await fs.readFile(dataPath(filename), "utf-8");
-        return JSON.parse(content) as T[];
+        const content = await fs.readFile(bundledPath(filename), "utf-8");
+        return JSON.parse(content);
     } catch {
         return [];
     }
 }
 
 export async function writeJsonFile<T>(filename: string, data: T[]): Promise<void> {
-    const key = filenameToKey(filename);
-
-    if (HAS_DATABASE) {
-        await pgWrite(key, data);
+    if (IS_VERCEL && HAS_REDIS) {
+        try {
+            await getRedis().set(filenameToKey(filename), JSON.stringify(data));
+            return;
+        } catch (err) {
+            console.error(`[json-storage] Redis write failed for "${filename}":`, err);
+            throw err;
+        }
+    }
+    if (IS_VERCEL) {
+        // Vercel sem Redis configurado: /var/task é read-only, não há onde persistir
+        console.warn(`[json-storage] Write to "${filename}" ignored: running on Vercel without Redis configured.`);
         return;
     }
-
-    // Desenvolvimento local: persiste em disco
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    await fs.writeFile(dataPath(filename), JSON.stringify(data, null, 2), "utf-8");
+    // Dev local: escreve no disco
+    await fs.mkdir(BUNDLED_DATA_DIR, { recursive: true });
+    await fs.writeFile(bundledPath(filename), JSON.stringify(data, null, 2), "utf-8");
 }
 
 // =====================================================
