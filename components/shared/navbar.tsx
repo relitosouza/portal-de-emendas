@@ -20,10 +20,10 @@ export default function Navbar() {
 
     return (
         <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
-            <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group" aria-label="Portal das Emendas — Página inicial">
-                    <div className="w-10 h-10 flex items-center justify-center shrink-0">
+                    <div className="w-14 h-14 flex items-center justify-center shrink-0">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src="/brasao-osasco.png"
@@ -32,9 +32,9 @@ export default function Navbar() {
                         />
                     </div>
                     <div>
-                        <span className="block text-sm font-bold uppercase tracking-tight leading-tight">Portal das Emendas</span>
-                        <span className="block text-[10px] text-slate-500 uppercase font-medium">Prefeitura Municipal de Osasco</span>
-                        <span className="block text-[10px] text-slate-500 uppercase font-medium">Secretaria de Finanças</span>
+                        <span className="block text-base font-bold uppercase tracking-tight leading-tight">Portal das Emendas</span>
+                        <span className="block text-xs text-slate-500 uppercase font-medium">Prefeitura Municipal de Osasco</span>
+                        <span className="block text-xs text-slate-500 uppercase font-medium">Secretaria de Finanças</span>
                     </div>
                 </Link>
 
