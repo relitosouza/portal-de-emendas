@@ -472,8 +472,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain" />
-            <span className="font-bold text-slate-400">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</span>
+            <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="w-10 h-10 object-contain" />
+            <span className="font-bold text-slate-400">Portal das Emendas - PMO © 2026 - Elaborado por Secretaria de Finanças</span>
           </div>
           <div className="flex gap-8">
             <a className="text-sm text-slate-500 hover:text-blue-500 transition-colors" href="https://transparencia.osasco.sp.gov.br/#/" target="_blank" rel="noopener noreferrer">Transparência</a>
