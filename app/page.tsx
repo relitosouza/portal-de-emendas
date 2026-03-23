@@ -370,7 +370,7 @@ export default function Home() {
               </div>
 
               {/* New Pie Chart Card */}
-              <AmendmentPieChart />
+              <AmendmentPieChart amendments={amendments} />
             </div>
           </div>
 
