@@ -34,6 +34,7 @@ export default function Navbar() {
                     <div>
                         <span className="block text-sm font-bold uppercase tracking-tight leading-tight">Portal das Emendas</span>
                         <span className="block text-[10px] text-slate-500 uppercase font-medium">Prefeitura Municipal de Osasco</span>
+                        <span className="block text-[10px] text-slate-500 uppercase font-medium">Secretaria de Finanças</span>
                     </div>
                 </Link>
 
