@@ -2,7 +2,7 @@
 
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
-import { formatCurrency, parseCurrency } from "@/lib/amendments-utils";
+import { formatCurrency, parseCurrency, getCategoryLabel } from "@/lib/amendments-utils";
 
 interface AmendmentPieChartProps {
   amendments: any[];
@@ -16,7 +16,7 @@ export default function AmendmentPieChart({ amendments }: AmendmentPieChartProps
     let totalValue = 0;
 
     amendments.forEach((a) => {
-      const sector = a.categoria || "Outros";
+      const sector = getCategoryLabel(a.categoria) || "Outros";
       const valor = parseCurrency(a.valor);
       sectorMap[sector] = (sectorMap[sector] || 0) + valor;
       totalValue += valor;
