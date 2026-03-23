@@ -55,8 +55,6 @@ export default function AmendmentPieChart({ amendments }: AmendmentPieChartProps
               outerRadius={90}
               paddingAngle={2}
               dataKey="value"
-              label={({ name, percent }: any) => percent > 0.05 ? `${name}` : ""}
-              labelLine={false}
             >
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#fff" strokeWidth={2} />
