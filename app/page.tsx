@@ -10,6 +10,7 @@ import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus } from "@/lib/status-mapper";
 import { CATEGORY_MAP, parseCurrency as parseValor, findVereadorPhoto } from "@/lib/amendments-utils";
 import GroupedAmendments from "@/components/dashboard/grouped-amendments";
+import AmendmentPieChart from "@/components/dashboard/amendment-pie-chart";
 
 export default function Home() {
   const router = useRouter();
@@ -243,143 +244,138 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Main Grid */}
+        {/* Financial Cards - Now Full Width */}
+        <section aria-label="Indicadores financeiros" className="mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Link href="/projetos?filtro=reservado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
+                  <span className="material-symbols-outlined text-xl">account_balance</span>
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right shrink-0">Previsão</span>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Reservado</p>
+                <h3 className="text-xl font-extrabold text-slate-800 mb-4 truncate">{loading ? "..." : animatedReservado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</h3>
+                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-amber-500 rounded-full transition-all duration-1000" style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemReservadaFormatada), 100)}%` }} />
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/projetos?filtro=empenhado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-blue-300">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                  <span className="material-symbols-outlined text-xl">payments</span>
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right shrink-0">Alocação</span>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Empenhado</p>
+                <h3 className="text-xl font-extrabold text-slate-800 mb-4 truncate">{loading ? "..." : animatedEmpenhado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</h3>
+                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500 rounded-full transition-all duration-1000" style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemFormatada), 100)}%` }} />
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/projetos?filtro=liquidado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-indigo-300">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
+                  <span className="material-symbols-outlined text-xl">receipt_long</span>
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right shrink-0">Execução</span>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Liquidado</p>
+                <h3 className="text-xl font-extrabold text-slate-800 mb-4 truncate">{loading ? "..." : animatedLiquidado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</h3>
+                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-indigo-500 rounded-full transition-all duration-1000" style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemLiquidadaFormatada), 100)}%` }} />
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/projetos?filtro=pago" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-300">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                  <span className="material-symbols-outlined text-xl">check_circle</span>
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right shrink-0">Fase Final</span>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Pago</p>
+                <h3 className="text-xl font-extrabold text-slate-800 mb-4 truncate">{loading ? "..." : animatedPago.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</h3>
+                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-emerald-500 rounded-full transition-all duration-1000" style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemPagaFormatada), 100)}%` }} />
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* Main Split Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - 2/3 */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Financial Cards */}
-            <section aria-label="Indicadores financeiros das emendas">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Reservado */}
-              <Link
-                href="/projetos?filtro=reservado"
-                aria-label={`Total Reservado: ${loading ? "carregando" : animatedReservado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} — ${loading ? "" : porcentagemReservadaFormatada + "% do total"}. Ver emendas reservadas`}
-                className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300 cursor-pointer"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
-                    <span className="material-symbols-outlined" aria-hidden="true">account_balance</span>
-                  </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Previsão</span>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Reservado</p>
-                  <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
-                    {loading ? "Carregando..." : animatedReservado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      <span>Percentual do Total</span>
-                      <span>{loading ? "--" : `${porcentagemReservadaFormatada}%`}</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-amber-500 rounded-full transition-all duration-1000"
-                        style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemReservadaFormatada), 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </Link>
+          {/* Left Column - 1/3 (Moved from right to align with user prompt) */}
+          <div className="space-y-6 flex flex-col">
+            {/* Author Ranking */}
+            {loading ? (
+              <div className="bg-white rounded-[24px] border border-slate-100 shadow-xl shadow-slate-200/40 p-12 flex flex-col items-center justify-center gap-4 text-slate-400">
+                <div className="w-10 h-10 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin"></div>
+                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Carregando Ranking...</span>
+              </div>
+            ) : (
+              <CouncilorRanking councilors={authorRanking} />
+            )}
 
-              {/* Empenhado */}
-              <Link
-                href="/projetos?filtro=empenhado"
-                aria-label={`Total Empenhado: ${loading ? "carregando" : animatedEmpenhado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} — ${loading ? "" : porcentagemFormatada + "% do total"}. Ver emendas empenhadas`}
-                className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-blue-300 cursor-pointer"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
-                    <span className="material-symbols-outlined" aria-hidden="true">payments</span>
+            {/* Container for Sector + Pie Chart to balance height */}
+            <div className="flex flex-col space-y-6">
+              {/* Sector Card */}
+              <div className="bg-white rounded-[16px] border border-slate-100 shadow-sm overflow-hidden">
+                <div className="p-4 border-b border-slate-50 flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500">
+                    <span className="material-symbols-outlined text-sm">pie_chart</span>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Alocação Inicial</span>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Empenhado</p>
-                  <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
-                    {loading ? "Carregando..." : animatedEmpenhado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      <span>Percentual do Total</span>
-                      <span>{loading ? "--" : `${porcentagemFormatada}%`}</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-blue-500 rounded-full transition-all duration-1000"
-                        style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemFormatada), 100)}%` }}
-                      />
-                    </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-800">Investimento por Setor</h3>
+                    <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
+                      {loading ? "Carregando dados..." : `${amendments.filter(a => a.categoria && a.categoria !== "Sem Categoria").length} categorizadas`}
+                    </p>
                   </div>
                 </div>
-              </Link>
+                <div className="divide-y divide-slate-50 max-h-[400px] overflow-y-auto">
+                  {loading ? (
+                    <div className="p-6 text-center text-slate-400 text-xs">Carregando...</div>
+                  ) : sectorData.slice(0, 10).map((sector) => {
+                      const sc = getSectorColor(sector.catNum);
+                      const maxValor = sectorData[0].valor;
+                      const widthPercent = Math.max((sector.valor / maxValor) * 100, 5);
+                      return (
+                        <Link href={`/projetos?search=${encodeURIComponent(sector.name)}`} key={sector.name} className="p-4 hover:bg-slate-50 transition-colors block cursor-pointer">
+                          <div className="flex justify-between items-end mb-2">
+                            <span className={`text-[11px] font-bold truncate pr-2 ${sc.badgeText}`} title={sector.name}>{sector.name}</span>
+                            <span className="text-[10px] font-bold text-slate-500 text-right shrink-0">{sector.count} emendas</span>
+                          </div>
+                          <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                            <div className={`h-full ${sc.bar} rounded-full`} style={{ width: `${widthPercent}%` }} />
+                          </div>
+                        </Link>
+                      );
+                  })}
+                </div>
+                <div className="p-3 bg-slate-50 text-center border-t border-slate-100">
+                  <Link href="/projetos" className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest hover:underline">
+                    Ver análise completa
+                  </Link>
+                </div>
+              </div>
 
-              {/* Liquidado */}
-              <Link
-                href="/projetos?filtro=liquidado"
-                aria-label={`Total Liquidado: ${loading ? "carregando" : animatedLiquidado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} — ${loading ? "" : porcentagemLiquidadaFormatada + "% do total"}. Ver emendas liquidadas`}
-                className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-indigo-300 cursor-pointer"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
-                    <span className="material-symbols-outlined" aria-hidden="true">receipt_long</span>
-                  </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Execução</span>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Liquidado</p>
-                  <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
-                    {loading ? "Carregando..." : animatedLiquidado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      <span>Percentual do Total</span>
-                      <span>{loading ? "--" : `${porcentagemLiquidadaFormatada}%`}</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-indigo-500 rounded-full transition-all duration-1000"
-                        style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemLiquidadaFormatada), 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-
-              {/* Pago */}
-              <Link
-                href="/projetos?filtro=pago"
-                aria-label={`Total Pago: ${loading ? "carregando" : animatedPago.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} — ${loading ? "" : porcentagemPagaFormatada + "% do total"}. Ver emendas pagas`}
-                className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-300 cursor-pointer"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
-                    <span className="material-symbols-outlined" aria-hidden="true">check_circle</span>
-                  </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Fase Final</span>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Pago</p>
-                  <h3 className="text-2xl font-extrabold text-slate-800 mb-4">
-                    {loading ? "Carregando..." : animatedPago.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      <span>Percentual do Total</span>
-                      <span>{loading ? "--" : `${porcentagemPagaFormatada}%`}</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-emerald-500 rounded-full transition-all duration-1000"
-                        style={{ width: loading ? "0%" : `${Math.min(Number(porcentagemPagaFormatada), 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </Link>
+              {/* New Pie Chart Card */}
+              <AmendmentPieChart />
             </div>
-            </section>
+          </div>
 
+          {/* Right Column - 2/3 (Focus on the list now) */}
+          <div className="lg:col-span-2 space-y-8">
             {/* Grouped Amendments by Objective */}
             <section aria-label="Emendas agrupadas por objetivo" className="space-y-6">
               <div className="flex items-center justify-between px-2">
@@ -401,68 +397,6 @@ export default function Home() {
                 <GroupedAmendments amendments={amendments} />
               )}
             </section>
-          </div>
-
-          {/* Right Column - 1/3 */}
-          <div className="space-y-6">
-            {/* Author Ranking */}
-            {loading ? (
-              <div className="bg-white rounded-[24px] border border-slate-100 shadow-xl shadow-slate-200/40 p-12 flex flex-col items-center justify-center gap-4 text-slate-400">
-                <div className="w-10 h-10 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin"></div>
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Carregando Ranking...</span>
-              </div>
-            ) : (
-              <CouncilorRanking councilors={authorRanking} />
-            )}
-
-            {/* Sector Card */}
-            <div className="bg-white rounded-[16px] border border-slate-100 shadow-sm overflow-hidden mt-6">
-              <div className="p-4 border-b border-slate-50 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500">
-                  <span className="material-symbols-outlined text-sm">pie_chart</span>
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-800">Investimento por Setor</h3>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
-                    {loading ? "Carregando dados..." : `${amendments.filter(a => a.categoria && a.categoria !== "Sem Categoria").length} categorizadas`}
-                  </p>
-                </div>
-              </div>
-              <div className="divide-y divide-slate-50">
-                {loading ? (
-                  <div className="p-6 text-center text-slate-400">Carregando...</div>
-                ) : sectorData.length === 0 ? (
-                  <div className="p-6 text-center text-slate-400">Nenhum setor encontrado.</div>
-                ) : (
-                  sectorData.map((sector) => {
-                    const sc = getSectorColor(sector.catNum);
-                    const maxValor = sectorData[0].valor;
-                    const widthPercent = Math.max((sector.valor / maxValor) * 100, 5);
-                    const valorFormatado = sector.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-
-                    return (
-                      <Link href={`/projetos?search=${encodeURIComponent(sector.name)}`} key={sector.name} className="p-4 hover:bg-slate-50 transition-colors block cursor-pointer">
-                        <div className="flex justify-between items-end mb-2">
-                          <span className={`text-xs font-bold truncate pr-2 ${sc.badgeText}`} title={sector.name}>{sector.name}</span>
-                          <span className="text-[10px] font-bold text-slate-500 text-right shrink-0">{sector.count} emendas<br />{valorFormatado}</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full ${sc.bar} rounded-full`}
-                            style={{ width: `${widthPercent}%` }}
-                          />
-                        </div>
-                      </Link>
-                    );
-                  })
-                )}
-              </div>
-              <div className="p-4 bg-slate-50 text-center">
-                <Link href="/projetos" className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest hover:underline">
-                  Ver análise completa
-                </Link>
-              </div>
-            </div>
           </div>
         </div>
       </main>
