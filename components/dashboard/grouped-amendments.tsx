@@ -41,9 +41,12 @@ interface GroupedData {
 
 interface GroupedAmendmentsProps {
   amendments: any[];
+  initialLimit?: number;
 }
 
-export default function GroupedAmendments({ amendments }: GroupedAmendmentsProps) {
+export default function GroupedAmendments({ amendments, initialLimit = 3 }: GroupedAmendmentsProps) {
+  const [visibleCount, setVisibleCount] = React.useState(initialLimit);
+
   const grouped = React.useMemo(() => {
     const map: Record<string, GroupedData> = {};
 
@@ -85,11 +88,30 @@ export default function GroupedAmendments({ amendments }: GroupedAmendmentsProps
     return Object.values(map).sort((a, b) => b.valorTotal - a.valorTotal);
   }, [amendments]);
 
+  const isCollapsed = visibleCount <= initialLimit;
+
   return (
-    <div className="grid grid-cols-1 gap-8">
-      {grouped.map((group, idx) => (
-        <GroupedAmendmentCard key={idx} group={group} />
-      ))}
+    <div className="space-y-4 animate-fade-in transition-all duration-500">
+      <div className="grid grid-cols-1 gap-8">
+        {grouped.slice(0, visibleCount).map((group, idx) => (
+          <GroupedAmendmentCard key={idx} group={group} />
+        ))}
+      </div>
+      
+      {grouped.length > initialLimit && (
+        <button
+          onClick={() => {
+            if (visibleCount === 3) setVisibleCount(6);
+            else if (visibleCount === 6 && grouped.length > 6) setVisibleCount(grouped.length);
+            else setVisibleCount(3);
+          }}
+          className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all duration-300 mx-auto block font-bold shadow-lg shadow-blue-500/20 active:scale-95"
+        >
+          {visibleCount === 3 ? "Ver mais emendas" : 
+           (visibleCount === 6 && grouped.length > 6) ? "Mostrar restante da lista" : 
+           "Recolher lista"}
+        </button>
+      )}
     </div>
   );
 }

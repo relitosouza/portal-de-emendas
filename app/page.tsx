@@ -398,7 +398,7 @@ export default function Home() {
                   Carregando grupos...
                 </div>
               ) : (
-                <GroupedAmendments amendments={amendments.slice(0, 100)} />
+                <GroupedAmendments amendments={amendments} />
               )}
             </section>
           </div>

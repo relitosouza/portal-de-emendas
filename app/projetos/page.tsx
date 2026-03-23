@@ -476,6 +476,7 @@ function ProjectsContent() {
                         amendments={rawAmendments.filter(a => 
                           filteredProjects.some(fp => fp.id === a.id)
                         )} 
+                        initialLimit={10}
                     />
                 ) : (
                     <ul aria-label="Lista de emendas parlamentares" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0">
