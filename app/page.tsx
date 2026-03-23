@@ -11,6 +11,7 @@ import { getNormalizedStatus } from "@/lib/status-mapper";
 import { CATEGORY_MAP, parseCurrency as parseValor, findVereadorPhoto } from "@/lib/amendments-utils";
 import GroupedAmendments from "@/components/dashboard/grouped-amendments";
 import AmendmentPieChart from "@/components/dashboard/amendment-pie-chart";
+import SectorRanking from "@/components/dashboard/sector-ranking";
 
 export default function Home() {
   const router = useRouter();
@@ -329,45 +330,8 @@ export default function Home() {
 
             {/* Container for Sector + Pie Chart to balance height */}
             <div className="flex flex-col space-y-6">
-              {/* Sector Card */}
-              <div className="bg-white rounded-[16px] border border-slate-100 shadow-sm overflow-hidden">
-                <div className="p-4 border-b border-slate-50 flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500">
-                    <span className="material-symbols-outlined text-sm">pie_chart</span>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-slate-800">Investimento por Setor</h3>
-                    <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
-                      {loading ? "Carregando dados..." : `${amendments.filter(a => a.categoria && a.categoria !== "Sem Categoria").length} categorizadas`}
-                    </p>
-                  </div>
-                </div>
-                <div className="divide-y divide-slate-50 max-h-[400px] overflow-y-auto">
-                  {loading ? (
-                    <div className="p-6 text-center text-slate-400 text-xs">Carregando...</div>
-                  ) : sectorData.slice(0, 10).map((sector) => {
-                      const sc = getSectorColor(sector.catNum);
-                      const maxValor = sectorData[0].valor;
-                      const widthPercent = Math.max((sector.valor / maxValor) * 100, 5);
-                      return (
-                        <Link href={`/projetos?search=${encodeURIComponent(sector.name)}`} key={sector.name} className="p-4 hover:bg-slate-50 transition-colors block cursor-pointer">
-                          <div className="flex justify-between items-end mb-2">
-                            <span className={`text-[11px] font-bold truncate pr-2 ${sc.badgeText}`} title={sector.name}>{sector.name}</span>
-                            <span className="text-[10px] font-bold text-slate-500 text-right shrink-0">{sector.count} emendas</span>
-                          </div>
-                          <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
-                            <div className={`h-full ${sc.bar} rounded-full`} style={{ width: `${widthPercent}%` }} />
-                          </div>
-                        </Link>
-                      );
-                  })}
-                </div>
-                <div className="p-3 bg-slate-50 text-center border-t border-slate-100">
-                  <Link href="/projetos" className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest hover:underline">
-                    Ver análise completa
-                  </Link>
-                </div>
-              </div>
+              {/* Sector Ranking Card with Expansion */}
+              <SectorRanking data={sectorData} loading={loading} />
 
               {/* New Pie Chart Card */}
               <AmendmentPieChart amendments={amendments} />
