@@ -96,7 +96,7 @@ export default function AmendmentPieChart({ amendments }: AmendmentPieChartProps
       <div className="mt-4 pt-4 border-t border-slate-50 flex justify-between items-center px-1">
           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Dados consolidados</span>
           <div className="flex items-center gap-1.5 px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full border border-blue-100">
-            <span className="text-[9px] font-black uppercase tracking-tighter">Budget 2026</span>
+            <span className="text-[9px] font-black uppercase tracking-tighter">ORÇAMENTO 2026</span>
           </div>
       </div>
     </div>
