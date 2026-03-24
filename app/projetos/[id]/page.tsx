@@ -719,6 +719,7 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 fornecedor={amendment.fornecedor}
                                 instrumentoJuridico={amendment.instrumentoJuridico}
                                 prazoAplicacao={amendment.prazoAplicacao}
+                                fonteRecurso={amendment.fonteRecurso || "08"}
                                 codigoAplicacao={amendment.codigoAplicacao}
                                 numeroLicitacao={amendment.numeroLicitacao}
                             />
