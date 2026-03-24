@@ -9,6 +9,7 @@ interface TechnicalDetailsAccordionProps {
     fornecedor?: string;
     instrumentoJuridico?: string;
     prazoAplicacao?: string;
+    fonteRecurso?: string;
     codigoAplicacao?: string;
     numeroLicitacao?: string;
     headingLevel?: "h2" | "h3" | "h4";
@@ -35,6 +36,7 @@ export default function TechnicalDetailsAccordion({
     fornecedor,
     instrumentoJuridico,
     prazoAplicacao,
+    fonteRecurso,
     codigoAplicacao,
     numeroLicitacao,
     headingLevel: HeadingTag = "h2",
@@ -48,6 +50,7 @@ export default function TechnicalDetailsAccordion({
         { label: "Fornecedor", value: fornecedor },
         { label: "Instrumento Jurídico", value: instrumentoJuridico },
         { label: "Prazo de Aplicação", value: prazoAplicacao },
+        { label: "Fonte de Recurso", value: fonteRecurso },
         { label: "Código de Aplicação", value: codigoAplicacao },
         { label: "Nº Licitação", value: numeroLicitacao },
     ].filter(f => isValidValue(f.value));
