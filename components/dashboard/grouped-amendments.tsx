@@ -160,7 +160,7 @@ function GroupedAmendmentCard({ group }: { group: GroupedData }) {
           <div className="grid grid-cols-3 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 pb-1.5 mb-2">
             <span>Vereador</span>
             <span>Valor</span>
-            <span className="text-right">Protocolo</span>
+            <span className="text-right">Nº da Emenda</span>
           </div>
           
           {/* Top 5 Participants */}
