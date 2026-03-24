@@ -230,7 +230,7 @@ export default function ShareCard({
                             <div className="flex items-center justify-between mb-8">
                                 <div className="flex items-center gap-3">
                                     <img
-                                        src="/brasao-osasco.png"
+                                        src="/brasao.png"
                                         alt="Brasão"
                                         className="w-10 h-10 object-contain drop-shadow-lg"
                                     />

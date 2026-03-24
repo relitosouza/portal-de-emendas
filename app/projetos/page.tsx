@@ -637,7 +637,7 @@ function ProjectsContent() {
                 <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex items-center gap-3">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain" />
+                        <img src="/brasao.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain" />
                         <span className="font-bold text-slate-400">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</span>
                     </div>
                     <nav aria-label="Links do rodapé" className="flex gap-8">

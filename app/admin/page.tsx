@@ -66,7 +66,7 @@ export default function LoginPage() {
                     <div className="mx-auto mb-6 flex size-20 items-center justify-center">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src="/brasao-osasco.png"
+                            src="/brasao.png"
                             alt="Brasão de Osasco"
                             className="h-full w-full object-contain drop-shadow-md"
                         />

@@ -89,7 +89,7 @@ export default async function RelatorioPage(props: Props) {
                             <div className="w-12 h-12 flex items-center justify-center shrink-0">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src="/brasao-osasco.png"
+                                    src="/brasao.png"
                                     alt="Brasão de Osasco"
                                     className="h-full w-full object-contain drop-shadow"
                                 />

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Portal das Emendas - Prefeitura Municipal de Osasco",
   description: "Portal de Transparência e Gestão de Emendas Parlamentares",
   icons: {
-    icon: "/brasao-osasco.ico",
+    icon: "/brasao.ico",
   },
 };
 

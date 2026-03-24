@@ -104,7 +104,7 @@ export default async function ProjetoDetalhePage(props: Props) {
                 <div className="flex justify-between items-center mb-10 pb-4 border-b border-slate-200">
                     <div className="flex items-center gap-4">
                         <div className="size-16 rounded-xl bg-blue-600 flex items-center justify-center text-white">
-                            <img src="/brasao-osasco.png" alt="Logo" className="w-10 h-10 filter brightness-0 invert object-contain" />
+                            <img src="/brasao.png" alt="Logo" className="w-10 h-10 filter brightness-0 invert object-contain" />
                         </div>
                         <div>
                             <h1 className="text-xl font-bold font-sans tracking-tight text-slate-900">Prefeitura de Osasco</h1>
@@ -841,7 +841,7 @@ export default async function ProjetoDetalhePage(props: Props) {
                     <div className="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
                         <div className="flex items-center gap-3 text-slate-400">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/brasao-osasco.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain opacity-50 grayscale" />
+                            <img src="/brasao.png" alt="Brasão de Osasco" className="w-8 h-8 object-contain opacity-50 grayscale" />
                             <p className="text-sm font-medium">Portal das Emendas - Prefeitura Municipal de Osasco © 2026</p>
                         </div>
                         <div className="flex gap-6">

@@ -26,7 +26,7 @@ export default function Navbar() {
                     <div className="w-14 h-14 flex items-center justify-center shrink-0">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src="/brasao-osasco.png"
+                            src="/brasao.png"
                             alt="Brasão da Prefeitura Municipal de Osasco"
                             className="h-full w-full object-contain drop-shadow"
                         />
