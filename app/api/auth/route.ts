@@ -7,7 +7,13 @@ const BLOCK_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 const PENALTY_COOKIE = "login-penalty";
 
 function getPenaltySecret(): string {
-    return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || "fallback-penalty";
+    const secret = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD;
+    if (!secret) {
+        throw new Error(
+            "Missing required environment variable: ADMIN_SESSION_SECRET or ADMIN_PASSWORD must be set"
+        );
+    }
+    return secret;
 }
 
 function signPenalty(payload: string): string {

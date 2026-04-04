@@ -31,8 +31,6 @@ function extractBaseNumber(str: string): string | null {
 }
 
 export async function runFinancialSync() {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
     const payload = {
         "ChaveModulo": "66",
         "NomeVisao": "EmendasParlamentares",
