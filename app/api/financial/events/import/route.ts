@@ -2,16 +2,32 @@ import { NextResponse } from "next/server";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 import { addFinancialEvent, FinancialEventType } from "@/lib/json-storage";
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FIELD_LENGTH = 1000000; // 1MB per field
+const MAX_COLUMNS = 100;
+const MAX_ROWS = 100000;
+
 function parseCSV(content: string): string[][] {
+    // Remove BOM if present
+    if (content.charCodeAt(0) === 0xfeff) {
+        content = content.slice(1);
+    }
+
     const rows: string[][] = [];
     let current = "";
     let inQuotes = false;
     let row: string[] = [];
+    let rowCount = 0;
 
     // Simple parser that handles quotes and both , and ; as delimiters
     for (let i = 0; i < content.length; i++) {
         const char = content[i];
         const next = content[i + 1];
+
+        // Check field length limit
+        if (current.length > MAX_FIELD_LENGTH) {
+            throw new Error(`Field exceeds maximum length of ${MAX_FIELD_LENGTH} bytes at row ${rowCount + 1}`);
+        }
 
         if (inQuotes) {
             if (char === '"' && next === '"') {
@@ -28,11 +44,22 @@ function parseCSV(content: string): string[][] {
             } else if (char === "," || char === ";") {
                 row.push(current.trim());
                 current = "";
+
+                // Check column count limit
+                if (row.length > MAX_COLUMNS) {
+                    throw new Error(`Row ${rowCount + 1} exceeds maximum column count of ${MAX_COLUMNS}`);
+                }
             } else if (char === "\n" || (char === "\r" && next === "\n")) {
                 row.push(current.trim());
                 current = "";
                 if (row.some((cell) => cell !== "")) {
                     rows.push(row);
+                    rowCount++;
+
+                    // Check row count limit
+                    if (rowCount > MAX_ROWS) {
+                        throw new Error(`CSV exceeds maximum row count of ${MAX_ROWS}`);
+                    }
                 }
                 row = [];
                 if (char === "\r") i++;
@@ -63,6 +90,14 @@ export async function POST(request: Request) {
 
         if (!file || !tipo) {
             return NextResponse.json({ error: "Arquivo CSV e 'tipo' são obrigatórios" }, { status: 400 });
+        }
+
+        // Validate file size
+        if (file.size > MAX_FILE_SIZE) {
+            return NextResponse.json(
+                { error: `Arquivo excede tamanho máximo de ${MAX_FILE_SIZE / 1024 / 1024}MB` },
+                { status: 413 }
+            );
         }
 
         const content = await file.text();
