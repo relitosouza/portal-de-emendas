@@ -68,7 +68,9 @@ export async function readJsonFile<T>(filename: string): Promise<T[]> {
             if (raw) return JSON.parse(raw) as T[];
             // KV vazio — fallback para bundle do deploy (primeira vez após deploy)
         } catch (err) {
-            console.error(`[json-storage] Redis read failed for "${filename}":`, err);
+            if (process.env.NODE_ENV === "development") {
+                console.error(`[json-storage] Redis read failed for "${filename}":`, err);
+            }
         }
     }
     // Dev local ou Vercel sem Redis: lê do bundle (read-only)
@@ -86,7 +88,9 @@ export async function writeJsonFile<T>(filename: string, data: T[]): Promise<voi
             await getRedis().set(filenameToKey(filename), JSON.stringify(data));
             return;
         } catch (err) {
-            console.error(`[json-storage] Redis write failed for "${filename}":`, err);
+            if (process.env.NODE_ENV === "development") {
+                console.error(`[json-storage] Redis write failed for "${filename}":`, err);
+            }
             throw err;
         }
     }

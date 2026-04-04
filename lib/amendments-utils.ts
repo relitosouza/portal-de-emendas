@@ -82,45 +82,80 @@ export function getCategoryLabel(cat?: string): string | null {
 
 // ─── Parsing de Moeda ──────────────────────────────────────────────────────────
 
+/**
+ * Parse Brazilian currency format to number.
+ * Handles formats like: "R$ 1.234,56", "1.234,56", "1234,56", "1234.56"
+ * Returns 0 for invalid input instead of NaN.
+ */
 export function parseCurrency(val?: string | number): number {
-    if (!val) return 0;
-    if (typeof val === "number") return val;
-    
+    if (!val && val !== 0) return 0;
+
+    // If already a number, validate range and return
+    if (typeof val === "number") {
+        // Reject NaN, Infinity, and unreasonably large values
+        if (!isFinite(val)) return 0;
+        if (val < 0) return 0; // No negative values
+        if (val > 999_999_999_999) return 0; // Reject values over 1 trillion
+        return val;
+    }
+
     let str = String(val).trim();
-    
-    // Check if it's already a valid number string (like "12345.67")
-    if (/^-?\d+(\.\d+)?$/.test(str)) {
-        return parseFloat(str) || 0;
+
+    // Remove currency symbol and spaces
+    str = str.replace(/[R$\s]/g, "");
+
+    if (!str) return 0;
+
+    // Check if it's a simple decimal number: "12345.67"
+    if (/^\d+(\.\d{1,2})?$/.test(str)) {
+        const num = parseFloat(str);
+        return isFinite(num) ? Math.max(0, num) : 0;
     }
 
-    // If it has a comma, it's likely Brazilian/European (thousands: . , decimal: ,)
-    if (str.includes(",")) {
-        // If it also has a dot after the comma, it's very weird, but let's assume BR
-        // Normal BR: 1.234,56
-        const cleaned = str.replace(/[R$\s.]/g, "").replace(",", ".");
-        return parseFloat(cleaned) || 0;
+    // Check if it has both comma and dot: determine which is decimal separator
+    if (str.includes(",") && str.includes(".")) {
+        // In Brazilian format: last separator is decimal, others are thousands
+        const lastCommaIdx = str.lastIndexOf(",");
+        const lastDotIdx = str.lastIndexOf(".");
+
+        if (lastCommaIdx > lastDotIdx) {
+            // Comma is decimal: "1.234,56"
+            str = str.replace(/\./g, "").replace(",", ".");
+        } else {
+            // Dot is decimal: "1,234.56" (rare but handle it)
+            str = str.replace(/,/g, "");
+        }
+    } else if (str.includes(",")) {
+        // Only comma present: likely "1.234,56" or "1234,56"
+        str = str.replace(",", ".");
+    } else if (str.includes(".")) {
+        // Only dot present: could be "1.234.567" (thousands) or "1234.56" (decimal)
+        const lastDot = str.lastIndexOf(".");
+        const decimalPart = str.substring(lastDot + 1);
+
+        // If 2 or 3 digits after last dot, it's likely thousands separator
+        if (decimalPart.length === 3) {
+            // Multiple dots: "1.234.567" - remove all dots
+            str = str.replace(/\./g, "");
+        }
+        // If 1-2 digits after last dot, treat as decimal
+        // Keep the last dot as decimal, remove others
+        else if (decimalPart.length <= 2) {
+            const beforeLastDot = str.substring(0, lastDot);
+            str = beforeLastDot.replace(/\./g, "") + "." + decimalPart;
+        }
     }
 
-    // If it only has a dot (or multiple dots)
-    if (str.includes(".")) {
-        const parts = str.split(".");
-        // If multiple dots, it's thousands: 1.234.567
-        if (parts.length > 2) {
-            return parseFloat(str.replace(/[R$\s.]/g, "")) || 0;
-        }
-        // If one dot and exactly 2 or 1 digits at the end: likely decimal 1234.56
-        if (parts[1].length === 2 || parts[1].length === 1) {
-            return parseFloat(str.replace(/[R$\s]/g, "")) || 0;
-        }
-        // Default to thousands if 3 digits: 1.234
-        if (parts[1].length === 3) {
-            return parseFloat(str.replace(/[R$\s.]/g, "")) || 0;
-        }
-    }
+    // Final parsing
+    const num = parseFloat(str);
 
-    // fallback cleaning for any other case
-    const cleaned = str.replace(/[R$\s,]/g, ""); // Remove R$, spaces and commas
-    return parseFloat(cleaned) || 0;
+    // Validate result
+    if (!isFinite(num)) return 0;
+    if (num < 0) return 0;
+    if (num > 999_999_999_999) return 0;
+
+    // Round to 2 decimal places to avoid floating point precision issues
+    return Math.round(num * 100) / 100;
 }
 
 export function formatCurrency(value: number): string {
