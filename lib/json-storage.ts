@@ -15,13 +15,33 @@ const BUNDLED_DATA_DIR = path.join(process.cwd(), "data");
 let _redis: Redis | null = null;
 function getRedis(): Redis {
     if (!_redis) {
-        _redis = new Redis(process.env.REDIS_URL!, {
+        if (!process.env.REDIS_URL) {
+            throw new Error(
+                "REDIS_URL environment variable is required for Vercel deployments. " +
+                "Without it, data writes will fail and cause data loss."
+            );
+        }
+        _redis = new Redis(process.env.REDIS_URL, {
             lazyConnect: false,
             maxRetriesPerRequest: 3,
             enableReadyCheck: false,
         });
     }
     return _redis;
+}
+
+/**
+ * Validate storage configuration at startup.
+ * Throws an error if the configuration is invalid for the current environment.
+ */
+export function validateStorageConfig(): void {
+    if (IS_VERCEL && !HAS_REDIS) {
+        throw new Error(
+            "FATAL: Running on Vercel without REDIS_URL configured. " +
+            "All data writes will be silently lost, causing data corruption. " +
+            "Please configure REDIS_URL in your Vercel environment variables."
+        );
+    }
 }
 
 function bundledPath(filename: string) {
@@ -70,14 +90,54 @@ export async function writeJsonFile<T>(filename: string, data: T[]): Promise<voi
             throw err;
         }
     }
-    if (IS_VERCEL) {
-        // Vercel sem Redis configurado: /var/task é read-only, não há onde persistir
-        console.warn(`[json-storage] Write to "${filename}" ignored: running on Vercel without Redis configured.`);
-        return;
+    if (IS_VERCEL && !HAS_REDIS) {
+        // This should never happen if validateStorageConfig() is called at startup
+        throw new Error(
+            `Storage write failed: Running on Vercel without REDIS_URL configured. ` +
+            `File: "${filename}". Data would be lost. Check your environment variables.`
+        );
     }
     // Dev local: escreve no disco
     await fs.mkdir(BUNDLED_DATA_DIR, { recursive: true });
     await fs.writeFile(bundledPath(filename), JSON.stringify(data, null, 2), "utf-8");
+}
+
+// =====================================================
+// Concurrency Control (Optimistic Locking with Retry)
+// =====================================================
+
+const RETRY_MAX_ATTEMPTS = 5;
+const RETRY_INITIAL_DELAY_MS = 50;
+
+/**
+ * Execute a function with optimistic locking retry logic.
+ * Catches conflicts and automatically retries with exponential backoff.
+ */
+async function withRetry<T>(
+    operation: () => Promise<T>,
+    operationName: string = "operation"
+): Promise<T> {
+    let lastError: Error | null = null;
+
+    for (let attempt = 1; attempt <= RETRY_MAX_ATTEMPTS; attempt++) {
+        try {
+            return await operation();
+        } catch (error) {
+            lastError = error instanceof Error ? error : new Error(String(error));
+
+            // Don't retry on non-conflict errors
+            if (!lastError.message.includes("conflict") && !lastError.message.includes("concurrent")) {
+                throw error;
+            }
+
+            if (attempt < RETRY_MAX_ATTEMPTS) {
+                const delayMs = RETRY_INITIAL_DELAY_MS * Math.pow(2, attempt - 1);
+                await new Promise(resolve => setTimeout(resolve, delayMs));
+            }
+        }
+    }
+
+    throw lastError || new Error(`${operationName} failed after ${RETRY_MAX_ATTEMPTS} attempts`);
 }
 
 // =====================================================
@@ -175,39 +235,41 @@ export async function addFinancialEvent(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     eventData: any
 ): Promise<FinancialRecord> {
-    const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
-    const recordMap = new Map<string, FinancialRecord>();
-    for (const r of rawRecords) {
-        if (r.amendmentId) recordMap.set(r.amendmentId, r);
-    }
+    return withRetry(async () => {
+        const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
+        const recordMap = new Map<string, FinancialRecord>();
+        for (const r of rawRecords) {
+            if (r.amendmentId) recordMap.set(r.amendmentId, r);
+        }
 
-    const current = recordMap.get(amendmentId) ?? {
-        amendmentId,
-        empenhado: "0",
-        liquidado: "0",
-        pago: "0",
-        reservado: "0",
-        updatedAt: new Date().toISOString(),
-    };
+        const current = recordMap.get(amendmentId) ?? {
+            amendmentId,
+            empenhado: "0",
+            liquidado: "0",
+            pago: "0",
+            reservado: "0",
+            updatedAt: new Date().toISOString(),
+        };
 
-    const newEvent = { ...eventData, id: crypto.randomUUID(), createdAt: new Date().toISOString() };
+        const newEvent = { ...eventData, id: crypto.randomUUID(), createdAt: new Date().toISOString() };
 
-    const updated: FinancialRecord = {
-        ...current,
-        empenhos: tipo === "empenho" ? [...(current.empenhos ?? []), newEvent] : (current.empenhos ?? []),
-        liquidacoes: tipo === "liquidacao" ? [...(current.liquidacoes ?? []), newEvent] : (current.liquidacoes ?? []),
-        pagamentos: tipo === "pagamento" ? [...(current.pagamentos ?? []), newEvent] : (current.pagamentos ?? []),
-        updatedAt: new Date().toISOString(),
-    };
+        const updated: FinancialRecord = {
+            ...current,
+            empenhos: tipo === "empenho" ? [...(current.empenhos ?? []), newEvent] : (current.empenhos ?? []),
+            liquidacoes: tipo === "liquidacao" ? [...(current.liquidacoes ?? []), newEvent] : (current.liquidacoes ?? []),
+            pagamentos: tipo === "pagamento" ? [...(current.pagamentos ?? []), newEvent] : (current.pagamentos ?? []),
+            updatedAt: new Date().toISOString(),
+        };
 
-    // Recalculate totals
-    updated.empenhado = (updated.empenhos ?? []).length > 0 ? sumEvents(updated.empenhos) : current.empenhado;
-    updated.liquidado = (updated.liquidacoes ?? []).length > 0 ? sumEvents(updated.liquidacoes) : current.liquidado;
-    updated.pago = (updated.pagamentos ?? []).length > 0 ? sumEvents(updated.pagamentos) : current.pago;
+        // Recalculate totals
+        updated.empenhado = (updated.empenhos ?? []).length > 0 ? sumEvents(updated.empenhos) : current.empenhado;
+        updated.liquidado = (updated.liquidacoes ?? []).length > 0 ? sumEvents(updated.liquidacoes) : current.liquidado;
+        updated.pago = (updated.pagamentos ?? []).length > 0 ? sumEvents(updated.pagamentos) : current.pago;
 
-    recordMap.set(amendmentId, updated);
-    await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
-    return updated;
+        recordMap.set(amendmentId, updated);
+        await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
+        return updated;
+    }, "addFinancialEvent");
 }
 
 export async function updateFinancialEvent(
@@ -217,33 +279,35 @@ export async function updateFinancialEvent(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     eventData: any
 ): Promise<FinancialRecord> {
-    const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
-    const recordMap = new Map<string, FinancialRecord>();
-    for (const r of rawRecords) {
-        if (r.amendmentId) recordMap.set(r.amendmentId, r);
-    }
+    return withRetry(async () => {
+        const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
+        const recordMap = new Map<string, FinancialRecord>();
+        for (const r of rawRecords) {
+            if (r.amendmentId) recordMap.set(r.amendmentId, r);
+        }
 
-    const current = recordMap.get(amendmentId);
-    if (!current) throw new Error(`FinancialRecord not found for amendmentId: ${amendmentId}`);
+        const current = recordMap.get(amendmentId);
+        if (!current) throw new Error(`FinancialRecord not found for amendmentId: ${amendmentId}`);
 
-    const replaceById = (arr: Array<{ id: string }> = []) =>
-        arr.map((e) => (e.id === eventId ? { ...e, ...eventData, id: eventId } : e));
+        const replaceById = (arr: Array<{ id: string }> = []) =>
+            arr.map((e) => (e.id === eventId ? { ...e, ...eventData, id: eventId } : e));
 
-    const updated: FinancialRecord = {
-        ...current,
-        empenhos: tipo === "empenho" ? replaceById(current.empenhos) as EmpenhoEvent[] : current.empenhos,
-        liquidacoes: tipo === "liquidacao" ? replaceById(current.liquidacoes) as LiquidacaoEvent[] : current.liquidacoes,
-        pagamentos: tipo === "pagamento" ? replaceById(current.pagamentos) as PagamentoEvent[] : current.pagamentos,
-        updatedAt: new Date().toISOString(),
-    };
+        const updated: FinancialRecord = {
+            ...current,
+            empenhos: tipo === "empenho" ? replaceById(current.empenhos) as EmpenhoEvent[] : current.empenhos,
+            liquidacoes: tipo === "liquidacao" ? replaceById(current.liquidacoes) as LiquidacaoEvent[] : current.liquidacoes,
+            pagamentos: tipo === "pagamento" ? replaceById(current.pagamentos) as PagamentoEvent[] : current.pagamentos,
+            updatedAt: new Date().toISOString(),
+        };
 
-    updated.empenhado = (updated.empenhos ?? []).length > 0 ? sumEvents(updated.empenhos) : current.empenhado;
-    updated.liquidado = (updated.liquidacoes ?? []).length > 0 ? sumEvents(updated.liquidacoes) : current.liquidado;
-    updated.pago = (updated.pagamentos ?? []).length > 0 ? sumEvents(updated.pagamentos) : current.pago;
+        updated.empenhado = (updated.empenhos ?? []).length > 0 ? sumEvents(updated.empenhos) : current.empenhado;
+        updated.liquidado = (updated.liquidacoes ?? []).length > 0 ? sumEvents(updated.liquidacoes) : current.liquidado;
+        updated.pago = (updated.pagamentos ?? []).length > 0 ? sumEvents(updated.pagamentos) : current.pago;
 
-    recordMap.set(amendmentId, updated);
-    await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
-    return updated;
+        recordMap.set(amendmentId, updated);
+        await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
+        return updated;
+    }, "updateFinancialEvent");
 }
 
 export async function deleteFinancialEvent(
@@ -251,32 +315,34 @@ export async function deleteFinancialEvent(
     tipo: FinancialEventType,
     eventId: string
 ): Promise<FinancialRecord> {
-    const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
-    const recordMap = new Map<string, FinancialRecord>();
-    for (const r of rawRecords) {
-        if (r.amendmentId) recordMap.set(r.amendmentId, r);
-    }
+    return withRetry(async () => {
+        const rawRecords = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
+        const recordMap = new Map<string, FinancialRecord>();
+        for (const r of rawRecords) {
+            if (r.amendmentId) recordMap.set(r.amendmentId, r);
+        }
 
-    const current = recordMap.get(amendmentId);
-    if (!current) throw new Error(`FinancialRecord not found for amendmentId: ${amendmentId}`);
+        const current = recordMap.get(amendmentId);
+        if (!current) throw new Error(`FinancialRecord not found for amendmentId: ${amendmentId}`);
 
-    const removeById = (arr: Array<{ id: string }> = []) => arr.filter((e) => e.id !== eventId);
+        const removeById = (arr: Array<{ id: string }> = []) => arr.filter((e) => e.id !== eventId);
 
-    const updated: FinancialRecord = {
-        ...current,
-        empenhos: tipo === "empenho" ? removeById(current.empenhos) as EmpenhoEvent[] : current.empenhos,
-        liquidacoes: tipo === "liquidacao" ? removeById(current.liquidacoes) as LiquidacaoEvent[] : current.liquidacoes,
-        pagamentos: tipo === "pagamento" ? removeById(current.pagamentos) as PagamentoEvent[] : current.pagamentos,
-        updatedAt: new Date().toISOString(),
-    };
+        const updated: FinancialRecord = {
+            ...current,
+            empenhos: tipo === "empenho" ? removeById(current.empenhos) as EmpenhoEvent[] : current.empenhos,
+            liquidacoes: tipo === "liquidacao" ? removeById(current.liquidacoes) as LiquidacaoEvent[] : current.liquidacoes,
+            pagamentos: tipo === "pagamento" ? removeById(current.pagamentos) as PagamentoEvent[] : current.pagamentos,
+            updatedAt: new Date().toISOString(),
+        };
 
-    updated.empenhado = (updated.empenhos ?? []).length > 0 ? sumEvents(updated.empenhos) : current.empenhado;
-    updated.liquidado = (updated.liquidacoes ?? []).length > 0 ? sumEvents(updated.liquidacoes) : current.liquidado;
-    updated.pago = (updated.pagamentos ?? []).length > 0 ? sumEvents(updated.pagamentos) : current.pago;
+        updated.empenhado = (updated.empenhos ?? []).length > 0 ? sumEvents(updated.empenhos) : current.empenhado;
+        updated.liquidado = (updated.liquidacoes ?? []).length > 0 ? sumEvents(updated.liquidacoes) : current.liquidado;
+        updated.pago = (updated.pagamentos ?? []).length > 0 ? sumEvents(updated.pagamentos) : current.pago;
 
-    recordMap.set(amendmentId, updated);
-    await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
-    return updated;
+        recordMap.set(amendmentId, updated);
+        await writeJsonFile(FINANCIAL_FILE, Array.from(recordMap.values()));
+        return updated;
+    }, "deleteFinancialEvent");
 }
 
 export async function getFinancialRecord(amendmentId: string): Promise<FinancialRecord | null> {

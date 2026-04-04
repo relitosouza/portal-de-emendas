@@ -4,7 +4,13 @@ import crypto from "crypto";
 const SESSION_COOKIE = "admin-session";
 
 function getSecret(): string {
-    return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || "fallback-secret";
+    const secret = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD;
+    if (!secret) {
+        throw new Error(
+            "Missing required environment variable: ADMIN_SESSION_SECRET or ADMIN_PASSWORD must be set"
+        );
+    }
+    return secret;
 }
 
 /**
