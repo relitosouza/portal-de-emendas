@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 import { readJsonFile, writeJsonFile, FINANCIAL_FILE, FinancialRecord } from "@/lib/json-storage";
+import { isRateLimited, getClientIp, createRateLimitResponse } from "@/lib/rate-limit";
+import { requireCsrfToken } from "@/lib/csrf";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const MAX_FIELD_LENGTH = 1000000; // 1MB per field
@@ -80,6 +82,19 @@ function parseCSV(content: string): string[][] {
 
 export async function POST(request: Request) {
     if (!(await isAuthenticated())) return unauthorizedResponse();
+
+    // CSRF validation
+    const csrfError = await requireCsrfToken(request);
+    if (csrfError) return csrfError;
+
+    // Rate limiting: max 10 imports per hour per IP
+    const clientIp = getClientIp(request);
+    const IMPORT_LIMIT = 10;
+    const WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+    if (!isRateLimited(clientIp, IMPORT_LIMIT, WINDOW_MS)) {
+        return createRateLimitResponse(60 * 60 * 1000); // Full hour
+    }
 
     try {
         const formData = await request.formData();

@@ -1,14 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { appendAmendmentToSheet, getAmendmentsFromSheet, deleteAmendmentFromSheet, updateAmendmentInSheet } from "@/lib/json-storage";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
+import { isValidUUID } from "@/lib/validation";
+import { logApiError, logApiCall } from "@/lib/logger";
 
 export async function GET() {
+    const startTime = Date.now();
     try {
         const amendments = await getAmendmentsFromSheet();
+        logApiCall("GET", "/api/amendments", 200, Date.now() - startTime);
         return NextResponse.json(amendments);
     } catch (error: unknown) {
-        console.error("API GET Error:", error);
-        const message = error instanceof Error ? error.message : "";
+        const err = error instanceof Error ? error : new Error(String(error));
+        logApiError("GET", "/api/amendments", err);
+
+        const message = err.message;
         if (message.includes("Missing")) {
             return NextResponse.json({ warning: "Missing Credentials", data: [] });
         }
@@ -17,12 +23,14 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+    const startTime = Date.now();
     if (!(await isAuthenticated())) return unauthorizedResponse();
 
     try {
         const body = await req.json();
 
         if (!body.objeto && !body.title) {
+            logApiCall("POST", "/api/amendments", 400, Date.now() - startTime);
             return NextResponse.json({ error: "Missing required fields: objeto/title is required" }, { status: 400 });
         }
 
@@ -34,13 +42,14 @@ export async function POST(req: NextRequest) {
 
         try {
             await appendAmendmentToSheet(amendment);
+            logApiCall("POST", "/api/amendments", 201, Date.now() - startTime);
             return NextResponse.json({ success: true, amendment }, { status: 201 });
         } catch (sheetError: unknown) {
-            console.error("Google Sheets Error during save:", sheetError);
-            const message = sheetError instanceof Error ? sheetError.message : "";
+            const err = sheetError instanceof Error ? sheetError : new Error(String(sheetError));
+            logApiError("POST", "/api/amendments", err, { action: "append" });
 
-            if (message.includes("Missing")) {
-                console.warn("Falling back to simulated success for demo purposes (Credentials missing).");
+            if (err.message.includes("Missing")) {
+                logApiCall("POST", "/api/amendments", 201, Date.now() - startTime, { fallback: true });
                 return NextResponse.json({
                     success: true,
                     amendment,
@@ -50,12 +59,15 @@ export async function POST(req: NextRequest) {
 
             return NextResponse.json({ error: "Falha ao salvar dados" }, { status: 500 });
         }
-    } catch {
+    } catch (error: unknown) {
+        const err = error instanceof Error ? error : new Error(String(error));
+        logApiError("POST", "/api/amendments", err);
         return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
     }
 }
 
 export async function DELETE(req: NextRequest) {
+    const startTime = Date.now();
     if (!(await isAuthenticated())) return unauthorizedResponse();
 
     try {
@@ -63,50 +75,80 @@ export async function DELETE(req: NextRequest) {
         const id = searchParams.get("id");
 
         if (!id) {
+            logApiCall("DELETE", "/api/amendments", 400, Date.now() - startTime);
             return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+        }
+
+        // Validate UUID format
+        if (!isValidUUID(id)) {
+            logApiCall("DELETE", "/api/amendments", 400, Date.now() - startTime, { reason: "invalid_uuid" });
+            return NextResponse.json({ error: "Invalid ID format: must be a valid UUID" }, { status: 400 });
         }
 
         try {
             await deleteAmendmentFromSheet(id);
+            logApiCall("DELETE", "/api/amendments", 200, Date.now() - startTime);
             return NextResponse.json({ success: true });
         } catch (error: unknown) {
-            console.error("Delete Error:", error);
-            const message = error instanceof Error ? error.message : "";
+            const err = error instanceof Error ? error : new Error(String(error));
+            const message = err.message;
+
             if (message.includes("Missing")) {
+                logApiCall("DELETE", "/api/amendments", 200, Date.now() - startTime, { fallback: true });
                 return NextResponse.json({ success: true, warning: "Missing Credentials" });
             }
             if (message.includes("Amendment not found") || message.includes("No data found")) {
+                logApiCall("DELETE", "/api/amendments", 200, Date.now() - startTime, { notFound: true });
                 return NextResponse.json({ success: true, warning: "Amendment not found in Sheets, but proceeding." });
             }
+
+            logApiError("DELETE", "/api/amendments", err, { id });
             return NextResponse.json({ error: "Falha ao excluir" }, { status: 500 });
         }
-    } catch {
+    } catch (error: unknown) {
+        const err = error instanceof Error ? error : new Error(String(error));
+        logApiError("DELETE", "/api/amendments", err);
         return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
     }
 }
 
 export async function PUT(req: NextRequest) {
+    const startTime = Date.now();
     if (!(await isAuthenticated())) return unauthorizedResponse();
 
     try {
         const body = await req.json();
 
         if (!body.id) {
+            logApiCall("PUT", "/api/amendments", 400, Date.now() - startTime);
             return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+        }
+
+        // Validate UUID format
+        if (!isValidUUID(body.id)) {
+            logApiCall("PUT", "/api/amendments", 400, Date.now() - startTime, { reason: "invalid_uuid" });
+            return NextResponse.json({ error: "Invalid ID format: must be a valid UUID" }, { status: 400 });
         }
 
         try {
             await updateAmendmentInSheet(body.id, body);
+            logApiCall("PUT", "/api/amendments", 200, Date.now() - startTime);
             return NextResponse.json({ success: true, amendment: body });
         } catch (error: unknown) {
-            console.error("Update Error:", error);
-            const message = error instanceof Error ? error.message : "";
+            const err = error instanceof Error ? error : new Error(String(error));
+            const message = err.message;
+
             if (message.includes("Amendment not found")) {
+                logApiCall("PUT", "/api/amendments", 404, Date.now() - startTime, { notFound: true });
                 return NextResponse.json({ error: "Amendment not found" }, { status: 404 });
             }
+
+            logApiError("PUT", "/api/amendments", err, { id: body.id });
             return NextResponse.json({ error: "Falha ao atualizar" }, { status: 500 });
         }
-    } catch {
+    } catch (error: unknown) {
+        const err = error instanceof Error ? error : new Error(String(error));
+        logApiError("PUT", "/api/amendments", err);
         return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
     }
 }

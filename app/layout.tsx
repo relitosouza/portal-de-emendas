@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import VLibras from "@/components/shared/vlibras";
 import AccessibilityBar from "@/components/shared/accessibility-bar";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -41,7 +42,9 @@ export default function RootLayout({
         </a>
         <AccessibilityBar />
         <div id="conteudo-principal" tabIndex={-1}>
-          {children}
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
         </div>
         <VLibras />
       </body>
