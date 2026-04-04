@@ -8,8 +8,8 @@ export async function GET(req: NextRequest) {
     const startTime = Date.now();
     try {
         const { searchParams } = new URL(req.url);
-        const limit = searchParams.get("limit");
-        const offset = searchParams.get("offset");
+        const limit = searchParams.get("limit") || undefined;
+        const offset = searchParams.get("offset") || undefined;
 
         // Validate and parse pagination params
         const { limit: parsedLimit, offset: parsedOffset } = validatePaginationParams(limit, offset);
