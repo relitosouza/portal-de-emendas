@@ -1,22 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
 import { appendAmendmentToSheet, getAmendmentsFromSheet, deleteAmendmentFromSheet, updateAmendmentInSheet } from "@/lib/json-storage";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
-import { isValidUUID } from "@/lib/validation";
+import { isValidUUID, validatePaginationParams } from "@/lib/validation";
 import { logApiError, logApiCall } from "@/lib/logger";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
     const startTime = Date.now();
     try {
+        const { searchParams } = new URL(req.url);
+        const limit = searchParams.get("limit") || undefined;
+        const offset = searchParams.get("offset") || undefined;
+
+        // Validate and parse pagination params
+        const { limit: parsedLimit, offset: parsedOffset } = validatePaginationParams(limit, offset);
+
         const amendments = await getAmendmentsFromSheet();
-        logApiCall("GET", "/api/amendments", 200, Date.now() - startTime);
-        return NextResponse.json(amendments);
+
+        // Apply pagination
+        const total = amendments.length;
+        const paginatedAmendments = amendments.slice(parsedOffset, parsedOffset + parsedLimit);
+
+        const response = {
+            data: paginatedAmendments,
+            pagination: {
+                limit: parsedLimit,
+                offset: parsedOffset,
+                total,
+                hasMore: parsedOffset + parsedLimit < total,
+            },
+        };
+
+        logApiCall("GET", "/api/amendments", 200, Date.now() - startTime, {
+            total,
+            returned: paginatedAmendments.length,
+        });
+        return NextResponse.json(response);
     } catch (error: unknown) {
         const err = error instanceof Error ? error : new Error(String(error));
         logApiError("GET", "/api/amendments", err);
 
         const message = err.message;
         if (message.includes("Missing")) {
-            return NextResponse.json({ warning: "Missing Credentials", data: [] });
+            return NextResponse.json({ warning: "Missing Credentials", data: [], pagination: { limit: 20, offset: 0, total: 0, hasMore: false } });
         }
         return NextResponse.json({ error: "Failed to fetch amendments" }, { status: 500 });
     }

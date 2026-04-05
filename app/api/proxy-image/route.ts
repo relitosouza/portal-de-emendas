@@ -10,17 +10,32 @@ const ALLOWED_HOSTS = [
     "upload.wikimedia.org",
 ];
 
+/**
+ * IPv4 ranges for private/internal networks (CIDR blocks).
+ * IPv6 ranges use similar patterns but with colon notation.
+ */
 const BLOCKED_IP_RANGES = [
+    // IPv4 localhost
     /^127\./,
+    // IPv4 private
     /^10\./,
     /^172\.(1[6-9]|2\d|3[01])\./,
     /^192\.168\./,
+    // IPv4 link-local
     /^169\.254\./,
+    // IPv4 this network
     /^0\./,
+    // IPv6 loopback
     /^::1$/,
-    /^fc00:/,
-    /^fe80:/,
-    /^fd/,
+    // IPv6 private (fd00::/8)
+    /^[fF][dD][0-9a-fA-F]{2}:/,
+    // IPv6 link-local (fe80::/10)
+    /^[fF][eE][89aAbB][0-9a-fA-F]:/,
+    // IPv6 unique local (fc00::/7)
+    /^[fF][cCdD][0-9a-fA-F]{2}:/,
+    // IPv6 multicast (ff00::/8)
+    /^[fF]{2}[0-9a-fA-F]{2}:/,
+    // Hostname localhost
     /^localhost$/i,
 ];
 

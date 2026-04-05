@@ -10,7 +10,10 @@ if (process.env.VERCEL && !process.env.REDIS_URL) {
 }
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Experimental: Use system TLS certificates for Google Fonts
+  experimental: {
+    turbopackUseSystemTlsCerts: true,
+  },
 };
 
 export default nextConfig;

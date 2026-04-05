@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import VLibras from "@/components/shared/vlibras";
 import AccessibilityBar from "@/components/shared/accessibility-bar";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-plus-jakarta",
-});
+// Fallback: Use system fonts. Google Fonts can be re-enabled once network is available
+// Original fonts: Plus_Jakarta_Sans, JetBrains_Mono from next/font/google
+// For offline builds, we use CSS fallbacks in globals.css
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-});
+const plusJakarta = { variable: "--font-plus-jakarta" };
+const jetbrainsMono = { variable: "--font-jetbrains-mono" };
 
 export const metadata: Metadata = {
   title: "Portal das Emendas - Prefeitura Municipal de Osasco",

@@ -76,10 +76,55 @@ export interface Amendment {
 
 const STORAGE_KEY = "portal_emendas_data";
 
+/**
+ * Safely retrieve amendments from localStorage.
+ * Handles corrupted JSON, missing data, and returns empty array on error.
+ */
 export const getAmendments = (): Amendment[] => {
     if (typeof window === "undefined") return [];
-    const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+
+    try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        if (!data) return [];
+
+        const parsed = JSON.parse(data);
+
+        // Validate it's an array
+        if (!Array.isArray(parsed)) {
+            console.warn("localStorage data is not an array, clearing");
+            localStorage.removeItem(STORAGE_KEY);
+            return [];
+        }
+
+        // Validate array items have required fields
+        const validated = parsed.filter((item) => {
+            return (
+                typeof item === "object" &&
+                item !== null &&
+                typeof item.id === "string" &&
+                typeof item.createdAt === "string"
+            );
+        });
+
+        // If we had to filter out invalid items, save the cleaned data
+        if (validated.length < parsed.length) {
+            console.warn(
+                `Removed ${parsed.length - validated.length} corrupted amendments from localStorage`
+            );
+            if (validated.length > 0) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(validated));
+            } else {
+                localStorage.removeItem(STORAGE_KEY);
+            }
+        }
+
+        return validated as Amendment[];
+    } catch (error) {
+        console.error("Error parsing amendments from localStorage:", error);
+        // Clear corrupted data
+        localStorage.removeItem(STORAGE_KEY);
+        return [];
+    }
 };
 
 export const addAmendment = (amendment: Omit<Amendment, "id" | "createdAt">) => {
