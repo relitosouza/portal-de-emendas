@@ -9,9 +9,14 @@ const PENALTY_COOKIE = "login-penalty";
 function getPenaltySecret(): string {
     const secret = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD;
     if (!secret) {
-        throw new Error(
-            "Missing required environment variable: ADMIN_SESSION_SECRET or ADMIN_PASSWORD must be set"
-        );
+        // In production (Vercel), require the secret to be set
+        if (process.env.VERCEL || process.env.NODE_ENV === "production") {
+            throw new Error(
+                "Missing required environment variable: ADMIN_SESSION_SECRET or ADMIN_PASSWORD must be set"
+            );
+        }
+        // In development, use a development-only fallback
+        return "dev-fallback-secret-change-in-production";
     }
     return secret;
 }

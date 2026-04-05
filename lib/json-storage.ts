@@ -16,10 +16,15 @@ let _redis: Redis | null = null;
 function getRedis(): Redis {
     if (!_redis) {
         if (!process.env.REDIS_URL) {
-            throw new Error(
-                "REDIS_URL environment variable is required for Vercel deployments. " +
-                "Without it, data writes will fail and cause data loss."
-            );
+            // In development, Redis is optional. In production (Vercel), it's required.
+            if (IS_VERCEL) {
+                throw new Error(
+                    "REDIS_URL environment variable is required for Vercel deployments. " +
+                    "Without it, data writes will fail and cause data loss."
+                );
+            }
+            // In development, return a mock that will be caught by the write handler
+            throw new Error("REDIS_URL not configured (development mode - using file storage)");
         }
         _redis = new Redis(process.env.REDIS_URL, {
             lazyConnect: false,
