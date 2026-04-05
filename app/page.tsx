@@ -117,10 +117,11 @@ export default function Home() {
     async function fetchData(isRefresh = false) {
       if (isRefresh) setIsRefreshing(true);
       try {
-        const res = await fetch("/api/amendments");
+        const res = await fetch("/api/amendments?limit=1000");
         const data = await res.json();
-        if (Array.isArray(data)) {
-          setAmendments(data);
+        const amendments = Array.isArray(data) ? data : data?.data;
+        if (Array.isArray(amendments)) {
+          setAmendments(amendments);
           setLastUpdated(new Date());
         }
       } catch (error) {
