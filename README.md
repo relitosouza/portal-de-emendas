@@ -15,15 +15,15 @@ O projeto utiliza um conjunto de ferramentas de última geração para garantir 
 *   **Banco de Dados/Cache**: [Redis](https://redis.io/) (via ioredis) para gerenciamento de sessões e controle de tráfego.
 *   **Utilitários**: [Lucide React](https://lucide.dev/) (iconografia) e [html2canvas](https://html2canvas.hertzen.com/) (geração de capturas de tela).
 
-## 🛡️ Segurança e Proteção
+## 🛡️ Segurança e Integridade
 
-A segurança foi uma prioridade no desenvolvimento deste portal, implementando múltiplas camadas de proteção:
+A segurança é um pilar central desta plataforma, que implementa múltiplas camadas de proteção para garantir a integridade dos dados e a disponibilidade do serviço:
 
-1.  **Autenticação Robusta**: Sistema de sessões administrativas protegido por cookies `httpOnly`, `secure` e `sameSite: strict`. O acesso às áreas administrativas (`/admin`) é validado em tempo real via **Next.js Middleware** no Edge runtime.
-2.  **Proteção contra CSRF**: Implementação personalizada de tokens CSRF (Cross-Site Request Forgery) para todas as operações de mutação (POST, PUT, DELETE), garantindo que as requisições partam apenas de fontes legítimas.
-3.  **Rate Limiting**: Controle de taxa de requisições por IP utilizando um algoritmo de *sliding window* com armazenamento em Redis. Isso previne ataques de força bruta e sobrecarga do sistema.
-4.  **Validação de Dados**: Todos os inputs do sistema são rigorosamente validados com **Zod**, impedindo a entrada de dados malformados ou injeções maliciosas.
-5.  **Segurança de Conexão**: Preparado para ambientes de produção com suporte total a HTTPS e headers de segurança modernos.
+*   **Autenticação Avançada**: Sistema de sessões administrativas protegidas por padrões modernos de segurança, com validação de acesso em tempo real via Middleware.
+*   **Integridade de Requisições**: Proteção ativa contra falsificação de solicitações (CSRF), garantindo que as operações de escrita partam exclusivamente de origens legítimas.
+*   **Controle de Tráfego e Resiliência**: Mecanismos de monitoramento de tráfego para mitigar tentativas de abuso, prevenir ataques de força bruta e assegurar a performance sob carga.
+*   **Validação em Múltiplas Camadas**: Sanitização e validação rigorosa de todas as entradas de dados, impedindo a submissão de informações malformadas ou maliciosas.
+*   **Prontidão para Produção**: Configurações otimizadas para ambientes HTTPS com cabeçalhos de segurança atualizados.
 
 ## ✨ Novas Funcionalidades
 
