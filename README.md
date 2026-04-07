@@ -1,126 +1,79 @@
-# Portal de Emendas — Prefeitura Municipal de Osasco
+<div align="center">
+  <img src="public/mockup.png" alt="Portal de Emendas Osasco Mockup" width="100%" />
 
-Portal público de transparência e gestão de emendas parlamentares da Câmara Municipal de Osasco (SP). Permite que cidadãos acompanhem em tempo real a destinação de recursos públicos, o status de execução de cada emenda e os indicadores financeiros consolidados.
+  # Portal de Emendas - Osasco
 
-## O que é este projeto?
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+  [![Next.js](https://img.shields.io/badge/Next.js-16.x-black.svg)](https://nextjs.org/)
+  [![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-blue.svg)](https://tailwindcss.com/)
+  [![Status](https://img.shields.io/badge/status-production-success.svg)](https://portal.osasco.sp.gov.br)
 
-O **Portal de Emendas** é uma aplicação web desenvolvida em Next.js que serve como interface de transparência entre a Câmara Municipal de Osasco e a população. Ele exibe:
+  **Portal público de transparência e gestão de emendas parlamentares do município de Osasco.**
+</div>
 
-- **Dashboard público** com indicadores financeiros (reservado, empenhado, liquidado e pago)
-- **Listagem paginada** de todas as emendas com filtros por setor, status e busca textual
-- **Detalhe de cada emenda** com timeline de status, dados financeiros e informações técnicas
-- **Relatório imprimível** por emenda (rota `/projetos/[id]/relatorio`)
-- **Painel administrativo** protegido por autenticação para cadastro, edição e exclusão de emendas
+---
 
-## Arquitetura
+## 🏛️ Transparência e Impacto Social
+
+O **Portal de Emendas** é um instrumento de cidadania projetado para facilitar o acompanhamento da execução orçamentária municipal. Ele permite que a população visualize, em tempo real, a destinação dos recursos e o impacto das emendas parlamentares na cidade.
+
+## ✨ Funcionalidades Principais
+
+*   **Dashboard Interativo**: Indicadores financeiros consolidados (reservado, empenhado, liquidado e pago) com visualização gráfica.
+*   **Gestão Territorial**: Visualização de emendas e projetos em mapas interativos por região.
+*   **Painel Administrativo**: Área segura para gestão de dados, com assistente guiado (Wizard) para criação de novas entradas.
+*   **Relatórios Automatizados**: Geração de documentos imprimíveis e visualizações rápidas (cards) para prestação de contas.
+*   **Filtros Inteligentes**: Busca avançada por setor, status, parlamentar ou texto.
+
+## 🛡️ Segurança e Integridade
+
+A plataforma segue rigorosos padrões de segurança para garantir a proteção das informações e a resiliência do sistema:
+
+*   **Autenticação Robusta**: Sessões administrativas protegidas com cookies modernos e validação em tempo real via Edge Middleware.
+*   **Proteção de Requisições**: Defesa ativa contra falsificação de solicitações (CSRF) e monitoramento de tráfego para mitigar abusos.
+*   **Sanitização de Dados**: Validação rigorosa em múltiplas camadas, assegurando que apenas informações íntegras sejam processadas.
+*   **Diretrizes de Segurança**: Consulte o arquivo [SECURITY.md](./SECURITY.md) para políticas de reporte de vulnerabilidades.
+
+## 🏰 Arquitetura do Projeto
+
+O sistema foi Desenvolvido com foco em alta coesão e performance:
 
 ```
 app/
-├── layout.tsx                        # Root layout — providers, fontes, metadata
-├── page.tsx                          # Home — dashboard público
-├── projetos/
-│   ├── page.tsx                      # Listagem de emendas (com filtros e paginação)
-│   └── [id]/
-│       ├── page.tsx                  # Detalhe da emenda
-│       └── relatorio/page.tsx        # Relatório imprimível
-├── admin/
-│   ├── page.tsx                      # Login admin
-│   ├── dashboard/page.tsx            # Painel de gestão (CRUD de emendas)
-│   ├── wizard/page.tsx               # Assistente de criação de emenda
-│   ├── cards/page.tsx                # Edição dos cards do dashboard
-│   └── amendments/[id]/edit/page.tsx # Edição de emenda individual
-└── api/
-    ├── amendments/route.ts           # CRUD REST de emendas
-    ├── amendments/import/route.ts    # Importação de CSV
-    ├── auth/route.ts                 # Login com proteção brute-force
-    ├── financial/route.ts            # Dados financeiros
-    ├── financial/import/route.ts     # Importação de execução financeira
-    ├── dashboard-cards/route.ts      # Cards configuráveis
-    └── proxy-image/route.ts          # Proxy de imagens externas
+├── (público)                 # Dashboard e listagem de emendas
+├── admin/                    # Gestão, Wizard e Dashboard administrativo
+├── api/                      # Endpoints REST e lógica de importação
+└── layout.tsx                # Estrutura base e providers
 
-data/                                 # Armazenamento JSON local
-├── amendments.json                   # Emendas cadastradas via admin
-├── emendas-externas.json             # Emendas importadas de CSV
-├── financial.json                    # Execução financeira separada
-└── cards.json                        # Cards do dashboard
+lib/                          # Núcleo de lógica e utilitários
+├── auth.ts                   # Camada de autenticação
+├── json-storage.ts           # Motor de armazenamento persistente
+├── amendments-utils.ts       # Processamento e parsing de dados
+└── status-mapper.ts          # Inteligência de mapeamento de status
 
-lib/                                  # Utilitários e camada de dados
-├── json-storage.ts                   # CRUD em arquivos JSON (storage principal)
-├── google-sheets.ts                  # Integração opcional com Google Sheets
-├── auth.ts / auth-edge.ts            # Autenticação e sessão
-├── store.ts                          # Tipos TypeScript (Amendment)
-├── amendments-utils.ts               # Helpers de parsing e formatação
-├── status-mapper.ts                  # Normalização de status
-├── sector-colors.ts                  # Cores por setor/categoria
-├── utils.ts                          # Utilitário cn() para Tailwind (class merging)
-└── data.ts                           # Interface Project (tipo alternativo)
+data/                         # Estruturas de dados e definições locais
 ```
 
-## Stack de tecnologia
+## 🚀 Stack de Tecnologia
 
 | Camada | Tecnologia |
 |--------|-----------|
-| Framework | Next.js 16 (App Router) |
-| UI | React 19 + Tailwind CSS 4 |
-| Componentes | shadcn/UI (Radix UI primitives) |
-| Formulários | React Hook Form + Zod 4 |
-| Ícones | Material Symbols (Google Fonts) + Lucide React |
-| Gráficos | Recharts |
-| Mapas | React Leaflet |
-| Storage | JSON local (`data/`) em dev; `/tmp/data` na Vercel |
-| Auth | Cookie HTTP-only + HMAC SHA-256 (sem JWT externo) |
-| Deploy | Vercel |
+| **Core** | Next.js 16 (App Router) |
+| **Linguagem** | TypeScript |
+| **Estilização** | Tailwind CSS v4 |
+| **Componentes** | Shadcn/UI (Radix UI) |
+| **Formulários** | React Hook Form + Zod |
+| **Gráficos** | Recharts |
+| **Mapas** | React Leaflet |
 
-## Pré-requisitos
-
-- Node.js 18+
-- npm (ou yarn/pnpm/bun)
-
-## Instalação e execução local
-
-```bash
-# Clone o repositório
-git clone <url-do-repositorio>
-cd portal-de-emendas
-
-# Instale as dependências
-npm install
-
-# Configure as variáveis de ambiente
-cp .env.example .env.local
-# Edite .env.local com suas credenciais (veja seção "Variáveis de Ambiente")
-
-# Rode em modo de desenvolvimento
-npm run dev
-```
-
-Acesse [http://localhost:3000](http://localhost:3000) no navegador.
-
-## Variáveis de Ambiente
-
-Crie um arquivo `.env.local` na raiz do projeto:
-
-> Sem `ADMIN_EMAIL` e `ADMIN_PASSWORD` o login admin não funciona. O sistema de armazenamento JSON local funciona sem Google Sheets.
-
-## Scripts disponíveis
+## 🛠️ Scripts de Desenvolvimento
 
 | Comando | Descrição |
 |---------|-----------|
 | `npm run dev` | Inicia o servidor de desenvolvimento |
-| `npm run build` | Gera o build de produção |
-| `npm run start` | Inicia o servidor de produção |
-| `npm run lint` | Executa o ESLint |
+| `npm run build` | Gera o pacote otimizado para produção |
+| `npm run lint` | Executa a análise estática de código |
 
-## Deploy na Vercel
+---
 
-Consulte [`VERCEL_DEPLOY.md`](./VERCEL_DEPLOY.md) para instruções detalhadas sobre deploy e configuração da `GOOGLE_PRIVATE_KEY` na Vercel.
-
-## Documentação adicional
-
-- [`docs/GUIA-DE-USO.md`](./docs/GUIA-DE-USO.md) — Guia completo de uso do sistema (público e admin)
-- [`GOOGLE_SHEETS_SETUP.md`](./GOOGLE_SHEETS_SETUP.md) — Configuração da integração com Google Sheets
-- [`VERCEL_DEPLOY.md`](./VERCEL_DEPLOY.md) — Troubleshooting de deploy na Vercel
-
-## Licença
-
-Projeto desenvolvido para a Prefeitura Municipal de Osasco. Uso interno e transparência pública.
+© 2026 Portal de Emendas Osasco. Desenvolvido com foco em transparência e excelência técnica.
