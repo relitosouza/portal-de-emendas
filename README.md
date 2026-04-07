@@ -100,18 +100,6 @@ Acesse [http://localhost:3000](http://localhost:3000) no navegador.
 
 Crie um arquivo `.env.local` na raiz do projeto:
 
-```ini
-# Autenticação do admin (obrigatório)
-ADMIN_EMAIL="admin@osasco.sp.gov.br"
-ADMIN_PASSWORD="sua-senha-segura"
-ADMIN_SESSION_SECRET="string-aleatoria-longa-para-assinar-tokens"
-
-# Google Sheets (opcional — sistema funciona sem isso)
-GOOGLE_SERVICE_ACCOUNT_EMAIL="conta@projeto.iam.gserviceaccount.com"
-GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
-GOOGLE_SHEET_ID="id-da-planilha"
-```
-
 > Sem `ADMIN_EMAIL` e `ADMIN_PASSWORD` o login admin não funciona. O sistema de armazenamento JSON local funciona sem Google Sheets.
 
 ## Scripts disponíveis
