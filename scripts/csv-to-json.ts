@@ -229,8 +229,20 @@ function normalizeHeaderName(header: string): string {
 }
 
 // =====================================================
-// Conversão
+// Sanitização
 // =====================================================
+
+function sanitizeValue(val: string): string {
+    if (!val) return "";
+    return val
+        .replace(/[<>]/g, "") // Remove tags HTML
+        .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, "") // Remove caracteres de controle invisíveis
+        .trim();
+}
+
+// =====================================================
+// Conversão
+// ===================================
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function rowToAmendment(row: string[], columns: string[]): Record<string, any> {
@@ -242,7 +254,7 @@ function rowToAmendment(row: string[], columns: string[]): Record<string, any> {
         if (col === "latitude" || col === "longitude") {
             obj[col] = value ? parseFloat(value) : undefined;
         } else {
-            obj[col] = value;
+            obj[col] = sanitizeValue(value);
         }
     });
 

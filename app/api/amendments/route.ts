@@ -39,11 +39,11 @@ export async function GET(req: NextRequest) {
         const err = error instanceof Error ? error : new Error(String(error));
         logApiError("GET", "/api/amendments", err);
 
-        const message = err.message;
-        if (message.includes("Missing")) {
-            return NextResponse.json({ warning: "Missing Credentials", data: [], pagination: { limit: 20, offset: 0, total: 0, hasMore: false } });
-        }
-        return NextResponse.json({ error: "Failed to fetch amendments" }, { status: 500 });
+        // Security: Never send raw error.message in production as it can reveal path details
+        return NextResponse.json({ 
+            error: "Failed to fetch amendments",
+            pagination: { limit: 1, offset: 0, total: 0, hasMore: false }
+        }, { status: 500 });
     }
 }
 
