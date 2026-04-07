@@ -153,6 +153,7 @@ function ProjectsContent() {
     const initialSearch = searchParams.get("search");
     const filtroParam = searchParams.get("filtro");
 
+    const initialView = searchParams.get("view") === "grouped" ? "grouped" : "individual";
     const [projects, setProjects] = useState<Project[]>([]);
     const [rawAmendments, setRawAmendments] = useState<Amendment[]>([]);
     const [loading, setLoading] = useState(true);
@@ -160,7 +161,7 @@ function ProjectsContent() {
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
     const [selectedSector, setSelectedSector] = useState<string | null>(initialSector);
     const [currentPage, setCurrentPage] = useState(1);
-    const [viewMode, setViewMode] = useState<"individual" | "grouped">("individual");
+    const [viewMode, setViewMode] = useState<"individual" | "grouped">(initialView);
 
     const availableSectors = useMemo(() => {
         const sectors = new Set(projects.map(p => p.sector).filter(Boolean));

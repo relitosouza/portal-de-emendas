@@ -124,9 +124,12 @@ function GroupedAmendmentCard({ group }: { group: GroupedData }) {
       {/* Topo */}
       <div className="p-5 pb-3">
         <div className="flex justify-between items-start gap-4 mb-3">
-          <h2 className="text-lg font-extrabold text-slate-800 leading-tight group-hover:text-blue-600 transition-colors">
+          <Link 
+            href={`/projetos?view=grouped&search=${encodeURIComponent(group.objeto)}`}
+            className="text-lg font-extrabold text-slate-800 leading-tight group-hover:text-blue-600 transition-colors hover:underline"
+          >
             {group.objeto}
-          </h2>
+          </Link>
           <div className="text-right shrink-0">
              <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Valor Total</p>
              <p className="text-lg font-black text-blue-600">{formatCurrency(group.valorTotal)}</p>
@@ -253,9 +256,12 @@ function ParticipantRow({ p }: { p: Participant }) {
   return (
     <div className="grid grid-cols-3 items-center py-1.5 px-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors group/row">
       <div className="flex items-center gap-2 truncate pr-2">
-        <span className="text-[13px] font-bold text-slate-700 truncate group-hover/row:text-blue-600 transition-colors">
+        <Link 
+          href={`/projetos?search=${encodeURIComponent(p.nome)}`}
+          className="text-[13px] font-bold text-slate-700 truncate group-hover/row:text-blue-600 transition-colors hover:underline"
+        >
           {p.nome}
-        </span>
+        </Link>
       </div>
       <span className="text-[12px] font-medium text-slate-500">{p.valor}</span>
       <Link 
