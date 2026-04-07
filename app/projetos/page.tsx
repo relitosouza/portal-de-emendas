@@ -185,17 +185,18 @@ function ProjectsContent() {
                     if (typeof rawCat === "string" && rawCat.includes(" - ")) rawCat = rawCat.split(" - ")[0].trim();
                     const categoriaNum = rawCat ? String(rawCat) : undefined;
 
-                    const text = ((a.orgaoBeneficiario || a.responsible || "") + (a.objeto || a.title || "") + (a.finalidade || a.description || "")).toLowerCase();
-                    let sector = getCategoryLabel(a.categoria) || "Infraestrutura";
-                    if (text.includes("saude") || text.includes("saúde") || text.includes("hospital") || text.includes("ubs")) sector = "Saúde";
-                    else if (text.includes("educação") || text.includes("escola") || text.includes("creche")) sector = "Educação";
-                    else if (text.includes("segurança") || text.includes("policia") || text.includes("guarda")) sector = "Segurança";
-                    else if (text.includes("cultura") || text.includes("teatro") || text.includes("show")) sector = "CULTURA"; // Keep uppercase if that's what's passed from page.tsx links
-
-                    // Wait, the page.tsx sends the exact category name (e.g. "CULTURA"). So let's just use the category from the database whenever it's available and valid, instead of text matching which is brittle.
+                    // Prioritize category from database mapping
                     const dbCategory = getCategoryLabel(a.categoria);
-                    if (dbCategory && dbCategory !== "Sem Categoria" && a.categoria) {
-                        sector = dbCategory;
+                    let sector = dbCategory || "Infraestrutura";
+                    
+                    if (sector === "Sem Categoria") {
+                        // Fallback only if no category is assigned in DB
+                        const text = ((a.orgaoBeneficiario || a.responsible || "") + (a.objeto || a.title || "") + (a.finalidade || a.description || "")).toLowerCase();
+                        if (text.includes("saude") || text.includes("saúde") || text.includes("hospital") || text.includes("ubs")) sector = "Saúde";
+                        else if (text.includes("educação") || text.includes("escola") || text.includes("creche")) sector = "Educação";
+                        else if (text.includes("segurança") || text.includes("policia") || text.includes("guarda")) sector = "Segurança";
+                        else if (text.includes("cultura") || text.includes("teatro") || text.includes("show")) sector = "Cultura";
+                        else if (text.includes("esporte") || text.includes("lazer") || text.includes("estadio")) sector = "Desporto e Lazer";
                     }
 
                     const status = getNormalizedStatus(a.status as string);
