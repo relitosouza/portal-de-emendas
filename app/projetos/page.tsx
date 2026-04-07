@@ -9,7 +9,7 @@ import { getSectorColor } from "@/lib/sector-colors";
 import { getNormalizedStatus } from "@/lib/status-mapper";
 import { VEREADORES_PHOTOS, findVereadorPhoto, parseCurrency } from "@/lib/amendments-utils";
 import GroupedAmendments from "@/components/dashboard/grouped-amendments";
-import { cn } from "@/lib/utils";
+import { cn, normalizeString } from "@/lib/utils";
 
 interface Project {
     id: string;
@@ -170,7 +170,7 @@ function ProjectsContent() {
     useEffect(() => {
         async function fetchAmendments() {
             try {
-                const response = await fetch("/api/amendments");
+                const response = await fetch("/api/amendments?limit=1000");
                 const data = await response.json();
 
                 let amendments: Amendment[] = [];
@@ -252,15 +252,18 @@ function ProjectsContent() {
 
     // Filter logic
     const filteredProjects = projects.filter((project) => {
-        const term = searchTerm.toLowerCase();
+        const term = normalizeString(searchTerm);
+        if (!term) return (selectedSector ? project.sector === selectedSector : true) && 
+                          (selectedStatus ? project.status === selectedStatus : true);
+
         const matchesSearch =
-            !term ||
-            (project.numeroEmenda || "").toLowerCase().includes(term) ||
-            project.title.toLowerCase().includes(term) ||
-            project.description.toLowerCase().includes(term) ||
-            (project.responsible || "").toLowerCase().includes(term) ||
-            project.sector.toLowerCase().includes(term) ||
-            project.location.toLowerCase().includes(term);
+            normalizeString(project.numeroEmenda || "").includes(term) ||
+            normalizeString(project.title).includes(term) ||
+            normalizeString(project.description).includes(term) ||
+            normalizeString(project.responsible || "").includes(term) ||
+            normalizeString(project.sector).includes(term) ||
+            normalizeString(project.location).includes(term);
+
         const matchesSector = selectedSector ? project.sector === selectedSector : true;
         const matchesStatus = selectedStatus ? project.status === selectedStatus : true;
         const matchesFiltro = !filtroParam || (

@@ -246,7 +246,15 @@ function rowToAmendment(row: string[], columns: string[]): Record<string, any> {
         }
     });
 
-    // Garantir campos obrigatórios
+    // Gerar ID única robusta
+    // Se temos numeroEmenda e destinacao, combinamos para evitar duplicatas (ex: Custeio e Investimento da mesma emenda)
+    if (obj.numeroEmenda) {
+        const destTag = obj.destinacao 
+            ? '-' + obj.destinacao.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "")
+            : "";
+        obj.id = obj.numeroEmenda + destTag;
+    }
+
     if (!obj.id) {
         obj.id = crypto.randomUUID();
     }
