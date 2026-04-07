@@ -1,5 +1,5 @@
 const fs = require('fs');
-const content = fs.readFileSync('Emendas - Pagina1.csv', 'utf8');
+const content = fs.readFileSync('../../data/csv/Emendas - Pagina1.csv', 'utf8');
 
 function parseCSV(content) {
     const rows = [];
