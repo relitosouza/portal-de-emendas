@@ -495,7 +495,7 @@ function ProjectsContent() {
                                     href={`/projetos/${project.id}`}
                                     aria-label={`${project.title} — ${project.status} — ${project.budget} — Autor: ${project.responsible}`}
                                 >
-                                    <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-xl transition-all group h-full flex flex-col">
+                                    <div className="emenda-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-xl transition-all group h-full flex flex-col">
                                         {/* Status + Sector Badges */}
                                         <div className="flex justify-between items-start mb-6">
                                             <div className="flex flex-wrap gap-2" aria-hidden="true">
@@ -508,7 +508,7 @@ function ProjectsContent() {
                                             </div>
                                             <button
                                                 aria-label={`Salvar emenda: ${project.title}`}
-                                                className="text-slate-300 group-hover:text-blue-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 rounded"
+                                                className="bookmark-btn text-slate-300 group-hover:text-blue-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 rounded"
                                                 onClick={(e) => e.preventDefault()}
                                             >
                                                 <span className="material-symbols-outlined" aria-hidden="true">bookmark</span>
@@ -521,7 +521,7 @@ function ProjectsContent() {
                                         </h2>
 
                                         {/* Author */}
-                                        <div className="flex items-center gap-3 mb-6" aria-hidden="true">
+                                        <div className="author-info flex items-center gap-3 mb-6" aria-hidden="true">
                                             {project.responsiblePhoto ? (
                                                 /* eslint-disable-next-line @next/next/no-img-element */
                                                 <img
