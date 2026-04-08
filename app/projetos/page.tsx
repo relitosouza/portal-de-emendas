@@ -32,7 +32,6 @@ interface Project {
     categoriaNum?: string;
 }
 
-
 const ITEMS_PER_PAGE = 9;
 
 const FILTRO_LABELS: Record<string, string> = {
@@ -174,12 +173,15 @@ function ProjectsContent() {
                 const response = await fetch("/api/amendments?limit=1000");
                 const data = await response.json();
 
-                let amendments: Amendment[] = [];
+                let rawData: Amendment[] = [];
                 if (Array.isArray(data)) {
-                    amendments = data;
+                    rawData = data;
                 } else if (data.data && Array.isArray(data.data)) {
-                    amendments = data.data;
+                    rawData = data.data;
                 }
+
+                // Force deduplication by ID to prevent duplicate card rendering
+                const amendments = Array.from(new Map(rawData.map(a => [a.id, a])).values());
 
                 const mappedProjects: Project[] = amendments.map(a => {
                     let rawCat = (a as any).categoria;
@@ -346,7 +348,7 @@ function ProjectsContent() {
                 <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-8 flex flex-wrap items-center gap-4">
                     <div className="flex-1 min-w-[300px]">
                         <label htmlFor="busca-emendas" className="sr-only">Buscar emendas</label>
-                    <div className="relative flex items-center bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+                        <div className="relative flex items-center bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
                             <span className="material-symbols-outlined text-slate-400 mr-3" aria-hidden="true">search</span>
                             <input
                                 id="busca-emendas"
@@ -484,90 +486,90 @@ function ProjectsContent() {
                         initialLimit={10}
                     />
                 ) : (
-                    <ul aria-label="Lista de emendas parlamentares" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0">
-                        {paginatedProjects.map((project) => {
+                    <ul aria-label="Lista de emendas parlamentares" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 list-none p-0">
+                        {paginatedProjects.map((project, index) => {
                             const style = getStatusStyle(project.status);
                             const sc = getSectorColor(project.sector);
 
                             return (
-                                <li key={project.id}>
-                                <Link
-                                    href={`/projetos/${project.id}`}
-                                    aria-label={`${project.title} — ${project.status} — ${project.budget} — Autor: ${project.responsible}`}
+                                <li 
+                                    key={project.id} 
+                                    className="staggered-item"
+                                    style={{ "--index": index % 20 } as any}
                                 >
-                                    <div className="emenda-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-xl transition-all group h-full flex flex-col">
-                                        {/* Status + Sector Badges */}
-                                        <div className="flex justify-between items-start mb-6">
-                                            <div className="flex flex-wrap gap-2" aria-hidden="true">
-                                                <span className={`px-3 py-1 ${style.bg} rounded-full text-xs font-bold uppercase tracking-wider`}>
-                                                    {project.status}
-                                                </span>
-                                                <span className={`px-3 py-1 ${sc.badgeBg} ${sc.badgeText} rounded-full text-xs font-bold uppercase tracking-wider`}>
-                                                    {project.sector}
-                                                </span>
-                                            </div>
-                                            <button
-                                                aria-label={`Salvar emenda: ${project.title}`}
-                                                className="bookmark-btn text-slate-300 group-hover:text-blue-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 rounded"
-                                                onClick={(e) => e.preventDefault()}
-                                            >
-                                                <span className="material-symbols-outlined" aria-hidden="true">bookmark</span>
-                                            </button>
-                                        </div>
-
-                                        {/* Title */}
-                                        <h2 className="text-lg font-bold leading-tight mb-4 line-clamp-2 group-hover:text-blue-600 transition-colors" aria-hidden="true">
-                                            {project.title}
-                                        </h2>
-
-                                        {/* Author */}
-                                        <div className="author-info flex items-center gap-3 mb-6" aria-hidden="true">
-                                            {project.responsiblePhoto ? (
-                                                /* eslint-disable-next-line @next/next/no-img-element */
-                                                <img
-                                                    src={project.responsiblePhoto}
-                                                    alt=""
-                                                    className="size-10 rounded-full object-cover border-2 border-slate-200"
-                                                />
-                                            ) : (
-                                                <div className="size-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-xs">
-                                                    {getInitials(project.responsible || "PM")}
+                                    <Link
+                                        href={`/projetos/${project.id}`}
+                                        aria-label={`${project.title} — ${project.status} — ${project.budget} — Autor: ${project.responsible}`}
+                                        className="no-underline block h-full"
+                                    >
+                                        <div className="emenda-card bg-white rounded-2xl border border-slate-200 p-8 shadow-sm hover:shadow-xl transition-all duration-300 h-[356px] w-[396px] flex flex-col overflow-hidden mx-auto">
+                                            {/* 1. Badges */}
+                                            <div className="flex justify-between items-start mb-5 h-7">
+                                                <div className="flex flex-wrap gap-2" aria-hidden="true">
+                                                    <span className={`px-2.5 py-1 ${style.bg} rounded-full text-[10px] font-bold uppercase tracking-wider`}>
+                                                        {project.status}
+                                                    </span>
+                                                    <span className={`px-2.5 py-1 ${sc.badgeBg} ${sc.badgeText} rounded-full text-[10px] font-bold uppercase tracking-wider`}>
+                                                        {project.sector}
+                                                    </span>
                                                 </div>
-                                            )}
-                                            <div>
-                                                <p className="text-xs text-slate-500 uppercase font-bold tracking-widest">Autor</p>
-                                                <p className="text-sm font-semibold">{project.responsible}</p>
+                                                <span className="material-symbols-outlined text-slate-300 text-xl" aria-hidden="true">bookmark</span>
                                             </div>
-                                        </div>
 
-                                        {/* Value */}
-                                        <div className="mb-6" aria-hidden="true">
-                                            <p className="text-xs text-slate-500 uppercase font-bold tracking-widest mb-1">Valor Alocado</p>
-                                            <p className="text-2xl font-extrabold text-blue-500">{project.budget}</p>
-                                        </div>
-
-                                        {/* Progress */}
-                                        <div className="mt-auto">
-                                            <div className="flex justify-between items-center mb-2" aria-hidden="true">
-                                                <span className="text-xs font-bold text-slate-500">Progresso de Execução</span>
-                                                <span className="text-xs font-bold text-blue-500">{project.progress}%</span>
+                                            {/* 2. Title */}
+                                            <div className="h-14 mb-4">
+                                                <h2 className="text-xl font-bold leading-tight line-clamp-2 text-slate-900" aria-hidden="true">
+                                                    {project.title}
+                                                </h2>
                                             </div>
-                                            <div
-                                                role="progressbar"
-                                                aria-valuenow={project.progress}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                                aria-label={`Progresso de execução: ${project.progress}%`}
-                                                className="w-full h-2 bg-slate-100 rounded-full overflow-hidden"
-                                            >
+
+                                            {/* 3. Author */}
+                                            <div className="flex items-center gap-3 mb-5" aria-hidden="true">
+                                                {project.responsiblePhoto ? (
+                                                    /* eslint-disable-next-line @next/next/no-img-element */
+                                                    <img
+                                                        src={project.responsiblePhoto}
+                                                        alt=""
+                                                        className="size-9 rounded-full object-cover border border-slate-100"
+                                                    />
+                                                ) : (
+                                                    <div className="size-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-[10px] ring-1 ring-slate-100">
+                                                        {getInitials(project.responsible || "PM")}
+                                                    </div>
+                                                )}
+                                                <div className="overflow-hidden">
+                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Autor</p>
+                                                    <p className="text-sm font-bold text-slate-800 leading-none truncate">{project.responsible}</p>
+                                                </div>
+                                            </div>
+
+                                            {/* 4. Value */}
+                                            <div className="mb-auto" aria-hidden="true">
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Valor Alocado</p>
+                                                <p className="text-2xl font-black text-blue-600 tracking-tight">{project.budget}</p>
+                                            </div>
+
+                                            {/* 5. Progress */}
+                                            <div className="space-y-2 mt-4">
+                                                <div className="flex justify-between items-center" aria-hidden="true">
+                                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Progresso de Execução</span>
+                                                    <span className="text-[10px] font-bold text-blue-500">{project.progress}%</span>
+                                                </div>
                                                 <div
-                                                    className={`h-full ${style.bar} rounded-full transition-all duration-500`}
-                                                    style={{ width: `${project.progress}%` }}
-                                                />
+                                                    role="progressbar"
+                                                    aria-valuenow={project.progress}
+                                                    aria-valuemin={0}
+                                                    aria-valuemax={100}
+                                                    className="w-full h-1.5 bg-slate-50 rounded-full overflow-hidden"
+                                                >
+                                                    <div
+                                                        className={`h-full ${style.bar} rounded-full transition-all duration-700`}
+                                                        style={{ width: `${project.progress}%` }}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
+                                    </Link>
                                 </li>
                             );
                         })}
