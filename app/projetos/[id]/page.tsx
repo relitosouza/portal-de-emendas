@@ -6,6 +6,8 @@ import Link from "next/link";
 import Navbar from "@/components/shared/navbar";
 import ShareCard from "@/components/projects/share-card";
 import TechnicalDetailsAccordion from "@/components/projects/technical-details-accordion";
+import ComplianceModule from "@/components/projects/compliance-module";
+import { fetchManagementDetails } from "@/lib/management-api";
 
 export const revalidate = 60;
 
@@ -21,11 +23,15 @@ export default async function ProjetoDetalhePage(props: Props) {
     const { id } = params;
 
     let amendment = null;
+    let managementData = null;
     try {
         const amendments = await getAmendmentsFromSheet();
         amendment = amendments.find((a) => a.id === id);
+        
+        // Try to fetch management specific data (Compliance, Audit, etc)
+        managementData = await fetchManagementDetails(id);
     } catch (error) {
-        console.error("Failed to fetch amendment:", error);
+        console.error("Failed to fetch amendment data:", error);
     }
 
     if (!amendment) {
@@ -429,7 +435,23 @@ export default async function ProjetoDetalhePage(props: Props) {
                                         <span className="text-slate-400 text-sm font-medium">
                                             ID: {amendment.numeroEmenda || amendment.id.slice(0, 8)} &bull; {amendment.tipoEmenda || "Emenda Individual"}
                                         </span>
+                                        {managementData && (
+                                            <>
+                                                <span className="text-slate-300">|</span>
+                                                <span className="text-slate-500 text-xs flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-xs">history</span>
+                                                    Atualizado em: {new Date(managementData.updatedAt || managementData.dataAtualizacao).toLocaleDateString('pt-BR')}
+                                                </span>
+                                            </>
+                                        )}
                                     </div>
+                                    {managementData?.processoAdministrativo && (
+                                        <div className="flex items-center gap-2 mt-2 px-3 py-1 bg-slate-50 border border-slate-100 rounded-lg w-fit">
+                                            <span className="material-symbols-outlined text-sm text-slate-400">gavel</span>
+                                            <span className="text-[10px] uppercase font-bold text-slate-400">Proc. Administrativo:</span>
+                                            <span className="text-xs font-mono font-bold text-slate-700">{managementData.processoAdministrativo}</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="flex flex-col gap-6">
                                     <div className="flex flex-col gap-2">
@@ -723,6 +745,13 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 codigoAplicacao={amendment.codigoAplicacao}
                                 numeroLicitacao={amendment.numeroLicitacao}
                             />
+
+                            {/* New Module: Management Transparency & Compliance */}
+                            {managementData && (
+                                <section className="mt-4">
+                                    <ComplianceModule data={managementData} />
+                                </section>
+                            )}
                         </div>
 
                         {/* Right Sidebar */}

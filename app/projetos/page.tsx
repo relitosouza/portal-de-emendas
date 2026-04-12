@@ -159,12 +159,18 @@ function ProjectsContent() {
     const [searchTerm, setSearchTerm] = useState(initialSearch || "");
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
     const [selectedSector, setSelectedSector] = useState<string | null>(initialSector);
+    const [selectedResponsible, setSelectedResponsible] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [viewMode, setViewMode] = useState<"individual" | "grouped">(initialView);
 
     const availableSectors = useMemo(() => {
         const sectors = new Set(projects.map(p => p.sector).filter(Boolean));
         return Array.from(sectors).sort((a, b) => a.localeCompare(b, "pt-BR"));
+    }, [projects]);
+
+    const availableResponsibles = useMemo(() => {
+        const responsibles = new Set(projects.map(p => p.responsible).filter(Boolean));
+        return Array.from(responsibles).sort((a, b) => a.localeCompare(b, "pt-BR"));
     }, [projects]);
 
     useEffect(() => {
@@ -270,6 +276,7 @@ function ProjectsContent() {
 
         const matchesSector = selectedSector ? project.sector === selectedSector : true;
         const matchesStatus = selectedStatus ? project.status === selectedStatus : true;
+        const matchesResponsible = selectedResponsible ? project.responsible === selectedResponsible : true;
         const matchesFiltro = !filtroParam || (
             filtroParam === "reservado" ? project.hasReservado :
                 filtroParam === "empenhado" ? project.hasEmpenhado :
@@ -277,7 +284,7 @@ function ProjectsContent() {
                         filtroParam === "pago" ? project.hasPago :
                             true
         );
-        return matchesSearch && matchesSector && matchesStatus && matchesFiltro;
+        return matchesSearch && matchesSector && matchesStatus && matchesResponsible && matchesFiltro;
     });
 
     // Pagination
@@ -290,7 +297,7 @@ function ProjectsContent() {
     // Reset page when filters change
     useEffect(() => {
         setCurrentPage(1);
-    }, [searchTerm, selectedStatus, selectedSector]);
+    }, [searchTerm, selectedStatus, selectedSector, selectedResponsible]);
 
     const getStatusStyle = (status: string) => {
         switch (status) {
@@ -407,6 +414,20 @@ function ProjectsContent() {
                                 <option value="Prestação de Contas">Prestação de Contas</option>
                                 <option value="Cancelada">Cancelada</option>
                             </select>
+                        {/* Agrupamento de Autor */}
+                        <div className="flex items-center gap-2">
+                            <label htmlFor="filtro-autor" className="sr-only">Filtrar por autor</label>
+                            <select
+                                id="filtro-autor"
+                                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px] cursor-pointer"
+                                value={selectedResponsible || ""}
+                                onChange={(e) => setSelectedResponsible(e.target.value || null)}
+                            >
+                                <option value="">Todos os Autores</option>
+                                {availableResponsibles.map(author => (
+                                    <option key={author} value={author}>{author}</option>
+                                ))}
+                            </select>
                         </div>
 
                         <div className="w-px h-8 bg-slate-200 mx-1"></div>
@@ -417,6 +438,7 @@ function ProjectsContent() {
                                 setSearchTerm("");
                                 setSelectedSector(null);
                                 setSelectedStatus(null);
+                                setSelectedResponsible(null);
                             }}
                             aria-label="Limpar todos os filtros"
                             className="p-2.5 rounded-xl bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
