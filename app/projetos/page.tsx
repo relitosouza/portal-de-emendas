@@ -414,6 +414,7 @@ function ProjectsContent() {
                                 <option value="Prestação de Contas">Prestação de Contas</option>
                                 <option value="Cancelada">Cancelada</option>
                             </select>
+                        </div>
                         {/* Agrupamento de Autor */}
                         <div className="flex items-center gap-2">
                             <label htmlFor="filtro-autor" className="sr-only">Filtrar por autor</label>
