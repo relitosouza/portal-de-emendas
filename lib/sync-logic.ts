@@ -1,9 +1,20 @@
 import { readJsonFile, writeJsonFile, FINANCIAL_FILE, AMENDMENTS_FILE, FinancialRecord } from "./json-storage";
 import { parseCurrency } from "./amendments-utils";
 
-const OSASCO_API_URL = 'https://transparencia.osasco.sp.gov.br/paiportalserver/modulovisao/filter';
-const CURRENT_EXERCISE = 2026;
-const CURRENT_PERIOD = 'MARCO';
+const OSASCO_API_URL = 'https://transparencia-osasco.smarapd.com.br/paiportalserver/modulovisao/filter';
+
+const MONTHS_PT = [
+    'JANEIRO', 'FEVEREIRO', 'MARCO', 'ABRIL', 'MAIO', 'JUNHO',
+    'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO'
+];
+
+function getCurrentExerciseAndPeriod(): { exercise: number; period: string } {
+    const now = new Date();
+    return {
+        exercise: now.getFullYear(),
+        period: MONTHS_PT[now.getMonth()],
+    };
+}
 
 interface PortalRecord {
     ID: number;
@@ -31,13 +42,18 @@ function extractBaseNumber(str: string): string | null {
 }
 
 export async function runFinancialSync() {
+    const { exercise, period } = getCurrentExerciseAndPeriod();
+    console.log(`[Sync] Buscando dados do portal: Exercício=${exercise}, Período=${period}`);
+
     const payload = {
         "ChaveModulo": "66",
         "NomeVisao": "EmendasParlamentares",
-        "Filtros": [],
+        "Filtros": [
+            { "Coluna": "DescVinculo", "Operador": "contem", "Valor": "08.804" }
+        ],
         "Periodicidade": "MENSAL",
-        "Periodo": CURRENT_PERIOD,
-        "Exercicio": CURRENT_EXERCISE,
+        "Periodo": period,
+        "Exercicio": exercise,
         "Pagina": 1,
         "QuantidadeRegistros": "300", 
         "Ordenacao": [{ "ColunaOrdem": "ID", "TipoOrdem": "ascend", "Ordem": 1 }]
@@ -49,8 +65,8 @@ export async function runFinancialSync() {
             'Content-Type': 'application/json',
             'Accept': 'application/json, text/plain, */*',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Origin': 'https://transparencia.osasco.sp.gov.br',
-            'Referer': 'https://transparencia.osasco.sp.gov.br/'
+            'Origin': 'https://transparencia-osasco.smarapd.com.br',
+            'Referer': 'https://transparencia-osasco.smarapd.com.br/'
         },
         body: JSON.stringify(payload)
     });
@@ -59,7 +75,13 @@ export async function runFinancialSync() {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const portalData = await response.json();
+    let portalData = await response.json();
+    
+    // O portal SMARAPD às vezes retorna o JSON como uma string dentro do JSON principal
+    if (typeof portalData === 'string') {
+        portalData = JSON.parse(portalData);
+    }
+
     const portalRecords = portalData.Valores as PortalRecord[];
 
     const localAmendments = await readJsonFile<any>(AMENDMENTS_FILE);
