@@ -164,12 +164,12 @@ function ProjectsContent() {
     const [viewMode, setViewMode] = useState<"individual" | "grouped">(initialView);
 
     const availableSectors = useMemo(() => {
-        const sectors = new Set(projects.map(p => p.sector).filter(Boolean));
+        const sectors = new Set(projects.map(p => p.sector).filter((s): s is string => !!s));
         return Array.from(sectors).sort((a, b) => a.localeCompare(b, "pt-BR"));
     }, [projects]);
 
     const availableResponsibles = useMemo(() => {
-        const responsibles = new Set(projects.map(p => p.responsible).filter(Boolean));
+        const responsibles = new Set(projects.map(p => p.responsible).filter((r): r is string => !!r));
         return Array.from(responsibles).sort((a, b) => a.localeCompare(b, "pt-BR"));
     }, [projects]);
 
