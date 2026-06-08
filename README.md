@@ -1,7 +1,7 @@
 <div align="center">
   <img src="public/mockup.png" alt="Portal das Emendas Osasco" width="100%" />
 
-  # Portal das Emendas — Prefeitura de Osasco
+  # Portal das Emendas
 
   [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
   [![Next.js](https://img.shields.io/badge/Next.js-16.x-black.svg)](https://nextjs.org/)
