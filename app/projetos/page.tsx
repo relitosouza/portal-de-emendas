@@ -607,6 +607,7 @@ function ProjectsContent() {
                                                         src={project.responsiblePhoto}
                                                         alt=""
                                                         className="size-9 rounded-full object-cover border border-slate-100"
+                                                        style={project.responsible && project.responsible.toLowerCase().includes("fiorilo") ? { objectPosition: "center 15%" } : undefined}
                                                     />
                                                 ) : (
                                                     <div className="size-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-[10px] ring-1 ring-slate-100">

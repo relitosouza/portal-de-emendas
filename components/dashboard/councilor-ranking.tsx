@@ -104,7 +104,12 @@ function CouncilorItem({ author, rank }: { author: Councilor; rank: number }) {
           )}>
             {author.foto ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={author.foto} alt={author.name} className="w-full h-full rounded-2xl object-cover" />
+              <img
+                src={author.foto}
+                alt={author.name}
+                className="w-full h-full rounded-2xl object-cover"
+                style={author.name.toLowerCase().includes("fiorilo") ? { objectPosition: "center 15%" } : undefined}
+              />
             ) : (
               <span>{author.initials}</span>
             )}

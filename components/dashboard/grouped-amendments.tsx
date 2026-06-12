@@ -218,6 +218,7 @@ function GroupedAmendmentCard({ group }: { group: GroupedData }) {
                             src={v.foto}
                             alt={v.nome}
                             className="w-full h-full object-cover"
+                            style={v.nome.toLowerCase().includes("fiorilo") ? { objectPosition: "center 15%" } : undefined}
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold text-xs">

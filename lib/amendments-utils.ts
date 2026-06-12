@@ -40,6 +40,11 @@ export const VEREADORES_PHOTOS: Record<string, string> = {
     "sergio fontellas": "https://www.osasco.sp.leg.br/images/vereadores/400x533/ed4f5329b802c35ca71bfe51a0547a4a.jpg",
     "sérgio fontellas": "https://www.osasco.sp.leg.br/images/vereadores/400x533/ed4f5329b802c35ca71bfe51a0547a4a.jpg",
     "stephane rossi": "https://www.osasco.sp.leg.br/images/vereadores/400x533/c019dab55864b3d4a328aeb49686e753.jpg",
+    "paulo fiorilo": "https://www3.al.sp.gov.br/legis/biografia/fotos/300638/8724f840684b834e46bb3550cdab9150d23eab9003b2bc6a65ba12320235895a.jpeg",
+    "samia bomfim": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/204535.jpg",
+    "juliana cardoso": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/220640.jpg",
+    "delegado cunha": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/220649.jpg",
+    "giordano": "https://upload.wikimedia.org/wikipedia/commons/3/39/Foto_Oficial_de_Giordano_como_Senador_por_S%C3%A3o_Paulo_-_Vers%C3%A3o_2.jpg",
 };
 
 export function findVereadorPhoto(name: string): string | undefined {
