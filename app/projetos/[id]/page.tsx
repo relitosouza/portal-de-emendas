@@ -744,6 +744,8 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 fonteRecurso="08"
                                 codigoAplicacao={amendment.codigoAplicacao}
                                 numeroLicitacao={amendment.numeroLicitacao}
+                                despesa={amendment.funcao}
+                                vinculo={amendment.destinacao}
                             />
 
                             {/* New Module: Management Transparency & Compliance */}
