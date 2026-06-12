@@ -31,6 +31,10 @@ export default function DashboardPage() {
     const [syncFeedback, setSyncFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
     const [lastSync, setLastSync] = useState<string | null>(null);
 
+    // Seed state
+    const [seeding, setSeeding] = useState(false);
+    const [seedFeedback, setSeedFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
     useEffect(() => {
         async function loadData() {
             try {
@@ -221,6 +225,40 @@ export default function DashboardPage() {
         }
     };
 
+    const handleSeed = async () => {
+        if (!confirm("Isso enviará os dados das emendas estaduais, federais e execução financeira local direto para o Redis de produção. Deseja continuar?")) return;
+        
+        setSeeding(true);
+        setSeedFeedback(null);
+        
+        try {
+            const res = await fetch("/api/admin/seed", { method: "POST" });
+            const result = await res.json();
+            
+            if (res.ok && result.success) {
+                setSeedFeedback({ 
+                    type: "success", 
+                    message: "Banco de produção atualizado!" 
+                });
+                
+                // Reload amendments
+                const dataRes = await fetch("/api/amendments");
+                const data = await dataRes.json();
+                if (Array.isArray(data)) setAmendments(data);
+            } else {
+                setSeedFeedback({ 
+                    type: "error", 
+                    message: result.error || "Erro ao atualizar" 
+                });
+            }
+        } catch (error) {
+            setSeedFeedback({ type: "error", message: "Erro de conexão ao atualizar" });
+        } finally {
+            setSeeding(false);
+            setTimeout(() => setSeedFeedback(null), 5000);
+        }
+    };
+
     const handleImport = async () => {
         if (!importFile) return;
         setImporting(true);
@@ -314,7 +352,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Quick Actions */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                         {quickActions.map((action) => (
                             <Link
                                 key={action.href}
@@ -359,6 +397,31 @@ export default function DashboardPage() {
                             {syncFeedback && (
                                 <div className={`absolute bottom-0 left-0 right-0 py-1 px-4 text-[10px] font-bold text-center ${syncFeedback.type === 'success' ? 'bg-emerald-400' : 'bg-red-400'}`}>
                                     {syncFeedback.message}
+                                </div>
+                            )}
+                        </button>
+
+                        <button
+                            onClick={handleSeed}
+                            disabled={seeding}
+                            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 text-white transition-all hover:shadow-lg hover:-translate-y-0.5 text-left"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 to-indigo-500 opacity-100"></div>
+                            <div className="relative flex items-center gap-4">
+                                <div className="flex size-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                                    <span className={`material-symbols-outlined text-[24px] ${seeding ? 'animate-spin' : ''}`}>cloud_sync</span>
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="font-bold text-sm truncate">{seeding ? "Atualizando..." : "Atualizar Produção"}</p>
+                                    <p className="text-[10px] text-white/70 truncate uppercase font-bold tracking-wider">
+                                        Enviar dados locais p/ o Redis
+                                    </p>
+                                </div>
+                                <span className="material-symbols-outlined ml-auto text-white/50 group-hover:translate-x-1 transition-transform">cloud_upload</span>
+                            </div>
+                            {seedFeedback && (
+                                <div className={`absolute bottom-0 left-0 right-0 py-1 px-4 text-[10px] font-bold text-center ${seedFeedback.type === 'success' ? 'bg-emerald-400' : 'bg-red-400'}`}>
+                                    {seedFeedback.message}
                                 </div>
                             )}
                         </button>
