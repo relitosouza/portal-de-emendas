@@ -45,10 +45,22 @@ export const VEREADORES_PHOTOS: Record<string, string> = {
     "juliana cardoso": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/220640.jpg",
     "delegado cunha": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/220649.jpg",
     "giordano": "https://upload.wikimedia.org/wikipedia/commons/3/39/Foto_Oficial_de_Giordano_como_Senador_por_S%C3%A3o_Paulo_-_Vers%C3%A3o_2.jpg",
+    "kiko celeguim": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/162067.jpg",
+    "carlos zarattini": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/141398.jpg",
+    "gilberto nascimento": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/74270.jpg",
 };
 
 export function findVereadorPhoto(name: string): string | undefined {
     const normalized = name.toLowerCase().trim();
+
+    // Ignore collective/committee names to avoid false matches (e.g. Comissao, Bancada, Prefeitura)
+    if (normalized.includes("comissao") || normalized.includes("comissão") || 
+        normalized.includes("bancada") || normalized.includes("coletivo") ||
+        normalized.includes("lideranca") || normalized.includes("liderança") ||
+        normalized.includes("mesa diretora") || normalized.includes("prefeitura")) {
+        return undefined;
+    }
+
     if (VEREADORES_PHOTOS[normalized]) return VEREADORES_PHOTOS[normalized];
     for (const [key, url] of Object.entries(VEREADORES_PHOTOS)) {
         if (normalized.includes(key) || key.includes(normalized)) return url;
@@ -56,6 +68,7 @@ export function findVereadorPhoto(name: string): string | undefined {
     const parts = normalized.split(" ");
     for (const part of parts) {
         if (part.length < 3) continue;
+        if (["das", "dos", "com", "sem", "para", "pelo", "pela"].includes(part)) continue;
         for (const [key, url] of Object.entries(VEREADORES_PHOTOS)) {
             if (key.split(" ").some(k => k === part)) return url;
         }

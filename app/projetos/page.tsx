@@ -298,6 +298,12 @@ function ProjectsContent() {
         currentPage * ITEMS_PER_PAGE
     );
 
+    const totalValue = useMemo(() => {
+        const filteredIds = new Set(filteredProjects.map(p => p.id));
+        const filteredRaw = rawAmendments.filter(a => filteredIds.has(a.id));
+        return filteredRaw.reduce((acc, a) => acc + parseCurrency(a.valor || a.value), 0);
+    }, [filteredProjects, rawAmendments]);
+
     // Reset page when filters change
     useEffect(() => {
         setCurrentPage(1);
@@ -401,6 +407,49 @@ function ProjectsContent() {
                     >
                         Emendas Federais
                     </button>
+                </div>
+
+                {/* Summary Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    {/* Card 1: Quantidade */}
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:shadow-md transition-all duration-300">
+                        <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 shrink-0">
+                            <span className="material-symbols-outlined text-2xl" aria-hidden="true">description</span>
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total de Emendas</p>
+                            <h3 className="text-2xl font-black text-slate-800">{filteredProjects.length}</h3>
+                            <p className="text-[10px] text-slate-500 font-medium">Selecionadas pelos filtros</p>
+                        </div>
+                    </div>
+
+                    {/* Card 2: Valor Total */}
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:shadow-md transition-all duration-300">
+                        <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
+                            <span className="material-symbols-outlined text-2xl" aria-hidden="true">payments</span>
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Valor Total Destinado</p>
+                            <h3 className="text-2xl font-black text-slate-800">
+                                {totalValue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                            </h3>
+                            <p className="text-[10px] text-slate-500 font-medium">Soma dos recursos ativos</p>
+                        </div>
+                    </div>
+
+                    {/* Card 3: Valor Médio */}
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:shadow-md transition-all duration-300">
+                        <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 shrink-0">
+                            <span className="material-symbols-outlined text-2xl" aria-hidden="true">analytics</span>
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Valor Médio</p>
+                            <h3 className="text-2xl font-black text-slate-800">
+                                {(filteredProjects.length > 0 ? totalValue / filteredProjects.length : 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                            </h3>
+                            <p className="text-[10px] text-slate-500 font-medium">Média por emenda</p>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Filter Bar */}
