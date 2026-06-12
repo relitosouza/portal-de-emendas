@@ -12,6 +12,7 @@ import { CATEGORY_MAP, parseCurrency as parseValor, findVereadorPhoto } from "@/
 import GroupedAmendments from "@/components/dashboard/grouped-amendments";
 import AmendmentPieChart from "@/components/dashboard/amendment-pie-chart";
 import SectorRanking from "@/components/dashboard/sector-ranking";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const router = useRouter();
@@ -20,17 +21,22 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedAmbito, setSelectedAmbito] = useState<string | null>(null);
 
-  const totalReservado = amendments.reduce((acc, e) => {
+  const filteredAmendments = amendments.filter((e: any) => {
+    return selectedAmbito ? (e.ambito ? e.ambito.toLowerCase() === selectedAmbito.toLowerCase() : false) : true;
+  });
+
+  const totalReservado = filteredAmendments.reduce((acc, e) => {
     const res = parseValor(e.reservado);
     const emp = parseValor(e.empenhado);
     // O valor "sai" da reserva quando é empenhado
     return acc + Math.max(0, res - emp);
   }, 0);
-  const totalEmpenhado = amendments.reduce((acc, e) => acc + parseValor(e.empenhado), 0);
-  const totalLiquidado = amendments.reduce((acc, e) => acc + parseValor(e.liquidado), 0);
-  const totalPago = amendments.reduce((acc, e) => acc + parseValor(e.pago), 0);
-  const totalValor = amendments.reduce((acc: number, e: any) => acc + parseValor(e.valor), 0);
+  const totalEmpenhado = filteredAmendments.reduce((acc, e) => acc + parseValor(e.empenhado), 0);
+  const totalLiquidado = filteredAmendments.reduce((acc, e) => acc + parseValor(e.liquidado), 0);
+  const totalPago = filteredAmendments.reduce((acc, e) => acc + parseValor(e.pago), 0);
+  const totalValor = filteredAmendments.reduce((acc: number, e: any) => acc + parseValor(e.valor), 0);
 
   const porcentagemEmpenhada = totalValor > 0 ? (totalEmpenhado / totalValor) * 100 : 0;
   const porcentagemFormatada = porcentagemEmpenhada.toFixed(1);
@@ -53,7 +59,7 @@ export default function Home() {
   const animatedEmpenhado = useCountUp(loading ? 0 : totalEmpenhado, 2000);
   const animatedLiquidado = useCountUp(loading ? 0 : totalLiquidado, 2000);
   const animatedPago = useCountUp(loading ? 0 : totalPago, 2000);
-  const animatedCount = useCountUp(loading ? 0 : amendments.length, 2000);
+  const animatedCount = useCountUp(loading ? 0 : filteredAmendments.length, 2000);
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchTerm.trim()) {
@@ -70,7 +76,7 @@ export default function Home() {
   // Group amendments by author
   const getAuthorRanking = () => {
     const authorMap: Record<string, { count: number; foto?: string }> = {};
-    amendments.forEach((e: any) => {
+    filteredAmendments.forEach((e: any) => {
       const autor = e.autor || e.responsavelNome || "Não informado";
       if (!authorMap[autor]) {
         authorMap[autor] = { 
@@ -96,7 +102,7 @@ export default function Home() {
   // Group amendments by sector
   const getSectorData = () => {
     const sectorMap: Record<string, { count: number, valor: number, catNum: string }> = {};
-    amendments.forEach((e: any) => {
+    filteredAmendments.forEach((e: any) => {
       let catNum = e.categoria;
       // Handle cases where categoria might come as "10 - Saúde" or just "10"
       if (typeof catNum === "string" && catNum.includes(" - ")) {
@@ -147,7 +153,7 @@ export default function Home() {
       <main id="main-content" className="max-w-7xl mx-auto px-6 py-8" aria-label="Conteúdo principal">
         {/* Search */}
         <div className="max-w-2xl mx-auto mb-10">
-          <div className="relative group">
+          <div className="relative group mb-6">
             <label htmlFor="busca-emendas" className="sr-only">
               Buscar emendas por autor, título ou valor
             </label>
@@ -174,6 +180,54 @@ export default function Home() {
               </button>
             )}
           </div>
+
+          {/* Selector de Âmbito (Municipal, Estadual, Federal) */}
+          <div className="flex flex-wrap justify-center gap-3">
+            <button
+              onClick={() => setSelectedAmbito(null)}
+              className={cn(
+                "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all cursor-pointer",
+                selectedAmbito === null
+                  ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200"
+                  : "bg-white text-slate-500 border-slate-200 hover:border-blue-500 hover:text-blue-500"
+              )}
+            >
+              Todas
+            </button>
+            <button
+              onClick={() => setSelectedAmbito("Municipal")}
+              className={cn(
+                "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all cursor-pointer",
+                selectedAmbito === "Municipal"
+                  ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200"
+                  : "bg-white text-slate-500 border-slate-200 hover:border-blue-500 hover:text-blue-500"
+              )}
+            >
+              Municipais
+            </button>
+            <button
+              onClick={() => setSelectedAmbito("Estadual")}
+              className={cn(
+                "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all cursor-pointer",
+                selectedAmbito === "Estadual"
+                  ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200"
+                  : "bg-white text-slate-500 border-slate-200 hover:border-blue-500 hover:text-blue-500"
+              )}
+            >
+              Estaduais
+            </button>
+            <button
+              onClick={() => setSelectedAmbito("Federal")}
+              className={cn(
+                "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all cursor-pointer",
+                selectedAmbito === "Federal"
+                  ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200"
+                  : "bg-white text-slate-500 border-slate-200 hover:border-blue-500 hover:text-blue-500"
+              )}
+            >
+              Federais
+            </button>
+          </div>
         </div>
 
         {/* Hero Card - Budget */}
@@ -190,7 +244,7 @@ export default function Home() {
                   {loading ? "Carregando..." : animatedValor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                 </h2>
                 <div className="flex flex-wrap gap-3">
-                  <Link href="/projetos" className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl flex items-center gap-2 border border-white/10 hover:bg-white/20 transition-colors">
+                  <Link href={selectedAmbito ? `/projetos?ambito=${selectedAmbito}` : "/projetos"} className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl flex items-center gap-2 border border-white/10 hover:bg-white/20 transition-colors">
                     <span className="material-symbols-outlined text-sm">description</span>
                     <span className="text-sm font-semibold">{loading ? "..." : Math.round(animatedCount)} emendas</span>
                   </Link>
@@ -249,7 +303,7 @@ export default function Home() {
         {/* Financial Cards - Now Full Width */}
         <section aria-label="Indicadores financeiros" className="mb-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link href="/projetos?filtro=reservado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300">
+            <Link href={selectedAmbito ? `/projetos?filtro=reservado&ambito=${selectedAmbito}` : "/projetos?filtro=reservado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
                   <span className="material-symbols-outlined text-xl">account_balance</span>
@@ -265,7 +319,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/projetos?filtro=empenhado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-blue-300">
+            <Link href={selectedAmbito ? `/projetos?filtro=empenhado&ambito=${selectedAmbito}` : "/projetos?filtro=empenhado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-blue-300">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
                   <span className="material-symbols-outlined text-xl">payments</span>
@@ -281,7 +335,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/projetos?filtro=liquidado" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-indigo-300">
+            <Link href={selectedAmbito ? `/projetos?filtro=liquidado&ambito=${selectedAmbito}` : "/projetos?filtro=liquidado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-indigo-300">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
                   <span className="material-symbols-outlined text-xl">receipt_long</span>
@@ -297,7 +351,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/projetos?filtro=pago" className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-300">
+            <Link href={selectedAmbito ? `/projetos?filtro=pago&ambito=${selectedAmbito}` : "/projetos?filtro=pago"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-300">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
                   <span className="material-symbols-outlined text-xl">check_circle</span>
@@ -335,7 +389,7 @@ export default function Home() {
               <SectorRanking data={sectorData} loading={loading} />
 
               {/* New Pie Chart Card */}
-              <AmendmentPieChart amendments={amendments} />
+              <AmendmentPieChart amendments={filteredAmendments} />
             </div>
           </div>
 
@@ -348,7 +402,7 @@ export default function Home() {
                   <h2 className="text-lg font-bold text-slate-800">Emendas por Objetivo</h2>
                   <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Agrupamento consolidado de investimentos</p>
                 </div>
-                <Link href="/projetos?view=grouped" className="text-sm font-bold text-blue-500 hover:text-blue-700 flex items-center gap-1">
+                <Link href={selectedAmbito ? `/projetos?view=grouped&ambito=${selectedAmbito}` : "/projetos?view=grouped"} className="text-sm font-bold text-blue-500 hover:text-blue-700 flex items-center gap-1">
                   Ver todas <span className="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
                 </Link>
               </div>
@@ -359,7 +413,7 @@ export default function Home() {
                   Carregando grupos...
                 </div>
               ) : (
-                <GroupedAmendments amendments={amendments} />
+                <GroupedAmendments amendments={filteredAmendments} />
               )}
             </section>
           </div>

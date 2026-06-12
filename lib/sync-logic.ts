@@ -48,14 +48,12 @@ export async function runFinancialSync() {
     const payload = {
         "ChaveModulo": "66",
         "NomeVisao": "EmendasParlamentares",
-        "Filtros": [
-            { "Coluna": "DescVinculo", "Operador": "contem", "Valor": "08.804" }
-        ],
+        "Filtros": [],
         "Periodicidade": "MENSAL",
         "Periodo": period,
         "Exercicio": exercise,
         "Pagina": 1,
-        "QuantidadeRegistros": "300", 
+        "QuantidadeRegistros": "1000", 
         "Ordenacao": [{ "ColunaOrdem": "ID", "TipoOrdem": "ascend", "Ordem": 1 }]
     };
 

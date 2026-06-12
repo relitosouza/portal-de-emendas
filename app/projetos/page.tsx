@@ -30,6 +30,7 @@ interface Project {
     hasLiquidado?: boolean;
     hasPago?: boolean;
     categoriaNum?: string;
+    ambito?: string;
 }
 
 const ITEMS_PER_PAGE = 9;
@@ -153,6 +154,7 @@ function ProjectsContent() {
     const filtroParam = searchParams.get("filtro");
 
     const initialView = searchParams.get("view") === "grouped" ? "grouped" : "individual";
+    const initialAmbito = searchParams.get("ambito");
     const [projects, setProjects] = useState<Project[]>([]);
     const [rawAmendments, setRawAmendments] = useState<Amendment[]>([]);
     const [loading, setLoading] = useState(true);
@@ -160,6 +162,7 @@ function ProjectsContent() {
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
     const [selectedSector, setSelectedSector] = useState<string | null>(initialSector);
     const [selectedResponsible, setSelectedResponsible] = useState<string | null>(null);
+    const [selectedAmbito, setSelectedAmbito] = useState<string | null>(initialAmbito);
     const [currentPage, setCurrentPage] = useState(1);
     const [viewMode, setViewMode] = useState<"individual" | "grouped">(initialView);
 
@@ -245,6 +248,7 @@ function ProjectsContent() {
                         hasLiquidado: parseFinanceiro(a.liquidado) > 0,
                         hasPago: parseFinanceiro(a.pago) > 0,
                         categoriaNum,
+                        ambito: a.ambito,
                     };
                 });
 
@@ -263,20 +267,20 @@ function ProjectsContent() {
     // Filter logic
     const filteredProjects = projects.filter((project) => {
         const term = normalizeString(searchTerm);
-        if (!term) return (selectedSector ? project.sector === selectedSector : true) && 
-                          (selectedStatus ? project.status === selectedStatus : true);
-
-        const matchesSearch =
+        
+        const matchesSearch = !term || (
             normalizeString(project.numeroEmenda || "").includes(term) ||
             normalizeString(project.title).includes(term) ||
             normalizeString(project.description).includes(term) ||
             normalizeString(project.responsible || "").includes(term) ||
             normalizeString(project.sector).includes(term) ||
-            normalizeString(project.location).includes(term);
+            normalizeString(project.location).includes(term)
+        );
 
         const matchesSector = selectedSector ? project.sector === selectedSector : true;
         const matchesStatus = selectedStatus ? project.status === selectedStatus : true;
         const matchesResponsible = selectedResponsible ? project.responsible === selectedResponsible : true;
+        const matchesAmbito = selectedAmbito ? (project.ambito ? project.ambito.toLowerCase() === selectedAmbito.toLowerCase() : false) : true;
         const matchesFiltro = !filtroParam || (
             filtroParam === "reservado" ? project.hasReservado :
                 filtroParam === "empenhado" ? project.hasEmpenhado :
@@ -284,7 +288,7 @@ function ProjectsContent() {
                         filtroParam === "pago" ? project.hasPago :
                             true
         );
-        return matchesSearch && matchesSector && matchesStatus && matchesResponsible && matchesFiltro;
+        return matchesSearch && matchesSector && matchesStatus && matchesResponsible && matchesAmbito && matchesFiltro;
     });
 
     // Pagination
@@ -297,7 +301,7 @@ function ProjectsContent() {
     // Reset page when filters change
     useEffect(() => {
         setCurrentPage(1);
-    }, [searchTerm, selectedStatus, selectedSector, selectedResponsible]);
+    }, [searchTerm, selectedStatus, selectedSector, selectedResponsible, selectedAmbito]);
 
     const getStatusStyle = (status: string) => {
         switch (status) {
@@ -349,6 +353,54 @@ function ProjectsContent() {
                     <p className="text-slate-500 text-lg max-w-2xl">
                         Acompanhe em tempo real a destinação de recursos públicos, status de execução e o impacto gerado pelos parlamentares.
                     </p>
+                </div>
+
+                {/* Selector de Âmbito (Municipal, Estadual, Federal) */}
+                <div className="flex flex-wrap gap-3 mb-8">
+                    <button
+                        onClick={() => setSelectedAmbito(null)}
+                        className={cn(
+                            "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all cursor-pointer",
+                            selectedAmbito === null
+                                ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200"
+                                : "bg-white text-slate-500 border-slate-200 hover:border-blue-500 hover:text-blue-500"
+                        )}
+                    >
+                        Todas as Emendas
+                    </button>
+                    <button
+                        onClick={() => setSelectedAmbito("Municipal")}
+                        className={cn(
+                            "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all cursor-pointer",
+                            selectedAmbito === "Municipal"
+                                ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200"
+                                : "bg-white text-slate-500 border-slate-200 hover:border-blue-500 hover:text-blue-500"
+                        )}
+                    >
+                        Emendas Municipais
+                    </button>
+                    <button
+                        onClick={() => setSelectedAmbito("Estadual")}
+                        className={cn(
+                            "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all cursor-pointer",
+                            selectedAmbito === "Estadual"
+                                ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200"
+                                : "bg-white text-slate-500 border-slate-200 hover:border-blue-500 hover:text-blue-500"
+                        )}
+                    >
+                        Emendas Estaduais
+                    </button>
+                    <button
+                        onClick={() => setSelectedAmbito("Federal")}
+                        className={cn(
+                            "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all cursor-pointer",
+                            selectedAmbito === "Federal"
+                                ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200"
+                                : "bg-white text-slate-500 border-slate-200 hover:border-blue-500 hover:text-blue-500"
+                        )}
+                    >
+                        Emendas Federais
+                    </button>
                 </div>
 
                 {/* Filter Bar */}
@@ -440,6 +492,7 @@ function ProjectsContent() {
                                 setSelectedSector(null);
                                 setSelectedStatus(null);
                                 setSelectedResponsible(null);
+                                setSelectedAmbito(null);
                             }}
                             aria-label="Limpar todos os filtros"
                             className="p-2.5 rounded-xl bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"

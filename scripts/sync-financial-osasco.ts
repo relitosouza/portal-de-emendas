@@ -12,6 +12,7 @@ async function main() {
         console.log("Iniciando sincronização através da biblioteca compartilhada...");
         const count = await runFinancialSync();
         console.log(`✓ Sincronização concluída: ${count} emendas atualizadas no banco de dados.`);
+        process.exit(0);
     } catch (error) {
         console.error("Erro fatal durante a sincronização:", error);
         process.exit(1);

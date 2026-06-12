@@ -1,3 +1,4 @@
+import "dotenv/config";
 import fs from "fs/promises";
 import path from "path";
 import Redis from "ioredis";
@@ -67,7 +68,7 @@ export const CARDS_FILE = "cards.json";
 // =====================================================
 
 export async function readJsonFile<T>(filename: string): Promise<T[]> {
-    if (IS_VERCEL && HAS_REDIS) {
+    if (HAS_REDIS) {
         try {
             const raw = await getRedis().get(filenameToKey(filename));
             if (raw) return JSON.parse(raw) as T[];
@@ -88,7 +89,7 @@ export async function readJsonFile<T>(filename: string): Promise<T[]> {
 }
 
 export async function writeJsonFile<T>(filename: string, data: T[]): Promise<void> {
-    if (IS_VERCEL && HAS_REDIS) {
+    if (HAS_REDIS) {
         try {
             await getRedis().set(filenameToKey(filename), JSON.stringify(data));
             return;
