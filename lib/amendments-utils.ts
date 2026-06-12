@@ -48,6 +48,8 @@ export const VEREADORES_PHOTOS: Record<string, string> = {
     "kiko celeguim": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/162067.jpg",
     "carlos zarattini": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/141398.jpg",
     "gilberto nascimento": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/74270.jpg",
+    "maria rosas": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/204540.jpg",
+    "vinicius carvalho": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/141555.jpg",
 };
 
 export function findVereadorPhoto(name: string): string | undefined {
