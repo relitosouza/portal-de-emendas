@@ -194,6 +194,8 @@ export interface FinancialRecord {
     pago: string;
     reservado: string;
     updatedAt: string;
+    vinculo?: string;   // Código numérico do vínculo SMARAPD (ex: "08.804.0061")
+    naturezaDespesa?: string; // Natureza da despesa (ex: "3.3.90.30.00 - MATERIAL DE CONSUMO")
     // Event history (undefined on old records — treat as [])
     empenhos?: EmpenhoEvent[];
     liquidacoes?: LiquidacaoEvent[];
@@ -450,6 +452,10 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
                 liquidado: financial.liquidado !== undefined ? financial.liquidado : amendment.liquidado,
                 pago: financial.pago !== undefined ? financial.pago : amendment.pago,
                 reservado: financial.reservado !== undefined ? financial.reservado : amendment.reservado,
+                // Vínculo numérico do portal SMARAPD
+                vinculo: financial.vinculo ?? amendment.vinculo,
+                // Natureza de despesa do portal SMARAPD
+                naturezaDespesa: financial.naturezaDespesa ?? amendment.naturezaDespesa,
                 // Pass event history to amendment
                 empenhos: financial.empenhos ?? [],
                 liquidacoes: financial.liquidacoes ?? [],

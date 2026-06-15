@@ -1389,7 +1389,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.052Z"
+    "vinculo": "08.804.0230",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.453Z"
   },
   {
     "amendmentId": "066.21.30.2026-custeio",
@@ -1397,7 +1399,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.052Z"
+    "vinculo": "08.804.0282",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.454Z"
   },
   {
     "amendmentId": "068.10.12.2026-custeio",
@@ -1405,7 +1409,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.052Z"
+    "vinculo": "08.804.0123",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.455Z"
   },
   {
     "amendmentId": "068.17.12.2026-custeio",
@@ -1413,7 +1419,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.053Z"
+    "vinculo": "08.804.0221",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.455Z"
   },
   {
     "amendmentId": "068.19.12.2026-custeio",
@@ -1421,7 +1429,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.053Z"
+    "vinculo": "08.804.0249",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.455Z"
   },
   {
     "amendmentId": "078.02.09.2026-custeio",
@@ -1429,7 +1439,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.053Z"
+    "vinculo": "08.804.0023",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.456Z"
   },
   {
     "amendmentId": "078.02.09.2026-investimento",
@@ -1437,7 +1449,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.053Z"
+    "vinculo": "08.804.0023",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.456Z"
   },
   {
     "amendmentId": "078.21.09.2026-custeio",
@@ -1445,7 +1459,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.054Z"
+    "vinculo": "08.804.0283",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.456Z"
   },
   {
     "amendmentId": "078.21.09.2026-investimento",
@@ -1453,7 +1469,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.054Z"
+    "vinculo": "08.804.0283",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.456Z"
   },
   {
     "amendmentId": "099.03.12.2026-custeio",
@@ -1461,7 +1479,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.054Z"
+    "vinculo": "08.804.0031",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.457Z"
   },
   {
     "amendmentId": "099.09.12.2026-custeio",
@@ -1469,7 +1489,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.054Z"
+    "vinculo": "08.804.0112",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.457Z"
   },
   {
     "amendmentId": "099.12.12.2026-custeio",
@@ -1477,7 +1499,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.055Z"
+    "vinculo": "08.804.0164",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.458Z"
   },
   {
     "amendmentId": "102.01.02.2026-custeio",
@@ -1485,7 +1509,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.055Z"
+    "vinculo": "08.804.0001",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.458Z"
   },
   {
     "amendmentId": "102.02.02.2026-custeio",
@@ -1493,7 +1519,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.055Z"
+    "vinculo": "08.804.0024",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.459Z"
   },
   {
     "amendmentId": "102.03.02.2026-custeio",
@@ -1501,7 +1529,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.055Z"
+    "vinculo": "08.804.0032",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.459Z"
   },
   {
     "amendmentId": "102.06.02.2026-custeio",
@@ -1509,7 +1539,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.056Z"
+    "vinculo": "08.804.0076",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.460Z"
   },
   {
     "amendmentId": "102.08.02.2026-custeio",
@@ -1517,7 +1549,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.056Z"
+    "vinculo": "08.804.0095",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.460Z"
   },
   {
     "amendmentId": "102.10.02.2026-custeio",
@@ -1525,7 +1559,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.056Z"
+    "vinculo": "08.804.0125",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.461Z"
   },
   {
     "amendmentId": "102.11.02.2026-custeio",
@@ -1533,7 +1569,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.057Z"
+    "vinculo": "08.804.0141",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.461Z"
   },
   {
     "amendmentId": "102.12.02.2026-custeio",
@@ -1541,7 +1579,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.057Z"
+    "vinculo": "08.804.0165",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.462Z"
   },
   {
     "amendmentId": "102.14.02.2026-custeio",
@@ -1549,7 +1589,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.058Z"
+    "vinculo": "08.804.0198",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.462Z"
   },
   {
     "amendmentId": "102.15.02.2026-custeio",
@@ -1557,7 +1599,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.058Z"
+    "vinculo": "08.804.0210",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.462Z"
   },
   {
     "amendmentId": "102.18.02.2026-custeio",
@@ -1565,7 +1609,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.058Z"
+    "vinculo": "08.804.0237",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.463Z"
   },
   {
     "amendmentId": "102.19.02.2026-custeio",
@@ -1573,7 +1619,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.059Z"
+    "vinculo": "08.804.0250",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.463Z"
   },
   {
     "amendmentId": "102.20.02.2026-custeio",
@@ -1581,7 +1629,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.059Z"
+    "vinculo": "08.804.0260",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.464Z"
   },
   {
     "amendmentId": "102.21.02.2026-custeio",
@@ -1589,7 +1639,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.060Z"
+    "vinculo": "08.804.0285",
+    "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
+    "updatedAt": "2026-06-15T13:38:10.464Z"
   },
   {
     "amendmentId": "103.02.34.2026-investimento",
@@ -1597,7 +1649,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.060Z"
+    "vinculo": "08.804.0025",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.465Z"
   },
   {
     "amendmentId": "103.03.34.2026-investimento",
@@ -1605,7 +1659,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.060Z"
+    "vinculo": "08.804.0033",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.465Z"
   },
   {
     "amendmentId": "103.08.34.2026-investimento",
@@ -1613,7 +1669,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.060Z"
+    "vinculo": "08.804.0096",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.465Z"
   },
   {
     "amendmentId": "103.10.34.2026-investimento",
@@ -1621,7 +1679,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.061Z"
+    "vinculo": "08.804.0126",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.466Z"
   },
   {
     "amendmentId": "103.12.34.2026-investimento",
@@ -1629,7 +1689,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.061Z"
+    "vinculo": "08.804.0166",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.466Z"
   },
   {
     "amendmentId": "103.14.34.2026-investimento",
@@ -1637,7 +1699,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.061Z"
+    "vinculo": "08.804.0199",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.467Z"
   },
   {
     "amendmentId": "103.15.34.2026-investimento",
@@ -1645,7 +1709,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.062Z"
+    "vinculo": "08.804.0211",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.467Z"
   },
   {
     "amendmentId": "103.19.34.2026-investimento",
@@ -1653,7 +1719,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.062Z"
+    "vinculo": "08.804.0251",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.467Z"
   },
   {
     "amendmentId": "103.20.34.2026-investimento",
@@ -1661,7 +1729,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.062Z"
+    "vinculo": "08.804.0261",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.468Z"
   },
   {
     "amendmentId": "104.03.15.2026-custeio",
@@ -1669,7 +1739,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.063Z"
+    "vinculo": "08.804.0034",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.468Z"
   },
   {
     "amendmentId": "104.15.15.2026-custeio",
@@ -1677,7 +1749,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.063Z"
+    "vinculo": "08.804.0212",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.468Z"
   },
   {
     "amendmentId": "104.19.15.2026-custeio",
@@ -1685,7 +1759,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.065Z"
+    "vinculo": "08.804.0252",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.468Z"
   },
   {
     "amendmentId": "104.20.15.2026-custeio",
@@ -1693,7 +1769,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.065Z"
+    "vinculo": "08.804.0262",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.469Z"
   },
   {
     "amendmentId": "105.01.14.2026-custeio",
@@ -1701,7 +1779,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.065Z"
+    "vinculo": "08.804.0002",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.469Z"
   },
   {
     "amendmentId": "105.03.14.2026-custeio",
@@ -1709,7 +1789,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.065Z"
+    "vinculo": "08.804.0035",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.469Z"
   },
   {
     "amendmentId": "105.06.14.2026-custeio",
@@ -1717,7 +1799,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.066Z"
+    "vinculo": "08.804.0077",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.469Z"
   },
   {
     "amendmentId": "105.08.14.2026-custeio",
@@ -1725,7 +1809,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.066Z"
+    "vinculo": "08.804.0097",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.470Z"
   },
   {
     "amendmentId": "105.12.14.2026-custeio",
@@ -1733,7 +1819,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.066Z"
+    "vinculo": "08.804.0167",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.470Z"
   },
   {
     "amendmentId": "105.14.14.2026-custeio",
@@ -1741,7 +1829,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.066Z"
+    "vinculo": "08.804.0200",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.470Z"
   },
   {
     "amendmentId": "105.15.14.2026-custeio",
@@ -1749,7 +1839,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.067Z"
+    "vinculo": "08.804.0213",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.471Z"
   },
   {
     "amendmentId": "105.19.14.2026-custeio",
@@ -1757,7 +1849,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.067Z"
+    "vinculo": "08.804.0253",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.471Z"
   },
   {
     "amendmentId": "105.20.14.2026-custeio",
@@ -1765,7 +1859,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.067Z"
+    "vinculo": "08.804.0263",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.471Z"
   },
   {
     "amendmentId": "106.02.09.2026-custeio",
@@ -1773,7 +1869,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.067Z"
+    "vinculo": "08.804.0026",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.471Z"
   },
   {
     "amendmentId": "106.03.09.2026-custeio",
@@ -1781,7 +1879,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.067Z"
+    "vinculo": "08.804.0036",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.471Z"
   },
   {
     "amendmentId": "106.04.09.2026-custeio",
@@ -1789,7 +1889,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.067Z"
+    "vinculo": "08.804.0063",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.472Z"
   },
   {
     "amendmentId": "106.05.09.2026-custeio",
@@ -1797,7 +1899,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.067Z"
+    "vinculo": "08.804.0069",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.472Z"
   },
   {
     "amendmentId": "106.06.09.2026-custeio",
@@ -1805,7 +1909,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0078",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.472Z"
   },
   {
     "amendmentId": "106.08.09.2026-custeio",
@@ -1813,7 +1919,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0098",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.472Z"
   },
   {
     "amendmentId": "106.09.09.2026-custeio",
@@ -1821,7 +1929,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0113",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.472Z"
   },
   {
     "amendmentId": "106.11.09.2026-custeio",
@@ -1829,7 +1939,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0142",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.473Z"
   },
   {
     "amendmentId": "106.12.09.2026-custeio",
@@ -1837,7 +1949,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0168",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.473Z"
   },
   {
     "amendmentId": "106.14.09.2026-custeio",
@@ -1845,7 +1959,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0201",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.473Z"
   },
   {
     "amendmentId": "106.15.09.2026-custeio",
@@ -1853,7 +1969,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0214",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.474Z"
   },
   {
     "amendmentId": "106.17.09.2026-custeio",
@@ -1861,7 +1979,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0226",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.474Z"
   },
   {
     "amendmentId": "106.18.09.2026-custeio",
@@ -1869,7 +1989,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0238",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.475Z"
   },
   {
     "amendmentId": "106.19.09.2026-custeio",
@@ -1877,7 +1999,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0254",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.475Z"
   },
   {
     "amendmentId": "106.20.09.2026-custeio",
@@ -1885,7 +2009,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.068Z"
+    "vinculo": "08.804.0264",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.475Z"
   },
   {
     "amendmentId": "106.21.09.2026-custeio",
@@ -1893,7 +2019,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0286",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.476Z"
   },
   {
     "amendmentId": "107.03.12.2026-custeio",
@@ -1901,7 +2029,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0037",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.476Z"
   },
   {
     "amendmentId": "107.08.12.2026-custeio",
@@ -1909,7 +2039,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0099",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.477Z"
   },
   {
     "amendmentId": "108.01.12.2026-custeio",
@@ -1917,7 +2049,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0003",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.477Z"
   },
   {
     "amendmentId": "108.03.12.2026-custeio",
@@ -1925,7 +2059,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0038",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.478Z"
   },
   {
     "amendmentId": "108.06.12.2026-custeio",
@@ -1933,7 +2069,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0079",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.478Z"
   },
   {
     "amendmentId": "108.08.12.2026-custeio",
@@ -1941,7 +2079,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0100",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.478Z"
   },
   {
     "amendmentId": "108.09.12.2026-custeio",
@@ -1949,7 +2089,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0114",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.480Z"
   },
   {
     "amendmentId": "108.10.12.2026-custeio",
@@ -1957,7 +2099,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0127",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.481Z"
   },
   {
     "amendmentId": "108.11.12.2026-custeio",
@@ -1965,7 +2109,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0143",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.481Z"
   },
   {
     "amendmentId": "108.12.12.2026-custeio",
@@ -1973,7 +2119,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.069Z"
+    "vinculo": "08.804.0169",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.481Z"
   },
   {
     "amendmentId": "109.01.12.2026-custeio",
@@ -1981,7 +2129,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.070Z"
+    "vinculo": "08.804.0004",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.482Z"
   },
   {
     "amendmentId": "109.03.12.2026-custeio",
@@ -1989,7 +2139,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.070Z"
+    "vinculo": "08.804.0039",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.482Z"
   },
   {
     "amendmentId": "109.06.12.2026-custeio",
@@ -1997,7 +2149,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.070Z"
+    "vinculo": "08.804.0080",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.482Z"
   },
   {
     "amendmentId": "109.08.12.2026-custeio",
@@ -2005,7 +2159,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.071Z"
+    "vinculo": "08.804.0101",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.483Z"
   },
   {
     "amendmentId": "109.09.12.2026-custeio",
@@ -2013,7 +2169,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.071Z"
+    "vinculo": "08.804.0115",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.483Z"
   },
   {
     "amendmentId": "109.11.12.2026-custeio",
@@ -2021,7 +2179,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.071Z"
+    "vinculo": "08.804.0144",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.483Z"
   },
   {
     "amendmentId": "109.12.12.2026-custeio",
@@ -2029,7 +2189,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.072Z"
+    "vinculo": "08.804.0170",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.484Z"
   },
   {
     "amendmentId": "109.15.12.2026-custeio",
@@ -2037,7 +2199,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.072Z"
+    "vinculo": "08.804.0215",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.484Z"
   },
   {
     "amendmentId": "110.01.12.2026-custeio",
@@ -2045,7 +2209,7 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.072Z"
+    "updatedAt": "2026-06-12T17:36:07.380Z"
   },
   {
     "amendmentId": "110.03.12.2026-custeio",
@@ -2053,7 +2217,7 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.072Z"
+    "updatedAt": "2026-06-12T17:36:07.380Z"
   },
   {
     "amendmentId": "110.11.12.2026-custeio",
@@ -2061,7 +2225,7 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.072Z"
+    "updatedAt": "2026-06-12T17:36:07.380Z"
   },
   {
     "amendmentId": "110.12.12.2026-custeio",
@@ -2069,7 +2233,7 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.072Z"
+    "updatedAt": "2026-06-12T17:36:07.380Z"
   },
   {
     "amendmentId": "110.15.12.2026-custeio",
@@ -2077,7 +2241,7 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.072Z"
+    "updatedAt": "2026-06-12T17:36:07.380Z"
   },
   {
     "amendmentId": "111.01.12.2026-custeio",
@@ -2085,7 +2249,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.073Z"
+    "vinculo": "08.804.0006",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.485Z"
   },
   {
     "amendmentId": "111.03.12.2026-custeio",
@@ -2093,7 +2259,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.073Z"
+    "vinculo": "08.804.0041",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.486Z"
   },
   {
     "amendmentId": "111.06.12.2026-custeio",
@@ -2101,7 +2269,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.073Z"
+    "vinculo": "08.804.0081",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.486Z"
   },
   {
     "amendmentId": "111.08.12.2026-custeio",
@@ -2109,7 +2279,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.073Z"
+    "vinculo": "08.804.0102",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.486Z"
   },
   {
     "amendmentId": "111.09.12.2026-custeio",
@@ -2117,7 +2289,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.073Z"
+    "vinculo": "08.804.0116",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.486Z"
   },
   {
     "amendmentId": "111.10.12.2026-custeio",
@@ -2125,7 +2299,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.073Z"
+    "vinculo": "08.804.0128",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.487Z"
   },
   {
     "amendmentId": "111.11.12.2026-custeio",
@@ -2133,7 +2309,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.073Z"
+    "vinculo": "08.804.0146",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.487Z"
   },
   {
     "amendmentId": "111.12.12.2026-custeio",
@@ -2141,7 +2319,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.073Z"
+    "vinculo": "08.804.0172",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.487Z"
   },
   {
     "amendmentId": "130.01.36.2026-custeio",
@@ -2149,7 +2329,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.074Z"
+    "vinculo": "08.804.0011",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.506Z"
   },
   {
     "amendmentId": "130.02.36.2026-investimento",
@@ -2157,7 +2339,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.074Z"
+    "vinculo": "08.804.0027",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.506Z"
   },
   {
     "amendmentId": "130.03.36.2026-investimento",
@@ -2165,7 +2349,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.074Z"
+    "vinculo": "08.804.0045",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.507Z"
   },
   {
     "amendmentId": "130.05.36.2026-investimento",
@@ -2173,7 +2359,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.074Z"
+    "vinculo": "08.804.0071",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.507Z"
   },
   {
     "amendmentId": "130.06.36.2026-custeio",
@@ -2181,7 +2369,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.074Z"
+    "vinculo": "08.804.0082",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.508Z"
   },
   {
     "amendmentId": "130.07.36.2026-custeio",
@@ -2189,7 +2379,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.074Z"
+    "vinculo": "08.804.0092",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.508Z"
   },
   {
     "amendmentId": "130.08.36.2026-custeio",
@@ -2197,7 +2389,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.075Z"
+    "vinculo": "08.804.0103",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.508Z"
   },
   {
     "amendmentId": "130.10.36.2026-custeio",
@@ -2205,7 +2399,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.075Z"
+    "vinculo": "08.804.0130",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.509Z"
   },
   {
     "amendmentId": "130.11.36.2026-investimento",
@@ -2213,7 +2409,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.075Z"
+    "vinculo": "08.804.0147",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.509Z"
   },
   {
     "amendmentId": "130.12.36.2026-custeio",
@@ -2221,7 +2419,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.075Z"
+    "vinculo": "08.804.0173",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.509Z"
   },
   {
     "amendmentId": "130.15.36.2026-custeio",
@@ -2229,7 +2429,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.075Z"
+    "vinculo": "08.804.0217",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.510Z"
   },
   {
     "amendmentId": "130.16.36.2026-custeio",
@@ -2237,7 +2439,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0220",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.510Z"
   },
   {
     "amendmentId": "130.19.36.2026-custeio",
@@ -2245,7 +2449,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0256",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.511Z"
   },
   {
     "amendmentId": "130.20.36.2026-custeio",
@@ -2253,7 +2459,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0269",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.511Z"
   },
   {
     "amendmentId": "131.03.16.2026-investimento",
@@ -2261,7 +2469,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0046",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.511Z"
   },
   {
     "amendmentId": "131.08.16.2026-investimento",
@@ -2269,7 +2479,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0104",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.512Z"
   },
   {
     "amendmentId": "131.19.16.2026-investimento",
@@ -2277,7 +2489,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0257",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.512Z"
   },
   {
     "amendmentId": "132.01.12.2026-investimento",
@@ -2285,7 +2499,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0012",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.512Z"
   },
   {
     "amendmentId": "132.01.12.2026-custeio",
@@ -2293,7 +2509,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0012",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.512Z"
   },
   {
     "amendmentId": "132.03.12.2026-investimento",
@@ -2301,7 +2519,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0047",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.513Z"
   },
   {
     "amendmentId": "132.03.12.2026-custeio",
@@ -2309,7 +2529,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0047",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.513Z"
   },
   {
     "amendmentId": "132.08.12.2026-investimento",
@@ -2317,7 +2539,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0105",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.513Z"
   },
   {
     "amendmentId": "132.08.12.2026-custeio",
@@ -2325,7 +2549,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0105",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.513Z"
   },
   {
     "amendmentId": "132.09.12.2026-investimento",
@@ -2333,7 +2559,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0117",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.514Z"
   },
   {
     "amendmentId": "132.09.12.2026-custeio",
@@ -2341,7 +2569,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0117",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.514Z"
   },
   {
     "amendmentId": "132.10.12.2026-investimento",
@@ -2349,7 +2579,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0131",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.514Z"
   },
   {
     "amendmentId": "132.10.12.2026-custeio",
@@ -2357,7 +2589,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0131",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.514Z"
   },
   {
     "amendmentId": "132.11.12.2026-investimento",
@@ -2365,7 +2599,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0148",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.515Z"
   },
   {
     "amendmentId": "132.11.12.2026-custeio",
@@ -2373,7 +2609,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0148",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.515Z"
   },
   {
     "amendmentId": "133.01.12.2026-custeio",
@@ -2381,7 +2619,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0013",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.515Z"
   },
   {
     "amendmentId": "133.03.12.2026-custeio",
@@ -2389,7 +2629,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0048",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.515Z"
   },
   {
     "amendmentId": "133.06.12.2026-custeio",
@@ -2397,7 +2639,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.077Z"
+    "vinculo": "08.804.0083",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.515Z"
   },
   {
     "amendmentId": "133.08.12.2026-custeio",
@@ -2405,7 +2649,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.078Z"
+    "vinculo": "08.804.0106",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.516Z"
   },
   {
     "amendmentId": "133.09.12.2026-custeio",
@@ -2413,7 +2659,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.078Z"
+    "vinculo": "08.804.0118",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.516Z"
   },
   {
     "amendmentId": "133.10.12.2026-custeio",
@@ -2421,7 +2669,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.078Z"
+    "vinculo": "08.804.0132",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.516Z"
   },
   {
     "amendmentId": "133.11.12.2026-custeio",
@@ -2429,7 +2679,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.078Z"
+    "vinculo": "08.804.0149",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.516Z"
   },
   {
     "amendmentId": "133.12.12.2026-custeio",
@@ -2437,7 +2689,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.078Z"
+    "vinculo": "08.804.0174",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.516Z"
   },
   {
     "amendmentId": "134.02.12.2026-custeio",
@@ -2445,7 +2699,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.078Z"
+    "vinculo": "08.804.0028",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.517Z"
   },
   {
     "amendmentId": "134.02.12.2026-investimento",
@@ -2453,7 +2709,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.078Z"
+    "vinculo": "08.804.0028",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.517Z"
   },
   {
     "amendmentId": "134.03.12.2026-custeio",
@@ -2461,7 +2719,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.079Z"
+    "vinculo": "08.804.0049",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.518Z"
   },
   {
     "amendmentId": "134.03.12.2026-investimento",
@@ -2469,7 +2729,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.079Z"
+    "vinculo": "08.804.0049",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.518Z"
   },
   {
     "amendmentId": "134.10.12.2026-custeio",
@@ -2477,7 +2739,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.079Z"
+    "vinculo": "08.804.0133",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.518Z"
   },
   {
     "amendmentId": "134.10.12.2026-investimento",
@@ -2485,7 +2749,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.079Z"
+    "vinculo": "08.804.0133",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.519Z"
   },
   {
     "amendmentId": "134.12.12.2026-custeio",
@@ -2493,7 +2759,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.079Z"
+    "vinculo": "08.804.0175",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.519Z"
   },
   {
     "amendmentId": "134.12.12.2026-investimento",
@@ -2501,7 +2769,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0175",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.519Z"
   },
   {
     "amendmentId": "134.19.12.2026-custeio",
@@ -2509,7 +2779,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0258",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.520Z"
   },
   {
     "amendmentId": "134.19.12.2026-investimento",
@@ -2517,7 +2789,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0258",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.520Z"
   },
   {
     "amendmentId": "135.01.12.2026-custeio",
@@ -2525,7 +2799,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0014",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.520Z"
   },
   {
     "amendmentId": "135.03.12.2026-custeio",
@@ -2533,7 +2809,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0050",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.520Z"
   },
   {
     "amendmentId": "135.06.12.2026-custeio",
@@ -2541,7 +2819,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0084",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.521Z"
   },
   {
     "amendmentId": "135.08.12.2026-custeio",
@@ -2549,7 +2829,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0107",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.521Z"
   },
   {
     "amendmentId": "135.09.12.2026-custeio",
@@ -2557,7 +2839,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0119",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.521Z"
   },
   {
     "amendmentId": "135.10.12.2026-custeio",
@@ -2565,7 +2849,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0134",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.522Z"
   },
   {
     "amendmentId": "135.11.12.2026-investimento",
@@ -2573,7 +2859,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0150",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.522Z"
   },
   {
     "amendmentId": "135.12.12.2026-custeio",
@@ -2581,7 +2869,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0176",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.522Z"
   },
   {
     "amendmentId": "136.01.12.2026-custeio",
@@ -2589,7 +2879,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.080Z"
+    "vinculo": "08.804.0015",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.522Z"
   },
   {
     "amendmentId": "136.03.12.2026-custeio",
@@ -2597,7 +2889,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0051",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.522Z"
   },
   {
     "amendmentId": "136.06.12.2026-custeio",
@@ -2605,7 +2899,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0085",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.523Z"
   },
   {
     "amendmentId": "136.08.12.2026-custeio",
@@ -2613,7 +2909,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0108",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.523Z"
   },
   {
     "amendmentId": "136.09.12.2026-custeio",
@@ -2621,7 +2919,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0120",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.523Z"
   },
   {
     "amendmentId": "136.10.12.2026-custeio",
@@ -2629,7 +2929,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0135",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.523Z"
   },
   {
     "amendmentId": "136.11.12.2026-custeio",
@@ -2637,7 +2939,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0151",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.524Z"
   },
   {
     "amendmentId": "137.01.12.2026-custeio",
@@ -2645,7 +2949,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0016",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.524Z"
   },
   {
     "amendmentId": "137.03.12.2026-custeio",
@@ -2653,7 +2959,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0052",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.525Z"
   },
   {
     "amendmentId": "137.06.12.2026-custeio",
@@ -2661,7 +2969,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0086",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.525Z"
   },
   {
     "amendmentId": "137.08.12.2026-custeio",
@@ -2669,7 +2979,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0109",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.525Z"
   },
   {
     "amendmentId": "137.09.12.2026-custeio",
@@ -2677,7 +2989,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0121",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.525Z"
   },
   {
     "amendmentId": "137.10.12.2026-custeio",
@@ -2685,7 +2999,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0136",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.526Z"
   },
   {
     "amendmentId": "137.11.12.2026-custeio",
@@ -2693,7 +3009,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0152",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.526Z"
   },
   {
     "amendmentId": "137.12.12.2026-custeio",
@@ -2701,7 +3019,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.081Z"
+    "vinculo": "08.804.0177",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.526Z"
   },
   {
     "amendmentId": "138.01.09.2026-custeio",
@@ -2709,7 +3029,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0017",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.526Z"
   },
   {
     "amendmentId": "138.02.09.2026-custeio",
@@ -2717,7 +3039,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0029",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.527Z"
   },
   {
     "amendmentId": "138.03.09.2026-custeio",
@@ -2725,7 +3049,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0053",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.527Z"
   },
   {
     "amendmentId": "138.04.09.2026-custeio",
@@ -2733,7 +3059,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0064",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.527Z"
   },
   {
     "amendmentId": "138.05.09.2026-custeio",
@@ -2741,7 +3069,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0072",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.528Z"
   },
   {
     "amendmentId": "138.06.09.2026-custeio",
@@ -2749,7 +3079,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0087",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.528Z"
   },
   {
     "amendmentId": "138.08.09.2026-custeio",
@@ -2757,7 +3089,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0110",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.528Z"
   },
   {
     "amendmentId": "138.09.09.2026-custeio",
@@ -2765,7 +3099,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0122",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.528Z"
   },
   {
     "amendmentId": "138.10.09.2026-custeio",
@@ -2773,7 +3109,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0137",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.529Z"
   },
   {
     "amendmentId": "138.11.09.2026-custeio",
@@ -2781,7 +3119,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0153",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.529Z"
   },
   {
     "amendmentId": "138.12.09.2026-custeio",
@@ -2789,7 +3129,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0178",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.529Z"
   },
   {
     "amendmentId": "138.14.09.2026-custeio",
@@ -2797,7 +3139,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.082Z"
+    "vinculo": "08.804.0202",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.530Z"
   },
   {
     "amendmentId": "138.15.09.2026-custeio",
@@ -2805,7 +3149,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0218",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.530Z"
   },
   {
     "amendmentId": "138.17.09.2026-custeio",
@@ -2813,7 +3159,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0229",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.530Z"
   },
   {
     "amendmentId": "138.18.09.2026-custeio",
@@ -2821,7 +3169,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0241",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.530Z"
   },
   {
     "amendmentId": "138.19.09.2026-custeio",
@@ -2829,7 +3179,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0259",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.531Z"
   },
   {
     "amendmentId": "138.20.09.2026-custeio",
@@ -2837,7 +3189,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0270",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.531Z"
   },
   {
     "amendmentId": "138.21.09.2026-custeio",
@@ -2845,7 +3199,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0287",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.531Z"
   },
   {
     "amendmentId": "140.13.09.2026-custeio",
@@ -2853,7 +3209,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0191",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.531Z"
   },
   {
     "amendmentId": "140.21.09.2026-custeio",
@@ -2861,7 +3219,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0288",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.532Z"
   },
   {
     "amendmentId": "001.06.17.2026-custeio",
@@ -2869,7 +3229,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0073",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.532Z"
   },
   {
     "amendmentId": "031.13.15.2026-custeio",
@@ -2877,7 +3239,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0179",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.532Z"
   },
   {
     "amendmentId": "051.02.15.2026-custeio",
@@ -2885,7 +3249,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.083Z"
+    "vinculo": "08.804.0019",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.533Z"
   },
   {
     "amendmentId": "032.13.11.2026-custeio",
@@ -2893,7 +3259,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.114Z"
+    "vinculo": "08.804.0180",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.533Z"
   },
   {
     "amendmentId": "033.13.09.2026-ambos",
@@ -2901,7 +3269,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.114Z"
+    "vinculo": "08.804.0181",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.533Z"
   },
   {
     "amendmentId": "034.13.15.2026-custeio",
@@ -2909,15 +3279,19 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.114Z"
+    "vinculo": "08.804.0182",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.533Z"
   },
   {
     "amendmentId": "036.13.34.2026-investimento",
-    "reservado": "0,00",
+    "reservado": "26.590,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.115Z"
+    "vinculo": "08.804.0184",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.534Z"
   },
   {
     "amendmentId": "049.02.12.2026-ambos",
@@ -2925,7 +3299,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.115Z"
+    "vinculo": "08.804.0018",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.534Z"
   },
   {
     "amendmentId": "092.16.09.2026-custeio",
@@ -2933,7 +3309,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.115Z"
+    "vinculo": "08.804.0219",
+    "naturezaDespesa": "3.3.50.85.00 - CONTRATO DE GESTÃO",
+    "updatedAt": "2026-06-15T13:38:10.534Z"
   },
   {
     "amendmentId": "054.21.15.2026-custeio",
@@ -2941,7 +3319,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.115Z"
+    "vinculo": "08.804.0272",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.534Z"
   },
   {
     "amendmentId": "037.13.09.2026-investimento",
@@ -2949,7 +3329,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.115Z"
+    "vinculo": "08.804.0185",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.535Z"
   },
   {
     "amendmentId": "042.13.29.2026-custeio",
@@ -2957,7 +3339,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.115Z"
+    "vinculo": "08.804.0190",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.535Z"
   },
   {
     "amendmentId": "035.13.09.2026-investimento",
@@ -2965,7 +3349,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.116Z"
+    "vinculo": "08.804.0183",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.535Z"
   },
   {
     "amendmentId": "040.13.09.2026-custeio",
@@ -2973,7 +3359,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.116Z"
+    "vinculo": "08.804.0188",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.535Z"
   },
   {
     "amendmentId": "055.21.20.2026-investimento",
@@ -2981,7 +3369,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.116Z"
+    "vinculo": "08.804.0273",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.535Z"
   },
   {
     "amendmentId": "052.02.14.2026-custeio",
@@ -2989,7 +3379,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.116Z"
+    "vinculo": "08.804.0020",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.536Z"
   },
   {
     "amendmentId": "038.13.09.2026-investimento",
@@ -2997,7 +3389,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.116Z"
+    "vinculo": "08.804.0186",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.536Z"
   },
   {
     "amendmentId": "053.02.30.2026-custeio",
@@ -3005,7 +3399,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.116Z"
+    "vinculo": "08.804.0021",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.536Z"
   },
   {
     "amendmentId": "058.21.14.2026-custeio",
@@ -3013,7 +3409,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.116Z"
+    "vinculo": "08.804.0274",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.536Z"
   },
   {
     "amendmentId": "039.13.16.2026-investimento",
@@ -3021,7 +3419,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.116Z"
+    "vinculo": "08.804.0187",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.536Z"
   },
   {
     "amendmentId": "041.13.09.2026-custeio",
@@ -3029,7 +3429,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.117Z"
+    "vinculo": "08.804.0189",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.537Z"
   },
   {
     "amendmentId": "059.21.14.2026-investimento",
@@ -3037,7 +3439,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.117Z"
+    "vinculo": "08.804.0275",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.537Z"
   },
   {
     "amendmentId": "060.21.30.2026-investimento",
@@ -3045,7 +3449,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.117Z"
+    "vinculo": "08.804.0276",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.537Z"
   },
   {
     "amendmentId": "002.06.14.2026-ambos",
@@ -3053,7 +3459,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.117Z"
+    "vinculo": "08.804.0074",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.538Z"
   },
   {
     "amendmentId": "003.06.12.2026-custeio",
@@ -3061,7 +3469,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.117Z"
+    "vinculo": "08.804.0075",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.538Z"
   },
   {
     "amendmentId": "097.03.11.2026-custeio",
@@ -3069,7 +3479,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.118Z"
+    "vinculo": "08.804.0030",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.538Z"
   },
   {
     "amendmentId": "127.03.09.2026-ambos",
@@ -3077,7 +3489,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.118Z"
+    "vinculo": "08.804.0042",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.538Z"
   },
   {
     "amendmentId": "128.03.14.2026-custeio",
@@ -3085,7 +3499,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.118Z"
+    "vinculo": "08.804.0043",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.539Z"
   },
   {
     "amendmentId": "129.03.12.2026-ambos",
@@ -3093,7 +3509,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.118Z"
+    "vinculo": "08.804.0044",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.539Z"
   },
   {
     "amendmentId": "139.03.09.2026-custeio",
@@ -3101,7 +3519,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.118Z"
+    "vinculo": "08.804.0054",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.539Z"
   },
   {
     "amendmentId": "121.01.17.2026-custeio",
@@ -3109,7 +3529,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.118Z"
+    "vinculo": "08.804.0007",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.539Z"
   },
   {
     "amendmentId": "122.01.12.2026-custeio",
@@ -3117,7 +3539,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.119Z"
+    "vinculo": "08.804.0008",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.539Z"
   },
   {
     "amendmentId": "123.01.12.2026-custeio",
@@ -3125,7 +3549,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.119Z"
+    "vinculo": "08.804.0009",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.540Z"
   },
   {
     "amendmentId": "124.01.15.2026-custeio",
@@ -3133,7 +3559,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.119Z"
+    "vinculo": "08.804.0010",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.540Z"
   },
   {
     "amendmentId": "061.21.09.2026-investimento",
@@ -3141,7 +3569,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.119Z"
+    "vinculo": "08.804.0277",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.540Z"
   },
   {
     "amendmentId": "062.21.36.2026-custeio",
@@ -3149,7 +3579,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.119Z"
+    "vinculo": "08.804.0278",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.541Z"
   },
   {
     "amendmentId": "063.21.32.2026-investimento",
@@ -3157,7 +3589,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.120Z"
+    "vinculo": "08.804.0279",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.541Z"
   },
   {
     "amendmentId": "064.21.14.2026-ambos",
@@ -3165,7 +3599,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.120Z"
+    "vinculo": "08.804.0280",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.542Z"
   },
   {
     "amendmentId": "065.21.08.2026-ambos",
@@ -3173,7 +3609,7 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.120Z"
+    "updatedAt": "2026-06-12T17:36:07.417Z"
   },
   {
     "amendmentId": "079.21.14.2026-custeio",
@@ -3181,7 +3617,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.120Z"
+    "vinculo": "08.804.0284",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.542Z"
   },
   {
     "amendmentId": "004.04.34.2026-ambos",
@@ -3189,7 +3627,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.120Z"
+    "vinculo": "08.804.0055",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.543Z"
   },
   {
     "amendmentId": "005.04.20.2026-custeio",
@@ -3197,7 +3637,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.120Z"
+    "vinculo": "08.804.0056",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.543Z"
   },
   {
     "amendmentId": "006.04.14.2026-ambos",
@@ -3205,7 +3647,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.121Z"
+    "vinculo": "08.804.0057",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.544Z"
   },
   {
     "amendmentId": "007.04.30.2026-custeio",
@@ -3213,7 +3657,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.121Z"
+    "vinculo": "08.804.0058",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.544Z"
   },
   {
     "amendmentId": "008.04.12.2026-custeio",
@@ -3221,7 +3667,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.121Z"
+    "vinculo": "08.804.0059",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.544Z"
   },
   {
     "amendmentId": "009.04.02.2026-ambos",
@@ -3229,7 +3677,7 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.121Z"
+    "updatedAt": "2026-06-12T17:36:07.418Z"
   },
   {
     "amendmentId": "010.04.14.2026-custeio",
@@ -3237,7 +3685,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.121Z"
+    "vinculo": "08.804.0061",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.545Z"
   },
   {
     "amendmentId": "011.04.12.2026-custeio",
@@ -3245,7 +3695,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.121Z"
+    "vinculo": "08.804.0062",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.545Z"
   },
   {
     "amendmentId": "090.05.09.2026-investimento",
@@ -3253,7 +3705,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.121Z"
+    "vinculo": "08.804.0065",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.546Z"
   },
   {
     "amendmentId": "091.05.15.2026-custeio",
@@ -3261,7 +3715,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.121Z"
+    "vinculo": "08.804.0066",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.546Z"
   },
   {
     "amendmentId": "094.05.14.2026-investimento",
@@ -3269,7 +3725,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.121Z"
+    "vinculo": "08.804.0067",
+    "naturezaDespesa": "4.4.50.51.00 - OBRAS E INSTALAÇÕES",
+    "updatedAt": "2026-06-15T13:38:10.546Z"
   },
   {
     "amendmentId": "095.05.02.2026-investimento",
@@ -3277,7 +3735,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0068",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.546Z"
   },
   {
     "amendmentId": "125.05.17.2026-custeio",
@@ -3285,7 +3745,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0070",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.547Z"
   },
   {
     "amendmentId": "026.07.09.2026-ambos",
@@ -3293,7 +3755,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0088",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.547Z"
   },
   {
     "amendmentId": "047.07.15.2026-custeio",
@@ -3301,7 +3765,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0089",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.547Z"
   },
   {
     "amendmentId": "048.07.15.2026-custeio",
@@ -3309,7 +3775,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0090",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.547Z"
   },
   {
     "amendmentId": "050.07.14.2026-investimento",
@@ -3317,7 +3785,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0091",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.548Z"
   },
   {
     "amendmentId": "093.08.14.2026-ambos",
@@ -3325,7 +3795,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0093",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.548Z"
   },
   {
     "amendmentId": "096.08.11.2026-ambos",
@@ -3333,7 +3805,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0094",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.548Z"
   },
   {
     "amendmentId": "025.09.09.2026-investimento",
@@ -3341,7 +3815,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0111",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.548Z"
   },
   {
     "amendmentId": "074.10.09.2026-ambos",
@@ -3349,7 +3825,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0124",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.549Z"
   },
   {
     "amendmentId": "115.10.15.2026-ambos",
@@ -3357,7 +3835,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0129",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.549Z"
   },
   {
     "amendmentId": "012.11.08.2026-investimento",
@@ -3365,7 +3845,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0140",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.549Z"
   },
   {
     "amendmentId": "072.11.08.2026-investimento",
@@ -3373,7 +3855,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0139",
+    "naturezaDespesa": "4.4.90.51.00 - OBRAS E INSTALAÇÕES",
+    "updatedAt": "2026-06-15T13:38:10.549Z"
   },
   {
     "amendmentId": "073.11.08.2026-investimento",
@@ -3381,7 +3865,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.122Z"
+    "vinculo": "08.804.0140",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.549Z"
   },
   {
     "amendmentId": "080.12.09.2026-investimento",
@@ -3389,7 +3875,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.123Z"
+    "vinculo": "08.804.0154",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.550Z"
   },
   {
     "amendmentId": "081.12.14.2026-custeio",
@@ -3397,7 +3885,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.123Z"
+    "vinculo": "08.804.0155",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.550Z"
   },
   {
     "amendmentId": "082.12.09.2026-custeio",
@@ -3405,7 +3895,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.123Z"
+    "vinculo": "08.804.0156",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.550Z"
   },
   {
     "amendmentId": "083.12.17.2026-custeio",
@@ -3413,7 +3905,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.123Z"
+    "vinculo": "08.804.0157",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.550Z"
   },
   {
     "amendmentId": "084.12.09.2026-custeio",
@@ -3421,7 +3915,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.123Z"
+    "vinculo": "08.804.0158",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.551Z"
   },
   {
     "amendmentId": "085.12.30.2026-custeio",
@@ -3429,7 +3925,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.123Z"
+    "vinculo": "08.804.0159",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.551Z"
   },
   {
     "amendmentId": "086.12.09.2026-custeio",
@@ -3437,15 +3935,19 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.123Z"
+    "vinculo": "08.804.0160",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.551Z"
   },
   {
     "amendmentId": "087.12.12.2026-custeio",
-    "reservado": "0,00",
+    "reservado": "100.000,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.123Z"
+    "vinculo": "08.804.0161",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.551Z"
   },
   {
     "amendmentId": "088.12.14.2026-custeio",
@@ -3453,7 +3955,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.123Z"
+    "vinculo": "08.804.0162",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.552Z"
   },
   {
     "amendmentId": "089.12.09.2026-custeio",
@@ -3461,7 +3965,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0163",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.552Z"
   },
   {
     "amendmentId": "017.14.02.2026-custeio",
@@ -3469,7 +3975,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0192",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.552Z"
   },
   {
     "amendmentId": "018.14.09.2026-ambos",
@@ -3477,7 +3985,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0193",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.552Z"
   },
   {
     "amendmentId": "019.14.08.2026-custeio",
@@ -3485,7 +3995,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0194",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.553Z"
   },
   {
     "amendmentId": "020.14.12.2026-custeio",
@@ -3493,7 +4005,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0195",
+    "naturezaDespesa": "3.3.90.31.00 - PREMIAÇÕES CULTURAIS, ARTÍSTICAS, CIENTÍFICAS, DES",
+    "updatedAt": "2026-06-15T13:38:10.553Z"
   },
   {
     "amendmentId": "021.14.09.2026-custeio",
@@ -3501,7 +4015,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0196",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.553Z"
   },
   {
     "amendmentId": "022.14.11.2026-ambos",
@@ -3509,7 +4025,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0197",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.553Z"
   },
   {
     "amendmentId": "013.15.14.2026-ambos",
@@ -3517,7 +4035,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0203",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.554Z"
   },
   {
     "amendmentId": "014.15.15.2026-custeio",
@@ -3525,7 +4045,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0204",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.554Z"
   },
   {
     "amendmentId": "015.15.14.2026-custeio",
@@ -3533,7 +4055,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.124Z"
+    "vinculo": "08.804.0205",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.554Z"
   },
   {
     "amendmentId": "016.15.07.2026-custeio",
@@ -3541,7 +4065,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.125Z"
+    "vinculo": "08.804.0206",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.555Z"
   },
   {
     "amendmentId": "023.15.32.2026-custeio",
@@ -3549,7 +4075,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.125Z"
+    "vinculo": "08.804.0207",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.555Z"
   },
   {
     "amendmentId": "024.15.12.2026-custeio",
@@ -3557,7 +4085,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.125Z"
+    "vinculo": "08.804.0208",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.555Z"
   },
   {
     "amendmentId": "027.15.14.2026-investimento",
@@ -3565,7 +4095,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.125Z"
+    "vinculo": "08.804.0209",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.555Z"
   },
   {
     "amendmentId": "071.17.09.2026-custeio",
@@ -3573,7 +4105,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.126Z"
+    "vinculo": "08.804.0222",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.555Z"
   },
   {
     "amendmentId": "075.17.12.2026-custeio",
@@ -3581,7 +4115,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.126Z"
+    "vinculo": "08.804.0223",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.555Z"
   },
   {
     "amendmentId": "076.17.13.2026-investimento",
@@ -3589,7 +4125,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.126Z"
+    "vinculo": "08.804.0224",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.556Z"
   },
   {
     "amendmentId": "077.17.14.2026-investimento",
@@ -3597,7 +4135,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.126Z"
+    "vinculo": "08.804.0225",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.556Z"
   },
   {
     "amendmentId": "113.17.34.2026-ambos",
@@ -3605,7 +4145,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.126Z"
+    "vinculo": "08.804.0228",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.556Z"
   },
   {
     "amendmentId": "067.18.30.2026-custeio",
@@ -3613,7 +4155,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.126Z"
+    "vinculo": "08.804.0231",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.556Z"
   },
   {
     "amendmentId": "069.18.30.2026-custeio",
@@ -3621,7 +4165,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.126Z"
+    "vinculo": "08.804.0232",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.557Z"
   },
   {
     "amendmentId": "070.18.30.2026-investimentos",
@@ -3629,7 +4175,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.126Z"
+    "vinculo": "08.804.0233",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.557Z"
   },
   {
     "amendmentId": "098.18.02.2026-custeio",
@@ -3637,7 +4185,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0234",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.557Z"
   },
   {
     "amendmentId": "100.18.08.2026-custeio",
@@ -3645,7 +4195,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0235",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.558Z"
   },
   {
     "amendmentId": "101.18.17.2026-custeio",
@@ -3653,7 +4205,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0236",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.558Z"
   },
   {
     "amendmentId": "114.18.30.2026-custeio",
@@ -3661,7 +4215,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0239",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.559Z"
   },
   {
     "amendmentId": "116.18.12.2026-custeio",
@@ -3669,7 +4225,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0240",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.559Z"
   },
   {
     "amendmentId": "028.19.11.2026-custeio",
@@ -3677,7 +4235,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0242",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.559Z"
   },
   {
     "amendmentId": "029.19.12.2026-custeio",
@@ -3685,7 +4245,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0243",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.559Z"
   },
   {
     "amendmentId": "030.19.14.2026-custeio",
@@ -3693,7 +4255,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0244",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.560Z"
   },
   {
     "amendmentId": "043.19.09.2026-ambos",
@@ -3701,7 +4265,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0245",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.560Z"
   },
   {
     "amendmentId": "044.19.12.2026-custeio",
@@ -3709,7 +4275,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.127Z"
+    "vinculo": "08.804.0246",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.560Z"
   },
   {
     "amendmentId": "045.19.14.2026-ambos",
@@ -3717,7 +4285,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.128Z"
+    "vinculo": "08.804.0247",
+    "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.561Z"
   },
   {
     "amendmentId": "046.19.09.2026-ambos",
@@ -3725,7 +4295,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.128Z"
+    "vinculo": "08.804.0248",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.561Z"
   },
   {
     "amendmentId": "126.19.06.2026-custeio",
@@ -3733,7 +4305,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.128Z"
+    "vinculo": "08.804.0255",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.561Z"
   },
   {
     "amendmentId": "117.20.11.2026-ambos",
@@ -3741,7 +4315,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.128Z"
+    "vinculo": "08.804.0265",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.561Z"
   },
   {
     "amendmentId": "118.20.02.2026-investimento",
@@ -3749,7 +4325,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.129Z"
+    "vinculo": "08.804.0266",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.562Z"
   },
   {
     "amendmentId": "119.20.14.2026-custeio",
@@ -3757,7 +4335,9 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.129Z"
+    "vinculo": "08.804.0267",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.562Z"
   },
   {
     "amendmentId": "120.20.12.2026-custeio",
@@ -3765,47 +4345,59 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.129Z"
+    "vinculo": "08.804.0268",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.562Z"
   },
   {
     "amendmentId": "141.20.12.2026-custeio",
-    "reservado": "0,00",
+    "reservado": "250.000,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:27:58.129Z"
+    "vinculo": "08.804.0271",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.563Z"
   },
   {
     "amendmentId": "ext-202081001558",
-    "reservado": "242.080,00",
-    "empenhado": "0,00",
-    "liquidado": "0,00",
-    "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.684Z"
-  },
-  {
-    "amendmentId": "ext-202507265244",
-    "reservado": "217.933,64",
-    "empenhado": "0,00",
-    "liquidado": "0,00",
-    "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.684Z"
-  },
-  {
-    "amendmentId": "ext-202542210001",
-    "reservado": "20.461.432,21",
-    "empenhado": "0,00",
-    "liquidado": "0,00",
-    "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.684Z"
-  },
-  {
-    "amendmentId": "ext-202541300010",
     "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.685Z"
+    "vinculo": "05.800.0023",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.563Z"
+  },
+  {
+    "amendmentId": "ext-202507265244",
+    "reservado": "340.498,68",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "02.801.0001",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.563Z"
+  },
+  {
+    "amendmentId": "ext-202542210001",
+    "reservado": "340.498,68",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "02.801.0001",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.563Z"
+  },
+  {
+    "amendmentId": "ext-202541300010",
+    "reservado": "2.049.772,28",
+    "empenhado": "2.049.772,28",
+    "liquidado": "0,00",
+    "pago": "637.059,83",
+    "vinculo": "05.800.0010",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202544020003",
@@ -3813,31 +4405,39 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.685Z"
+    "vinculo": "05.800.0003",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202441300004",
-    "reservado": "633.747,70",
+    "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.685Z"
+    "vinculo": "05.800.0004",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202341300001",
-    "reservado": "240.775,40",
+    "reservado": "340.498,68",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.685Z"
+    "vinculo": "02.801.0001",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202281000306",
-    "reservado": "11.361,99",
+    "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.685Z"
+    "vinculo": "05.800.0024",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202544050003",
@@ -3845,31 +4445,39 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.686Z"
+    "vinculo": "05.800.0003",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202325200004",
-    "reservado": "226.072,60",
+    "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.686Z"
+    "vinculo": "05.800.0004",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202444020020",
-    "reservado": "132.152,39",
+    "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.686Z"
+    "vinculo": "05.800.0020",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202550410002",
-    "reservado": "4.224.592,07",
-    "empenhado": "4.224.592,07",
+    "reservado": "0,00",
+    "empenhado": "0,00",
     "liquidado": "0,00",
-    "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.686Z"
+    "pago": "200.000,00",
+    "vinculo": "05.800.0002",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202241300012",
@@ -3877,62 +4485,88 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.687Z"
+    "vinculo": "05.800.0012",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202515680006",
-    "reservado": "300.000,00",
+    "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.687Z"
+    "vinculo": "08.804.0006",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202541190001",
-    "reservado": "350.000,00",
-    "empenhado": "350.000,00",
-    "liquidado": "200.000,00",
-    "pago": "200.000,00",
-    "updatedAt": "2026-06-12T16:45:08.687Z"
+    "reservado": "340.498,68",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "02.801.0001",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.564Z"
   },
   {
     "amendmentId": "ext-202541300001",
-    "reservado": "135.618,41",
+    "reservado": "340.498,68",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.687Z"
+    "vinculo": "02.801.0001",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.565Z"
   },
   {
     "amendmentId": "ext-202425170011",
-    "reservado": "946.027,00",
+    "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.688Z"
+    "vinculo": "05.800.0011",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.565Z"
   },
   {
     "amendmentId": "ext-202544020016",
-    "reservado": "106.329,87",
+    "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.688Z"
+    "vinculo": "05.800.0016",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "updatedAt": "2026-06-15T13:38:10.565Z"
   },
   {
     "amendmentId": "ext-353440120230006",
-    "reservado": "186.900,00",
+    "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.688Z"
+    "vinculo": "08.804.0006",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.565Z"
   },
   {
     "amendmentId": "ext-353440120230005",
-    "reservado": "281.600,00",
+    "reservado": "344.444,44",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "updatedAt": "2026-06-12T16:45:08.689Z"
+    "vinculo": "05.800.0005",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "updatedAt": "2026-06-15T13:38:10.565Z"
+  },
+  {
+    "amendmentId": "112.17.15.2026-custeio",
+    "reservado": "300.000,00",
+    "empenhado": "300.000,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "08.804.0227",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "updatedAt": "2026-06-15T13:38:10.506Z"
   }
 ]

@@ -20,6 +20,7 @@ interface TechnicalDetailsAccordionProps {
 interface FieldItem {
     label: string;
     value: string | undefined;
+    mono?: boolean;   // Renderizar com fonte monoespaçada (ex: códigos)
 }
 
 const INVALID_VALUES = new Set(["", "-", "—", "n/a", "N/A", "Não informado", "não informado"]);
@@ -47,18 +48,27 @@ export default function TechnicalDetailsAccordion({
 }: TechnicalDetailsAccordionProps) {
     const [open, setOpen] = useState(false);
 
+    const hasParts = !!vinculo && vinculo.split(".").length === 3;
+    const parts = hasParts ? vinculo!.split(".") : [];
+
     const fields: FieldItem[] = [
         { label: "Órgão Beneficiário", value: orgaoBeneficiario },
         { label: "Município", value: municipio },
-        { label: "CNPJ", value: cnpj },
+        { label: "CNPJ", value: cnpj, mono: true },
         { label: "Fornecedor", value: fornecedor },
         { label: "Instrumento Jurídico", value: instrumentoJuridico },
         { label: "Prazo de Aplicação", value: prazoAplicacao },
-        { label: "Fonte de Recurso", value: fonteRecurso },
-        { label: "Código de Aplicação", value: codigoAplicacao },
-        { label: "Nº Licitação", value: numeroLicitacao },
-        { label: "Despesa", value: despesa },
-        { label: "Vínculo", value: vinculo },
+        ...(hasParts ? [
+            { label: "Fonte de Recurso", value: parts[0], mono: true },
+            { label: "Código de Aplicação", value: parts[1], mono: true },
+            { label: "Variável", value: parts[2], mono: true }
+        ] : [
+            { label: "Fonte de Recurso", value: fonteRecurso },
+            { label: "Código de Aplicação", value: codigoAplicacao, mono: true },
+            { label: "Vínculo (Portal SMARAPD)", value: vinculo, mono: true }
+        ]),
+        { label: "Nº Licitação", value: numeroLicitacao, mono: true },
+        { label: "Natureza da Despesa", value: despesa },
     ].filter(f => isValidValue(f.value));
 
     if (fields.length === 0) return null;
@@ -97,9 +107,15 @@ export default function TechnicalDetailsAccordion({
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
                                 {field.label}
                             </p>
-                            <p className="text-sm font-medium text-slate-800 break-words">
-                                {field.value}
-                            </p>
+                            {field.mono ? (
+                                <p className="text-sm font-mono font-semibold text-slate-800 bg-slate-50 border border-slate-100 rounded-md px-2 py-1 inline-block break-all">
+                                    {field.value}
+                                </p>
+                            ) : (
+                                <p className="text-sm font-medium text-slate-800 break-words">
+                                    {field.value}
+                                </p>
+                            )}
                         </div>
                     ))}
                 </div>

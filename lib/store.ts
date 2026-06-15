@@ -44,6 +44,8 @@ export interface Amendment {
     pago?: string;
     codigoAplicacao?: string;
     codigoAplicacaoVariavel?: string;
+    vinculo?: string;          // Código numérico do vínculo no portal SMARAPD (ex: "08.804.0061")
+    naturezaDespesa?: string;  // Natureza da Despesa do portal SMARAPD (ex: "3.3.90.30.00 - MATERIAL DE CONSUMO")
     // Event history (populated from financial.json)
     empenhos?: import("@/lib/json-storage").EmpenhoEvent[];
     liquidacoes?: import("@/lib/json-storage").LiquidacaoEvent[];
