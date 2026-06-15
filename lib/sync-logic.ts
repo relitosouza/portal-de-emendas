@@ -48,6 +48,7 @@ interface PortalRecord {
 
 interface AggregatedPortalRecord {
     Vinculo: string;
+    ClassificacaoFuncional: string;
     AutorEmenda: string;
     Objeto: string;
     Empenhado: number;
@@ -111,7 +112,7 @@ function normalizeVinculo(str: string): string {
 }
 
 /**
- * Agrupa registros do portal pelo campo Vinculo, somando os valores financeiros.
+ * Agrupa registros do portal pelo campo Vinculo + ClassificacaoFuncional.
  * Considera e deduz os empenhos e liquidações anulados.
  */
 function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
@@ -119,9 +120,11 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
 
     for (const r of records) {
         const vinculo = r.Vinculo?.trim() || '';
+        const cf = r.ClassificacaoFuncional?.trim() || '';
         if (!vinculo) continue;
 
-        const existing = map.get(vinculo);
+        const key = `${vinculo}_${cf}`;
+        const existing = map.get(key);
         
         // Empenho Líquido (Empenhado - Empenhado Anulado)
         const empenhadoOriginal = parseCurrency(r.Empenhado);
@@ -156,8 +159,9 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
             existing.Reservado += reservado;
             existing.SaldoAtual += saldo;
         } else {
-            map.set(vinculo, {
+            map.set(key, {
                 Vinculo: vinculo,
+                ClassificacaoFuncional: cf,
                 AutorEmenda: r.AutorEmenda || '',
                 Objeto: r.Objeto || '',
                 Empenhado: empenhado,
@@ -175,18 +179,13 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
 }
 
 /**
- * Tenta fazer o match entre uma emenda local e os registros agregados do portal.
- *
- * Estratégia de matching (em ordem de prioridade):
- * 1. Vínculo numérico exato: o campo `numeroConta` ou `codigoAplicacao` da emenda local
- *    corresponde ao `Vinculo` do portal (ex: "05.800.0005").
- * 2. Número da emenda contido no vínculo: "202541300010" em "05.800.0010".
- * 3. Correspondência por autor + objeto (fallback).
+ * Tenta fazer o match entre uma emenda local e todos os registros correspondentes do portal.
+ * Retorna todos os sub-vínculos (com diferentes classificações funcionais) que casarem.
  */
-function findPortalMatch(
+function findPortalMatches(
     local: Record<string, string>,
     aggregated: AggregatedPortalRecord[]
-): AggregatedPortalRecord | undefined {
+): AggregatedPortalRecord[] {
 
     // 1. Match pelo campo numeroConta ou codigoAplicacao (código de vínculo exato)
     const localVinculoCodes = [
@@ -196,17 +195,17 @@ function findPortalMatch(
     ].filter(Boolean).map(normalizeVinculo);
 
     if (localVinculoCodes.length > 0) {
-        const exactMatch = aggregated.find(p =>
+        const matches = aggregated.filter(p =>
             localVinculoCodes.includes(normalizeVinculo(p.Vinculo))
         );
-        if (exactMatch) return exactMatch;
+        if (matches.length > 0) return matches;
     }
 
     // 2. Últimos 4 dígitos do número da emenda vs últimos 4 dígitos do vínculo + Autor compatível
     const numEmenda = local.numeroEmenda?.replace(/\D/g, '') || '';
     if (numEmenda.length >= 4) {
         const lastFour = numEmenda.slice(-4);
-        const vinculoMatch = aggregated.find(p => {
+        const matches = aggregated.filter(p => {
             const pVinculoDigits = normalizeVinculo(p.Vinculo);
             // Código de vínculo termina com o sufixo da emenda: "05.800.0010" → "0010"
             const digitsMatch = pVinculoDigits.endsWith(lastFour);
@@ -217,7 +216,7 @@ function findPortalMatch(
             }
             return false;
         });
-        if (vinculoMatch) return vinculoMatch;
+        if (matches.length > 0) return matches;
     }
 
     // 3. Fallback: autor + primeiros 30 chars do objeto
@@ -231,7 +230,7 @@ function findPortalMatch(
         return local.objeto.substring(0, 30).toLowerCase() === p.Objeto.substring(0, 30).toLowerCase();
     };
 
-    return aggregated.find(p => authorMatch(p) && objectMatch(p));
+    return aggregated.filter(p => authorMatch(p) && objectMatch(p));
 }
 
 export async function runFinancialSync() {
@@ -278,41 +277,98 @@ export async function runFinancialSync() {
     const portalRecords = portalData.Valores as PortalRecord[];
     console.log(`[Sync] ${portalRecords.length} registros recebidos do portal.`);
 
-    // Agrupa pelo Vinculo (código numérico), somando valores financeiros
+    // Agrupa pelo Vinculo + ClassificacaoFuncional, somando valores financeiros
     const aggregated = aggregateByVinculo(portalRecords);
-    console.log(`[Sync] ${aggregated.length} vínculos únicos após agregação.`);
+    console.log(`[Sync] ${aggregated.length} sub-vínculos únicos (Vínculo + CF) após agregação.`);
+
+    const mainAmendments = await readJsonFile<any>(AMENDMENTS_FILE);
+    const externalAmendments = await readJsonFile<any>("emendas-externas.json");
+    const existingFinancial = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
+
+    // Mantenha cópias para atualizar/inserir novos clones desmembrados
+    const updatedMain = [...mainAmendments];
+    const updatedExternal = [...externalAmendments];
 
     const localAmendments = [
-        ...await readJsonFile<Record<string, string>>(AMENDMENTS_FILE),
-        ...await readJsonFile<Record<string, string>>("emendas-externas.json"),
+        ...mainAmendments.map((a: any) => ({ ...a, originFile: AMENDMENTS_FILE })),
+        ...externalAmendments.map((a: any) => ({ ...a, originFile: "emendas-externas.json" }))
     ];
-    const existingFinancial = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
 
     const financialMap = new Map<string, FinancialRecord>();
     existingFinancial.forEach(r => financialMap.set(r.amendmentId, r));
 
     let matchedCount = 0;
-    for (const local of localAmendments) {
-        const portalMatch = findPortalMatch(local, aggregated);
+    const allAmendmentIds = new Set(localAmendments.map((a: any) => a.id));
 
-        if (portalMatch) {
+    for (const local of localAmendments) {
+        // Ignora emendas desmembradas clonadas em execuções anteriores, pois as originais
+        // serão as responsáveis por gerenciar/recriar as ramificações de classificação funcional.
+        if (local.id.includes("_cf_")) {
+            continue;
+        }
+
+        const portalMatches = findPortalMatches(local, aggregated);
+
+        if (portalMatches.length > 0) {
+            // 1. O primeiro match atualiza a emenda original
+            const firstMatch = portalMatches[0];
             financialMap.set(local.id, {
                 amendmentId: local.id,
-                reservado: parsePortalCurrency(String(portalMatch.Reservado)),
-                empenhado: parsePortalCurrency(String(portalMatch.Empenhado)),
-                liquidado: parsePortalCurrency(String(portalMatch.Liquidado)),
-                pago: parsePortalCurrency(String(portalMatch.ValorPago)),
-                vinculo: portalMatch.Vinculo,   // código numérico ex: "08.804.0061"
-                naturezaDespesa: portalMatch.NaturezaDespesa && portalMatch.DescricaoNaturezaDespesa
-                    ? `${portalMatch.NaturezaDespesa.trim()} - ${portalMatch.DescricaoNaturezaDespesa.trim()}`
-                    : portalMatch.NaturezaDespesa?.trim(),
+                reservado: parsePortalCurrency(String(firstMatch.Reservado)),
+                empenhado: parsePortalCurrency(String(firstMatch.Empenhado)),
+                liquidado: parsePortalCurrency(String(firstMatch.Liquidado)),
+                pago: parsePortalCurrency(String(firstMatch.ValorPago)),
+                vinculo: firstMatch.Vinculo,
+                naturezaDespesa: firstMatch.NaturezaDespesa && firstMatch.DescricaoNaturezaDespesa
+                    ? `${firstMatch.NaturezaDespesa.trim()} - ${firstMatch.DescricaoNaturezaDespesa.trim()}`
+                    : firstMatch.NaturezaDespesa?.trim(),
+                classificacaoFuncional: firstMatch.ClassificacaoFuncional,
                 updatedAt: new Date().toISOString()
             });
             matchedCount++;
-            console.log(`[Sync] ✓ Match: "${local.autor}" / "${local.objeto?.substring(0, 40)}" → Vínculo ${portalMatch.Vinculo}`);
+            console.log(`[Sync] ✓ Match (Original): "${local.autor}" / "${local.objeto?.substring(0, 35)}" → CF ${firstMatch.ClassificacaoFuncional}`);
+
+            // 2. Matches subsequentes geram emendas clonadas (desmembradas) por classificação funcional
+            for (let i = 1; i < portalMatches.length; i++) {
+                const match = portalMatches[i];
+                const cleanCf = match.ClassificacaoFuncional.replace(/\D/g, '');
+                const cloneId = `${local.id}_cf_${cleanCf}`;
+
+                if (!allAmendmentIds.has(cloneId)) {
+                    console.log(`[Sync] + Desmembrando emenda (Criando Clone por CF): "${local.autor}" -> ID: ${cloneId}`);
+                    const clone = {
+                        ...local,
+                        id: cloneId,
+                        classificacaoFuncional: match.ClassificacaoFuncional,
+                        objeto: `${local.objeto} (CF ${match.ClassificacaoFuncional.trim()})`
+                    };
+                    delete (clone as any).originFile;
+
+                    if (local.originFile === AMENDMENTS_FILE) {
+                        updatedMain.push(clone);
+                    } else {
+                        updatedExternal.push(clone);
+                    }
+                    allAmendmentIds.add(cloneId);
+                }
+
+                financialMap.set(cloneId, {
+                    amendmentId: cloneId,
+                    reservado: parsePortalCurrency(String(match.Reservado)),
+                    empenhado: parsePortalCurrency(String(match.Empenhado)),
+                    liquidado: parsePortalCurrency(String(match.Liquidado)),
+                    pago: parsePortalCurrency(String(match.ValorPago)),
+                    vinculo: match.Vinculo,
+                    naturezaDespesa: match.NaturezaDespesa && match.DescricaoNaturezaDespesa
+                        ? `${match.NaturezaDespesa.trim()} - ${match.DescricaoNaturezaDespesa.trim()}`
+                        : match.NaturezaDespesa?.trim(),
+                    classificacaoFuncional: match.ClassificacaoFuncional,
+                    updatedAt: new Date().toISOString()
+                });
+                matchedCount++;
+            }
         } else {
-            // Se tinha vínculo associado anteriormente, mas agora não tem match válido,
-            // limpa os dados financeiros e o vínculo para evitar carregar dados incorretos de outro autor.
+            // Se tinha vínculo associado anteriormente, mas agora não tem match válido, limpa
             const existing = financialMap.get(local.id);
             if (existing && existing.vinculo) {
                 console.log(`[Sync] ✗ Desvinculando (sem match válido): "${local.autor}" / "${local.objeto?.substring(0, 40)}"`);
@@ -324,17 +380,19 @@ export async function runFinancialSync() {
                     pago: "0,00",
                     vinculo: "",
                     naturezaDespesa: "",
+                    classificacaoFuncional: "",
                     updatedAt: new Date().toISOString()
                 });
             }
         }
     }
 
+    // Salvar as emendas e os dados financeiros
+    await writeJsonFile(AMENDMENTS_FILE, updatedMain);
+    await writeJsonFile("emendas-externas.json", updatedExternal);
     await writeJsonFile(FINANCIAL_FILE, Array.from(financialMap.values()));
-
-    // Salvar meta-informação da última sincronização
     await writeJsonFile("sync_info.json", [{ lastSync: new Date().toISOString() }]);
 
-    console.log(`[Sync] Concluído: ${matchedCount} emendas atualizadas de ${localAmendments.length} locais.`);
+    console.log(`[Sync] Concluído: ${matchedCount} emendas atualizadas/criadas.`);
     return matchedCount;
 }

@@ -14,6 +14,7 @@ interface TechnicalDetailsAccordionProps {
     numeroLicitacao?: string;
     despesa?: string;
     vinculo?: string;
+    classificacaoFuncional?: string;
     headingLevel?: "h2" | "h3" | "h4";
 }
 
@@ -44,6 +45,7 @@ export default function TechnicalDetailsAccordion({
     numeroLicitacao,
     despesa,
     vinculo,
+    classificacaoFuncional,
     headingLevel: HeadingTag = "h2",
 }: TechnicalDetailsAccordionProps) {
     const [open, setOpen] = useState(false);
@@ -68,6 +70,7 @@ export default function TechnicalDetailsAccordion({
             { label: "Vínculo (Portal SMARAPD)", value: vinculo, mono: true }
         ]),
         { label: "Nº Licitação", value: numeroLicitacao, mono: true },
+        { label: "Classificação Funcional", value: classificacaoFuncional, mono: true },
         { label: "Natureza da Despesa", value: despesa },
     ].filter(f => isValidValue(f.value));
 

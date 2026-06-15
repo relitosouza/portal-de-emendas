@@ -196,6 +196,7 @@ export interface FinancialRecord {
     updatedAt: string;
     vinculo?: string;   // Código numérico do vínculo SMARAPD (ex: "08.804.0061")
     naturezaDespesa?: string; // Natureza da despesa (ex: "3.3.90.30.00 - MATERIAL DE CONSUMO")
+    classificacaoFuncional?: string; // Classificação Funcional (ex: "08.245.0018.2.016")
     // Event history (undefined on old records — treat as [])
     empenhos?: EmpenhoEvent[];
     liquidacoes?: LiquidacaoEvent[];
@@ -456,6 +457,8 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
                 vinculo: financial.vinculo ?? amendment.vinculo,
                 // Natureza de despesa do portal SMARAPD
                 naturezaDespesa: financial.naturezaDespesa ?? amendment.naturezaDespesa,
+                // Classificação funcional do portal SMARAPD
+                classificacaoFuncional: financial.classificacaoFuncional ?? amendment.classificacaoFuncional,
                 // Pass event history to amendment
                 empenhos: financial.empenhos ?? [],
                 liquidacoes: financial.liquidacoes ?? [],
