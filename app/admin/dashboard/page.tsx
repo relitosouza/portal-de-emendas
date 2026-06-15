@@ -43,10 +43,12 @@ export default function DashboardPage() {
                 const syncData = await syncRes.json();
                 if (syncData.lastSync) setLastSync(syncData.lastSync);
 
-                const response = await fetch("/api/amendments");
+                const response = await fetch("/api/amendments?limit=1000");
                 const data = await response.json();
                 if (data.warning || data.error) {
                     setAmendments(getAmendments());
+                } else if (data && Array.isArray(data.data)) {
+                    setAmendments(data.data);
                 } else if (Array.isArray(data)) {
                     setAmendments(data);
                 } else {
@@ -203,9 +205,13 @@ export default function DashboardPage() {
                 });
                 
                 // Refresh list to show updated values
-                const dataRes = await fetch("/api/amendments");
+                const dataRes = await fetch("/api/amendments?limit=1000");
                 const data = await dataRes.json();
-                if (Array.isArray(data)) setAmendments(data);
+                if (data && Array.isArray(data.data)) {
+                    setAmendments(data.data);
+                } else if (Array.isArray(data)) {
+                    setAmendments(data);
+                }
                 
                 const syncDataRes = await fetch("/api/sync-financeiro");
                 const syncDataNext = await syncDataRes.json();
@@ -242,9 +248,13 @@ export default function DashboardPage() {
                 });
                 
                 // Reload amendments
-                const dataRes = await fetch("/api/amendments");
+                const dataRes = await fetch("/api/amendments?limit=1000");
                 const data = await dataRes.json();
-                if (Array.isArray(data)) setAmendments(data);
+                if (data && Array.isArray(data.data)) {
+                    setAmendments(data.data);
+                } else if (Array.isArray(data)) {
+                    setAmendments(data);
+                }
             } else {
                 setSeedFeedback({ 
                     type: "error", 
@@ -275,9 +285,13 @@ export default function DashboardPage() {
                 } else {
                     setImportFeedback({ type: "success", message: `${result.amendments} emendas importadas${result.financial > 0 ? `, ${result.financial} registros financeiros extraídos` : ""}` });
                     // Reload amendments
-                    const dataRes = await fetch("/api/amendments");
+                    const dataRes = await fetch("/api/amendments?limit=1000");
                     const data = await dataRes.json();
-                    if (Array.isArray(data)) setAmendments(data);
+                    if (data && Array.isArray(data.data)) {
+                        setAmendments(data.data);
+                    } else if (Array.isArray(data)) {
+                        setAmendments(data);
+                    }
                 }
             } else {
                 setImportFeedback({ type: "error", message: result.error || "Erro ao importar" });

@@ -41,15 +41,20 @@ export default function EditAmendmentPage({ params }: PageProps) {
     useEffect(() => {
         async function fetchAmendment() {
             try {
-                const response = await fetch("/api/amendments");
+                const response = await fetch("/api/amendments?limit=1000");
                 const data = await response.json();
-                if (Array.isArray(data)) {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const found = data.find((a: any) => a.id === id);
-                    if (found) {
-                        setAmendment(found);
-                        setFormData({ ...found });
-                    }
+                let rawData: any[] = [];
+                if (data && Array.isArray(data.data)) {
+                    rawData = data.data;
+                } else if (Array.isArray(data)) {
+                    rawData = data;
+                }
+                
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const found = rawData.find((a: any) => a.id === id);
+                if (found) {
+                    setAmendment(found);
+                    setFormData({ ...found });
                 }
             } catch (error) {
                 console.error("Failed to fetch amendment", error);
