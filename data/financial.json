@@ -1391,7 +1391,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0230",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.453Z"
+    "classificacaoFuncional": "14.242.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.316Z"
   },
   {
     "amendmentId": "066.21.30.2026-custeio",
@@ -1401,7 +1402,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0282",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.454Z"
+    "classificacaoFuncional": "14.242.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.319Z"
   },
   {
     "amendmentId": "068.10.12.2026-custeio",
@@ -1411,7 +1413,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0123",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.455Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.321Z"
   },
   {
     "amendmentId": "068.17.12.2026-custeio",
@@ -1421,7 +1424,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0221",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.455Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.322Z"
   },
   {
     "amendmentId": "068.19.12.2026-custeio",
@@ -1431,7 +1435,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0249",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.455Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.324Z"
   },
   {
     "amendmentId": "078.02.09.2026-custeio",
@@ -1441,7 +1446,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0023",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.456Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.325Z"
   },
   {
     "amendmentId": "078.02.09.2026-investimento",
@@ -1451,7 +1457,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0023",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.456Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.326Z"
   },
   {
     "amendmentId": "078.21.09.2026-custeio",
@@ -1461,7 +1468,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0283",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.456Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.327Z"
   },
   {
     "amendmentId": "078.21.09.2026-investimento",
@@ -1471,7 +1479,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0283",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.456Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.328Z"
   },
   {
     "amendmentId": "099.03.12.2026-custeio",
@@ -1481,7 +1490,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0031",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.457Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.329Z"
   },
   {
     "amendmentId": "099.09.12.2026-custeio",
@@ -1491,7 +1501,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0112",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.457Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.330Z"
   },
   {
     "amendmentId": "099.12.12.2026-custeio",
@@ -1501,7 +1512,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0164",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.458Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.330Z"
   },
   {
     "amendmentId": "102.01.02.2026-custeio",
@@ -1511,7 +1523,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0001",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.458Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.331Z"
   },
   {
     "amendmentId": "102.02.02.2026-custeio",
@@ -1521,7 +1534,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0024",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.459Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.333Z"
   },
   {
     "amendmentId": "102.03.02.2026-custeio",
@@ -1531,7 +1545,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0032",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.459Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.334Z"
   },
   {
     "amendmentId": "102.06.02.2026-custeio",
@@ -1541,7 +1556,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0076",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.460Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.334Z"
   },
   {
     "amendmentId": "102.08.02.2026-custeio",
@@ -1551,7 +1567,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0095",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.460Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.336Z"
   },
   {
     "amendmentId": "102.10.02.2026-custeio",
@@ -1561,7 +1578,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0125",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.461Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.337Z"
   },
   {
     "amendmentId": "102.11.02.2026-custeio",
@@ -1571,7 +1589,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0141",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.461Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.338Z"
   },
   {
     "amendmentId": "102.12.02.2026-custeio",
@@ -1581,7 +1600,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0165",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.462Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.341Z"
   },
   {
     "amendmentId": "102.14.02.2026-custeio",
@@ -1591,7 +1611,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0198",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.462Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.342Z"
   },
   {
     "amendmentId": "102.15.02.2026-custeio",
@@ -1601,7 +1622,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0210",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.462Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.342Z"
   },
   {
     "amendmentId": "102.18.02.2026-custeio",
@@ -1611,7 +1633,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0237",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.463Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.343Z"
   },
   {
     "amendmentId": "102.19.02.2026-custeio",
@@ -1621,7 +1644,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0250",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.463Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.343Z"
   },
   {
     "amendmentId": "102.20.02.2026-custeio",
@@ -1631,7 +1655,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0260",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.464Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.344Z"
   },
   {
     "amendmentId": "102.21.02.2026-custeio",
@@ -1641,7 +1666,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0285",
     "naturezaDespesa": "3.3.90.32.00 - MATERIAL DE DISTRIBUIÇÃO GRATUITA",
-    "updatedAt": "2026-06-15T13:38:10.464Z"
+    "classificacaoFuncional": "08.244.0019.2.024",
+    "updatedAt": "2026-06-17T14:57:31.344Z"
   },
   {
     "amendmentId": "103.02.34.2026-investimento",
@@ -1651,7 +1677,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0025",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.465Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.345Z"
   },
   {
     "amendmentId": "103.03.34.2026-investimento",
@@ -1661,7 +1688,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0033",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.465Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.345Z"
   },
   {
     "amendmentId": "103.08.34.2026-investimento",
@@ -1671,7 +1699,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0096",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.465Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.346Z"
   },
   {
     "amendmentId": "103.10.34.2026-investimento",
@@ -1681,7 +1710,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0126",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.466Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.346Z"
   },
   {
     "amendmentId": "103.12.34.2026-investimento",
@@ -1691,7 +1721,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0166",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.466Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.347Z"
   },
   {
     "amendmentId": "103.14.34.2026-investimento",
@@ -1701,7 +1732,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0199",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.467Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.348Z"
   },
   {
     "amendmentId": "103.15.34.2026-investimento",
@@ -1711,7 +1743,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0211",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.467Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.351Z"
   },
   {
     "amendmentId": "103.19.34.2026-investimento",
@@ -1721,7 +1754,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0251",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.467Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.351Z"
   },
   {
     "amendmentId": "103.20.34.2026-investimento",
@@ -1731,7 +1765,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0261",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.468Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.354Z"
   },
   {
     "amendmentId": "104.03.15.2026-custeio",
@@ -1741,7 +1776,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0034",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.468Z"
+    "classificacaoFuncional": "13.392.0009.2.028",
+    "updatedAt": "2026-06-17T14:57:31.355Z"
   },
   {
     "amendmentId": "104.15.15.2026-custeio",
@@ -1751,7 +1787,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0212",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.468Z"
+    "classificacaoFuncional": "13.392.0009.2.028",
+    "updatedAt": "2026-06-17T14:57:31.358Z"
   },
   {
     "amendmentId": "104.19.15.2026-custeio",
@@ -1761,7 +1798,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0252",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.468Z"
+    "classificacaoFuncional": "13.392.0009.2.028",
+    "updatedAt": "2026-06-17T14:57:31.359Z"
   },
   {
     "amendmentId": "104.20.15.2026-custeio",
@@ -1771,7 +1809,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0262",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.469Z"
+    "classificacaoFuncional": "13.392.0009.2.028",
+    "updatedAt": "2026-06-17T14:57:31.359Z"
   },
   {
     "amendmentId": "105.01.14.2026-custeio",
@@ -1781,7 +1820,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0002",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.469Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.360Z"
   },
   {
     "amendmentId": "105.03.14.2026-custeio",
@@ -1791,7 +1831,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0035",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.469Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.361Z"
   },
   {
     "amendmentId": "105.06.14.2026-custeio",
@@ -1801,7 +1842,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0077",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.469Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.362Z"
   },
   {
     "amendmentId": "105.08.14.2026-custeio",
@@ -1811,7 +1853,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0097",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.470Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.365Z"
   },
   {
     "amendmentId": "105.12.14.2026-custeio",
@@ -1821,7 +1864,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0167",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.470Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.365Z"
   },
   {
     "amendmentId": "105.14.14.2026-custeio",
@@ -1831,7 +1875,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0200",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.470Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.366Z"
   },
   {
     "amendmentId": "105.15.14.2026-custeio",
@@ -1841,7 +1886,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0213",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.471Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.367Z"
   },
   {
     "amendmentId": "105.19.14.2026-custeio",
@@ -1851,7 +1897,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0253",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.471Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.368Z"
   },
   {
     "amendmentId": "105.20.14.2026-custeio",
@@ -1861,7 +1908,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0263",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.471Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.374Z"
   },
   {
     "amendmentId": "106.02.09.2026-custeio",
@@ -1871,7 +1919,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0026",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.471Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.374Z"
   },
   {
     "amendmentId": "106.03.09.2026-custeio",
@@ -1881,7 +1930,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0036",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.471Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.375Z"
   },
   {
     "amendmentId": "106.04.09.2026-custeio",
@@ -1891,7 +1941,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0063",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.472Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.375Z"
   },
   {
     "amendmentId": "106.05.09.2026-custeio",
@@ -1901,7 +1952,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0069",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.472Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.375Z"
   },
   {
     "amendmentId": "106.06.09.2026-custeio",
@@ -1911,7 +1963,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0078",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.472Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.376Z"
   },
   {
     "amendmentId": "106.08.09.2026-custeio",
@@ -1921,7 +1974,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0098",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.472Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.376Z"
   },
   {
     "amendmentId": "106.09.09.2026-custeio",
@@ -1931,7 +1985,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0113",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.472Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.376Z"
   },
   {
     "amendmentId": "106.11.09.2026-custeio",
@@ -1941,7 +1996,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0142",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.473Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.377Z"
   },
   {
     "amendmentId": "106.12.09.2026-custeio",
@@ -1951,7 +2007,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0168",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.473Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.377Z"
   },
   {
     "amendmentId": "106.14.09.2026-custeio",
@@ -1961,7 +2018,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0201",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.473Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.377Z"
   },
   {
     "amendmentId": "106.15.09.2026-custeio",
@@ -1971,7 +2029,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0214",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.474Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.378Z"
   },
   {
     "amendmentId": "106.17.09.2026-custeio",
@@ -1981,7 +2040,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0226",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.474Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.378Z"
   },
   {
     "amendmentId": "106.18.09.2026-custeio",
@@ -1991,7 +2051,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0238",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.475Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.378Z"
   },
   {
     "amendmentId": "106.19.09.2026-custeio",
@@ -2001,7 +2062,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0254",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.475Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.379Z"
   },
   {
     "amendmentId": "106.20.09.2026-custeio",
@@ -2011,7 +2073,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0264",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.475Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.379Z"
   },
   {
     "amendmentId": "106.21.09.2026-custeio",
@@ -2021,7 +2084,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0286",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.476Z"
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.379Z"
   },
   {
     "amendmentId": "107.03.12.2026-custeio",
@@ -2031,7 +2095,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0037",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.476Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.380Z"
   },
   {
     "amendmentId": "107.08.12.2026-custeio",
@@ -2041,7 +2106,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0099",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.477Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.380Z"
   },
   {
     "amendmentId": "108.01.12.2026-custeio",
@@ -2051,7 +2117,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0003",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.477Z"
+    "classificacaoFuncional": "27.812.0010.1.002",
+    "updatedAt": "2026-06-17T14:57:31.380Z"
   },
   {
     "amendmentId": "108.03.12.2026-custeio",
@@ -2061,7 +2128,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0038",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.478Z"
+    "classificacaoFuncional": "27.812.0010.1.002",
+    "updatedAt": "2026-06-17T14:57:31.381Z"
   },
   {
     "amendmentId": "108.06.12.2026-custeio",
@@ -2071,7 +2139,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0079",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.478Z"
+    "classificacaoFuncional": "27.812.0010.1.002",
+    "updatedAt": "2026-06-17T14:57:31.381Z"
   },
   {
     "amendmentId": "108.08.12.2026-custeio",
@@ -2081,7 +2150,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0100",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.478Z"
+    "classificacaoFuncional": "27.812.0010.1.002",
+    "updatedAt": "2026-06-17T14:57:31.381Z"
   },
   {
     "amendmentId": "108.09.12.2026-custeio",
@@ -2091,7 +2161,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0114",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.480Z"
+    "classificacaoFuncional": "27.812.0010.1.002",
+    "updatedAt": "2026-06-17T14:57:31.382Z"
   },
   {
     "amendmentId": "108.10.12.2026-custeio",
@@ -2101,7 +2172,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0127",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.481Z"
+    "classificacaoFuncional": "27.812.0010.1.002",
+    "updatedAt": "2026-06-17T14:57:31.382Z"
   },
   {
     "amendmentId": "108.11.12.2026-custeio",
@@ -2111,7 +2183,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0143",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.481Z"
+    "classificacaoFuncional": "27.812.0010.1.002",
+    "updatedAt": "2026-06-17T14:57:31.383Z"
   },
   {
     "amendmentId": "108.12.12.2026-custeio",
@@ -2121,7 +2194,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0169",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.481Z"
+    "classificacaoFuncional": "27.812.0010.1.002",
+    "updatedAt": "2026-06-17T14:57:31.383Z"
   },
   {
     "amendmentId": "109.01.12.2026-custeio",
@@ -2131,7 +2205,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0004",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.482Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.384Z"
   },
   {
     "amendmentId": "109.03.12.2026-custeio",
@@ -2141,7 +2216,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0039",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.482Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.384Z"
   },
   {
     "amendmentId": "109.06.12.2026-custeio",
@@ -2151,7 +2227,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0080",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.482Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.385Z"
   },
   {
     "amendmentId": "109.08.12.2026-custeio",
@@ -2161,7 +2238,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0101",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.483Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.385Z"
   },
   {
     "amendmentId": "109.09.12.2026-custeio",
@@ -2171,7 +2249,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0115",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.483Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.385Z"
   },
   {
     "amendmentId": "109.11.12.2026-custeio",
@@ -2181,7 +2260,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0144",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.483Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.385Z"
   },
   {
     "amendmentId": "109.12.12.2026-custeio",
@@ -2191,7 +2271,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0170",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.484Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.386Z"
   },
   {
     "amendmentId": "109.15.12.2026-custeio",
@@ -2201,7 +2282,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0215",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.484Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.386Z"
   },
   {
     "amendmentId": "110.01.12.2026-custeio",
@@ -2251,7 +2333,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0006",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.485Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.388Z"
   },
   {
     "amendmentId": "111.03.12.2026-custeio",
@@ -2261,7 +2344,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0041",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.486Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.389Z"
   },
   {
     "amendmentId": "111.06.12.2026-custeio",
@@ -2271,7 +2355,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0081",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.486Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.389Z"
   },
   {
     "amendmentId": "111.08.12.2026-custeio",
@@ -2281,7 +2366,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0102",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.486Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.389Z"
   },
   {
     "amendmentId": "111.09.12.2026-custeio",
@@ -2291,7 +2377,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0116",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.486Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.389Z"
   },
   {
     "amendmentId": "111.10.12.2026-custeio",
@@ -2301,7 +2388,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0128",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.487Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.390Z"
   },
   {
     "amendmentId": "111.11.12.2026-custeio",
@@ -2311,7 +2399,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0146",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.487Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.390Z"
   },
   {
     "amendmentId": "111.12.12.2026-custeio",
@@ -2321,7 +2410,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0172",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.487Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.390Z"
   },
   {
     "amendmentId": "130.01.36.2026-custeio",
@@ -2331,7 +2421,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0011",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.506Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.409Z"
   },
   {
     "amendmentId": "130.02.36.2026-investimento",
@@ -2341,7 +2432,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0027",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.506Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.409Z"
   },
   {
     "amendmentId": "130.03.36.2026-investimento",
@@ -2351,7 +2443,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0045",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.507Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.410Z"
   },
   {
     "amendmentId": "130.05.36.2026-investimento",
@@ -2361,7 +2454,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0071",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.507Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.410Z"
   },
   {
     "amendmentId": "130.06.36.2026-custeio",
@@ -2371,7 +2465,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0082",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.508Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.410Z"
   },
   {
     "amendmentId": "130.07.36.2026-custeio",
@@ -2381,7 +2476,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0092",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.508Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.411Z"
   },
   {
     "amendmentId": "130.08.36.2026-custeio",
@@ -2391,7 +2487,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0103",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.508Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.411Z"
   },
   {
     "amendmentId": "130.10.36.2026-custeio",
@@ -2401,7 +2498,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0130",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.509Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.411Z"
   },
   {
     "amendmentId": "130.11.36.2026-investimento",
@@ -2411,7 +2509,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0147",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.509Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.412Z"
   },
   {
     "amendmentId": "130.12.36.2026-custeio",
@@ -2421,7 +2520,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0173",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.509Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.412Z"
   },
   {
     "amendmentId": "130.15.36.2026-custeio",
@@ -2431,7 +2531,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0217",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.510Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.412Z"
   },
   {
     "amendmentId": "130.16.36.2026-custeio",
@@ -2441,7 +2542,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0220",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.510Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.413Z"
   },
   {
     "amendmentId": "130.19.36.2026-custeio",
@@ -2451,7 +2553,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0256",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.511Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.413Z"
   },
   {
     "amendmentId": "130.20.36.2026-custeio",
@@ -2461,7 +2564,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0269",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.511Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.413Z"
   },
   {
     "amendmentId": "131.03.16.2026-investimento",
@@ -2471,7 +2575,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0046",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.511Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.414Z"
   },
   {
     "amendmentId": "131.08.16.2026-investimento",
@@ -2481,7 +2586,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0104",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.512Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.414Z"
   },
   {
     "amendmentId": "131.19.16.2026-investimento",
@@ -2491,7 +2597,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0257",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.512Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.414Z"
   },
   {
     "amendmentId": "132.01.12.2026-investimento",
@@ -2501,7 +2608,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0012",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.512Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.415Z"
   },
   {
     "amendmentId": "132.01.12.2026-custeio",
@@ -2511,7 +2619,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0012",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.512Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.415Z"
   },
   {
     "amendmentId": "132.03.12.2026-investimento",
@@ -2521,7 +2630,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0047",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.513Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.416Z"
   },
   {
     "amendmentId": "132.03.12.2026-custeio",
@@ -2531,7 +2641,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0047",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.513Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.416Z"
   },
   {
     "amendmentId": "132.08.12.2026-investimento",
@@ -2541,7 +2652,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0105",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.513Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.417Z"
   },
   {
     "amendmentId": "132.08.12.2026-custeio",
@@ -2551,7 +2663,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0105",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.513Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.418Z"
   },
   {
     "amendmentId": "132.09.12.2026-investimento",
@@ -2561,7 +2674,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0117",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.514Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.419Z"
   },
   {
     "amendmentId": "132.09.12.2026-custeio",
@@ -2571,7 +2685,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0117",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.514Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.419Z"
   },
   {
     "amendmentId": "132.10.12.2026-investimento",
@@ -2581,7 +2696,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0131",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.514Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.419Z"
   },
   {
     "amendmentId": "132.10.12.2026-custeio",
@@ -2591,7 +2707,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0131",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.514Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.420Z"
   },
   {
     "amendmentId": "132.11.12.2026-investimento",
@@ -2601,7 +2718,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0148",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.515Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.420Z"
   },
   {
     "amendmentId": "132.11.12.2026-custeio",
@@ -2611,7 +2729,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0148",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.515Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.421Z"
   },
   {
     "amendmentId": "133.01.12.2026-custeio",
@@ -2621,7 +2740,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0013",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.515Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.421Z"
   },
   {
     "amendmentId": "133.03.12.2026-custeio",
@@ -2631,7 +2751,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0048",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.515Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.422Z"
   },
   {
     "amendmentId": "133.06.12.2026-custeio",
@@ -2641,7 +2762,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0083",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.515Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.422Z"
   },
   {
     "amendmentId": "133.08.12.2026-custeio",
@@ -2651,7 +2773,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0106",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.516Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.423Z"
   },
   {
     "amendmentId": "133.09.12.2026-custeio",
@@ -2661,7 +2784,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0118",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.516Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.423Z"
   },
   {
     "amendmentId": "133.10.12.2026-custeio",
@@ -2671,7 +2795,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0132",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.516Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.423Z"
   },
   {
     "amendmentId": "133.11.12.2026-custeio",
@@ -2681,7 +2806,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0149",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.516Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.424Z"
   },
   {
     "amendmentId": "133.12.12.2026-custeio",
@@ -2691,7 +2817,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0174",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.516Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.424Z"
   },
   {
     "amendmentId": "134.02.12.2026-custeio",
@@ -2701,7 +2828,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0028",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.517Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.425Z"
   },
   {
     "amendmentId": "134.02.12.2026-investimento",
@@ -2711,7 +2839,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0028",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.517Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.425Z"
   },
   {
     "amendmentId": "134.03.12.2026-custeio",
@@ -2721,7 +2850,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0049",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.518Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.426Z"
   },
   {
     "amendmentId": "134.03.12.2026-investimento",
@@ -2731,7 +2861,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0049",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.518Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.426Z"
   },
   {
     "amendmentId": "134.10.12.2026-custeio",
@@ -2741,7 +2872,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0133",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.518Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.427Z"
   },
   {
     "amendmentId": "134.10.12.2026-investimento",
@@ -2751,7 +2883,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0133",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.519Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.427Z"
   },
   {
     "amendmentId": "134.12.12.2026-custeio",
@@ -2761,7 +2894,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0175",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.519Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.428Z"
   },
   {
     "amendmentId": "134.12.12.2026-investimento",
@@ -2771,7 +2905,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0175",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.519Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.428Z"
   },
   {
     "amendmentId": "134.19.12.2026-custeio",
@@ -2781,7 +2916,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0258",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.520Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.428Z"
   },
   {
     "amendmentId": "134.19.12.2026-investimento",
@@ -2791,7 +2927,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0258",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.520Z"
+    "classificacaoFuncional": "27.812.0010.2.028",
+    "updatedAt": "2026-06-17T14:57:31.429Z"
   },
   {
     "amendmentId": "135.01.12.2026-custeio",
@@ -2801,7 +2938,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0014",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.520Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.429Z"
   },
   {
     "amendmentId": "135.03.12.2026-custeio",
@@ -2811,7 +2949,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0050",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.520Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.429Z"
   },
   {
     "amendmentId": "135.06.12.2026-custeio",
@@ -2821,7 +2960,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0084",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.521Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.430Z"
   },
   {
     "amendmentId": "135.08.12.2026-custeio",
@@ -2831,7 +2971,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0107",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.521Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.430Z"
   },
   {
     "amendmentId": "135.09.12.2026-custeio",
@@ -2841,7 +2982,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0119",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.521Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.430Z"
   },
   {
     "amendmentId": "135.10.12.2026-custeio",
@@ -2851,7 +2993,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0134",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.522Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.431Z"
   },
   {
     "amendmentId": "135.11.12.2026-investimento",
@@ -2861,7 +3004,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0150",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.522Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.431Z"
   },
   {
     "amendmentId": "135.12.12.2026-custeio",
@@ -2871,7 +3015,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0176",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.522Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.432Z"
   },
   {
     "amendmentId": "136.01.12.2026-custeio",
@@ -2881,7 +3026,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0015",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.522Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.433Z"
   },
   {
     "amendmentId": "136.03.12.2026-custeio",
@@ -2891,7 +3037,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0051",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.522Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.433Z"
   },
   {
     "amendmentId": "136.06.12.2026-custeio",
@@ -2901,7 +3048,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0085",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.523Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.433Z"
   },
   {
     "amendmentId": "136.08.12.2026-custeio",
@@ -2911,7 +3059,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0108",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.523Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.434Z"
   },
   {
     "amendmentId": "136.09.12.2026-custeio",
@@ -2921,7 +3070,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0120",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.523Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.434Z"
   },
   {
     "amendmentId": "136.10.12.2026-custeio",
@@ -2931,7 +3081,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0135",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.523Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.435Z"
   },
   {
     "amendmentId": "136.11.12.2026-custeio",
@@ -2941,7 +3092,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0151",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.524Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.435Z"
   },
   {
     "amendmentId": "137.01.12.2026-custeio",
@@ -2951,7 +3103,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0016",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.524Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.436Z"
   },
   {
     "amendmentId": "137.03.12.2026-custeio",
@@ -2961,7 +3114,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0052",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.525Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.436Z"
   },
   {
     "amendmentId": "137.06.12.2026-custeio",
@@ -2971,7 +3125,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0086",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.525Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.436Z"
   },
   {
     "amendmentId": "137.08.12.2026-custeio",
@@ -2981,7 +3136,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0109",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.525Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.437Z"
   },
   {
     "amendmentId": "137.09.12.2026-custeio",
@@ -2991,7 +3147,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0121",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.525Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.437Z"
   },
   {
     "amendmentId": "137.10.12.2026-custeio",
@@ -3001,7 +3158,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0136",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.526Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.437Z"
   },
   {
     "amendmentId": "137.11.12.2026-custeio",
@@ -3011,7 +3169,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0152",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.526Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.438Z"
   },
   {
     "amendmentId": "137.12.12.2026-custeio",
@@ -3021,7 +3180,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0177",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.526Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.438Z"
   },
   {
     "amendmentId": "138.01.09.2026-custeio",
@@ -3031,7 +3191,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0017",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.526Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.438Z"
   },
   {
     "amendmentId": "138.02.09.2026-custeio",
@@ -3041,7 +3202,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0029",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.527Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.439Z"
   },
   {
     "amendmentId": "138.03.09.2026-custeio",
@@ -3051,7 +3213,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0053",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.527Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.439Z"
   },
   {
     "amendmentId": "138.04.09.2026-custeio",
@@ -3061,7 +3224,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0064",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.527Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.439Z"
   },
   {
     "amendmentId": "138.05.09.2026-custeio",
@@ -3071,7 +3235,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0072",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.528Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.439Z"
   },
   {
     "amendmentId": "138.06.09.2026-custeio",
@@ -3081,7 +3246,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0087",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.528Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.440Z"
   },
   {
     "amendmentId": "138.08.09.2026-custeio",
@@ -3091,7 +3257,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0110",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.528Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.440Z"
   },
   {
     "amendmentId": "138.09.09.2026-custeio",
@@ -3101,7 +3268,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0122",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.528Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.440Z"
   },
   {
     "amendmentId": "138.10.09.2026-custeio",
@@ -3111,7 +3279,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0137",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.529Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.441Z"
   },
   {
     "amendmentId": "138.11.09.2026-custeio",
@@ -3121,7 +3290,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0153",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.529Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.441Z"
   },
   {
     "amendmentId": "138.12.09.2026-custeio",
@@ -3131,7 +3301,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0178",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.529Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.441Z"
   },
   {
     "amendmentId": "138.14.09.2026-custeio",
@@ -3141,7 +3312,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0202",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.530Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.442Z"
   },
   {
     "amendmentId": "138.15.09.2026-custeio",
@@ -3151,7 +3323,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0218",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.530Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.442Z"
   },
   {
     "amendmentId": "138.17.09.2026-custeio",
@@ -3161,7 +3334,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0229",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.530Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.442Z"
   },
   {
     "amendmentId": "138.18.09.2026-custeio",
@@ -3171,7 +3345,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0241",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.530Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.443Z"
   },
   {
     "amendmentId": "138.19.09.2026-custeio",
@@ -3181,7 +3356,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0259",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.531Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.443Z"
   },
   {
     "amendmentId": "138.20.09.2026-custeio",
@@ -3191,7 +3367,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0270",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.531Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.443Z"
   },
   {
     "amendmentId": "138.21.09.2026-custeio",
@@ -3201,7 +3378,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0287",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.531Z"
+    "classificacaoFuncional": "10.302.0015.2.014",
+    "updatedAt": "2026-06-17T14:57:31.444Z"
   },
   {
     "amendmentId": "140.13.09.2026-custeio",
@@ -3211,7 +3389,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0191",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.531Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.444Z"
   },
   {
     "amendmentId": "140.21.09.2026-custeio",
@@ -3221,7 +3400,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0288",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.532Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.445Z"
   },
   {
     "amendmentId": "001.06.17.2026-custeio",
@@ -3231,7 +3411,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0073",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.532Z"
+    "classificacaoFuncional": "18.541.0007.2.011",
+    "updatedAt": "2026-06-17T14:57:31.445Z"
   },
   {
     "amendmentId": "031.13.15.2026-custeio",
@@ -3241,7 +3422,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0179",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.532Z"
+    "classificacaoFuncional": "04.131.0002.2.005",
+    "updatedAt": "2026-06-17T14:57:31.445Z"
   },
   {
     "amendmentId": "051.02.15.2026-custeio",
@@ -3251,7 +3433,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0019",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.533Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.446Z"
   },
   {
     "amendmentId": "032.13.11.2026-custeio",
@@ -3261,7 +3444,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0180",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.533Z"
+    "classificacaoFuncional": "18.543.0007.2.037",
+    "updatedAt": "2026-06-17T14:57:31.446Z"
   },
   {
     "amendmentId": "033.13.09.2026-ambos",
@@ -3271,7 +3455,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0181",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.533Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.446Z"
   },
   {
     "amendmentId": "034.13.15.2026-custeio",
@@ -3281,7 +3466,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0182",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.533Z"
+    "classificacaoFuncional": "04.131.0002.2.005",
+    "updatedAt": "2026-06-17T14:57:31.447Z"
   },
   {
     "amendmentId": "036.13.34.2026-investimento",
@@ -3291,7 +3477,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0184",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.534Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.447Z"
   },
   {
     "amendmentId": "049.02.12.2026-ambos",
@@ -3301,7 +3488,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0018",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.534Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.447Z"
   },
   {
     "amendmentId": "092.16.09.2026-custeio",
@@ -3311,7 +3499,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0219",
     "naturezaDespesa": "3.3.50.85.00 - CONTRATO DE GESTÃO",
-    "updatedAt": "2026-06-15T13:38:10.534Z"
+    "classificacaoFuncional": "10.302.0015.2.023",
+    "updatedAt": "2026-06-17T14:57:31.448Z"
   },
   {
     "amendmentId": "054.21.15.2026-custeio",
@@ -3321,7 +3510,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0272",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.534Z"
+    "classificacaoFuncional": "13.392.0009.1.002",
+    "updatedAt": "2026-06-17T14:57:31.448Z"
   },
   {
     "amendmentId": "037.13.09.2026-investimento",
@@ -3331,7 +3521,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0185",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.535Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.449Z"
   },
   {
     "amendmentId": "042.13.29.2026-custeio",
@@ -3341,7 +3532,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0190",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.535Z"
+    "classificacaoFuncional": "14.243.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.449Z"
   },
   {
     "amendmentId": "035.13.09.2026-investimento",
@@ -3351,7 +3543,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0183",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.535Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.449Z"
   },
   {
     "amendmentId": "040.13.09.2026-custeio",
@@ -3361,7 +3554,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0188",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.535Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.450Z"
   },
   {
     "amendmentId": "055.21.20.2026-investimento",
@@ -3371,7 +3565,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0273",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.535Z"
+    "classificacaoFuncional": "06.181.0006.2.011",
+    "updatedAt": "2026-06-17T14:57:31.450Z"
   },
   {
     "amendmentId": "052.02.14.2026-custeio",
@@ -3381,7 +3576,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0020",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.536Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.451Z"
   },
   {
     "amendmentId": "038.13.09.2026-investimento",
@@ -3391,7 +3587,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0186",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.536Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.451Z"
   },
   {
     "amendmentId": "053.02.30.2026-custeio",
@@ -3401,7 +3598,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0021",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.536Z"
+    "classificacaoFuncional": "14.242.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.451Z"
   },
   {
     "amendmentId": "058.21.14.2026-custeio",
@@ -3411,7 +3609,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0274",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.536Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.452Z"
   },
   {
     "amendmentId": "039.13.16.2026-investimento",
@@ -3421,7 +3620,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0187",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.536Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.452Z"
   },
   {
     "amendmentId": "041.13.09.2026-custeio",
@@ -3431,7 +3631,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0189",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.537Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.452Z"
   },
   {
     "amendmentId": "059.21.14.2026-investimento",
@@ -3441,7 +3642,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0275",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.537Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.453Z"
   },
   {
     "amendmentId": "060.21.30.2026-investimento",
@@ -3451,7 +3653,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0276",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.537Z"
+    "classificacaoFuncional": "04.122.0001.2.011",
+    "updatedAt": "2026-06-17T14:57:31.454Z"
   },
   {
     "amendmentId": "002.06.14.2026-ambos",
@@ -3461,7 +3664,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0074",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.538Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.454Z"
   },
   {
     "amendmentId": "003.06.12.2026-custeio",
@@ -3471,7 +3675,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0075",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.538Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.455Z"
   },
   {
     "amendmentId": "097.03.11.2026-custeio",
@@ -3481,7 +3686,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0030",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.538Z"
+    "classificacaoFuncional": "04.122.0011.1.002",
+    "updatedAt": "2026-06-17T14:57:31.455Z"
   },
   {
     "amendmentId": "127.03.09.2026-ambos",
@@ -3491,7 +3697,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0042",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.538Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.455Z"
   },
   {
     "amendmentId": "128.03.14.2026-custeio",
@@ -3501,7 +3708,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0043",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.539Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.456Z"
   },
   {
     "amendmentId": "129.03.12.2026-ambos",
@@ -3511,7 +3719,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0044",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.539Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.456Z"
   },
   {
     "amendmentId": "139.03.09.2026-custeio",
@@ -3521,7 +3730,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0054",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.539Z"
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.457Z"
   },
   {
     "amendmentId": "121.01.17.2026-custeio",
@@ -3531,7 +3741,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0007",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.539Z"
+    "classificacaoFuncional": "18.541.0007.2.011",
+    "updatedAt": "2026-06-17T14:57:31.457Z"
   },
   {
     "amendmentId": "122.01.12.2026-custeio",
@@ -3541,7 +3752,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0008",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.539Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.458Z"
   },
   {
     "amendmentId": "123.01.12.2026-custeio",
@@ -3551,7 +3763,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0009",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.540Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.458Z"
   },
   {
     "amendmentId": "124.01.15.2026-custeio",
@@ -3561,7 +3774,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0010",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.540Z"
+    "classificacaoFuncional": "04.131.0002.2.005",
+    "updatedAt": "2026-06-17T14:57:31.458Z"
   },
   {
     "amendmentId": "061.21.09.2026-investimento",
@@ -3571,7 +3785,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0277",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.540Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.459Z"
   },
   {
     "amendmentId": "062.21.36.2026-custeio",
@@ -3581,7 +3796,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0278",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.541Z"
+    "classificacaoFuncional": "14.244.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.459Z"
   },
   {
     "amendmentId": "063.21.32.2026-investimento",
@@ -3591,7 +3807,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0279",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.541Z"
+    "classificacaoFuncional": "14.422.0018.2.011",
+    "updatedAt": "2026-06-17T14:57:31.459Z"
   },
   {
     "amendmentId": "064.21.14.2026-ambos",
@@ -3601,7 +3818,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0280",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.542Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.460Z"
   },
   {
     "amendmentId": "065.21.08.2026-ambos",
@@ -3619,7 +3837,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0284",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.542Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.460Z"
   },
   {
     "amendmentId": "004.04.34.2026-ambos",
@@ -3629,7 +3848,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0055",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.543Z"
+    "classificacaoFuncional": "04.126.0002.2.007",
+    "updatedAt": "2026-06-17T14:57:31.461Z"
   },
   {
     "amendmentId": "005.04.20.2026-custeio",
@@ -3639,7 +3859,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0056",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.543Z"
+    "classificacaoFuncional": "04.128.0002.2.003",
+    "updatedAt": "2026-06-17T14:57:31.461Z"
   },
   {
     "amendmentId": "006.04.14.2026-ambos",
@@ -3649,7 +3870,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0057",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.544Z"
+    "classificacaoFuncional": "08.241.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.461Z"
   },
   {
     "amendmentId": "007.04.30.2026-custeio",
@@ -3659,7 +3881,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0058",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.544Z"
+    "classificacaoFuncional": "14.242.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.462Z"
   },
   {
     "amendmentId": "008.04.12.2026-custeio",
@@ -3669,7 +3892,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0059",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.544Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.462Z"
   },
   {
     "amendmentId": "009.04.02.2026-ambos",
@@ -3687,7 +3911,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0061",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.545Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.462Z"
   },
   {
     "amendmentId": "011.04.12.2026-custeio",
@@ -3697,7 +3922,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0062",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.545Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.463Z"
   },
   {
     "amendmentId": "090.05.09.2026-investimento",
@@ -3707,7 +3933,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0065",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.546Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.463Z"
   },
   {
     "amendmentId": "091.05.15.2026-custeio",
@@ -3717,7 +3944,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0066",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.546Z"
+    "classificacaoFuncional": "13.392.0009.2.023",
+    "updatedAt": "2026-06-17T14:57:31.463Z"
   },
   {
     "amendmentId": "094.05.14.2026-investimento",
@@ -3727,7 +3955,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0067",
     "naturezaDespesa": "4.4.50.51.00 - OBRAS E INSTALAÇÕES",
-    "updatedAt": "2026-06-15T13:38:10.546Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.464Z"
   },
   {
     "amendmentId": "095.05.02.2026-investimento",
@@ -3737,7 +3966,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0068",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.546Z"
+    "classificacaoFuncional": "04.122.0001.2.011",
+    "updatedAt": "2026-06-17T14:57:31.464Z"
   },
   {
     "amendmentId": "125.05.17.2026-custeio",
@@ -3747,7 +3977,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0070",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.547Z"
+    "classificacaoFuncional": "18.541.0007.2.011",
+    "updatedAt": "2026-06-17T14:57:31.464Z"
   },
   {
     "amendmentId": "026.07.09.2026-ambos",
@@ -3757,7 +3988,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0088",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.547Z"
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.465Z"
   },
   {
     "amendmentId": "047.07.15.2026-custeio",
@@ -3767,7 +3999,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0089",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.547Z"
+    "classificacaoFuncional": "13.392.0009.2.028",
+    "updatedAt": "2026-06-17T14:57:31.465Z"
   },
   {
     "amendmentId": "048.07.15.2026-custeio",
@@ -3777,7 +4010,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0090",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.547Z"
+    "classificacaoFuncional": "13.392.0009.2.028",
+    "updatedAt": "2026-06-17T14:57:31.466Z"
   },
   {
     "amendmentId": "050.07.14.2026-investimento",
@@ -3787,7 +4021,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0091",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.548Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.466Z"
   },
   {
     "amendmentId": "093.08.14.2026-ambos",
@@ -3797,7 +4032,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0093",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.548Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.466Z"
   },
   {
     "amendmentId": "096.08.11.2026-ambos",
@@ -3807,7 +4043,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0094",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.548Z"
+    "classificacaoFuncional": "15.452.0013.2.034",
+    "updatedAt": "2026-06-17T14:57:31.467Z"
   },
   {
     "amendmentId": "025.09.09.2026-investimento",
@@ -3817,7 +4054,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0111",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.548Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.467Z"
   },
   {
     "amendmentId": "074.10.09.2026-ambos",
@@ -3827,7 +4065,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0124",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.549Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.468Z"
   },
   {
     "amendmentId": "115.10.15.2026-ambos",
@@ -3837,7 +4076,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0129",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.549Z"
+    "classificacaoFuncional": "13.392.0009.1.002",
+    "updatedAt": "2026-06-17T14:57:31.468Z"
   },
   {
     "amendmentId": "012.11.08.2026-investimento",
@@ -3847,7 +4087,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0140",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.549Z"
+    "classificacaoFuncional": "12.122.0001.1.002",
+    "updatedAt": "2026-06-17T14:57:31.469Z"
   },
   {
     "amendmentId": "072.11.08.2026-investimento",
@@ -3857,7 +4098,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0139",
     "naturezaDespesa": "4.4.90.51.00 - OBRAS E INSTALAÇÕES",
-    "updatedAt": "2026-06-15T13:38:10.549Z"
+    "classificacaoFuncional": "12.122.0001.1.002",
+    "updatedAt": "2026-06-17T14:57:31.469Z"
   },
   {
     "amendmentId": "073.11.08.2026-investimento",
@@ -3867,7 +4109,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0140",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.549Z"
+    "classificacaoFuncional": "12.122.0001.1.002",
+    "updatedAt": "2026-06-17T14:57:31.469Z"
   },
   {
     "amendmentId": "080.12.09.2026-investimento",
@@ -3877,7 +4120,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0154",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.550Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.470Z"
   },
   {
     "amendmentId": "081.12.14.2026-custeio",
@@ -3887,7 +4131,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0155",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.550Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.471Z"
   },
   {
     "amendmentId": "082.12.09.2026-custeio",
@@ -3897,7 +4142,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0156",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.550Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.472Z"
   },
   {
     "amendmentId": "083.12.17.2026-custeio",
@@ -3907,7 +4153,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0157",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.550Z"
+    "classificacaoFuncional": "18.541.0007.1.002",
+    "updatedAt": "2026-06-17T14:57:31.472Z"
   },
   {
     "amendmentId": "084.12.09.2026-custeio",
@@ -3917,7 +4164,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0158",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.551Z"
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.472Z"
   },
   {
     "amendmentId": "085.12.30.2026-custeio",
@@ -3927,7 +4175,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0159",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.551Z"
+    "classificacaoFuncional": "14.242.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.473Z"
   },
   {
     "amendmentId": "086.12.09.2026-custeio",
@@ -3937,7 +4186,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0160",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.551Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.473Z"
   },
   {
     "amendmentId": "087.12.12.2026-custeio",
@@ -3947,7 +4197,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0161",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.551Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.474Z"
   },
   {
     "amendmentId": "088.12.14.2026-custeio",
@@ -3957,7 +4208,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0162",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.552Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.474Z"
   },
   {
     "amendmentId": "089.12.09.2026-custeio",
@@ -3967,7 +4219,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0163",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.552Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.474Z"
   },
   {
     "amendmentId": "017.14.02.2026-custeio",
@@ -3977,7 +4230,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0192",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.552Z"
+    "classificacaoFuncional": "04.122.0001.2.011",
+    "updatedAt": "2026-06-17T14:57:31.475Z"
   },
   {
     "amendmentId": "018.14.09.2026-ambos",
@@ -3987,7 +4241,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0193",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.552Z"
+    "classificacaoFuncional": "10.301.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.475Z"
   },
   {
     "amendmentId": "019.14.08.2026-custeio",
@@ -3997,7 +4252,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0194",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.553Z"
+    "classificacaoFuncional": "12.122.0001.2.011",
+    "updatedAt": "2026-06-17T14:57:31.475Z"
   },
   {
     "amendmentId": "020.14.12.2026-custeio",
@@ -4007,7 +4263,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0195",
     "naturezaDespesa": "3.3.90.31.00 - PREMIAÇÕES CULTURAIS, ARTÍSTICAS, CIENTÍFICAS, DES",
-    "updatedAt": "2026-06-15T13:38:10.553Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.476Z"
   },
   {
     "amendmentId": "021.14.09.2026-custeio",
@@ -4017,7 +4274,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0196",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.553Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.476Z"
   },
   {
     "amendmentId": "022.14.11.2026-ambos",
@@ -4027,7 +4285,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0197",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.553Z"
+    "classificacaoFuncional": "17.452.0007.2.039",
+    "updatedAt": "2026-06-17T14:57:31.476Z"
   },
   {
     "amendmentId": "013.15.14.2026-ambos",
@@ -4037,7 +4296,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0203",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.554Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.477Z"
   },
   {
     "amendmentId": "014.15.15.2026-custeio",
@@ -4047,7 +4307,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0204",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.554Z"
+    "classificacaoFuncional": "04.131.0002.2.005",
+    "updatedAt": "2026-06-17T14:57:31.477Z"
   },
   {
     "amendmentId": "015.15.14.2026-custeio",
@@ -4057,7 +4318,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0205",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.554Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.477Z"
   },
   {
     "amendmentId": "016.15.07.2026-custeio",
@@ -4067,7 +4329,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0206",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.555Z"
+    "classificacaoFuncional": "11.334.0017.2.004",
+    "updatedAt": "2026-06-17T14:57:31.478Z"
   },
   {
     "amendmentId": "023.15.32.2026-custeio",
@@ -4077,7 +4340,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0207",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.555Z"
+    "classificacaoFuncional": "04.131.0002.2.005",
+    "updatedAt": "2026-06-17T14:57:31.478Z"
   },
   {
     "amendmentId": "024.15.12.2026-custeio",
@@ -4087,7 +4351,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0208",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.555Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.479Z"
   },
   {
     "amendmentId": "027.15.14.2026-investimento",
@@ -4097,7 +4362,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0209",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.555Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.479Z"
   },
   {
     "amendmentId": "071.17.09.2026-custeio",
@@ -4107,7 +4373,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0222",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.555Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.479Z"
   },
   {
     "amendmentId": "075.17.12.2026-custeio",
@@ -4117,7 +4384,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0223",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.555Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.480Z"
   },
   {
     "amendmentId": "076.17.13.2026-investimento",
@@ -4127,7 +4395,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0224",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.556Z"
+    "classificacaoFuncional": "16.482.0012.1.009",
+    "updatedAt": "2026-06-17T14:57:31.480Z"
   },
   {
     "amendmentId": "077.17.14.2026-investimento",
@@ -4137,7 +4406,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0225",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.556Z"
+    "classificacaoFuncional": "08.241.0018.2.015",
+    "updatedAt": "2026-06-17T14:57:31.480Z"
   },
   {
     "amendmentId": "113.17.34.2026-ambos",
@@ -4147,7 +4417,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0228",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.556Z"
+    "classificacaoFuncional": "15.182.0005.2.011",
+    "updatedAt": "2026-06-17T14:57:31.481Z"
   },
   {
     "amendmentId": "067.18.30.2026-custeio",
@@ -4157,7 +4428,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0231",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.556Z"
+    "classificacaoFuncional": "14.242.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.481Z"
   },
   {
     "amendmentId": "069.18.30.2026-custeio",
@@ -4167,7 +4439,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0232",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.557Z"
+    "classificacaoFuncional": "14.242.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.481Z"
   },
   {
     "amendmentId": "070.18.30.2026-investimentos",
@@ -4177,7 +4450,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0233",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.557Z"
+    "classificacaoFuncional": "14.242.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.482Z"
   },
   {
     "amendmentId": "098.18.02.2026-custeio",
@@ -4187,7 +4461,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0234",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.557Z"
+    "classificacaoFuncional": "04.122.0001.2.011",
+    "updatedAt": "2026-06-17T14:57:31.482Z"
   },
   {
     "amendmentId": "100.18.08.2026-custeio",
@@ -4197,7 +4472,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0235",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.558Z"
+    "classificacaoFuncional": "12.122.0016.2.019",
+    "updatedAt": "2026-06-17T14:57:31.483Z"
   },
   {
     "amendmentId": "101.18.17.2026-custeio",
@@ -4207,7 +4483,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0236",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.558Z"
+    "classificacaoFuncional": "18.541.0007.2.011",
+    "updatedAt": "2026-06-17T14:57:31.483Z"
   },
   {
     "amendmentId": "114.18.30.2026-custeio",
@@ -4217,7 +4494,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0239",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.559Z"
+    "classificacaoFuncional": "14.242.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.484Z"
   },
   {
     "amendmentId": "116.18.12.2026-custeio",
@@ -4227,7 +4505,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0240",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.559Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.484Z"
   },
   {
     "amendmentId": "028.19.11.2026-custeio",
@@ -4237,7 +4516,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0242",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.559Z"
+    "classificacaoFuncional": "04.122.0011.1.002",
+    "updatedAt": "2026-06-17T14:57:31.484Z"
   },
   {
     "amendmentId": "029.19.12.2026-custeio",
@@ -4247,7 +4527,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0243",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.559Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.485Z"
   },
   {
     "amendmentId": "030.19.14.2026-custeio",
@@ -4257,7 +4538,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0244",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.560Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.486Z"
   },
   {
     "amendmentId": "043.19.09.2026-ambos",
@@ -4267,7 +4549,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0245",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.560Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.486Z"
   },
   {
     "amendmentId": "044.19.12.2026-custeio",
@@ -4277,7 +4560,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0246",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.560Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.487Z"
   },
   {
     "amendmentId": "045.19.14.2026-ambos",
@@ -4287,7 +4571,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0247",
     "naturezaDespesa": "4.4.50.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.561Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.487Z"
   },
   {
     "amendmentId": "046.19.09.2026-ambos",
@@ -4297,7 +4582,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0248",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.561Z"
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "updatedAt": "2026-06-17T14:57:31.487Z"
   },
   {
     "amendmentId": "126.19.06.2026-custeio",
@@ -4307,7 +4593,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0255",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.561Z"
+    "classificacaoFuncional": "04.122.0001.2.011",
+    "updatedAt": "2026-06-17T14:57:31.488Z"
   },
   {
     "amendmentId": "117.20.11.2026-ambos",
@@ -4317,7 +4604,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0265",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.561Z"
+    "classificacaoFuncional": "17.452.0007.2.039",
+    "updatedAt": "2026-06-17T14:57:31.488Z"
   },
   {
     "amendmentId": "118.20.02.2026-investimento",
@@ -4327,7 +4615,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0266",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.562Z"
+    "classificacaoFuncional": "04.122.0001.2.011",
+    "updatedAt": "2026-06-17T14:57:31.488Z"
   },
   {
     "amendmentId": "119.20.14.2026-custeio",
@@ -4337,7 +4626,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0267",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.562Z"
+    "classificacaoFuncional": "08.245.0018.2.041",
+    "updatedAt": "2026-06-17T14:57:31.489Z"
   },
   {
     "amendmentId": "120.20.12.2026-custeio",
@@ -4347,7 +4637,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0268",
     "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.562Z"
+    "classificacaoFuncional": "27.811.0010.2.030",
+    "updatedAt": "2026-06-17T14:57:31.489Z"
   },
   {
     "amendmentId": "141.20.12.2026-custeio",
@@ -4357,7 +4648,8 @@
     "pago": "0,00",
     "vinculo": "08.804.0271",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.563Z"
+    "classificacaoFuncional": "27.812.0010.2.031",
+    "updatedAt": "2026-06-17T14:57:31.490Z"
   },
   {
     "amendmentId": "ext-202081001558",
@@ -4367,7 +4659,8 @@
     "pago": "0,00",
     "vinculo": "05.800.0023",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.563Z"
+    "classificacaoFuncional": "08.245.0018.2.015",
+    "updatedAt": "2026-06-17T14:57:31.490Z"
   },
   {
     "amendmentId": "ext-202507265244",
@@ -4377,27 +4670,30 @@
     "pago": "0,00",
     "vinculo": "02.801.0001",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.563Z"
+    "classificacaoFuncional": "14.422.0018.2.011",
+    "updatedAt": "2026-06-17T14:57:31.491Z"
   },
   {
     "amendmentId": "ext-202542210001",
-    "reservado": "340.498,68",
+    "reservado": "20.461.432,21",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "02.801.0001",
-    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.563Z"
+    "vinculo": "05.802.0001",
+    "naturezaDespesa": "4.4.90.51.00 - OBRAS E INSTALAÇÕES",
+    "classificacaoFuncional": "15.451.0013.1.006",
+    "updatedAt": "2026-06-17T14:57:31.491Z"
   },
   {
     "amendmentId": "ext-202541300010",
-    "reservado": "2.049.772,28",
-    "empenhado": "2.049.772,28",
+    "reservado": "0,00",
+    "empenhado": "0,00",
     "liquidado": "0,00",
-    "pago": "637.059,83",
-    "vinculo": "05.800.0010",
-    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "pago": "0,00",
+    "vinculo": "05.800.0022",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "10.301.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.491Z"
   },
   {
     "amendmentId": "ext-202544020003",
@@ -4405,9 +4701,10 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "05.800.0003",
-    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "vinculo": "05.800.0014",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "10.301.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.492Z"
   },
   {
     "amendmentId": "ext-202441300004",
@@ -4415,19 +4712,21 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "05.800.0004",
-    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "vinculo": "05.800.0019",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "10.302.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.492Z"
   },
   {
     "amendmentId": "ext-202341300001",
-    "reservado": "340.498,68",
+    "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "02.801.0001",
+    "vinculo": "05.800.0019",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "classificacaoFuncional": "10.302.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.493Z"
   },
   {
     "amendmentId": "ext-202281000306",
@@ -4437,7 +4736,8 @@
     "pago": "0,00",
     "vinculo": "05.800.0024",
     "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "classificacaoFuncional": "08.245.0018.2.015",
+    "updatedAt": "2026-06-17T14:57:31.493Z"
   },
   {
     "amendmentId": "ext-202544050003",
@@ -4445,9 +4745,10 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "05.800.0003",
-    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "vinculo": "05.800.0016",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.493Z"
   },
   {
     "amendmentId": "ext-202325200004",
@@ -4455,9 +4756,10 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "05.800.0004",
-    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "vinculo": "05.800.0009",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "10.302.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.494Z"
   },
   {
     "amendmentId": "ext-202444020020",
@@ -4465,19 +4767,22 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "05.800.0020",
+    "vinculo": "05.800.0013",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.494Z"
   },
   {
     "amendmentId": "ext-202550410002",
-    "reservado": "0,00",
-    "empenhado": "0,00",
+    "reservado": "4.224.592,07",
+    "empenhado": "4.224.592,07",
     "liquidado": "0,00",
-    "pago": "200.000,00",
-    "vinculo": "05.800.0002",
-    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "pago": "0,00",
+    "vinculo": "05.902.0001",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "10.302.0015.2.013",
+    "numeroEmpenho": "14277/2026 - G.A. SERVICOS MEDICOS E HOSPITALARES LTDA",
+    "updatedAt": "2026-06-17T14:57:31.494Z"
   },
   {
     "amendmentId": "ext-202241300012",
@@ -4485,39 +4790,43 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "05.800.0012",
-    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "vinculo": "05.800.9025",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "08.245.0018.2.016",
+    "updatedAt": "2026-06-17T14:57:31.495Z"
   },
   {
     "amendmentId": "ext-202515680006",
+    "reservado": "300.000,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9003",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "08.245.0018.2.015",
+    "updatedAt": "2026-06-17T14:57:31.495Z"
+  },
+  {
+    "amendmentId": "ext-202541190001",
     "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "08.804.0006",
+    "vinculo": "05.800.0002",
     "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
-  },
-  {
-    "amendmentId": "ext-202541190001",
-    "reservado": "340.498,68",
-    "empenhado": "0,00",
-    "liquidado": "0,00",
-    "pago": "0,00",
-    "vinculo": "02.801.0001",
-    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.564Z"
+    "classificacaoFuncional": "08.245.0018.2.016",
+    "updatedAt": "2026-06-17T14:57:31.495Z"
   },
   {
     "amendmentId": "ext-202541300001",
-    "reservado": "340.498,68",
+    "reservado": "135.618,41",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "02.801.0001",
-    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.565Z"
+    "vinculo": "05.800.9021",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.496Z"
   },
   {
     "amendmentId": "ext-202425170011",
@@ -4525,9 +4834,10 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "05.800.0011",
-    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.565Z"
+    "vinculo": "05.800.0015",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.496Z"
   },
   {
     "amendmentId": "ext-202544020016",
@@ -4535,29 +4845,32 @@
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "05.800.0016",
-    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
-    "updatedAt": "2026-06-15T13:38:10.565Z"
+    "vinculo": "05.800.0012",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.497Z"
   },
   {
     "amendmentId": "ext-353440120230006",
+    "reservado": "281.600,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9026",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "08.245.0018.2.016",
+    "updatedAt": "2026-06-17T14:57:31.497Z"
+  },
+  {
+    "amendmentId": "ext-353440120230005",
     "reservado": "0,00",
     "empenhado": "0,00",
     "liquidado": "0,00",
     "pago": "0,00",
-    "vinculo": "08.804.0006",
-    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.565Z"
-  },
-  {
-    "amendmentId": "ext-353440120230005",
-    "reservado": "344.444,44",
-    "empenhado": "0,00",
-    "liquidado": "0,00",
-    "pago": "0,00",
-    "vinculo": "05.800.0005",
-    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
-    "updatedAt": "2026-06-15T13:38:10.565Z"
+    "vinculo": "02.801.0005",
+    "naturezaDespesa": "3.3.90.93.00 - INDENIZAÇÕES E RESTITUIÇÕES",
+    "classificacaoFuncional": "08.245.0018.2.016",
+    "updatedAt": "2026-06-17T14:57:31.497Z"
   },
   {
     "amendmentId": "112.17.15.2026-custeio",
@@ -4567,6 +4880,230 @@
     "pago": "0,00",
     "vinculo": "08.804.0227",
     "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
-    "updatedAt": "2026-06-15T13:38:10.506Z"
+    "classificacaoFuncional": "13.392.0009.2.028",
+    "numeroEmpenho": "14236/2026 - RAFAEL AUGUSTO DE SOUZA - LTDA",
+    "updatedAt": "2026-06-17T14:57:31.409Z"
+  },
+  {
+    "amendmentId": "051.02.15.2026-custeio_cf_0413100022005",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "08.804.0019",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "04.131.0002.2.005",
+    "updatedAt": "2026-06-17T14:57:31.446Z"
+  },
+  {
+    "amendmentId": "012.11.08.2026-investimento_cf_1212200011002",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "08.804.0138",
+    "naturezaDespesa": "4.4.90.51.00 - OBRAS E INSTALAÇÕES",
+    "classificacaoFuncional": "12.122.0001.1.002",
+    "updatedAt": "2026-06-17T14:57:31.469Z"
+  },
+  {
+    "amendmentId": "073.11.08.2026-investimento_cf_1212200011002",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "08.804.0138",
+    "naturezaDespesa": "4.4.90.51.00 - OBRAS E INSTALAÇÕES",
+    "classificacaoFuncional": "12.122.0001.1.002",
+    "updatedAt": "2026-06-17T14:57:31.469Z"
+  },
+  {
+    "amendmentId": "ext-202081001558_cf_0824500182015",
+    "reservado": "242.080,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9023",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "08.245.0018.2.015",
+    "updatedAt": "2026-06-17T14:57:31.490Z"
+  },
+  {
+    "amendmentId": "ext-202541300010_cf_1030100151002",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9022",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "10.301.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.491Z"
+  },
+  {
+    "amendmentId": "ext-202544020003_cf_1030100151002",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9014",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "10.301.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.492Z"
+  },
+  {
+    "amendmentId": "ext-202441300004_cf_1030200151002",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.0017",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "10.302.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.492Z"
+  },
+  {
+    "amendmentId": "ext-202341300001_cf_1030200151002",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.0017",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "10.302.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.493Z"
+  },
+  {
+    "amendmentId": "ext-202281000306_cf_0824500182015",
+    "reservado": "11.361,99",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9024",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "08.245.0018.2.015",
+    "updatedAt": "2026-06-17T14:57:31.493Z"
+  },
+  {
+    "amendmentId": "ext-202544050003_cf_1030300142011",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9016",
+    "naturezaDespesa": "3.3.90.30.00 - MATERIAL DE CONSUMO",
+    "classificacaoFuncional": "10.303.0014.2.011",
+    "updatedAt": "2026-06-17T14:57:31.493Z"
+  },
+  {
+    "amendmentId": "ext-202325200004_cf_1030200151002",
+    "reservado": "226.072,60",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9009",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "10.302.0015.1.002",
+    "updatedAt": "2026-06-17T14:57:31.494Z"
+  },
+  {
+    "amendmentId": "ext-202444020020_cf_1030100152012",
+    "reservado": "132.152,39",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9013",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.494Z"
+  },
+  {
+    "amendmentId": "ext-202241300012_cf_0824500182016",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.0025",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "08.245.0018.2.016",
+    "updatedAt": "2026-06-17T14:57:31.495Z"
+  },
+  {
+    "amendmentId": "ext-202515680006_cf_0824500182015",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.0003",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "08.245.0018.2.015",
+    "updatedAt": "2026-06-17T14:57:31.495Z"
+  },
+  {
+    "amendmentId": "ext-202541190001_cf_0824500182015",
+    "reservado": "700.000,00",
+    "empenhado": "550.000,00",
+    "liquidado": "400.000,00",
+    "pago": "400.000,00",
+    "vinculo": "05.800.9002",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "08.245.0018.2.015",
+    "numeroEmpenho": "12669/2026 - AMAMOS - CASA DE ACOLHIMENTO DE CRIANÇAS E ADOLESCENTES; 12668/2026 - ATUS SOCIAL; 14523/2026 - INSTITUTO SOPHIA VERCELLI",
+    "updatedAt": "2026-06-17T14:57:31.496Z"
+  },
+  {
+    "amendmentId": "ext-202541190001_cf_0824500182016",
+    "reservado": "300.000,00",
+    "empenhado": "300.000,00",
+    "liquidado": "97.453,16",
+    "pago": "48.726,58",
+    "vinculo": "05.800.9002",
+    "naturezaDespesa": "3.3.50.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "08.245.0018.2.016",
+    "numeroEmpenho": "12669/2026 - AMAMOS - CASA DE ACOLHIMENTO DE CRIANÇAS E ADOLESCENTES; 12668/2026 - ATUS SOCIAL; 14523/2026 - INSTITUTO SOPHIA VERCELLI",
+    "updatedAt": "2026-06-17T14:57:31.496Z"
+  },
+  {
+    "amendmentId": "ext-202541300001_cf_1030100152012",
+    "reservado": "0,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.0021",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.496Z"
+  },
+  {
+    "amendmentId": "ext-202425170011_cf_1030100152012",
+    "reservado": "946.027,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9015",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.496Z"
+  },
+  {
+    "amendmentId": "ext-202544020016_cf_1030100152012",
+    "reservado": "106.329,87",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.9012",
+    "naturezaDespesa": "3.3.90.39.00 - OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍDICA",
+    "classificacaoFuncional": "10.301.0015.2.012",
+    "updatedAt": "2026-06-17T14:57:31.497Z"
+  },
+  {
+    "amendmentId": "ext-353440120230006_cf_0824500182016",
+    "reservado": "186.900,00",
+    "empenhado": "0,00",
+    "liquidado": "0,00",
+    "pago": "0,00",
+    "vinculo": "05.800.0027",
+    "naturezaDespesa": "4.4.90.52.00 - EQUIPAMENTOS E MATERIAL PERMANENTE",
+    "classificacaoFuncional": "08.245.0018.2.016",
+    "updatedAt": "2026-06-17T14:57:31.497Z"
   }
 ]
