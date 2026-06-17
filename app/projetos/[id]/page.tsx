@@ -747,6 +747,8 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 despesa={amendment.naturezaDespesa}
                                 vinculo={amendment.vinculo}
                                 classificacaoFuncional={amendment.classificacaoFuncional}
+                                numeroEmpenho={amendment.numeroEmpenho}
+                                anoEmpenho={amendment.anoEmpenho}
                             />
 
                             {/* New Module: Management Transparency & Compliance */}

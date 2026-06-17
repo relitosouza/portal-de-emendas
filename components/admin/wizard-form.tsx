@@ -54,6 +54,8 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
         possuiCronograma: initialData?.possuiCronograma || "",
         fornecedor: initialData?.fornecedor || "",
         numeroLicitacao: initialData?.numeroLicitacao || "",
+        numeroEmpenho: initialData?.numeroEmpenho || "",
+        anoEmpenho: initialData?.anoEmpenho || "",
 
         // Financeiro
         prazoAplicacao: initialData?.prazoAplicacao || "",
@@ -512,6 +514,18 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                                                             placeholder="Razão social da contratada"
                                                             value={formData.fornecedor}
                                                             onChange={(e) => handleChange("fornecedor", e.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-1 gap-6">
+                                                    <div className="space-y-2">
+                                                        <label className={labelClass}>Empenho(s) (Nº/Ano - Fornecedor)</label>
+                                                        <input
+                                                            className={inputClass}
+                                                            type="text"
+                                                            placeholder="Ex: 12456/2026 - FORNECEDOR SA; 78910/2026 - OUTRO FORNECEDOR"
+                                                            value={formData.numeroEmpenho}
+                                                            onChange={(e) => handleChange("numeroEmpenho", e.target.value)}
                                                         />
                                                     </div>
                                                 </div>

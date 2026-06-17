@@ -197,6 +197,8 @@ export interface FinancialRecord {
     vinculo?: string;   // Código numérico do vínculo SMARAPD (ex: "08.804.0061")
     naturezaDespesa?: string; // Natureza da despesa (ex: "3.3.90.30.00 - MATERIAL DE CONSUMO")
     classificacaoFuncional?: string; // Classificação Funcional (ex: "08.245.0018.2.016")
+    numeroEmpenho?: string;    // Número do Empenho (ex: "12456")
+    anoEmpenho?: string;       // Ano do Empenho (ex: "2026")
     // Event history (undefined on old records — treat as [])
     empenhos?: EmpenhoEvent[];
     liquidacoes?: LiquidacaoEvent[];
@@ -222,6 +224,11 @@ export async function upsertFinancialData(_sheets: any, _spreadsheetId: string, 
         pago: data.pago !== undefined ? String(data.pago) : (currentRecord?.pago || ""),
         reservado: data.reservado !== undefined ? String(data.reservado) : (currentRecord?.reservado || ""),
         updatedAt: new Date().toISOString(),
+        vinculo: data.vinculo !== undefined ? data.vinculo : currentRecord?.vinculo,
+        naturezaDespesa: data.naturezaDespesa !== undefined ? data.naturezaDespesa : currentRecord?.naturezaDespesa,
+        classificacaoFuncional: data.classificacaoFuncional !== undefined ? data.classificacaoFuncional : currentRecord?.classificacaoFuncional,
+        numeroEmpenho: data.numeroEmpenho !== undefined ? data.numeroEmpenho : currentRecord?.numeroEmpenho,
+        anoEmpenho: data.anoEmpenho !== undefined ? data.anoEmpenho : currentRecord?.anoEmpenho,
         // Preserve event arrays from existing record
         empenhos: currentRecord?.empenhos,
         liquidacoes: currentRecord?.liquidacoes,
@@ -459,6 +466,9 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
                 naturezaDespesa: financial.naturezaDespesa ?? amendment.naturezaDespesa,
                 // Classificação funcional do portal SMARAPD
                 classificacaoFuncional: financial.classificacaoFuncional ?? amendment.classificacaoFuncional,
+                // Número do empenho e ano do portal SMARAPD
+                numeroEmpenho: financial.numeroEmpenho ?? amendment.numeroEmpenho,
+                anoEmpenho: financial.anoEmpenho ?? amendment.anoEmpenho,
                 // Pass event history to amendment
                 empenhos: financial.empenhos ?? [],
                 liquidacoes: financial.liquidacoes ?? [],

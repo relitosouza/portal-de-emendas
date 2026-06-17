@@ -284,6 +284,12 @@ export default function EditAmendmentPage({ params }: PageProps) {
                                 </select>
                             </div>
                         </div>
+                        <div className="grid grid-cols-1 gap-5">
+                            <div>
+                                <label className={labelClass}>Empenho(s) (Nº/Ano - Fornecedor)</label>
+                                <input className={inputClass} value={formData.numeroEmpenho || ""} onChange={(e) => handleChange("numeroEmpenho", e.target.value)} placeholder="Ex: 12456/2026 - FORNECEDOR SA; 78910/2026 - OUTRO FORNECEDOR" />
+                            </div>
+                        </div>
                         <div>
                             <label className={labelClass}>Localização no Mapa</label>
                             <div className="rounded-xl overflow-hidden border border-slate-200 mt-1">

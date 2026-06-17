@@ -52,6 +52,7 @@ interface AggregatedPortalRecord {
     AutorEmenda: string;
     Objeto: string;
     Empenhado: number;
+    EmpenhadoAnulado: number;
     Liquidado: number;
     ValorPago: number;
     Reservado: number;
@@ -112,6 +113,14 @@ function normalizeVinculo(str: string): string {
 }
 
 /**
+ * Compara se o vínculo local e do portal são equivalentes.
+ * Realiza comparação exata após normalização dos códigos de vínculo.
+ */
+function matchVinculo(localVinculo: string, portalVinculo: string): boolean {
+    return normalizeVinculo(localVinculo) === normalizeVinculo(portalVinculo);
+}
+
+/**
  * Agrupa registros do portal pelo campo Vinculo + ClassificacaoFuncional.
  * Considera e deduz os empenhos e liquidações anulados.
  */
@@ -126,34 +135,16 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
         const key = `${vinculo}_${cf}`;
         const existing = map.get(key);
         
-        // Empenho Líquido (Empenhado - Empenhado Anulado)
-        const empenhadoOriginal = parseCurrency(r.Empenhado);
-        const empenhadoAnulado = parseAnulacao(r.EmpenhadoAnulado);
-        let empenhado = empenhadoOriginal;
-        if (empenhadoAnulado < 0) {
-            empenhado += empenhadoAnulado;
-        } else {
-            empenhado -= empenhadoAnulado;
-        }
-        empenhado = Math.max(0, empenhado);
-
-        // Liquidação Líquida (Liquidado - Liquidado Anulado)
-        const liquidadoOriginal = parseCurrency(r.Liquidado);
-        const liquidadoAnulado = parseAnulacao(r.LiquidadoAnulado);
-        let liquidado = liquidadoOriginal;
-        if (liquidadoAnulado < 0) {
-            liquidado += liquidadoAnulado;
-        } else {
-            liquidado -= liquidadoAnulado;
-        }
-        liquidado = Math.max(0, liquidado);
-
+        const empenhado = parseCurrency(r.Empenhado);
+        const liquidado = parseCurrency(r.Liquidado);
+        const anuladoVal = Math.abs(parseAnulacao(r.EmpenhadoAnulado));
         const pago = parseCurrency(r.ValorPago);
         const reservado = parseCurrency(r.Reservado);
         const saldo = parseCurrency(r.SaldoAtual);
 
         if (existing) {
             existing.Empenhado += empenhado;
+            existing.EmpenhadoAnulado += anuladoVal;
             existing.Liquidado += liquidado;
             existing.ValorPago += pago;
             existing.Reservado += reservado;
@@ -165,6 +156,7 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
                 AutorEmenda: r.AutorEmenda || '',
                 Objeto: r.Objeto || '',
                 Empenhado: empenhado,
+                EmpenhadoAnulado: anuladoVal,
                 Liquidado: liquidado,
                 ValorPago: pago,
                 Reservado: reservado,
@@ -233,6 +225,51 @@ function findPortalMatches(
     return aggregated.filter(p => authorMatch(p) && objectMatch(p));
 }
 
+/**
+ * Filtra empenhos históricos cujo valor somado corresponde ao total anulado.
+ * Evita exibir empenhos que foram cancelados.
+ */
+function filterCancelledEmpenhos(movimentos: any[], annulledVal: number): any[] {
+    if (annulledVal <= 0 || movimentos.length === 0) return movimentos;
+
+    const items = movimentos.map(m => ({
+        mov: m,
+        val: parseCurrency(m.VlrEmpenho)
+    }));
+
+    const tolerance = 0.01;
+    const n = items.length;
+    let foundSubset: number[] = [];
+
+    function search(index: number, currentSum: number, currentSubset: number[]): boolean {
+        if (Math.abs(currentSum - annulledVal) < tolerance) {
+            foundSubset = [...currentSubset];
+            return true;
+        }
+        if (index >= n || currentSum > annulledVal + tolerance) {
+            return false;
+        }
+
+        if (search(index + 1, currentSum + items[index].val, [...currentSubset, index])) {
+            return true;
+        }
+        if (search(index + 1, currentSum, currentSubset)) {
+            return true;
+        }
+        return false;
+    }
+
+    items.sort((a, b) => b.val - a.val);
+
+    if (search(0, 0, [])) {
+        const excludedIndices = new Set(foundSubset);
+        const activeItems = items.filter((_, idx) => !excludedIndices.has(idx));
+        return activeItems.map(item => item.mov);
+    }
+
+    return movimentos;
+}
+
 export async function runFinancialSync() {
     const exercise = new Date().getFullYear();
     console.log(`[Sync] Buscando dados do portal ANUAL: Exercício=${exercise}`);
@@ -285,6 +322,78 @@ export async function runFinancialSync() {
     const externalAmendments = await readJsonFile<any>("emendas-externas.json");
     const existingFinancial = await readJsonFile<FinancialRecord>(FINANCIAL_FILE);
 
+    // Determina os prefixos únicos de vínculos para buscar empenhos
+    const prefixes = new Set<string>();
+    prefixes.add("05.8");
+    prefixes.add("08.8");
+    prefixes.add("02.8");
+    
+    const allAmendmentsForPrefixes = [...mainAmendments, ...externalAmendments];
+    for (const a of allAmendmentsForPrefixes) {
+        if (a.vinculo) {
+            const parts = a.vinculo.split('.');
+            if (parts.length >= 2) prefixes.add(`${parts[0]}.${parts[1].substring(0, 1)}`);
+        }
+    }
+    for (const r of existingFinancial) {
+        if (r.vinculo) {
+            const parts = r.vinculo.split('.');
+            if (parts.length >= 2) prefixes.add(`${parts[0]}.${parts[1].substring(0, 1)}`);
+        }
+    }
+    for (const r of aggregated) {
+        if (r.Vinculo) {
+            const parts = r.Vinculo.split('.');
+            if (parts.length >= 2) prefixes.add(`${parts[0]}.${parts[1].substring(0, 1)}`);
+        }
+    }
+
+    // Busca movimentos de empenho no portal para todos os prefixos de vínculo identificados
+    const allMovimentos: any[] = [];
+    for (const prefix of Array.from(prefixes)) {
+        console.log(`[Sync] Buscando movimentos de empenho para prefixo: ${prefix}`);
+        try {
+            const payload = {
+                "ChaveModulo": "aquisicoes_covid",
+                "NomeVisao": "MovimentoEmpenho",
+                "Filtros": [
+                    { "Campo": "Vinculo", "Valor": prefix, "TipoValor": 8 }
+                ],
+                "Periodicidade": "ANUAL",
+                "Periodo": "",
+                "Exercicio": exercise,
+                "Pagina": 1,
+                "QuantidadeRegistros": "1000",
+                "Ordenacao": [{ "ColunaOrdem": "DescrFornecedor", "TipoOrdem": "ascend", "Ordem": 1 }]
+            };
+            
+            const response = await fetch(OSASCO_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json, text/plain, */*',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Origin': 'https://transparencia-osasco.smarapd.com.br',
+                    'Referer': 'https://transparencia-osasco.smarapd.com.br/'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                let data = await response.json() as any;
+                if (typeof data === 'string') {
+                    data = JSON.parse(data);
+                }
+                if (data && data.Valores) {
+                    allMovimentos.push(...data.Valores);
+                }
+            }
+        } catch (error) {
+            console.error(`[Sync] Erro ao buscar movimentos de empenho para prefixo ${prefix}:`, error);
+        }
+    }
+    console.log(`[Sync] ${allMovimentos.length} movimentos de empenho obtidos para cruzamento.`);
+
     // Mantenha cópias para atualizar/inserir novos clones desmembrados
     const updatedMain = [...mainAmendments];
     const updatedExternal = [...externalAmendments];
@@ -312,6 +421,22 @@ export async function runFinancialSync() {
         if (portalMatches.length > 0) {
             // 1. O primeiro match atualiza a emenda original
             const firstMatch = portalMatches[0];
+            
+            // Busca os empenhos equivalentes para extrair números, anos e fornecedores
+            const activeVinculo = firstMatch.Vinculo || local.vinculo;
+            let matchedMovimentos: any[] = [];
+            if (activeVinculo && firstMatch.Empenhado > 0) {
+                const rawMovs = allMovimentos.filter(m => m.Vinculo && matchVinculo(activeVinculo, m.Vinculo));
+                matchedMovimentos = filterCancelledEmpenhos(rawMovs, firstMatch.EmpenhadoAnulado);
+            }
+            const formatted = matchedMovimentos.map(m => {
+                const nr = m.NrEmpenho || '';
+                const exerc = m.ExercEmpenho || '';
+                const prov = m.DescrFornecedor?.trim() || '';
+                return `${nr}/${exerc}${prov ? ` - ${prov}` : ''}`;
+            });
+            const nrEmpenhos = Array.from(new Set(formatted)).join('; ');
+
             financialMap.set(local.id, {
                 amendmentId: local.id,
                 reservado: parsePortalCurrency(String(firstMatch.Reservado)),
@@ -323,16 +448,33 @@ export async function runFinancialSync() {
                     ? `${firstMatch.NaturezaDespesa.trim()} - ${firstMatch.DescricaoNaturezaDespesa.trim()}`
                     : firstMatch.NaturezaDespesa?.trim(),
                 classificacaoFuncional: firstMatch.ClassificacaoFuncional,
+                numeroEmpenho: nrEmpenhos || undefined,
+                anoEmpenho: undefined,
                 updatedAt: new Date().toISOString()
             });
             matchedCount++;
-            console.log(`[Sync] ✓ Match (Original): "${local.autor}" / "${local.objeto?.substring(0, 35)}" → CF ${firstMatch.ClassificacaoFuncional}`);
+            console.log(`[Sync] ✓ Match (Original): "${local.autor}" / "${local.objeto?.substring(0, 35)}" → CF ${firstMatch.ClassificacaoFuncional} | Empenhos: ${nrEmpenhos || 'nenhum'}`);
 
             // 2. Matches subsequentes geram emendas clonadas (desmembradas) por classificação funcional
             for (let i = 1; i < portalMatches.length; i++) {
                 const match = portalMatches[i];
                 const cleanCf = match.ClassificacaoFuncional.replace(/\D/g, '');
                 const cloneId = `${local.id}_cf_${cleanCf}`;
+
+                // Busca empenhos para o clone desmembrado
+                const activeCloneVinculo = match.Vinculo || local.vinculo;
+                let matchedCloneMovimentos: any[] = [];
+                if (activeCloneVinculo && match.Empenhado > 0) {
+                    const rawMovs = allMovimentos.filter(m => m.Vinculo && matchVinculo(activeCloneVinculo, m.Vinculo));
+                    matchedCloneMovimentos = filterCancelledEmpenhos(rawMovs, match.EmpenhadoAnulado);
+                }
+                const formattedClone = matchedCloneMovimentos.map(m => {
+                    const nr = m.NrEmpenho || '';
+                    const exerc = m.ExercEmpenho || '';
+                    const prov = m.DescrFornecedor?.trim() || '';
+                    return `${nr}/${exerc}${prov ? ` - ${prov}` : ''}`;
+                });
+                const nrCloneEmpenhos = Array.from(new Set(formattedClone)).join('; ');
 
                 if (!allAmendmentIds.has(cloneId)) {
                     console.log(`[Sync] + Desmembrando emenda (Criando Clone por CF): "${local.autor}" -> ID: ${cloneId}`);
@@ -363,6 +505,8 @@ export async function runFinancialSync() {
                         ? `${match.NaturezaDespesa.trim()} - ${match.DescricaoNaturezaDespesa.trim()}`
                         : match.NaturezaDespesa?.trim(),
                     classificacaoFuncional: match.ClassificacaoFuncional,
+                    numeroEmpenho: nrCloneEmpenhos || undefined,
+                    anoEmpenho: undefined,
                     updatedAt: new Date().toISOString()
                 });
                 matchedCount++;
