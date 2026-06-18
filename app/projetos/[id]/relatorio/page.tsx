@@ -139,7 +139,7 @@ export default async function RelatorioPage(props: Props) {
                             Identificação do Projeto
                         </h3>
                         <div className="grid grid-cols-2 gap-y-4 border border-slate-200 rounded-lg p-6">
-                            <div className="flex flex-col">
+                            <div className="flex flex-col col-span-2">
                                 <span className="text-[10px] font-bold text-slate-500 uppercase">
                                     Título da Emenda
                                 </span>
@@ -147,7 +147,7 @@ export default async function RelatorioPage(props: Props) {
                                     {amendment.objeto || amendment.title || "-"}
                                 </span>
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col col-span-2 border-t border-slate-100 pt-4">
                                 <span className="text-[10px] font-bold text-slate-500 uppercase">
                                     Autor da Emenda
                                 </span>

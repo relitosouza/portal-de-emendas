@@ -170,19 +170,19 @@ export default async function ProjetoDetalhePage(props: Props) {
                     </div>
                     <div className="border border-slate-200 rounded-2xl p-6">
                         <div className="grid grid-cols-2 gap-y-6 gap-x-4">
-                            <div>
+                            <div className="col-span-2">
                                 <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Título da Emenda</p>
                                 <p className="text-sm font-bold text-slate-800">{amendment.objeto || amendment.title || "-"}</p>
                             </div>
-                            <div>
+                            <div className="col-span-2 border-t border-slate-100 pt-4">
                                 <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Autor da Emenda</p>
                                 <p className="text-sm font-bold text-slate-800">{autor}</p>
                             </div>
-                            <div>
+                            <div className="border-t border-slate-100 pt-4">
                                 <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Valor Total Autorizado</p>
                                 <p className="text-lg font-black text-blue-600">{formatCurrency(valorTotal)}</p>
                             </div>
-                            <div>
+                            <div className="border-t border-slate-100 pt-4">
                                 <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Cód. Identificador</p>
                                 <p className="text-sm font-bold text-slate-800">{amendment.numeroEmenda || id.slice(0, 8)}</p>
                             </div>
