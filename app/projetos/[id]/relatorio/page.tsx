@@ -40,6 +40,19 @@ export default async function RelatorioPage(props: Props) {
 
     const categoriaLabel = getCategoryLabel(amendment.categoria);
 
+    const vinculo = amendment.vinculo;
+    const hasParts = !!vinculo && vinculo.split(".").length === 3;
+    const parts = hasParts ? vinculo.split(".") : [];
+    const fonteRecurso = hasParts ? parts[0] : "08";
+    const codigoAplicacao = hasParts ? parts[1] : amendment.codigoAplicacao;
+
+    const hasTechnicalDetails = !!(
+        vinculo ||
+        amendment.classificacaoFuncional ||
+        fonteRecurso ||
+        codigoAplicacao
+    );
+
     const progressPercent = currentStep <= 6 ? (Math.min(currentStep, 5) / 7) * 100 : 0;
 
     const statusSteps = [
@@ -316,20 +329,21 @@ export default async function RelatorioPage(props: Props) {
                     {(amendment.finalidade ||
                         amendment.funcao ||
                         amendment.orgaoBeneficiario ||
-                        amendment.fundamentoLegal) && (
+                        amendment.fundamentoLegal ||
+                        amendment.naturezaDespesa) && (
                         <section className="mb-10">
                             <h3 className="text-xs uppercase font-bold text-slate-400 mb-4 border-l-4 border-blue-600 pl-3">
                                 Classificação Orçamentária
                             </h3>
                             <div className="border border-slate-200 rounded-lg p-6">
                                 <div className="grid grid-cols-2 gap-4">
-                                    {amendment.finalidade && (
-                                        <div className="col-span-2">
+                                    {amendment.orgaoBeneficiario && (
+                                        <div>
                                             <span className="text-[10px] font-bold text-slate-500 uppercase">
-                                                Finalidade
+                                                Órgão Beneficiário
                                             </span>
                                             <p className="text-xs text-slate-700 mt-0.5">
-                                                {amendment.finalidade}
+                                                {amendment.orgaoBeneficiario}
                                             </p>
                                         </div>
                                     )}
@@ -346,13 +360,13 @@ export default async function RelatorioPage(props: Props) {
                                             </p>
                                         </div>
                                     )}
-                                    {amendment.orgaoBeneficiario && (
-                                        <div>
+                                    {amendment.naturezaDespesa && (
+                                        <div className="col-span-2">
                                             <span className="text-[10px] font-bold text-slate-500 uppercase">
-                                                Órgão Beneficiário
+                                                Natureza da Despesa
                                             </span>
                                             <p className="text-xs text-slate-700 mt-0.5">
-                                                {amendment.orgaoBeneficiario}
+                                                {amendment.naturezaDespesa}
                                             </p>
                                         </div>
                                     )}
@@ -363,6 +377,16 @@ export default async function RelatorioPage(props: Props) {
                                             </span>
                                             <p className="text-xs text-slate-700 mt-0.5">
                                                 {amendment.fundamentoLegal}
+                                            </p>
+                                        </div>
+                                    )}
+                                    {amendment.finalidade && (
+                                        <div className="col-span-2">
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Finalidade
+                                            </span>
+                                            <p className="text-xs text-slate-700 mt-0.5">
+                                                {amendment.finalidade}
                                             </p>
                                         </div>
                                     )}
@@ -378,7 +402,8 @@ export default async function RelatorioPage(props: Props) {
                         amendment.prazoAplicacao ||
                         amendment.codigoAplicacao ||
                         amendment.numeroLicitacao ||
-                        amendment.municipio) && (
+                        amendment.municipio ||
+                        amendment.numeroEmpenho) && (
                         <section className="mb-10">
                             <h3 className="text-xs uppercase font-bold text-slate-400 mb-4 border-l-4 border-blue-600 pl-3">
                                 Dados de Contratação
@@ -439,6 +464,88 @@ export default async function RelatorioPage(props: Props) {
                                                 Município
                                             </span>
                                             <p className="text-xs text-slate-700 mt-0.5">{amendment.municipio}</p>
+                                        </div>
+                                    )}
+                                    {amendment.numeroEmpenho && (
+                                        <div className="col-span-2">
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Nº Empenho
+                                            </span>
+                                            <div className="flex flex-col gap-2 mt-1.5">
+                                                {amendment.numeroEmpenho.split("; ").map((emp, idx) => {
+                                                    const dashIndex = emp.indexOf(" - ");
+                                                    if (dashIndex !== -1) {
+                                                        const numberYear = emp.substring(0, dashIndex);
+                                                        const supplier = emp.substring(dashIndex + 3);
+                                                        return (
+                                                            <div key={idx} className="text-xs text-slate-800 bg-slate-50 border border-slate-100 rounded-md px-3 py-1.5 flex items-center gap-2 w-full">
+                                                                <span className="font-mono font-bold text-slate-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-[10px] shrink-0">
+                                                                    {numberYear}
+                                                                </span>
+                                                                <span className="text-slate-600 truncate">{supplier}</span>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    return (
+                                                        <div key={idx} className="text-xs font-mono font-bold text-slate-800 bg-slate-50 border border-slate-100 rounded-md px-3 py-1.5 w-full">
+                                                            {emp}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Detalhes Técnicos */}
+                    {hasTechnicalDetails && (
+                        <section className="mb-10">
+                            <h3 className="text-xs uppercase font-bold text-slate-400 mb-4 border-l-4 border-blue-600 pl-3">
+                                Detalhes Técnicos
+                            </h3>
+                            <div className="border border-slate-200 rounded-lg p-6">
+                                <div className="grid grid-cols-2 gap-4">
+                                    {fonteRecurso && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Fonte de Recurso
+                                            </span>
+                                            <p className="text-xs font-semibold text-slate-800 mt-0.5 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">
+                                                {fonteRecurso}
+                                            </p>
+                                        </div>
+                                    )}
+                                    {codigoAplicacao && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Código de Aplicação
+                                            </span>
+                                            <p className="text-xs font-semibold text-slate-800 mt-0.5 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">
+                                                {codigoAplicacao}
+                                            </p>
+                                        </div>
+                                    )}
+                                    {vinculo && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Vínculo (Portal SMARAPD)
+                                            </span>
+                                            <p className="text-xs font-semibold text-slate-800 mt-0.5 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">
+                                                {vinculo}
+                                            </p>
+                                        </div>
+                                    )}
+                                    {amendment.classificacaoFuncional && (
+                                        <div>
+                                            <span className="text-[10px] font-bold text-slate-500 uppercase">
+                                                Classificação Funcional
+                                            </span>
+                                            <p className="text-xs font-semibold text-slate-800 mt-0.5 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">
+                                                {amendment.classificacaoFuncional}
+                                            </p>
                                         </div>
                                     )}
                                 </div>

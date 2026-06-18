@@ -100,6 +100,38 @@ export default async function ProjetoDetalhePage(props: Props) {
 
     const statusInfo = getStatusLabel();
 
+    const vinculo = amendment.vinculo;
+    const hasParts = !!vinculo && vinculo.split(".").length === 3;
+    const parts = hasParts ? vinculo.split(".") : [];
+    const fonteRecurso = hasParts ? parts[0] : "08";
+    const codigoAplicacao = hasParts ? parts[1] : amendment.codigoAplicacao;
+
+    const hasTechnicalDetails = !!(
+        vinculo ||
+        amendment.classificacaoFuncional ||
+        fonteRecurso ||
+        codigoAplicacao
+    );
+
+    const hasContratacao = !!(
+        amendment.fornecedor ||
+        amendment.cnpj ||
+        amendment.instrumentoJuridico ||
+        amendment.prazoAplicacao ||
+        codigoAplicacao ||
+        amendment.numeroLicitacao ||
+        amendment.municipio ||
+        amendment.numeroEmpenho
+    );
+
+    const hasClassificacao = !!(
+        amendment.finalidade ||
+        amendment.funcao ||
+        amendment.orgaoBeneficiario ||
+        amendment.fundamentoLegal ||
+        amendment.naturezaDespesa
+    );
+
     return (
         <>
             {/* ========================================================= */}
@@ -305,6 +337,171 @@ export default async function ProjetoDetalhePage(props: Props) {
                         </div>
                     </div>
                 </div>
+
+                {/* Classificação Orçamentária */}
+                {hasClassificacao && (
+                    <div className="mb-10">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-blue-600 rounded-full"></div>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Classificação Orçamentária</h3>
+                        </div>
+                        <div className="border border-slate-200 rounded-2xl p-6">
+                            <div className="grid grid-cols-2 gap-y-4 gap-x-4">
+                                {amendment.orgaoBeneficiario && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Órgão Beneficiário</p>
+                                        <p className="text-xs font-bold text-slate-800">{amendment.orgaoBeneficiario}</p>
+                                    </div>
+                                )}
+                                {amendment.funcao && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Função / Subfunção</p>
+                                        <p className="text-xs font-bold text-slate-800">{amendment.funcao} {amendment.subfuncao ? ` / ${amendment.subfuncao}` : ""}</p>
+                                    </div>
+                                )}
+                                {amendment.naturezaDespesa && (
+                                    <div className="col-span-2">
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Natureza da Despesa</p>
+                                        <p className="text-xs font-bold text-slate-800">{amendment.naturezaDespesa}</p>
+                                    </div>
+                                )}
+                                {amendment.fundamentoLegal && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Fundamento Legal</p>
+                                        <p className="text-xs font-bold text-slate-800">{amendment.fundamentoLegal}</p>
+                                    </div>
+                                )}
+                                {amendment.finalidade && (
+                                    <div className="col-span-2">
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Finalidade</p>
+                                        <p className="text-xs font-bold text-slate-800">{amendment.finalidade}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Dados de Contratação */}
+                {hasContratacao && (
+                    <div className="mb-10">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-blue-600 rounded-full"></div>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Dados de Contratação</h3>
+                        </div>
+                        <div className="border border-slate-200 rounded-2xl p-6">
+                            <div className="grid grid-cols-2 gap-y-4 gap-x-4">
+                                {amendment.fornecedor && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Fornecedor</p>
+                                        <p className="text-xs font-bold text-slate-800">{amendment.fornecedor}</p>
+                                    </div>
+                                )}
+                                {amendment.cnpj && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">CNPJ</p>
+                                        <p className="text-xs font-bold text-slate-800 font-mono">{amendment.cnpj}</p>
+                                    </div>
+                                )}
+                                {amendment.instrumentoJuridico && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Instrumento Jurídico</p>
+                                        <p className="text-xs font-bold text-slate-800">{amendment.instrumentoJuridico}</p>
+                                    </div>
+                                )}
+                                {amendment.prazoAplicacao && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Prazo de Aplicação</p>
+                                        <p className="text-xs font-bold text-slate-800">{amendment.prazoAplicacao}</p>
+                                    </div>
+                                )}
+                                {codigoAplicacao && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Código de Aplicação</p>
+                                        <p className="text-xs font-bold text-slate-800 font-mono">{codigoAplicacao}</p>
+                                    </div>
+                                )}
+                                {amendment.numeroLicitacao && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Nº Licitação</p>
+                                        <p className="text-xs font-bold text-slate-800 font-mono">{amendment.numeroLicitacao}</p>
+                                    </div>
+                                )}
+                                {amendment.municipio && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Município</p>
+                                        <p className="text-xs font-bold text-slate-800">{amendment.municipio}</p>
+                                    </div>
+                                )}
+                                {amendment.numeroEmpenho && (
+                                    <div className="col-span-2">
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Nº Empenho</p>
+                                        <div className="flex flex-col gap-2 mt-1.5">
+                                            {amendment.numeroEmpenho.split("; ").map((emp, idx) => {
+                                                const dashIndex = emp.indexOf(" - ");
+                                                if (dashIndex !== -1) {
+                                                    const numberYear = emp.substring(0, dashIndex);
+                                                    const supplier = emp.substring(dashIndex + 3);
+                                                    return (
+                                                        <div key={idx} className="text-xs text-slate-800 bg-slate-50 border border-slate-100 rounded-md px-3 py-1.5 flex items-center gap-2 w-full">
+                                                            <span className="font-mono font-bold text-slate-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-[10px] shrink-0">
+                                                                {numberYear}
+                                                            </span>
+                                                            <span className="text-slate-600 truncate">{supplier}</span>
+                                                        </div>
+                                                    );
+                                                }
+                                                return (
+                                                    <div key={idx} className="text-xs font-mono font-bold text-slate-800 bg-slate-50 border border-slate-100 rounded-md px-3 py-1.5 w-full">
+                                                        {emp}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Detalhes Técnicos */}
+                {hasTechnicalDetails && (
+                    <div className="mb-10">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-blue-600 rounded-full"></div>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Detalhes Técnicos</h3>
+                        </div>
+                        <div className="border border-slate-200 rounded-2xl p-6">
+                            <div className="grid grid-cols-2 gap-y-4 gap-x-4">
+                                {fonteRecurso && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Fonte de Recurso</p>
+                                        <p className="text-xs font-bold text-slate-800 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">{fonteRecurso}</p>
+                                    </div>
+                                )}
+                                {codigoAplicacao && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Código de Aplicação</p>
+                                        <p className="text-xs font-bold text-slate-800 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">{codigoAplicacao}</p>
+                                    </div>
+                                )}
+                                {vinculo && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Vínculo (Portal SMARAPD)</p>
+                                        <p className="text-xs font-bold text-slate-800 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">{vinculo}</p>
+                                    </div>
+                                )}
+                                {amendment.classificacaoFuncional && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Classificação Funcional</p>
+                                        <p className="text-xs font-bold text-slate-800 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">{amendment.classificacaoFuncional}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Footer Assinaturas */}
                 <div className="flex justify-between items-end pt-4">
