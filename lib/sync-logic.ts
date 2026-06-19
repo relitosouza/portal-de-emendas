@@ -44,6 +44,7 @@ interface PortalRecord {
     DescFuncional: string;
     NaturezaDespesa?: string;
     DescricaoNaturezaDespesa?: string;
+    Dotacao?: number;
 }
 
 interface AggregatedPortalRecord {
@@ -60,6 +61,7 @@ interface AggregatedPortalRecord {
     OrcamentariasSuplementacao: number;
     NaturezaDespesa?: string;
     DescricaoNaturezaDespesa?: string;
+    Dotacao?: number;
 }
 
 function parsePortalCurrency(val: string): string {
@@ -153,6 +155,9 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
             existing.Reservado = Math.max(existing.Reservado, reservado);
             existing.SaldoAtual = Math.max(existing.SaldoAtual, saldo);
             existing.OrcamentariasSuplementacao = Math.max(existing.OrcamentariasSuplementacao, orcSupl);
+            if (r.Dotacao && !existing.Dotacao) {
+                existing.Dotacao = Number(r.Dotacao);
+            }
         } else {
             map.set(key, {
                 Vinculo: vinculo,
@@ -168,6 +173,7 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
                 OrcamentariasSuplementacao: orcSupl,
                 NaturezaDespesa: r.NaturezaDespesa,
                 DescricaoNaturezaDespesa: r.DescricaoNaturezaDespesa,
+                Dotacao: r.Dotacao ? Number(r.Dotacao) : undefined,
             });
         }
     }
@@ -505,7 +511,12 @@ export async function runFinancialSync() {
             const activeVinculo = firstMatch.Vinculo || local.vinculo;
             let matchedMovimentos: any[] = [];
             if (activeVinculo && firstMatch.Empenhado > 0) {
-                const rawMovs = allMovimentos.filter(m => m.Vinculo && matchVinculo(activeVinculo, m.Vinculo));
+                const rawMovs = allMovimentos.filter(m => 
+                    m.Vinculo && 
+                    matchVinculo(activeVinculo, m.Vinculo) &&
+                    m.NaturDesp?.trim() === firstMatch.NaturezaDespesa?.trim() &&
+                    Number(m.Dotacao) === Number(firstMatch.Dotacao)
+                );
                 matchedMovimentos = filterCancelledEmpenhos(rawMovs, firstMatch.EmpenhadoAnulado);
             }
             const formatted = matchedMovimentos.map(m => {
@@ -567,7 +578,12 @@ export async function runFinancialSync() {
                 const activeCloneVinculo = match.Vinculo || local.vinculo;
                 let matchedCloneMovimentos: any[] = [];
                 if (activeCloneVinculo && match.Empenhado > 0) {
-                    const rawMovs = allMovimentos.filter(m => m.Vinculo && matchVinculo(activeCloneVinculo, m.Vinculo));
+                    const rawMovs = allMovimentos.filter(m => 
+                        m.Vinculo && 
+                        matchVinculo(activeCloneVinculo, m.Vinculo) &&
+                        m.NaturDesp?.trim() === match.NaturezaDespesa?.trim() &&
+                        Number(m.Dotacao) === Number(match.Dotacao)
+                    );
                     matchedCloneMovimentos = filterCancelledEmpenhos(rawMovs, match.EmpenhadoAnulado);
                 }
                 const formattedClone = matchedCloneMovimentos.map(m => {
