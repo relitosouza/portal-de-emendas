@@ -49,6 +49,7 @@ export interface Amendment {
     classificacaoFuncional?: string; // Classificação Funcional do portal SMARAPD (ex: "08.245.0018.2.016")
     numeroEmpenho?: string;    // Número do Empenho do portal SMARAPD (ex: "12456")
     anoEmpenho?: string;       // Ano do Empenho do portal SMARAPD (ex: "2026")
+    banco?: string;            // Nome/Número do Banco de pagamento
     // Event history (populated from financial.json)
     empenhos?: import("@/lib/json-storage").EmpenhoEvent[];
     liquidacoes?: import("@/lib/json-storage").LiquidacaoEvent[];

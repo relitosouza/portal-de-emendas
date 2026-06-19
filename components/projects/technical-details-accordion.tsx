@@ -17,6 +17,7 @@ interface TechnicalDetailsAccordionProps {
     classificacaoFuncional?: string;
     numeroEmpenho?: string;
     anoEmpenho?: string;
+    banco?: string;
     headingLevel?: "h2" | "h3" | "h4";
 }
 
@@ -50,6 +51,7 @@ export default function TechnicalDetailsAccordion({
     classificacaoFuncional,
     numeroEmpenho,
     anoEmpenho,
+    banco,
     headingLevel: HeadingTag = "h2",
 }: TechnicalDetailsAccordionProps) {
     const [open, setOpen] = useState(false);
@@ -77,6 +79,7 @@ export default function TechnicalDetailsAccordion({
         { label: "Nº Licitação", value: numeroLicitacao, mono: true },
         { label: "Classificação Funcional", value: classificacaoFuncional, mono: true },
         { label: "Natureza da Despesa", value: despesa },
+        { label: "Banco", value: banco },
         { label: "Empenho(s)", value: numeroEmpenho },
     ].filter(f => isValidValue(f.value));
 
@@ -123,7 +126,7 @@ export default function TechnicalDetailsAccordion({
                                         const visibleItems = empenhosExpanded ? allItems : allItems.slice(0, 1);
                                         return (
                                             <>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <div className="flex flex-col gap-3">
                                                     {visibleItems.map((val, idx) => {
                                                         const dashIndex = val.indexOf(" - ");
                                                         if (dashIndex !== -1) {

@@ -498,6 +498,12 @@ export default async function ProjetoDetalhePage(props: Props) {
                                         <p className="text-xs font-bold text-slate-800 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">{amendment.classificacaoFuncional}</p>
                                     </div>
                                 )}
+                                {amendment.banco && (
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Banco</p>
+                                        <p className="text-xs font-bold text-slate-800 font-mono bg-slate-50 px-2 py-0.5 rounded border border-slate-100 w-fit">{amendment.banco}</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -942,10 +948,11 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 codigoAplicacao={amendment.codigoAplicacao}
                                 numeroLicitacao={amendment.numeroLicitacao}
                                 despesa={amendment.naturezaDespesa}
-                                vinculo={amendment.vinculo}
+                                vinculo={vinculo}
                                 classificacaoFuncional={amendment.classificacaoFuncional}
                                 numeroEmpenho={amendment.numeroEmpenho}
                                 anoEmpenho={amendment.anoEmpenho}
+                                banco={amendment.banco}
                             />
 
                             {/* New Module: Management Transparency & Compliance */}

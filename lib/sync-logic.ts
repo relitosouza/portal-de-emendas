@@ -57,6 +57,7 @@ interface AggregatedPortalRecord {
     ValorPago: number;
     Reservado: number;
     SaldoAtual: number;
+    OrcamentariasSuplementacao: number;
     NaturezaDespesa?: string;
     DescricaoNaturezaDespesa?: string;
 }
@@ -132,7 +133,8 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
         const cf = r.ClassificacaoFuncional?.trim() || '';
         if (!vinculo) continue;
 
-        const key = `${vinculo}_${cf}`;
+        const nd = r.NaturezaDespesa?.trim() || '';
+        const key = `${vinculo}_${cf}_${nd}`;
         const existing = map.get(key);
         
         const empenhado = parseCurrency(r.Empenhado);
@@ -141,14 +143,16 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
         const pago = parseCurrency(r.ValorPago);
         const reservado = parseCurrency(r.Reservado);
         const saldo = parseCurrency(r.SaldoAtual);
+        const orcSupl = parseCurrency(r.OrcamentariasSuplementacao);
 
         if (existing) {
-            existing.Empenhado += empenhado;
-            existing.EmpenhadoAnulado += anuladoVal;
-            existing.Liquidado += liquidado;
-            existing.ValorPago += pago;
-            existing.Reservado += reservado;
-            existing.SaldoAtual += saldo;
+            existing.Empenhado = Math.max(existing.Empenhado, empenhado);
+            existing.EmpenhadoAnulado = Math.max(existing.EmpenhadoAnulado, anuladoVal);
+            existing.Liquidado = Math.max(existing.Liquidado, liquidado);
+            existing.ValorPago = Math.max(existing.ValorPago, pago);
+            existing.Reservado = Math.max(existing.Reservado, reservado);
+            existing.SaldoAtual = Math.max(existing.SaldoAtual, saldo);
+            existing.OrcamentariasSuplementacao = Math.max(existing.OrcamentariasSuplementacao, orcSupl);
         } else {
             map.set(key, {
                 Vinculo: vinculo,
@@ -161,6 +165,7 @@ function aggregateByVinculo(records: PortalRecord[]): AggregatedPortalRecord[] {
                 ValorPago: pago,
                 Reservado: reservado,
                 SaldoAtual: saldo,
+                OrcamentariasSuplementacao: orcSupl,
                 NaturezaDespesa: r.NaturezaDespesa,
                 DescricaoNaturezaDespesa: r.DescricaoNaturezaDespesa,
             });
@@ -270,6 +275,60 @@ function filterCancelledEmpenhos(movimentos: any[], annulledVal: number): any[] 
     return movimentos;
 }
 
+async function fetchPaymentsForEmpenhos(empenhos: { numero: string; ano: number }[], currentSyncYear: number): Promise<Map<string, any[]>> {
+    const paymentsByEmpenho = new Map<string, any[]>();
+    for (const emp of empenhos) {
+        const key = `${emp.numero}/${emp.ano}`;
+        console.log(`[Sync] Buscando pagamentos efetuados para empenho: ${emp.numero} (Ano Empenho: ${emp.ano})`);
+        const allPaymentsForThisEmpenho: any[] = [];
+        
+        // Loop a partir do ano do empenho até o exercício atual da sincronização
+        for (let yr = emp.ano; yr <= currentSyncYear; yr++) {
+            try {
+                const payload = {
+                    "ChaveModulo": "despesas_de_pagamentos",
+                    "NomeVisao": "pagamentosefetuados",
+                    "Filtros": [
+                        { "Campo": "NroEmpenho", "Valor": emp.numero, "TipoValor": 3 },
+                        { "Campo": "ExercEmpenho", "Valor": String(emp.ano), "TipoValor": 3 }
+                    ],
+                    "Periodicidade": "ANUAL",
+                    "Periodo": "",
+                    "Exercicio": yr,
+                    "Pagina": 1,
+                    "QuantidadeRegistros": "1000",
+                    "Ordenacao": []
+                };
+
+                const response = await fetch(OSASCO_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json, text/plain, */*',
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                        'Origin': 'https://transparencia-osasco.smarapd.com.br',
+                        'Referer': 'https://transparencia-osasco.smarapd.com.br/'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    let data = await response.json();
+                    if (typeof data === 'string') data = JSON.parse(data);
+                    if (data && data.Valores) {
+                        allPaymentsForThisEmpenho.push(...data.Valores);
+                        console.log(`[Sync] Encontrados ${data.Valores.length} pagamentos para empenho ${emp.numero}/${emp.ano} no exercício pagamento ${yr}.`);
+                    }
+                }
+            } catch (error) {
+                console.error(`[Sync] Erro ao buscar pagamentos para empenho ${emp.numero}/${emp.ano} no exercício ${yr}:`, error);
+            }
+        }
+        paymentsByEmpenho.set(key, allPaymentsForThisEmpenho);
+    }
+    return paymentsByEmpenho;
+}
+
 export async function runFinancialSync() {
     const exercise = new Date().getFullYear();
     console.log(`[Sync] Buscando dados do portal ANUAL: Exercício=${exercise}`);
@@ -311,8 +370,24 @@ export async function runFinancialSync() {
         portalData = JSON.parse(portalData);
     }
 
-    const portalRecords = portalData.Valores as PortalRecord[];
+    let portalRecords = portalData.Valores as PortalRecord[];
     console.log(`[Sync] ${portalRecords.length} registros recebidos do portal.`);
+
+    // Filtra registros duplicados/incorretos para o vínculo 08.804.0184 (emenda 036.13.34.2026).
+    // O portal traz uma linha extra sem reserva (Reservado = 0) que não deve ser considerada.
+    portalRecords = portalRecords.filter(r => {
+        const descVinculo = r.DescVinculo || '';
+        if (descVinculo.toUpperCase().includes("NÃO USAR ORÇAMENTO/EXECUÇÃO-VÍNCULO INVÁLIDO TCE") ||
+            descVinculo.toUpperCase().includes("VÍNCULO INVÁLIDO TCE") ||
+            descVinculo.toUpperCase().includes("INVÁLIDO TCE")) {
+            return false;
+        }
+
+        if (r.Vinculo?.trim() === "08.804.0184") {
+            return parseCurrency(r.Reservado) > 0;
+        }
+        return true;
+    });
 
     // Agrupa pelo Vinculo + ClassificacaoFuncional, somando valores financeiros
     const aggregated = aggregateByVinculo(portalRecords);
@@ -394,9 +469,9 @@ export async function runFinancialSync() {
     }
     console.log(`[Sync] ${allMovimentos.length} movimentos de empenho obtidos para cruzamento.`);
 
-    // Mantenha cópias para atualizar/inserir novos clones desmembrados
-    const updatedMain = [...mainAmendments];
-    const updatedExternal = [...externalAmendments];
+    // Mantenha cópias para atualizar/inserir novos clones desmembrados, limpando clones antigos
+    const updatedMain = mainAmendments.filter((a: any) => !a.id.includes("_cf_"));
+    const updatedExternal = externalAmendments.filter((a: any) => !a.id.includes("_cf_"));
 
     const localAmendments = [
         ...mainAmendments.map((a: any) => ({ ...a, originFile: AMENDMENTS_FILE })),
@@ -404,10 +479,14 @@ export async function runFinancialSync() {
     ];
 
     const financialMap = new Map<string, FinancialRecord>();
-    existingFinancial.forEach(r => financialMap.set(r.amendmentId, r));
+    existingFinancial.forEach(r => {
+        if (!r.amendmentId.includes("_cf_")) {
+            financialMap.set(r.amendmentId, r);
+        }
+    });
 
     let matchedCount = 0;
-    const allAmendmentIds = new Set(localAmendments.map((a: any) => a.id));
+    const allAmendmentIds = new Set(localAmendments.filter((a: any) => !a.id.includes("_cf_")).map((a: any) => a.id));
 
     for (const local of localAmendments) {
         // Ignora emendas desmembradas clonadas em execuções anteriores, pois as originais
@@ -437,6 +516,28 @@ export async function runFinancialSync() {
             });
             const nrEmpenhos = Array.from(new Set(formatted)).join('; ');
 
+            // Atualiza o valor (verba) da emenda original com base no portal
+            const origPortalVal = parseCurrency(firstMatch.OrcamentariasSuplementacao) > 0 
+                ? firstMatch.OrcamentariasSuplementacao 
+                : (parseCurrency(firstMatch.SaldoAtual) > 0 ? firstMatch.SaldoAtual : local.valor);
+            const origUpdatedVal = parsePortalCurrency(String(origPortalVal));
+
+            const idxMain = updatedMain.findIndex(a => a.id === local.id);
+            if (idxMain !== -1) {
+                updatedMain[idxMain].valor = origUpdatedVal;
+                if (updatedMain[idxMain].valorAutorizado !== undefined) {
+                    updatedMain[idxMain].valorAutorizado = origUpdatedVal;
+                }
+            } else {
+                const idxExt = updatedExternal.findIndex(a => a.id === local.id);
+                if (idxExt !== -1) {
+                    updatedExternal[idxExt].valor = origUpdatedVal;
+                    if (updatedExternal[idxExt].valorAutorizado !== undefined) {
+                        updatedExternal[idxExt].valorAutorizado = origUpdatedVal;
+                    }
+                }
+            }
+
             financialMap.set(local.id, {
                 amendmentId: local.id,
                 reservado: parsePortalCurrency(String(firstMatch.Reservado)),
@@ -455,11 +556,12 @@ export async function runFinancialSync() {
             matchedCount++;
             console.log(`[Sync] ✓ Match (Original): "${local.autor}" / "${local.objeto?.substring(0, 35)}" → CF ${firstMatch.ClassificacaoFuncional} | Empenhos: ${nrEmpenhos || 'nenhum'}`);
 
-            // 2. Matches subsequentes geram emendas clonadas (desmembradas) por classificação funcional
+            // 2. Matches subsequentes geram emendas clonadas (desmembradas) por classificação funcional e natureza de despesa
             for (let i = 1; i < portalMatches.length; i++) {
                 const match = portalMatches[i];
                 const cleanCf = match.ClassificacaoFuncional.replace(/\D/g, '');
-                const cloneId = `${local.id}_cf_${cleanCf}`;
+                const cleanNd = match.NaturezaDespesa ? match.NaturezaDespesa.replace(/\D/g, '') : '';
+                const cloneId = `${local.id}_cf_${cleanCf}${cleanNd ? `_nd_${cleanNd}` : ''}`;
 
                 // Busca empenhos para o clone desmembrado
                 const activeCloneVinculo = match.Vinculo || local.vinculo;
@@ -476,13 +578,23 @@ export async function runFinancialSync() {
                 });
                 const nrCloneEmpenhos = Array.from(new Set(formattedClone)).join('; ');
 
+                const ndDesc = match.NaturezaDespesa && match.DescricaoNaturezaDespesa
+                    ? `${match.NaturezaDespesa.trim()} - ${match.DescricaoNaturezaDespesa.trim()}`
+                    : match.NaturezaDespesa?.trim();
+                const clonePortalVal = parseCurrency(match.OrcamentariasSuplementacao) > 0 
+                    ? match.OrcamentariasSuplementacao 
+                    : (parseCurrency(match.SaldoAtual) > 0 ? match.SaldoAtual : local.valor);
+                const cloneValStr = parsePortalCurrency(String(clonePortalVal));
+
                 if (!allAmendmentIds.has(cloneId)) {
-                    console.log(`[Sync] + Desmembrando emenda (Criando Clone por CF): "${local.autor}" -> ID: ${cloneId}`);
+                    console.log(`[Sync] + Desmembrando emenda (Criando Clone por CF/ND): "${local.autor}" -> ID: ${cloneId}`);
                     const clone = {
                         ...local,
                         id: cloneId,
                         classificacaoFuncional: match.ClassificacaoFuncional,
-                        objeto: `${local.objeto} (CF ${match.ClassificacaoFuncional.trim()})`
+                        objeto: `${local.objeto} (CF ${match.ClassificacaoFuncional.trim()}${ndDesc ? `, ND ${ndDesc}` : ''})`,
+                        valor: cloneValStr,
+                        valorAutorizado: local.valorAutorizado !== undefined ? cloneValStr : undefined
                     };
                     delete (clone as any).originFile;
 
@@ -492,6 +604,22 @@ export async function runFinancialSync() {
                         updatedExternal.push(clone);
                     }
                     allAmendmentIds.add(cloneId);
+                } else {
+                    const idxMain = updatedMain.findIndex(a => a.id === cloneId);
+                    if (idxMain !== -1) {
+                        updatedMain[idxMain].valor = cloneValStr;
+                        if (updatedMain[idxMain].valorAutorizado !== undefined) {
+                            updatedMain[idxMain].valorAutorizado = cloneValStr;
+                        }
+                    } else {
+                        const idxExt = updatedExternal.findIndex(a => a.id === cloneId);
+                        if (idxExt !== -1) {
+                            updatedExternal[idxExt].valor = cloneValStr;
+                            if (updatedExternal[idxExt].valorAutorizado !== undefined) {
+                                updatedExternal[idxExt].valorAutorizado = cloneValStr;
+                            }
+                        }
+                    }
                 }
 
                 financialMap.set(cloneId, {
@@ -527,6 +655,83 @@ export async function runFinancialSync() {
                     classificacaoFuncional: "",
                     updatedAt: new Date().toISOString()
                 });
+            }
+        }
+    }
+
+    // Coleta todos os números de empenho e anos correspondentes do financialMap
+    const empenhoKeys = new Map<string, { numero: string; ano: number }>();
+    for (const record of financialMap.values()) {
+        if (record.numeroEmpenho) {
+            const items = record.numeroEmpenho.split("; ");
+            for (const item of items) {
+                const parts = item.split("/");
+                const num = parts[0]?.trim();
+                const rest = parts[1]?.trim() || "";
+                const yearStr = rest.split(" ")[0]?.trim() || "";
+                const year = parseInt(yearStr, 10) || exercise;
+                if (num) {
+                    const key = `${num}/${year}`;
+                    empenhoKeys.set(key, { numero: num, ano: year });
+                }
+            }
+        }
+    }
+
+    // Busca os pagamentos para os empenhos coletados
+    const paymentsByEmpenho = await fetchPaymentsForEmpenhos(Array.from(empenhoKeys.values()), exercise);
+
+    // Mapeia os pagamentos de volta para cada registro do financialMap
+    for (const record of financialMap.values()) {
+        const matchedPayments: any[] = [];
+        if (record.numeroEmpenho) {
+            const items = record.numeroEmpenho.split("; ");
+            for (const item of items) {
+                const parts = item.split("/");
+                const num = parts[0]?.trim();
+                const rest = parts[1]?.trim() || "";
+                const yearStr = rest.split(" ")[0]?.trim() || "";
+                const year = parseInt(yearStr, 10) || exercise;
+                if (num) {
+                    const key = `${num}/${year}`;
+                    const pList = paymentsByEmpenho.get(key);
+                    if (pList) {
+                        matchedPayments.push(...pList);
+                    }
+                }
+            }
+        }
+
+        if (matchedPayments.length > 0) {
+            // Mapeia os registros para PagamentoEvent
+            const paymentEvents = matchedPayments.map((p, pIdx) => {
+                const bankStr = p.Banco?.trim() || "";
+                const bankParts = bankStr.split(" - ");
+                const bancoNome = bankParts[0] || bankStr;
+                const bancoConta = bankParts[bankParts.length - 1] || "";
+                
+                return {
+                    id: p.Id || `pay-${record.amendmentId}-${pIdx}`,
+                    data: p.DataPagamento?.split(" ")[0] || "",
+                    valor: p.ValorLiquido || p.ValorTotal || "0,00",
+                    banco: bancoNome,
+                    agencia: bancoConta,
+                    documento: p.DocumentoNotaFiscal?.trim() || "",
+                    ordemBancaria: p.ID ? String(p.ID) : "",
+                    descricao: p.NomeFornecedor?.trim() || "",
+                    createdAt: new Date().toISOString()
+                };
+            });
+
+            // Atualiza o histórico de pagamentos no record
+            record.pagamentos = paymentEvents;
+
+            // Coleta a lista única de bancos e salva no record
+            const uniqueBanks = Array.from(new Set(
+                matchedPayments.map(p => p.Banco?.trim()).filter(Boolean)
+            ));
+            if (uniqueBanks.length > 0) {
+                record.banco = uniqueBanks.join("; ");
             }
         }
     }

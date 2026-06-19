@@ -199,6 +199,7 @@ export interface FinancialRecord {
     classificacaoFuncional?: string; // Classificação Funcional (ex: "08.245.0018.2.016")
     numeroEmpenho?: string;    // Número do Empenho (ex: "12456")
     anoEmpenho?: string;       // Ano do Empenho (ex: "2026")
+    banco?: string;            // Nome/Número do Banco de pagamento
     // Event history (undefined on old records — treat as [])
     empenhos?: EmpenhoEvent[];
     liquidacoes?: LiquidacaoEvent[];
@@ -229,6 +230,7 @@ export async function upsertFinancialData(_sheets: any, _spreadsheetId: string, 
         classificacaoFuncional: data.classificacaoFuncional !== undefined ? data.classificacaoFuncional : currentRecord?.classificacaoFuncional,
         numeroEmpenho: data.numeroEmpenho !== undefined ? data.numeroEmpenho : currentRecord?.numeroEmpenho,
         anoEmpenho: data.anoEmpenho !== undefined ? data.anoEmpenho : currentRecord?.anoEmpenho,
+        banco: data.banco !== undefined ? data.banco : currentRecord?.banco,
         // Preserve event arrays from existing record
         empenhos: currentRecord?.empenhos,
         liquidacoes: currentRecord?.liquidacoes,
@@ -469,6 +471,7 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
                 // Número do empenho e ano do portal SMARAPD
                 numeroEmpenho: financial.numeroEmpenho ?? amendment.numeroEmpenho,
                 anoEmpenho: financial.anoEmpenho ?? amendment.anoEmpenho,
+                banco: financial.banco ?? amendment.banco,
                 // Pass event history to amendment
                 empenhos: financial.empenhos ?? [],
                 liquidacoes: financial.liquidacoes ?? [],
