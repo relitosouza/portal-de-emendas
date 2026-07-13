@@ -24,9 +24,7 @@ export default function VLibras() {
     return (
         // @ts-expect-error custom VLibras attributes
         <div id="vlibras-widget" vw="true" className="enabled print:hidden">
-            {/* @ts-expect-error custom VLibras attributes */}
             <div vw-access-button="true" className="active"></div>
-            {/* @ts-expect-error custom VLibras attributes */}
             <div vw-plugin-wrapper="true">
                 <div className="vw-plugin-top-wrapper"></div>
             </div>
