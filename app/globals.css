@@ -235,6 +235,17 @@
     .no-print {
       display: none !important;
     }
+    [vw],
+    [vw] *,
+    [vw-access-button],
+    [vw-access-button] *,
+    [vw-plugin-wrapper],
+    [vw-plugin-wrapper] *,
+    .vw-plugin-top-wrapper,
+    .vw-plugin-top-wrapper * {
+      display: none !important;
+      visibility: hidden !important;
+    }
     body {
       background-color: white !important;
     }
@@ -242,7 +253,7 @@
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 !important;
-      padding: 2rem !important;
+      padding: 1.25rem !important;
       box-shadow: none !important;
       border: none !important;
     }

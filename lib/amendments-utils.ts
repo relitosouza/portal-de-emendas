@@ -83,7 +83,7 @@ export function findVereadorPhoto(name: string): string | undefined {
 export const CATEGORY_MAP: Record<string, string> = {
     "1": "LEGISLATIVA", "2": "JUDICIÁRIA", "3": "ESSENCIAL À JUSTIÇA",
     "4": "ADMINISTRAÇÃO", "5": "DEFESA NACIONAL", "6": "SEGURANÇA PÚBLICA",
-    "7": "RELAÇÕES EXTERIORES", "8": "ASSISTÊNCIA SOCIAL", "9": "PREVIDÊNCIA SOCIAL",
+    "7": "RELAÇÕES EXTERIORES", "8": "ASSISTÊNCIA SOCIAL", "08": "ASSISTÊNCIA SOCIAL", "9": "PREVIDÊNCIA SOCIAL",
     "10": "SAÚDE", "11": "TRABALHO", "12": "EDUCAÇÃO", "13": "CULTURA",
     "14": "DIREITOS DA CIDADANIA", "15": "URBANISMO", "16": "HABITAÇÃO",
     "17": "SANEAMENTO", "18": "GESTÃO AMBIENTAL", "19": "CIÊNCIA E TECNOLOGIA",
@@ -97,7 +97,8 @@ export function getCategoryLabel(cat?: string): string | null {
     if (!cat) return null;
     let catNum = cat;
     if (typeof catNum === "string" && catNum.includes(" - ")) catNum = catNum.split(" - ")[0].trim();
-    return CATEGORY_MAP[String(catNum)] || cat;
+    const normalized = String(catNum).trim();
+    return CATEGORY_MAP[normalized] || CATEGORY_MAP[normalized.replace(/^0+(?=\d)/, "")] || cat;
 }
 
 // ─── Parsing de Moeda ──────────────────────────────────────────────────────────

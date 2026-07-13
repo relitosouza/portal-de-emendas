@@ -426,7 +426,7 @@ export async function deleteAmendmentFromSheet(id: string): Promise<boolean> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateAmendmentInSheet(id: string, amendment: any): Promise<boolean> {
     const amendments = await readJsonFile<Amendment>(AMENDMENTS_FILE);
-    const index = amendments.findIndex((a) => a.id === id);
+    const index = amendments.findIndex((a) => String(a.id) === String(id));
 
     if (index === -1) {
         // Not found — append as new

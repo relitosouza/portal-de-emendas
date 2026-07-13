@@ -18,7 +18,7 @@ export default async function RelatorioPage(props: Props) {
     let amendment = null;
     try {
         const amendments = await getAmendmentsFromSheet();
-        amendment = amendments.find((a) => a.id === id);
+        amendment = amendments.find((a) => String(a.id) === String(id));
     } catch (error) {
         console.error("Failed to fetch amendment:", error);
     }

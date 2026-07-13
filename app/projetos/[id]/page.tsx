@@ -16,17 +16,19 @@ interface Props {
     params: Promise<{
         id: string;
     }>;
+    searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function ProjetoDetalhePage(props: Props) {
     const params = await props.params;
+    const searchParams = props.searchParams ? await props.searchParams : {};
     const { id } = params;
 
     let amendment = null;
     let managementData = null;
     try {
         const amendments = await getAmendmentsFromSheet();
-        amendment = amendments.find((a) => a.id === id);
+        amendment = amendments.find((a) => String(a.id) === String(id));
         
         // Try to fetch management specific data (Compliance, Audit, etc)
         managementData = await fetchManagementDetails(id);
@@ -131,6 +133,13 @@ export default async function ProjetoDetalhePage(props: Props) {
         amendment.fundamentoLegal ||
         amendment.naturezaDespesa
     );
+
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(searchParams)) {
+        const entry = Array.isArray(value) ? value[0] : value;
+        if (entry) query.set(key, entry);
+    }
+    const reportQuery = query.toString();
 
     return (
         <>
@@ -1054,6 +1063,13 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 >
                                     <span className="material-symbols-outlined text-xl">description</span>
                                     Visualizar Relatório
+                                </Link>
+                                <Link
+                                    href={`/projetos/${id}/relatorio-indicacoes${reportQuery ? `?${reportQuery}` : ""}`}
+                                    className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:scale-95"
+                                >
+                                    <span className="material-symbols-outlined text-xl">assignment</span>
+                                    Relatório de Indicações
                                 </Link>
                                 <Link href="/" className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all active:scale-95">
                                     <span className="material-symbols-outlined text-xl">home</span>

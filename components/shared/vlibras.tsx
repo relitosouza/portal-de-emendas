@@ -11,9 +11,9 @@ export default function VLibras() {
             script.id = "vlibras-script";
             script.async = true;
             script.onload = () => {
-                // @ts-ignore
-                if (window.VLibras) {
-                    // @ts-ignore
+            // @ts-expect-error external widget injected on the client
+            if (window.VLibras) {
+                    // @ts-expect-error external widget injected on the client
                     new window.VLibras.Widget("https://vlibras.gov.br/app");
                 }
             };
@@ -22,11 +22,11 @@ export default function VLibras() {
     }, []);
 
     return (
-        // @ts-ignore
-        <div vw="true" className="enabled">
-            {/* @ts-ignore */}
+        // @ts-expect-error custom VLibras attributes
+        <div id="vlibras-widget" vw="true" className="enabled print:hidden">
+            {/* @ts-expect-error custom VLibras attributes */}
             <div vw-access-button="true" className="active"></div>
-            {/* @ts-ignore */}
+            {/* @ts-expect-error custom VLibras attributes */}
             <div vw-plugin-wrapper="true">
                 <div className="vw-plugin-top-wrapper"></div>
             </div>

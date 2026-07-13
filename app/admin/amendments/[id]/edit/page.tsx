@@ -51,7 +51,7 @@ export default function EditAmendmentPage({ params }: PageProps) {
                 }
                 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const found = rawData.find((a: any) => a.id === id);
+                const found = rawData.find((a: any) => String(a.id) === String(id));
                 if (found) {
                     setAmendment(found);
                     setFormData({ ...found });

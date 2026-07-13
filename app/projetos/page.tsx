@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, Suspense, useEffect, useMemo } from "react";
+import { useState, Suspense, useEffect, useMemo, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { Amendment } from "@/lib/store";
 import Navbar from "@/components/shared/navbar";
@@ -49,7 +49,7 @@ const parseFinanceiro = (v: any): number => {
 const CATEGORY_MAP: Record<string, string> = {
     "1": "LEGISLATIVA", "2": "JUDICIÁRIA", "3": "ESSENCIAL À JUSTIÇA",
     "4": "ADMINISTRAÇÃO", "5": "DEFESA NACIONAL", "6": "SEGURANÇA PÚBLICA",
-    "7": "RELAÇÕES EXTERIORES", "8": "ASSISTÊNCIA SOCIAL", "9": "PREVIDÊNCIA SOCIAL",
+    "7": "RELAÇÕES EXTERIORES", "8": "ASSISTÊNCIA SOCIAL", "08": "ASSISTÊNCIA SOCIAL", "9": "PREVIDÊNCIA SOCIAL",
     "10": "SAÚDE", "11": "TRABALHO", "12": "EDUCAÇÃO", "13": "CULTURA",
     "14": "DIREITOS DA CIDADANIA", "15": "URBANISMO", "16": "HABITAÇÃO",
     "17": "SANEAMENTO", "18": "GESTÃO AMBIENTAL", "19": "CIÊNCIA E TECNOLOGIA",
@@ -63,7 +63,8 @@ function getCategoryLabel(cat?: string): string {
     if (!cat) return "";
     let catNum = cat;
     if (typeof catNum === "string" && catNum.includes(" - ")) catNum = catNum.split(" - ")[0].trim();
-    return CATEGORY_MAP[String(catNum)] || cat;
+    const normalized = String(catNum).trim();
+    return CATEGORY_MAP[normalized] || CATEGORY_MAP[normalized.replace(/^0+(?=\d)/, "")] || cat;
 }
 
 function exportToExcel(amendments: Amendment[]) {
@@ -147,6 +148,28 @@ function exportToExcel(amendments: Amendment[]) {
     URL.revokeObjectURL(url);
 }
 
+function buildFilterQueryString(params: {
+    searchTerm: string;
+    selectedSector: string | null;
+    selectedStatus: string | null;
+    selectedResponsible: string | null;
+    selectedAmbito: string | null;
+    filtroParam: string | null;
+    viewMode: "individual" | "grouped";
+}) {
+    const query = new URLSearchParams();
+
+    if (params.searchTerm.trim()) query.set("search", params.searchTerm.trim());
+    if (params.selectedSector) query.set("sector", params.selectedSector);
+    if (params.selectedStatus) query.set("status", params.selectedStatus);
+    if (params.selectedResponsible) query.set("responsible", params.selectedResponsible);
+    if (params.selectedAmbito) query.set("ambito", params.selectedAmbito);
+    if (params.filtroParam) query.set("filtro", params.filtroParam);
+    if (params.viewMode === "grouped") query.set("view", "grouped");
+
+    return query.toString();
+}
+
 function ProjectsContent() {
     const searchParams = useSearchParams();
     const initialSector = searchParams.get("sector");
@@ -166,15 +189,31 @@ function ProjectsContent() {
     const [currentPage, setCurrentPage] = useState(1);
     const [viewMode, setViewMode] = useState<"individual" | "grouped">(initialView);
 
+    const matchesSelectedAmbito = useCallback((projectAmbito?: string | null) => {
+        if (!selectedAmbito) return true;
+        if (!projectAmbito) return false;
+        return normalizeString(projectAmbito) === normalizeString(selectedAmbito);
+    }, [selectedAmbito]);
+
     const availableSectors = useMemo(() => {
         const sectors = new Set(projects.map(p => p.sector).filter((s): s is string => !!s));
         return Array.from(sectors).sort((a, b) => a.localeCompare(b, "pt-BR"));
     }, [projects]);
 
+    const scopedProjects = useMemo(() => {
+        return projects.filter((project) => matchesSelectedAmbito(project.ambito));
+    }, [projects, matchesSelectedAmbito]);
+
     const availableResponsibles = useMemo(() => {
-        const responsibles = new Set(projects.map(p => p.responsible).filter((r): r is string => !!r));
+        const responsibles = new Set(scopedProjects.map(p => p.responsible).filter((r): r is string => !!r));
         return Array.from(responsibles).sort((a, b) => a.localeCompare(b, "pt-BR"));
-    }, [projects]);
+    }, [scopedProjects]);
+
+    useEffect(() => {
+        if (selectedResponsible && !availableResponsibles.includes(selectedResponsible)) {
+            setSelectedResponsible(null);
+        }
+    }, [availableResponsibles, selectedResponsible]);
 
     useEffect(() => {
         async function fetchAmendments() {
@@ -280,7 +319,7 @@ function ProjectsContent() {
         const matchesSector = selectedSector ? project.sector === selectedSector : true;
         const matchesStatus = selectedStatus ? project.status === selectedStatus : true;
         const matchesResponsible = selectedResponsible ? project.responsible === selectedResponsible : true;
-        const matchesAmbito = selectedAmbito ? (project.ambito ? project.ambito.toLowerCase() === selectedAmbito.toLowerCase() : false) : true;
+        const matchesAmbito = matchesSelectedAmbito(project.ambito);
         const matchesFiltro = !filtroParam || (
             filtroParam === "reservado" ? project.hasReservado :
                 filtroParam === "empenhado" ? project.hasEmpenhado :
@@ -336,6 +375,16 @@ function ProjectsContent() {
     const getInitials = (name: string) => {
         return name.split(" ").filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase();
     };
+
+    const detailQueryString = useMemo(() => buildFilterQueryString({
+        searchTerm,
+        selectedSector,
+        selectedStatus,
+        selectedResponsible,
+        selectedAmbito,
+        filtroParam,
+        viewMode,
+    }), [searchTerm, selectedSector, selectedStatus, selectedResponsible, selectedAmbito, filtroParam, viewMode]);
 
     if (loading) {
         return (
@@ -563,6 +612,15 @@ function ProjectsContent() {
                             <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
                             Exportar
                         </button>
+
+                        <Link
+                            href={`/projetos/relatorio-indicacoes${detailQueryString ? `?${detailQueryString}` : ""}`}
+                            aria-label="Abrir relatório de indicações com os filtros atuais"
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-slate-900"
+                        >
+                            <span className="material-symbols-outlined text-sm" aria-hidden="true">description</span>
+                            Relatório de Indicações
+                        </Link>
                     </div>
                 </div>
 
@@ -623,7 +681,7 @@ function ProjectsContent() {
                                     style={{ "--index": index % 20 } as any}
                                 >
                                     <Link
-                                        href={`/projetos/${project.id}`}
+                                        href={`/projetos/${project.id}${detailQueryString ? `?${detailQueryString}` : ""}`}
                                         aria-label={`${project.title} — ${project.status} — ${project.budget} — Autor: ${project.responsible}`}
                                         className="no-underline block h-full"
                                     >
