@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Amendment, getAmendments, clearAmendments, deleteAmendment } from "@/lib/store";
 import Navbar from "@/components/shared/navbar";
 import { getSectorColor } from "@/lib/sector-colors";
-import { getNormalizedStatus } from "@/lib/status-mapper";
+import { getEffectiveStatus, getNormalizedStatus } from "@/lib/status-mapper";
 import { parseCurrency } from "@/lib/amendments-utils";
 
 export default function DashboardPage() {
@@ -100,9 +100,12 @@ export default function DashboardPage() {
         return acc + parseCurrency(curr.valor);
     }, 0);
 
-    const emExecucao = amendments.filter((a) => getNormalizedStatus(a.status as string) === "Execução").length;
-    const concluidos = amendments.filter((a) => getNormalizedStatus(a.status as string) === "Executada").length;
-    const planejamento = amendments.filter((a) => getNormalizedStatus(a.status as string) === "Em Análise" || getNormalizedStatus(a.status as string) === "Não Iniciada" || getNormalizedStatus(a.status as string) === "Elaboração").length;
+    const emExecucao = amendments.filter((a) => getEffectiveStatus(a.status as string, { empenhado: a.empenhado, liquidado: a.liquidado, pago: a.pago }) === "Execução").length;
+    const concluidos = amendments.filter((a) => getEffectiveStatus(a.status as string, { empenhado: a.empenhado, liquidado: a.liquidado, pago: a.pago }) === "Executada").length;
+    const planejamento = amendments.filter((a) => {
+        const status = getEffectiveStatus(a.status as string, { empenhado: a.empenhado, liquidado: a.liquidado, pago: a.pago });
+        return status === "Em Análise" || status === "Não Iniciada" || status === "Elaboração";
+    }).length;
 
     const formatCurrency = (value: number) => {
         if (value >= 1000000) return `R$ ${(value / 1000000).toFixed(1)}M`;
@@ -111,7 +114,7 @@ export default function DashboardPage() {
     };
 
     const getStatusConfig = (rawStatus: string) => {
-        const status = getNormalizedStatus(rawStatus);
+        const status = getEffectiveStatus(rawStatus);
         const map: Record<string, { label: string; color: string; icon: string }> = {
             "Não Iniciada": { label: "Não Iniciada", color: "blue", icon: "edit_note" },
             "Em Análise": { label: "Em Análise", color: "indigo", icon: "pending_actions" },

@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { findVereadorPhoto, formatCurrency, parseCurrency, getCategoryLabel } from "@/lib/amendments-utils";
 import { getSectorColor } from "@/lib/sector-colors";
-import { getNormalizedStatus } from "@/lib/status-mapper";
+import { getEffectiveStatus } from "@/lib/status-mapper";
 import { cn } from "@/lib/utils";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import * as Accordion from "@radix-ui/react-accordion";
@@ -66,7 +66,11 @@ export default function GroupedAmendments({ amendments, initialLimit = 3 }: Grou
         };
       }
 
-      const status = getNormalizedStatus(a.status);
+      const status = getEffectiveStatus(a.status, {
+        empenhado: a.empenhado,
+        liquidado: a.liquidado,
+        pago: a.pago,
+      });
       map[key].progress += (PROGRESS_MAP[status] || 0);
       map[key].valorTotal += valor;
       map[key].participantes.push({

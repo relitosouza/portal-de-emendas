@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getAmendmentsFromSheet } from "@/lib/json-storage";
 import { Amendment } from "@/lib/store";
 import { getCategoryLabel, formatCurrency, parseCurrency } from "@/lib/amendments-utils";
-import { getNormalizedStatus } from "@/lib/status-mapper";
+import { getEffectiveStatus } from "@/lib/status-mapper";
 import { normalizeString } from "@/lib/utils";
 import PrintReportButton from "./print-button";
 import StatusFlowTrack from "@/components/shared/status-flow-track";
@@ -63,7 +63,11 @@ function matchesFilters(amendment: Amendment, filters: {
     const title = normalizeString(getTitle(amendment));
     const author = normalizeString(getResponsible(amendment));
     const sector = normalizeString(getSector(amendment));
-    const status = normalizeString(getNormalizedStatus(amendment.status as string));
+    const status = normalizeString(getEffectiveStatus(amendment.status as string, {
+        empenhado: amendment.empenhado,
+        liquidado: amendment.liquidado,
+        pago: amendment.pago,
+    }));
     const valueSearch = normalizeString(amendment.numeroEmenda || "");
     const description = normalizeString(amendment.finalidade || amendment.description || "");
     const location = normalizeString(amendment.localidadeBeneficiada || amendment.neighborhood || amendment.address || "");
@@ -259,7 +263,11 @@ export default async function RelatorioIndicacoesPage(props: Props) {
                                         </tr>
                                     ) : (
                                         visibleAmendments.map((item) => {
-                                            const status = getNormalizedStatus(item.status as string);
+                                            const status = getEffectiveStatus(item.status as string, {
+                                                empenhado: item.empenhado,
+                                                liquidado: item.liquidado,
+                                                pago: item.pago,
+                                            });
 
                                             return (
                                                 <Fragment key={item.id}>

@@ -1,3 +1,5 @@
+import { parseCurrency } from "@/lib/amendments-utils";
+
 export function getNormalizedStatus(rawStatus: string | null | undefined): string {
     const s = String(rawStatus || "").toLowerCase().trim();
 
@@ -12,6 +14,24 @@ export function getNormalizedStatus(rawStatus: string | null | undefined): strin
 
     // Default fallback
     return "Não Iniciada";
+}
+
+export function getEffectiveStatus(
+    rawStatus: string | null | undefined,
+    financial?: {
+        empenhado?: string | number | null;
+        liquidado?: string | number | null;
+        pago?: string | number | null;
+    }
+): string {
+    const normalized = getNormalizedStatus(rawStatus);
+
+    if (financial && parseCurrency(financial.empenhado) > 0) {
+        const step = getStatusStep(normalized);
+        if (step < 4) return "Contratação";
+    }
+
+    return normalized;
 }
 
 export function getStatusStep(status: string): number {

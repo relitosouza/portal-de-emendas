@@ -1,5 +1,5 @@
 import { getAmendmentsFromSheet } from "@/lib/json-storage";
-import { getNormalizedStatus, getStatusStep } from "@/lib/status-mapper";
+import { getEffectiveStatus, getStatusStep } from "@/lib/status-mapper";
 import { getCategoryLabel, parseCurrency, formatCurrency } from "@/lib/amendments-utils";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -33,7 +33,11 @@ export default async function RelatorioPage(props: Props) {
     const liquidado = parseCurrency(amendment.liquidado);
     const pago = parseCurrency(amendment.pago);
 
-    const normalizedStatus = getNormalizedStatus(amendment.status as string);
+    const normalizedStatus = getEffectiveStatus(amendment.status as string, {
+        empenhado: amendment.empenhado,
+        liquidado: amendment.liquidado,
+        pago: amendment.pago,
+    });
     const currentStep = getStatusStep(normalizedStatus);
 
     const autor = amendment.autor || amendment.author || amendment.responsavelNome || "Não informado";

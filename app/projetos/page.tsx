@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Amendment } from "@/lib/store";
 import Navbar from "@/components/shared/navbar";
 import { getSectorColor } from "@/lib/sector-colors";
-import { getNormalizedStatus } from "@/lib/status-mapper";
+import { getEffectiveStatus, getNormalizedStatus } from "@/lib/status-mapper";
 import { VEREADORES_PHOTOS, findVereadorPhoto, parseCurrency } from "@/lib/amendments-utils";
 import GroupedAmendments from "@/components/dashboard/grouped-amendments";
 import { cn, normalizeString } from "@/lib/utils";
@@ -250,7 +250,11 @@ function ProjectsContent() {
                         else if (text.includes("esporte") || text.includes("lazer") || text.includes("estadio")) sector = "Desporto e Lazer";
                     }
 
-                    const status = getNormalizedStatus(a.status as string);
+                    const status = getEffectiveStatus(a.status as string, {
+                        empenhado: a.empenhado,
+                        liquidado: a.liquidado,
+                        pago: a.pago,
+                    });
 
                     const progressMap: Record<string, number> = {
                         "Não Iniciada": 0,

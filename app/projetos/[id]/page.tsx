@@ -1,5 +1,5 @@
 import { getAmendmentsFromSheet } from "@/lib/json-storage";
-import { getNormalizedStatus, getStatusStep } from "@/lib/status-mapper";
+import { getEffectiveStatus, getStatusStep } from "@/lib/status-mapper";
 import { VEREADORES_PHOTOS, findVereadorPhoto, parseCurrency, formatCurrency } from "@/lib/amendments-utils";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -74,7 +74,11 @@ export default async function ProjetoDetalhePage(props: Props) {
         { label: "Cancelada", icon: "block" },
     ];
 
-    const normalizedStatus = getNormalizedStatus(amendment.status as string);
+    const normalizedStatus = getEffectiveStatus(amendment.status as string, {
+        empenhado: amendment.empenhado,
+        liquidado: amendment.liquidado,
+        pago: amendment.pago,
+    });
     const currentStep = getStatusStep(normalizedStatus);
     const progressPercent = currentStep <= 6 ? (Math.min(currentStep, 5) / 7) * 100 : 0;
 
