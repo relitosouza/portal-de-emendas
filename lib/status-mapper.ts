@@ -26,7 +26,7 @@ export function getEffectiveStatus(
 ): string {
     const normalized = getNormalizedStatus(rawStatus);
 
-    if (financial && parseCurrency(financial.empenhado) > 0) {
+    if (financial && parseCurrency(financial.empenhado ?? undefined) > 0) {
         const step = getStatusStep(normalized);
         if (step < 4) return "Contratação";
     }
