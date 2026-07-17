@@ -971,7 +971,7 @@ export async function runFinancialSync() {
     }
 
     const sourceUrl = `https://transparencia-osasco.smarapd.com.br/#/dinamico/emendas_parlamentares/emendasrecebidas?periodicidade=ANUAL&exercicio=${exercise}`;
-    const unmatchedRevenues: CreditedRevenue[] = receitasList
+    const ungroupedRevenues: CreditedRevenue[] = receitasList
         .filter((receita) =>
             !assignedReceitaIds.has(receita.Id)
             && !normalizeText(receita.Operacao).includes("estorno")
@@ -997,7 +997,60 @@ export async function runFinancialSync() {
                     : "Não identificado") as CreditedRevenue["scope"],
             sourceUrl,
             updatedAt: new Date().toISOString(),
-        }))
+            transactionCount: 1,
+            transactions: [{
+                id: receita.Id,
+                creditDate: receita.DataMovto.split(" ")[0] || "",
+                creditedValue: receita.ValorCreditado,
+                history: receita.Historico.replace(/\s+/g, " ").trim(),
+                bank: receita.NomeBanco,
+                operation: receita.Operacao,
+            }],
+        }));
+
+    const groupedRevenueMap = new Map<string, CreditedRevenue>();
+    for (const revenue of ungroupedRevenues) {
+        const groupKey = normalizeVinculo(revenue.vinculo);
+        const existing = groupedRevenueMap.get(groupKey);
+
+        if (!existing) {
+            groupedRevenueMap.set(groupKey, {
+                ...revenue,
+                id: `vinculo-${groupKey}`,
+            });
+            continue;
+        }
+
+        existing.creditedValue += revenue.creditedValue;
+        existing.transactionCount = (existing.transactionCount || 1) + (revenue.transactionCount || 1);
+        existing.transactions = [...(existing.transactions || []), ...(revenue.transactions || [])];
+
+        const existingDateKey = existing.creditDate.split("/").reverse().join("");
+        const revenueDateKey = revenue.creditDate.split("/").reverse().join("");
+        if (revenueDateKey > existingDateKey) existing.creditDate = revenue.creditDate;
+
+        const existingAuthorIsGeneric = normalizeText(existing.author).includes("nao identificado")
+            || normalizeText(existing.author).includes("comissao")
+            || normalizeText(existing.author).includes("bancada");
+        const revenueAuthorIsPerson = !normalizeText(revenue.author).includes("nao identificado")
+            && !normalizeText(revenue.author).includes("comissao")
+            && !normalizeText(revenue.author).includes("bancada");
+        if (existingAuthorIsGeneric && revenueAuthorIsPerson) {
+            existing.author = revenue.author;
+            existing.history = revenue.history;
+        } else if (!existing.history && revenue.history) {
+            existing.history = revenue.history;
+        }
+
+        if (!existing.amendmentNumber && revenue.amendmentNumber) {
+            existing.amendmentNumber = revenue.amendmentNumber;
+        }
+        if (revenue.bank && !existing.bank.includes(revenue.bank)) {
+            existing.bank = [existing.bank, revenue.bank].filter(Boolean).join("; ");
+        }
+    }
+
+    const unmatchedRevenues = Array.from(groupedRevenueMap.values())
         .sort((a, b) => b.creditDate.split("/").reverse().join("").localeCompare(a.creditDate.split("/").reverse().join("")));
 
     // Salvar as emendas, os dados financeiros e as receitas ainda sem associação.

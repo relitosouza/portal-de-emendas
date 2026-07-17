@@ -209,6 +209,15 @@ export interface FinancialRecord {
     pagamentos?: PagamentoEvent[];
 }
 
+export interface CreditedRevenueTransaction {
+    id: string;
+    creditDate: string;
+    creditedValue: number;
+    history: string;
+    bank: string;
+    operation: string;
+}
+
 export interface CreditedRevenue {
     id: string;
     exercise: number;
@@ -226,6 +235,8 @@ export interface CreditedRevenue {
     scope: "Estadual" | "Federal" | "Não identificado";
     sourceUrl: string;
     updatedAt: string;
+    transactionCount?: number;
+    transactions?: CreditedRevenueTransaction[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

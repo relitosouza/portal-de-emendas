@@ -27,6 +27,9 @@ export default async function CreditedRevenuePage({ params }: Props) {
     if (!revenue) notFound();
 
     const authorPhoto = findVereadorPhoto(revenue.author);
+    const transactions = revenue.transactions || [];
+    const transactionCount = revenue.transactionCount || Math.max(1, transactions.length);
+    const isGrouped = transactionCount > 1;
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
             <Navbar />
@@ -42,9 +45,12 @@ export default async function CreditedRevenuePage({ params }: Props) {
                             <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[10px] font-black uppercase tracking-widest mb-4">
                                 Emenda Creditada
                             </span>
-                            <p className="text-sm font-semibold text-emerald-100 mb-2">Valor do lançamento</p>
+                            <p className="text-sm font-semibold text-emerald-100 mb-2">{isGrouped ? "Valor total creditado" : "Valor do lançamento"}</p>
                             <h1 className="text-4xl md:text-5xl font-black tracking-tight">{formatCurrency(revenue.creditedValue)}</h1>
-                            <p className="mt-4 text-sm text-emerald-50">Crédito registrado em {revenue.creditDate || "data não informada"}</p>
+                            <p className="mt-4 text-sm text-emerald-50">
+                                {isGrouped ? `${transactionCount} lançamentos agrupados · último crédito em ` : "Crédito registrado em "}
+                                {revenue.creditDate || "data não informada"}
+                            </p>
                         </div>
                         <div className="rounded-2xl bg-white/10 border border-white/15 p-4 min-w-56">
                             <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-100">Situação no portal</p>
@@ -56,7 +62,7 @@ export default async function CreditedRevenuePage({ params }: Props) {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <section className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-7 shadow-sm">
-                        <h2 className="text-lg font-black mb-5">Dados do lançamento</h2>
+                        <h2 className="text-lg font-black mb-5">{isGrouped ? "Dados do vínculo agrupado" : "Dados do lançamento"}</h2>
                         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div>
                                 <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Nº da emenda informado</dt>
@@ -79,15 +85,37 @@ export default async function CreditedRevenuePage({ params }: Props) {
                                 <dd className="mt-1 font-bold text-slate-800">{revenue.revenueNature || "Não informada"}</dd>
                                 <dd className="mt-1 text-sm text-slate-500">{revenue.revenueDescription}</dd>
                             </div>
-                            <div className="sm:col-span-2">
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Histórico oficial</dt>
-                                <dd className="mt-2 rounded-xl bg-slate-50 p-4 text-sm leading-relaxed text-slate-700">{revenue.history || "Histórico não informado no lançamento."}</dd>
-                            </div>
-                            <div className="sm:col-span-2">
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Conta bancária</dt>
-                                <dd className="mt-1 text-sm font-semibold text-slate-700">{revenue.bank || "Não informada"}</dd>
-                            </div>
+                            {!isGrouped && (
+                                <>
+                                    <div className="sm:col-span-2">
+                                        <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Histórico oficial</dt>
+                                        <dd className="mt-2 rounded-xl bg-slate-50 p-4 text-sm leading-relaxed text-slate-700">{revenue.history || "Histórico não informado no lançamento."}</dd>
+                                    </div>
+                                    <div className="sm:col-span-2">
+                                        <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Conta bancária</dt>
+                                        <dd className="mt-1 text-sm font-semibold text-slate-700">{revenue.bank || "Não informada"}</dd>
+                                    </div>
+                                </>
+                            )}
                         </dl>
+
+                        {isGrouped && (
+                            <div className="mt-7 border-t border-slate-100 pt-6">
+                                <h3 className="text-sm font-black text-slate-800 mb-4">Lançamentos reunidos neste vínculo</h3>
+                                <div className="space-y-3">
+                                    {transactions.map((transaction) => (
+                                        <article key={transaction.id} className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
+                                            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                                <span className="text-xs font-bold text-slate-600">{transaction.creditDate || "Data não informada"}</span>
+                                                <span className="font-black text-emerald-700">{formatCurrency(transaction.creditedValue)}</span>
+                                            </div>
+                                            <p className="text-sm leading-relaxed text-slate-700">{transaction.history || "Histórico não informado."}</p>
+                                            {transaction.bank && <p className="text-xs text-slate-500 mt-2">{transaction.bank}</p>}
+                                        </article>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </section>
 
                     <aside className="space-y-6">
