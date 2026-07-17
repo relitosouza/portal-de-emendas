@@ -219,7 +219,7 @@ export interface CreditedRevenue {
     creditedValue: number;
     operation: string;
     vinculo: string;
-    vinculoDescription: string;
+    vinculoDescription?: string;
     revenueNature: string;
     revenueDescription: string;
     bank: string;

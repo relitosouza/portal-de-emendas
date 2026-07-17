@@ -320,11 +320,11 @@ function ProjectsContent() {
                 const mappedRevenues: Project[] = ((creditedData?.data || []) as CreditedRevenue[]).map((revenue) => ({
                     id: revenue.id,
                     numeroEmenda: revenue.amendmentNumber,
-                    title: revenue.history || revenue.vinculoDescription || "Emenda Creditada",
+                    title: revenue.history || revenue.revenueDescription || "Emenda Creditada",
                     status: "Emenda Creditada",
                     sector: "Emenda Creditada",
                     budget: revenue.creditedValue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
-                    location: revenue.vinculoDescription || `Vínculo ${revenue.vinculo}`,
+                    location: `${revenue.scope} · Crédito em ${revenue.creditDate}`,
                     progress: 100,
                     description: `${revenue.revenueNature} ${revenue.revenueDescription}`.trim(),
                     startDate: revenue.creditDate,
