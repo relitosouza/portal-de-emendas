@@ -321,7 +321,7 @@ function ProjectsContent() {
                     id: revenue.id,
                     numeroEmenda: revenue.amendmentNumber,
                     title: revenue.history || revenue.vinculoDescription || "Emenda Creditada",
-                    status: revenue.operation.toLowerCase().includes("estorno") ? "Estorno de crédito" : "Emenda Creditada",
+                    status: "Emenda Creditada",
                     sector: "Emenda Creditada",
                     budget: revenue.creditedValue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
                     location: revenue.vinculoDescription || `Vínculo ${revenue.vinculo}`,
@@ -400,9 +400,6 @@ function ProjectsContent() {
     const getStatusStyle = (status: string) => {
         if (status.startsWith("Creditado") || status === "Emenda Creditada") {
             return { bg: "bg-emerald-100 text-emerald-700", bar: "bg-emerald-500" };
-        }
-        if (status === "Estorno de crédito") {
-            return { bg: "bg-rose-100 text-rose-700", bar: "bg-rose-500" };
         }
         switch (status) {
             case "Prestação de Contas":

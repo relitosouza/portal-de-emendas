@@ -959,7 +959,10 @@ export async function runFinancialSync() {
 
     const sourceUrl = `https://transparencia-osasco.smarapd.com.br/#/dinamico/emendas_parlamentares/emendasrecebidas?periodicidade=ANUAL&exercicio=${exercise}`;
     const unmatchedRevenues: CreditedRevenue[] = receitasList
-        .filter((receita) => !assignedReceitaIds.has(receita.Id))
+        .filter((receita) =>
+            !assignedReceitaIds.has(receita.Id)
+            && !normalizeText(receita.Operacao).includes("estorno")
+        )
         .map((receita) => ({
             id: receita.Id,
             exercise,

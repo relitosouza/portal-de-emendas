@@ -27,8 +27,6 @@ export default async function CreditedRevenuePage({ params }: Props) {
     if (!revenue) notFound();
 
     const authorPhoto = findVereadorPhoto(revenue.author);
-    const isReversal = revenue.creditedValue < 0 || revenue.operation.toLowerCase().includes("estorno");
-
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
             <Navbar />
@@ -42,7 +40,7 @@ export default async function CreditedRevenuePage({ params }: Props) {
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                         <div>
                             <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[10px] font-black uppercase tracking-widest mb-4">
-                                {isReversal ? "Estorno de crédito" : "Emenda Creditada"}
+                                Emenda Creditada
                             </span>
                             <p className="text-sm font-semibold text-emerald-100 mb-2">Valor do lançamento</p>
                             <h1 className="text-4xl md:text-5xl font-black tracking-tight">{formatCurrency(revenue.creditedValue)}</h1>
