@@ -145,6 +145,7 @@ function normalizeHeaderName(header: string): string {
         "numerolicitacao": "numeroLicitacao", "licitacao": "numeroLicitacao",
         "licitação": "numeroLicitacao", "codigoaplicacao": "codigoAplicacao",
         "codigoaplicacaovariavel": "codigoAplicacaoVariavel",
+        "vinculoreceita": "vinculoReceita", "vínculoreceita": "vinculoReceita",
         "reservado": "reservado", "empenhado": "empenhado",
         "liquidado": "liquidado", "pago": "pago",
         "reservador": "reservado", "empenhador": "empenhado", "liquidador": "liquidado", "pagor": "pago",

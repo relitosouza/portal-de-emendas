@@ -13,6 +13,16 @@ export function isValidUUID(value: unknown): value is string {
 }
 
 /**
+ * IDs importados podem ser UUIDs ou códigos legados do portal (pontos,
+ * sublinhados e hífens). Restringe o conjunto de caracteres para impedir
+ * que o identificador seja usado como caminho ou conteúdo executável.
+ */
+export function isValidAmendmentId(value: unknown): value is string {
+    if (typeof value !== "string") return false;
+    return value.length >= 1 && value.length <= 240 && /^[a-zA-Z0-9._-]+$/.test(value);
+}
+
+/**
  * Assert that a value is a valid UUID, throw if not.
  */
 export function assertValidUUID(value: unknown, fieldName: string = "ID"): string {

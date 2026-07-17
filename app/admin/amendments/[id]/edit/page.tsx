@@ -352,6 +352,43 @@ export default function EditAmendmentPage({ params }: PageProps) {
                             )}
                         </div>
 
+                        <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-5">
+                            <div className="flex items-start gap-3 mb-4">
+                                <span className="material-symbols-outlined text-emerald-600" aria-hidden="true">link</span>
+                                <div>
+                                    <h3 className="text-sm font-bold text-emerald-950">Associação manual da receita</h3>
+                                    <p className="text-xs text-emerald-800 mt-1">
+                                        Preencha quando o vínculo de Emendas Recebidas for diferente do vínculo usado na execução.
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className={labelClass}>Vínculo da Execução</label>
+                                    <input
+                                        className={`${inputClass} font-mono bg-slate-100 text-slate-500`}
+                                        value={formData.vinculo || "Ainda não identificado"}
+                                        readOnly
+                                        aria-readonly="true"
+                                    />
+                                </div>
+                                <div>
+                                    <label className={labelClass}>Vínculo da Receita</label>
+                                    <input
+                                        className={`${inputClass} font-mono`}
+                                        value={formData.vinculoReceita || ""}
+                                        onChange={(e) => handleChange("vinculoReceita", e.target.value)}
+                                        onBlur={(e) => handleChange("vinculoReceita", e.target.value.trim())}
+                                        placeholder="Ex: 05.800.0033"
+                                        maxLength={30}
+                                    />
+                                </div>
+                            </div>
+                            <p className="text-[11px] text-emerald-700 mt-2">
+                                Salve a emenda e depois use <strong>Sincronizar Portal</strong> no painel administrativo.
+                            </p>
+                        </div>
+
                         {/* Resumo Financeiro (Read-only cards calculated from history) */}
                         <div className="rounded-xl border border-slate-200 bg-slate-50/30 p-6 space-y-5">
                             <div className="flex items-center gap-2">

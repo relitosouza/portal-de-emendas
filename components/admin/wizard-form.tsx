@@ -47,6 +47,7 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
         subfuncao: initialData?.subfuncao || "",
         codigoAplicacao: initialData?.codigoAplicacao || "",
         codigoAplicacaoVariavel: initialData?.codigoAplicacaoVariavel || "",
+        vinculoReceita: initialData?.vinculoReceita || "",
         destinacao: initialData?.destinacao || "",
         orgaoBeneficiario: initialData?.orgaoBeneficiario || "",
         localidadeBeneficiada: initialData?.localidadeBeneficiada || "",
@@ -398,6 +399,32 @@ export function WizardForm({ initialData, isEditing = false }: WizardFormProps) 
                                                         <label className={labelClass}>Autor da Emenda</label>
                                                         <input className={inputClass} type="text" placeholder="Parlamentar proponente" value={formData.autor} onChange={(e) => handleChange("autor", e.target.value)} />
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="h-[1px] bg-gray-100" />
+
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                                            <div className="md:col-span-4">
+                                                <h3 className="font-bold text-lg text-[#1A1A1A]">Associação da Receita</h3>
+                                                <p className="text-sm text-gray-500 mt-1">Use quando a receita e a execução possuem vínculos diferentes.</p>
+                                            </div>
+                                            <div className="md:col-span-8">
+                                                <div className="space-y-2 rounded-2xl border border-emerald-100 bg-emerald-50/40 p-5">
+                                                    <label className={labelClass}>Vínculo da Receita</label>
+                                                    <input
+                                                        className={`${inputClass} font-mono`}
+                                                        type="text"
+                                                        maxLength={30}
+                                                        placeholder="Ex: 05.800.0033"
+                                                        value={formData.vinculoReceita}
+                                                        onChange={(e) => handleChange("vinculoReceita", e.target.value)}
+                                                        onBlur={(e) => handleChange("vinculoReceita", e.target.value.trim())}
+                                                    />
+                                                    <p className="text-xs leading-relaxed text-emerald-800">
+                                                        Informe o vínculo exibido em <strong>Emendas Recebidas</strong>. Após salvar, execute <strong>Sincronizar Portal</strong> no painel administrativo.
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>

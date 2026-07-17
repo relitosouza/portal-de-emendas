@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { appendAmendmentToSheet, getAmendmentsFromSheet, deleteAmendmentFromSheet, updateAmendmentInSheet } from "@/lib/json-storage";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
-import { isValidUUID, validatePaginationParams } from "@/lib/validation";
+import { isValidAmendmentId, validatePaginationParams } from "@/lib/validation";
 import { logApiError, logApiCall } from "@/lib/logger";
 
 export async function GET(req: NextRequest) {
@@ -59,6 +59,18 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Missing required fields: objeto/title is required" }, { status: 400 });
         }
 
+        if (body.vinculoReceita !== undefined) {
+            if (typeof body.vinculoReceita !== "string") {
+                return NextResponse.json({ error: "Vínculo da Receita inválido" }, { status: 400 });
+            }
+            body.vinculoReceita = body.vinculoReceita.trim();
+            if (body.vinculoReceita && !/^[0-9.\s-]{3,30}$/.test(body.vinculoReceita)) {
+                return NextResponse.json({
+                    error: "Vínculo da Receita deve conter apenas números, pontos, espaços ou hífens",
+                }, { status: 400 });
+            }
+        }
+
         const amendment = {
             ...body,
             id: crypto.randomUUID(),
@@ -104,10 +116,9 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ error: "Missing ID" }, { status: 400 });
         }
 
-        // Validate UUID format
-        if (!isValidUUID(id)) {
+        if (!isValidAmendmentId(id)) {
             logApiCall("DELETE", "/api/amendments", 400, Date.now() - startTime, { reason: "invalid_uuid" });
-            return NextResponse.json({ error: "Invalid ID format: must be a valid UUID" }, { status: 400 });
+            return NextResponse.json({ error: "Invalid amendment ID format" }, { status: 400 });
         }
 
         try {
@@ -149,10 +160,21 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json({ error: "Missing ID" }, { status: 400 });
         }
 
-        // Validate UUID format
-        if (!isValidUUID(body.id)) {
+        if (!isValidAmendmentId(body.id)) {
             logApiCall("PUT", "/api/amendments", 400, Date.now() - startTime, { reason: "invalid_uuid" });
-            return NextResponse.json({ error: "Invalid ID format: must be a valid UUID" }, { status: 400 });
+            return NextResponse.json({ error: "Invalid amendment ID format" }, { status: 400 });
+        }
+
+        if (body.vinculoReceita !== undefined) {
+            if (typeof body.vinculoReceita !== "string") {
+                return NextResponse.json({ error: "Vínculo da Receita inválido" }, { status: 400 });
+            }
+            body.vinculoReceita = body.vinculoReceita.trim();
+            if (body.vinculoReceita && !/^[0-9.\s-]{3,30}$/.test(body.vinculoReceita)) {
+                return NextResponse.json({
+                    error: "Vínculo da Receita deve conter apenas números, pontos, espaços ou hífens",
+                }, { status: 400 });
+            }
         }
 
         try {

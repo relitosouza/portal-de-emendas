@@ -44,6 +44,7 @@ export interface Amendment {
     pago?: string;
     codigoAplicacao?: string;
     codigoAplicacaoVariavel?: string;
+    vinculoReceita?: string;  // Vínculo do relatório de receitas usado na associação manual
     dataCredito?: string;      // Data em que o recurso entrou (creditado)
     valorCreditado?: string;   // Valor que foi creditado
     vinculo?: string;          // Código numérico do vínculo no portal SMARAPD (ex: "08.804.0061")

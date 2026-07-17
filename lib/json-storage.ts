@@ -450,16 +450,24 @@ export async function deleteAmendmentFromSheet(id: string): Promise<boolean> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateAmendmentInSheet(id: string, amendment: any): Promise<boolean> {
     const amendments = await readJsonFile<Amendment>(AMENDMENTS_FILE);
-    const index = amendments.findIndex((a) => String(a.id) === String(id));
+    const mainIndex = amendments.findIndex((a) => String(a.id) === String(id));
 
-    if (index === -1) {
-        // Not found — append as new
-        await appendAmendmentToSheet(amendment);
-        return true;
+    if (mainIndex !== -1) {
+        amendments[mainIndex] = { ...amendments[mainIndex], ...amendment, id };
+        await writeJsonFile(AMENDMENTS_FILE, amendments);
+    } else {
+        const externalAmendments = await readJsonFile<Amendment>(EXTERNAL_FILE);
+        const externalIndex = externalAmendments.findIndex((a) => String(a.id) === String(id));
+
+        if (externalIndex !== -1) {
+            externalAmendments[externalIndex] = { ...externalAmendments[externalIndex], ...amendment, id };
+            await writeJsonFile(EXTERNAL_FILE, externalAmendments);
+        } else {
+            // Emenda nova sem correspondência em nenhuma base.
+            await appendAmendmentToSheet(amendment);
+            return true;
+        }
     }
-
-    amendments[index] = { ...amendments[index], ...amendment, id };
-    await writeJsonFile(AMENDMENTS_FILE, amendments);
 
     // Update financial data if provided
     if (amendment.reservado !== undefined || amendment.empenhado !== undefined || amendment.liquidado !== undefined || amendment.pago !== undefined) {

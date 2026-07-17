@@ -438,13 +438,18 @@ async function fetchReceitas(exercise: number): Promise<ReceitaRecord[]> {
             if (data && data.Valores) {
                 for (const r of data.Valores) {
                     if (!r.Vinculo) continue;
+                    const vinculoDescription = r.DescriVinculo || r.DescVinculo || '';
+                    if (normalizeText(vinculoDescription).includes('nao usar')) {
+                        console.log(`[Sync] Ignorando receita marcada como NÃO USAR: vínculo ${r.Vinculo.trim()} / registro ${r.Id || r.ID}`);
+                        continue;
+                    }
                     let val = parseAnulacao(r.Valor);
                     if (r.Operacao && r.Operacao.includes('ESTORNO')) val = -Math.abs(val);
 
                     receitasList.push({
                         Id: String(r.Id || r.ID || `${r.Vinculo}-${r.DataMovto}-${r.Valor}`),
                         Vinculo: r.Vinculo.trim(),
-                        DescVinculo: r.DescriVinculo || r.DescVinculo || '',
+                        DescVinculo: vinculoDescription,
                         Historico: r.Historico || '',
                         DataMovto: r.DataMovto || '',
                         ValorCreditado: val,
@@ -628,16 +633,24 @@ export async function runFinancialSync() {
     const receitaAssignments = new Map<string, ReceitaRecord[]>();
     const assignedReceitaIds = new Set<string>();
     const originalExternalAmendments = localAmendments.filter((local: any) =>
-        !local.id.includes("_cf_") && (local.ambito === "Estadual" || local.ambito === "Federal")
+        !local.id.includes("_cf_")
+        && ["estadual", "federal"].includes(normalizeText(local.ambito))
     );
 
     for (const receita of receitasList) {
         const amendmentNumber = extractAmendmentNumber(receita);
-        let owner = amendmentNumber
-            ? originalExternalAmendments.find((local: any) =>
+        // A associação manual pelo vínculo da receita tem prioridade sobre os
+        // critérios automáticos, pois resolve códigos divergentes entre os relatórios.
+        let owner = originalExternalAmendments.find((local: any) =>
+            local.vinculoReceita
+            && normalizeVinculo(local.vinculoReceita) === normalizeVinculo(receita.Vinculo)
+        );
+
+        if (!owner && amendmentNumber) {
+            owner = originalExternalAmendments.find((local: any) =>
                 String(local.numeroEmenda || "").replace(/\D/g, "") === amendmentNumber
-            )
-            : undefined;
+            );
+        }
 
         // Registros sem número no histórico só usam o fallback de vínculo + autor.
         // Isso evita associar uma receita a uma emenda diferente do mesmo parlamentar.
