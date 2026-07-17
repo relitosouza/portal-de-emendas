@@ -37,6 +37,7 @@ export default async function RelatorioPage(props: Props) {
         empenhado: amendment.empenhado,
         liquidado: amendment.liquidado,
         pago: amendment.pago,
+        dataCredito: amendment.dataCredito,
     });
     const currentStep = getStatusStep(normalizedStatus);
 
@@ -57,9 +58,10 @@ export default async function RelatorioPage(props: Props) {
         codigoAplicacao
     );
 
-    const progressPercent = currentStep <= 6 ? (Math.min(currentStep, 5) / 7) * 100 : 0;
+    const progressPercent = currentStep <= 7 ? (Math.min(currentStep, 6) / 8) * 100 : 0;
 
     const statusSteps = [
+        { label: "Creditado", icon: "account_balance" },
         { label: "Não Iniciada", icon: "check" },
         { label: "Em Análise", icon: "check" },
         { label: "Elaboração", icon: "check" },
@@ -212,17 +214,27 @@ export default async function RelatorioPage(props: Props) {
                                 ></div>
 
                                 {statusSteps.map((step, idx) => {
-                                    const isCompleted = idx < currentStep;
-                                    const isCurrent = idx === currentStep;
-                                    const isFuture = idx > currentStep;
-                                    const isCancelled = idx === 8;
+                                    let isCompleted = idx < currentStep;
+                                    let isCurrent = idx === currentStep;
+                                    let isFuture = idx > currentStep;
+                                    const isCancelled = idx === 9;
+
+                                    if (idx === 0) {
+                                        isCompleted = !!amendment.dataCredito && currentStep > 0;
+                                        isCurrent = !!amendment.dataCredito && currentStep === 0;
+                                        isFuture = !amendment.dataCredito && currentStep === 0;
+                                        if (!amendment.dataCredito && currentStep > 0) {
+                                            isCompleted = false;
+                                            isFuture = true;
+                                        }
+                                    }
 
                                     return (
                                         <div
                                             key={step.label}
-                                            className={`relative z-10 flex flex-col items-center w-[72px] ${isFuture && !isCancelled ? "opacity-40" : ""} ${isCancelled && currentStep !== 8 ? "opacity-40" : ""}`}
+                                            className={`relative z-10 flex flex-col items-center w-[72px] ${isFuture && !isCancelled ? "opacity-40" : ""} ${isCancelled && currentStep !== 9 ? "opacity-40" : ""}`}
                                         >
-                                            {isCurrent && idx < 8 ? (
+                                            {isCurrent && idx < 9 ? (
                                                 <div className="w-7 h-7 -mt-0.5 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-1.5 ring-3 ring-emerald-100 shadow-lg shadow-emerald-500/20">
                                                     <span className="material-symbols-outlined text-[14px]">{step.icon}</span>
                                                 </div>
@@ -231,9 +243,9 @@ export default async function RelatorioPage(props: Props) {
                                                     className={`w-6 h-6 rounded-full flex items-center justify-center mb-2 ring-2 ring-white ${
                                                         isCompleted
                                                             ? "bg-blue-500 text-white"
-                                                            : isFuture || (isCancelled && currentStep !== 8)
+                                                            : isFuture || (isCancelled && currentStep !== 9)
                                                                 ? "bg-slate-200 text-slate-400"
-                                                                : currentStep === 8 && isCancelled
+                                                                : currentStep === 9 && isCancelled
                                                                     ? "bg-red-500 text-white"
                                                                     : "bg-slate-500 text-white"
                                                     }`}
@@ -256,6 +268,40 @@ export default async function RelatorioPage(props: Props) {
                             <span className="font-bold text-slate-700">{normalizedStatus || "Não informado"}</span>
                         </p>
                     </section>
+
+                    {/* Fluxo da Receita (Para Emendas Estaduais/Federais) */}
+                    {(amendment.ambito === 'Estadual' || amendment.ambito === 'Federal') && (
+                        <section className="mb-10">
+                            <h3 className="text-xs uppercase font-bold text-slate-400 mb-4 border-l-4 border-emerald-500 pl-3">
+                                Fluxo da Receita
+                            </h3>
+                            <div className="overflow-hidden border border-slate-200 rounded-lg">
+                                <table className="w-full text-left border-collapse">
+                                    <thead className="bg-slate-50 border-b border-slate-200">
+                                        <tr>
+                                            <th className="px-4 py-3 text-[10px] font-bold text-slate-500 uppercase">
+                                                Descrição
+                                            </th>
+                                            <th className="px-4 py-3 text-[10px] font-bold text-slate-500 uppercase text-right">
+                                                Valor (R$)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100">
+
+                                        <tr className="bg-emerald-50/50">
+                                            <td className="px-4 py-3 text-xs font-bold text-slate-800">
+                                                Valor Creditado {amendment.dataCredito && <span className="text-[10px] font-normal text-slate-500 block">Em {amendment.dataCredito}</span>}
+                                            </td>
+                                            <td className="px-4 py-3 text-sm font-bold text-emerald-600 text-right font-mono">
+                                                {amendment.valorCreditado ? `R$ ${amendment.valorCreditado}` : "R$ 0,00"}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    )}
 
                     {/* Cronograma Físico-Financeiro */}
                     <section className="mb-10">
@@ -576,9 +622,9 @@ export default async function RelatorioPage(props: Props) {
                                 {(amendment.numeroEmenda || id.slice(0, 8)).toUpperCase()}
                             </span>
                             <span className={`mt-1.5 text-[9px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                                currentStep === 8
+                                currentStep === 9
                                     ? "bg-red-100 text-red-700"
-                                    : currentStep >= 6
+                                    : currentStep >= 7
                                         ? "bg-emerald-100 text-emerald-700"
                                         : "bg-blue-100 text-blue-700"
                             }`}>

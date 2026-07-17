@@ -62,6 +62,7 @@ export const AMENDMENTS_FILE = "amendments.json";
 export const EXTERNAL_FILE = "emendas-externas.json";
 export const FINANCIAL_FILE = "financial.json";
 export const CARDS_FILE = "cards.json";
+export const CREDITED_REVENUES_FILE = "credited-revenues.json";
 
 // =====================================================
 // Helpers
@@ -195,6 +196,8 @@ export interface FinancialRecord {
     reservado: string;
     updatedAt: string;
     vinculo?: string;   // Código numérico do vínculo SMARAPD (ex: "08.804.0061")
+    dataCredito?: string;
+    valorCreditado?: string;
     naturezaDespesa?: string; // Natureza da despesa (ex: "3.3.90.30.00 - MATERIAL DE CONSUMO")
     classificacaoFuncional?: string; // Classificação Funcional (ex: "08.245.0018.2.016")
     numeroEmpenho?: string;    // Número do Empenho (ex: "12456")
@@ -204,6 +207,25 @@ export interface FinancialRecord {
     empenhos?: EmpenhoEvent[];
     liquidacoes?: LiquidacaoEvent[];
     pagamentos?: PagamentoEvent[];
+}
+
+export interface CreditedRevenue {
+    id: string;
+    exercise: number;
+    amendmentNumber?: string;
+    author: string;
+    history: string;
+    creditDate: string;
+    creditedValue: number;
+    operation: string;
+    vinculo: string;
+    vinculoDescription: string;
+    revenueNature: string;
+    revenueDescription: string;
+    bank: string;
+    scope: "Estadual" | "Federal" | "Não identificado";
+    sourceUrl: string;
+    updatedAt: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -226,6 +248,8 @@ export async function upsertFinancialData(_sheets: any, _spreadsheetId: string, 
         reservado: data.reservado !== undefined ? String(data.reservado) : (currentRecord?.reservado || ""),
         updatedAt: new Date().toISOString(),
         vinculo: data.vinculo !== undefined ? data.vinculo : currentRecord?.vinculo,
+        dataCredito: data.dataCredito !== undefined ? data.dataCredito : currentRecord?.dataCredito,
+        valorCreditado: data.valorCreditado !== undefined ? data.valorCreditado : currentRecord?.valorCreditado,
         naturezaDespesa: data.naturezaDespesa !== undefined ? data.naturezaDespesa : currentRecord?.naturezaDespesa,
         classificacaoFuncional: data.classificacaoFuncional !== undefined ? data.classificacaoFuncional : currentRecord?.classificacaoFuncional,
         numeroEmpenho: data.numeroEmpenho !== undefined ? data.numeroEmpenho : currentRecord?.numeroEmpenho,
@@ -464,6 +488,8 @@ export async function getAmendmentsFromSheet(): Promise<Amendment[]> {
                 reservado: financial.reservado !== undefined ? financial.reservado : amendment.reservado,
                 // Vínculo numérico do portal SMARAPD
                 vinculo: financial.vinculo ?? amendment.vinculo,
+                dataCredito: financial.dataCredito ?? amendment.dataCredito,
+                valorCreditado: financial.valorCreditado ?? amendment.valorCreditado,
                 // Natureza de despesa do portal SMARAPD
                 naturezaDespesa: financial.naturezaDespesa ?? amendment.naturezaDespesa,
                 // Classificação funcional do portal SMARAPD

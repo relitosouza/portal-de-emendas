@@ -22,9 +22,15 @@ export function getEffectiveStatus(
         empenhado?: string | number | null;
         liquidado?: string | number | null;
         pago?: string | number | null;
+        dataCredito?: string | null;
     }
 ): string {
     const normalized = getNormalizedStatus(rawStatus);
+    const step = getStatusStep(normalized);
+
+    if (financial?.dataCredito && step <= 1) {
+        return `Creditado em ${financial.dataCredito}`;
+    }
 
     if (financial && parseCurrency(financial.empenhado ?? undefined) > 0) {
         const step = getStatusStep(normalized);
@@ -35,16 +41,18 @@ export function getEffectiveStatus(
 }
 
 export function getStatusStep(status: string): number {
+    if (status.startsWith("Creditado")) return 0;
+
     switch (status) {
-        case "Não Iniciada": return 0;
-        case "Em Análise": return 1;
-        case "Elaboração": return 2;
-        case "Viabilização": return 3;
-        case "Contratação": return 4;
-        case "Execução": return 5;
-        case "Executada": return 6;
-        case "Prestação de Contas": return 7;
-        case "Cancelada": return 8;
-        default: return 0;
+        case "Não Iniciada": return 1;
+        case "Em Análise": return 2;
+        case "Elaboração": return 3;
+        case "Viabilização": return 4;
+        case "Contratação": return 5;
+        case "Execução": return 6;
+        case "Executada": return 7;
+        case "Prestação de Contas": return 8;
+        case "Cancelada": return 9;
+        default: return 1;
     }
 }

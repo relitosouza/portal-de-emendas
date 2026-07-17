@@ -100,10 +100,10 @@ export default function DashboardPage() {
         return acc + parseCurrency(curr.valor);
     }, 0);
 
-    const emExecucao = amendments.filter((a) => getEffectiveStatus(a.status as string, { empenhado: a.empenhado, liquidado: a.liquidado, pago: a.pago }) === "Execução").length;
-    const concluidos = amendments.filter((a) => getEffectiveStatus(a.status as string, { empenhado: a.empenhado, liquidado: a.liquidado, pago: a.pago }) === "Executada").length;
+    const emExecucao = amendments.filter((a) => getEffectiveStatus(a.status as string, { empenhado: a.empenhado, liquidado: a.liquidado, pago: a.pago, dataCredito: a.dataCredito }) === "Execução").length;
+    const concluidos = amendments.filter((a) => getEffectiveStatus(a.status as string, { empenhado: a.empenhado, liquidado: a.liquidado, pago: a.pago, dataCredito: a.dataCredito }) === "Executada").length;
     const planejamento = amendments.filter((a) => {
-        const status = getEffectiveStatus(a.status as string, { empenhado: a.empenhado, liquidado: a.liquidado, pago: a.pago });
+        const status = getEffectiveStatus(a.status as string, { empenhado: a.empenhado, liquidado: a.liquidado, pago: a.pago, dataCredito: a.dataCredito });
         return status === "Em Análise" || status === "Não Iniciada" || status === "Elaboração";
     }).length;
 

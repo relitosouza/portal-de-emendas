@@ -63,6 +63,7 @@ export default async function ProjetoDetalhePage(props: Props) {
 
     // Status tracker
     const statusSteps = [
+        { label: "Creditado", icon: "account_balance" },
         { label: "Não Iniciada", icon: "check" },
         { label: "Em Análise", icon: "check" },
         { label: "Elaboração", icon: "check" },
@@ -78,9 +79,10 @@ export default async function ProjetoDetalhePage(props: Props) {
         empenhado: amendment.empenhado,
         liquidado: amendment.liquidado,
         pago: amendment.pago,
+        dataCredito: amendment.dataCredito,
     });
     const currentStep = getStatusStep(normalizedStatus);
-    const progressPercent = currentStep <= 6 ? (Math.min(currentStep, 5) / 7) * 100 : 0;
+    const progressPercent = currentStep <= 7 ? (Math.min(currentStep, 6) / 8) * 100 : 0;
 
     const autor = amendment.autor || amendment.author || amendment.responsavelNome || "Não informado";
     const autorPhoto = findVereadorPhoto(autor);
@@ -93,14 +95,16 @@ export default async function ProjetoDetalhePage(props: Props) {
         .toUpperCase();
 
     const getStatusLabel = () => {
-        if (currentStep === 6) return { label: "Executada", color: "bg-blue-50 border-blue-100 text-blue-600" };
-        if (currentStep === 5) return { label: "Execução", color: "bg-emerald-50 border-emerald-100 text-emerald-600" };
-        if (currentStep === 7) return { label: "Prestação de Contas", color: "bg-teal-50 border-teal-100 text-teal-600" };
-        if (currentStep === 8) return { label: "Cancelada", color: "bg-red-50 border-red-100 text-red-600" };
-        if (currentStep === 4) return { label: "Contratação", color: "bg-blue-50 border-blue-100 text-blue-600" };
-        if (currentStep === 3) return { label: "Viabilização", color: "bg-purple-50 border-purple-100 text-purple-600" };
-        if (currentStep === 2) return { label: "Elaboração", color: "bg-indigo-50 border-indigo-100 text-indigo-600" };
-        if (currentStep === 1) return { label: "Em Análise", color: "bg-amber-50 border-amber-100 text-amber-600" };
+        if (currentStep === 7) return { label: "Executada", color: "bg-blue-50 border-blue-100 text-blue-600" };
+        if (currentStep === 6) return { label: "Execução", color: "bg-blue-50 border-blue-100 text-blue-600" };
+        if (currentStep === 5) return { label: "Contratação", color: "bg-blue-50 border-blue-100 text-blue-600" };
+        if (currentStep === 8) return { label: "Prestação de Contas", color: "bg-teal-50 border-teal-100 text-teal-600" };
+        if (currentStep === 9) return { label: "Cancelada", color: "bg-red-50 border-red-100 text-red-600" };
+        if (currentStep === 4) return { label: "Viabilização", color: "bg-purple-50 border-purple-100 text-purple-600" };
+        if (currentStep === 3) return { label: "Elaboração", color: "bg-indigo-50 border-indigo-100 text-indigo-600" };
+        if (currentStep === 2) return { label: "Em Análise", color: "bg-amber-50 border-amber-100 text-amber-600" };
+        if (currentStep === 1) return { label: "Não Iniciada", color: "bg-slate-50 border-slate-200 text-slate-600" };
+        if (currentStep === 0) return { label: normalizedStatus, color: "bg-emerald-50 border-emerald-100 text-emerald-600" };
         return { label: "Não Iniciada", color: "bg-slate-50 border-slate-200 text-slate-600" };
     };
 
@@ -237,22 +241,22 @@ export default async function ProjetoDetalhePage(props: Props) {
 
                             {/* Em Execução */}
                             <div className="relative z-10 flex flex-col items-center gap-2 bg-white px-2">
-                                <div className={`size-8 rounded-full flex items-center justify-center text-white ${(liquidado > 0 || pago > 0) && currentStep < 6 ? 'bg-blue-600 ring-4 ring-blue-50' : (currentStep >= 6 ? 'bg-blue-600' : 'bg-slate-200 text-slate-400 border-2 border-slate-200')}`}>
-                                    <span className="material-symbols-outlined text-[16px]">{currentStep >= 6 ? 'check' : 'sync'}</span>
+                                <div className={`size-8 rounded-full flex items-center justify-center text-white ${(liquidado > 0 || pago > 0) && currentStep < 7 ? 'bg-blue-600 ring-4 ring-blue-50' : (currentStep >= 7 ? 'bg-blue-600' : 'bg-slate-200 text-slate-400 border-2 border-slate-200')}`}>
+                                    <span className="material-symbols-outlined text-[16px]">{currentStep >= 7 ? 'check' : 'sync'}</span>
                                 </div>
                                 <div className="text-center">
-                                    <p className={`text-[10px] font-bold uppercase tracking-wider ${pago > 0 || currentStep >= 5 ? 'text-blue-600' : 'text-slate-400'}`}>Em Execução</p>
+                                    <p className={`text-[10px] font-bold uppercase tracking-wider ${pago > 0 || currentStep >= 6 ? 'text-blue-600' : 'text-slate-400'}`}>Em Execução</p>
                                     {pago > 0 && valorTotal > 0 && <p className="text-[10px] font-bold text-blue-500">{Math.round((pago/valorTotal)*100)}% concluído</p>}
                                 </div>
                             </div>
 
                             {/* Conclusão */}
                             <div className="relative z-10 flex flex-col items-center gap-2 bg-white px-2">
-                                <div className={`size-8 rounded-full flex items-center justify-center text-white ${currentStep >= 6 ? 'bg-blue-600' : 'bg-slate-100 text-slate-300'}`}>
+                                <div className={`size-8 rounded-full flex items-center justify-center text-white ${currentStep >= 7 ? 'bg-blue-600' : 'bg-slate-100 text-slate-300'}`}>
                                     <span className="material-symbols-outlined text-[16px]">done_all</span>
                                 </div>
                                 <div className="text-center">
-                                    <p className={`text-[10px] font-bold uppercase tracking-wider ${currentStep >= 6 ? 'text-slate-800' : 'text-slate-400'}`}>Conclusão</p>
+                                    <p className={`text-[10px] font-bold uppercase tracking-wider ${currentStep >= 7 ? 'text-slate-800' : 'text-slate-400'}`}>Conclusão</p>
                                 </div>
                             </div>
                         </div>
@@ -595,10 +599,20 @@ export default async function ProjetoDetalhePage(props: Props) {
                                 ></div>
 
                                 {statusSteps.map((step, idx) => {
-                                    const isCompleted = idx < currentStep;
-                                    const isCurrent = idx === currentStep;
-                                    const isFuture = idx > currentStep;
-                                    const isCancelled = idx === 7;
+                                    let isCompleted = idx < currentStep;
+                                    let isCurrent = idx === currentStep;
+                                    let isFuture = idx > currentStep;
+                                    const isCancelled = idx === 9;
+
+                                    if (idx === 0) {
+                                        isCompleted = !!amendment.dataCredito && currentStep > 0;
+                                        isCurrent = !!amendment.dataCredito && currentStep === 0;
+                                        isFuture = !amendment.dataCredito && currentStep === 0;
+                                        if (!amendment.dataCredito && currentStep > 0) {
+                                            isCompleted = false;
+                                            isFuture = true;
+                                        }
+                                    }
 
                                     return (
                                         <div
@@ -606,9 +620,9 @@ export default async function ProjetoDetalhePage(props: Props) {
                                             role="listitem"
                                             aria-current={isCurrent ? "step" : undefined}
                                             aria-label={`${step.label}${isCurrent ? " — etapa atual" : isCompleted ? " — concluída" : " — pendente"}`}
-                                            className={`relative z-10 flex flex-col items-center group w-32 ${isFuture && !isCancelled ? "opacity-40" : ""} ${isCancelled && currentStep !== 7 ? "opacity-40" : ""}`}
+                                            className={`relative z-10 flex flex-col items-center group w-32 ${isFuture && !isCancelled ? "opacity-40" : ""} ${isCancelled && currentStep !== 9 ? "opacity-40" : ""}`}
                                         >
-                                            {isCurrent && idx < 7 ? (
+                                            {isCurrent && idx < 9 ? (
                                                 <div className="size-10 -mt-1 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-2 ring-4 ring-emerald-100 shadow-lg shadow-emerald-500/20">
                                                     <span className="material-symbols-outlined text-lg">{step.icon}</span>
                                                 </div>
@@ -616,9 +630,9 @@ export default async function ProjetoDetalhePage(props: Props) {
                                                 <div
                                                     className={`size-8 rounded-full flex items-center justify-center mb-3 ring-4 ring-white transition-transform hover:scale-110 ${isCompleted
                                                         ? "bg-blue-500 text-white"
-                                                        : isFuture || (isCancelled && currentStep !== 7)
+                                                        : isFuture || (isCancelled && currentStep !== 9)
                                                             ? "bg-slate-200 text-slate-400"
-                                                            : currentStep === 7 && isCancelled
+                                                            : currentStep === 9 && isCancelled
                                                                 ? "bg-red-500 text-white"
                                                                 : "bg-slate-500 text-white"
                                                         }`}
@@ -684,6 +698,39 @@ export default async function ProjetoDetalhePage(props: Props) {
                                     </div>
                                 </div>
                             </section>
+
+                            {/* Fluxo da Receita (Para Emendas Estaduais/Federais) */}
+                            {(amendment.ambito === 'Estadual' || amendment.ambito === 'Federal') && (
+                                <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 mb-8">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 shadow-sm">
+                                            <span className="material-symbols-outlined">account_balance</span>
+                                        </div>
+                                        <div>
+                                            <h2 className="text-xl font-bold text-slate-900">Fluxo da Receita</h2>
+                                            <p className="text-sm text-slate-500">Acompanhamento do repasse de recursos externos</p>
+                                        </div>
+                                    </div>
+                                    <div className={`flex flex-col p-6 rounded-2xl border ${amendment.valorCreditado ? "bg-emerald-50/50 border-emerald-100" : "bg-slate-50 border-slate-200"}`}>
+                                        <div className="flex justify-between items-center">
+                                            <div>
+                                                <p className={`text-xs font-bold uppercase tracking-widest ${amendment.valorCreditado ? "text-emerald-700" : "text-slate-400"}`}>
+                                                    Valor Creditado
+                                                </p>
+                                                <p className={`text-2xl font-black mt-1 ${amendment.valorCreditado ? "text-emerald-600" : "text-slate-700"}`}>
+                                                    {amendment.valorCreditado ? `R$ ${amendment.valorCreditado}` : "R$ 0,00"}
+                                                </p>
+                                            </div>
+                                            {amendment.dataCredito && (
+                                                <div className="text-right">
+                                                    <p className="text-[10px] font-bold text-slate-400 uppercase">Data do Crédito</p>
+                                                    <p className="text-lg font-bold text-slate-700 mt-1">{amendment.dataCredito}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </section>
+                            )}
 
                             {/* Financial Flow */}
                             <section className="bg-white p-8 rounded-xl shadow-sm border border-slate-100">

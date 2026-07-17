@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState, Suspense, useEffect, useMemo, useCallback } from "react";
+import { useState, Suspense, useEffect, useMemo, useCallback, type CSSProperties } from "react";
 import { useSearchParams } from "next/navigation";
 import { Amendment } from "@/lib/store";
+import type { CreditedRevenue } from "@/lib/json-storage";
 import Navbar from "@/components/shared/navbar";
 import { getSectorColor } from "@/lib/sector-colors";
 import { getEffectiveStatus, getNormalizedStatus } from "@/lib/status-mapper";
-import { VEREADORES_PHOTOS, findVereadorPhoto, parseCurrency } from "@/lib/amendments-utils";
+import { findVereadorPhoto, parseCurrency } from "@/lib/amendments-utils";
 import GroupedAmendments from "@/components/dashboard/grouped-amendments";
 import { cn, normalizeString } from "@/lib/utils";
 
@@ -31,19 +32,26 @@ interface Project {
     hasPago?: boolean;
     categoriaNum?: string;
     ambito?: string;
+    amount: number;
+    kind: "amendment" | "credited-revenue";
+    creditDate?: string;
+    operation?: string;
+    vinculo?: string;
+    revenueNature?: string;
 }
 
 const ITEMS_PER_PAGE = 9;
 
 const FILTRO_LABELS: Record<string, string> = {
+    creditado: "Emenda Creditada",
     reservado: "Com Reserva",
     empenhado: "Com Empenho",
     liquidado: "Com Liquidação",
     pago: "Com Pagamento",
 };
 
-const parseFinanceiro = (v: any): number => {
-    return parseCurrency(v);
+const parseFinanceiro = (v: string | number | null | undefined): number => {
+    return parseCurrency(v ?? undefined);
 };
 
 const CATEGORY_MAP: Record<string, string> = {
@@ -56,7 +64,7 @@ const CATEGORY_MAP: Record<string, string> = {
     "20": "AGRICULTURA", "21": "ORGANIZAÇÃO AGRÁRIA", "22": "INDÚSTRIA",
     "23": "COMÉRCIO E SERVIÇOS", "24": "COMUNICAÇÕES", "25": "ENERGIA",
     "26": "TRANSPORTE", "27": "DESPORTO E LAZER", "28": "ENCARGOS ESPECIAIS",
-    "99": "RESERVA DE CONTIGÊNCIA",
+    "99": "RESERVA DE CONTINGÊNCIA",
 };
 
 function getCategoryLabel(cat?: string): string {
@@ -83,7 +91,7 @@ function exportToExcel(amendments: Amendment[]) {
         "Data de Criação",
     ];
 
-    const escapeCSV = (val: any): string => {
+    const escapeCSV = (val: unknown): string => {
         const str = String(val ?? "").replace(/"/g, '""');
         return `"${str}"`;
     };
@@ -188,6 +196,14 @@ function ProjectsContent() {
     const [selectedAmbito, setSelectedAmbito] = useState<string | null>(initialAmbito);
     const [currentPage, setCurrentPage] = useState(1);
     const [viewMode, setViewMode] = useState<"individual" | "grouped">(initialView);
+    const normalizedSearchTerm = normalizeString(searchTerm);
+    const isCreditedView = filtroParam === "creditado"
+        || normalizedSearchTerm.includes("emenda creditada")
+        || normalizedSearchTerm.includes("receita creditada");
+
+    const matchesCurrentView = useCallback((project: Project) => {
+        return isCreditedView ? project.kind === "credited-revenue" : project.kind === "amendment";
+    }, [isCreditedView]);
 
     const matchesSelectedAmbito = useCallback((projectAmbito?: string | null) => {
         if (!selectedAmbito) return true;
@@ -196,13 +212,13 @@ function ProjectsContent() {
     }, [selectedAmbito]);
 
     const availableSectors = useMemo(() => {
-        const sectors = new Set(projects.map(p => p.sector).filter((s): s is string => !!s));
+        const sectors = new Set(projects.filter(matchesCurrentView).map(p => p.sector).filter((s): s is string => !!s));
         return Array.from(sectors).sort((a, b) => a.localeCompare(b, "pt-BR"));
-    }, [projects]);
+    }, [projects, matchesCurrentView]);
 
     const scopedProjects = useMemo(() => {
-        return projects.filter((project) => matchesSelectedAmbito(project.ambito));
-    }, [projects, matchesSelectedAmbito]);
+        return projects.filter((project) => matchesCurrentView(project) && matchesSelectedAmbito(project.ambito));
+    }, [projects, matchesCurrentView, matchesSelectedAmbito]);
 
     const availableResponsibles = useMemo(() => {
         const responsibles = new Set(scopedProjects.map(p => p.responsible).filter((r): r is string => !!r));
@@ -218,8 +234,11 @@ function ProjectsContent() {
     useEffect(() => {
         async function fetchAmendments() {
             try {
-                const response = await fetch("/api/amendments?limit=1000");
-                const data = await response.json();
+                const [response, creditedResponse] = await Promise.all([
+                    fetch("/api/amendments?limit=1000"),
+                    fetch("/api/credited-revenues"),
+                ]);
+                const [data, creditedData] = await Promise.all([response.json(), creditedResponse.json()]);
 
                 let rawData: Amendment[] = [];
                 if (Array.isArray(data)) {
@@ -232,7 +251,7 @@ function ProjectsContent() {
                 const amendments = Array.from(new Map(rawData.map(a => [a.id, a])).values());
 
                 const mappedProjects: Project[] = amendments.map(a => {
-                    let rawCat = (a as any).categoria;
+                    let rawCat = a.categoria;
                     if (typeof rawCat === "string" && rawCat.includes(" - ")) rawCat = rawCat.split(" - ")[0].trim();
                     const categoriaNum = rawCat ? String(rawCat) : undefined;
 
@@ -254,6 +273,7 @@ function ProjectsContent() {
                         empenhado: a.empenhado,
                         liquidado: a.liquidado,
                         pago: a.pago,
+                        dataCredito: a.dataCredito,
                     });
 
                     const progressMap: Record<string, number> = {
@@ -268,7 +288,7 @@ function ProjectsContent() {
                         "Cancelada": 0
                     };
 
-                    let progress = progressMap[status] || 0;
+                    const progress = progressMap[status] || 0;
 
                     const responsible = a.autor || a.author || a.orgaoBeneficiario || a.responsible || "Prefeitura";
 
@@ -292,10 +312,35 @@ function ProjectsContent() {
                         hasPago: parseFinanceiro(a.pago) > 0,
                         categoriaNum,
                         ambito: a.ambito,
+                        amount: parseCurrency(a.valor || a.value),
+                        kind: "amendment" as const,
                     };
                 });
 
-                setProjects(mappedProjects);
+                const mappedRevenues: Project[] = ((creditedData?.data || []) as CreditedRevenue[]).map((revenue) => ({
+                    id: revenue.id,
+                    numeroEmenda: revenue.amendmentNumber,
+                    title: revenue.history || revenue.vinculoDescription || "Emenda Creditada",
+                    status: revenue.operation.toLowerCase().includes("estorno") ? "Estorno de crédito" : "Emenda Creditada",
+                    sector: "Emenda Creditada",
+                    budget: revenue.creditedValue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+                    location: revenue.vinculoDescription || `Vínculo ${revenue.vinculo}`,
+                    progress: 100,
+                    description: `${revenue.revenueNature} ${revenue.revenueDescription}`.trim(),
+                    startDate: revenue.creditDate,
+                    endDate: "",
+                    responsible: revenue.author,
+                    responsiblePhoto: findVereadorPhoto(revenue.author),
+                    ambito: revenue.scope,
+                    amount: revenue.creditedValue,
+                    kind: "credited-revenue",
+                    creditDate: revenue.creditDate,
+                    operation: revenue.operation,
+                    vinculo: revenue.vinculo,
+                    revenueNature: revenue.revenueNature,
+                }));
+
+                setProjects([...mappedProjects, ...mappedRevenues]);
                 setRawAmendments(amendments);
             } catch (error) {
                 console.error("Failed to load amendments", error);
@@ -324,14 +369,16 @@ function ProjectsContent() {
         const matchesStatus = selectedStatus ? project.status === selectedStatus : true;
         const matchesResponsible = selectedResponsible ? project.responsible === selectedResponsible : true;
         const matchesAmbito = matchesSelectedAmbito(project.ambito);
+        const matchesView = matchesCurrentView(project);
         const matchesFiltro = !filtroParam || (
-            filtroParam === "reservado" ? project.hasReservado :
+            filtroParam === "creditado" ? project.kind === "credited-revenue" :
+                filtroParam === "reservado" ? project.hasReservado :
                 filtroParam === "empenhado" ? project.hasEmpenhado :
                     filtroParam === "liquidado" ? project.hasLiquidado :
                         filtroParam === "pago" ? project.hasPago :
                             true
         );
-        return matchesSearch && matchesSector && matchesStatus && matchesResponsible && matchesAmbito && matchesFiltro;
+        return matchesView && matchesSearch && matchesSector && matchesStatus && matchesResponsible && matchesAmbito && matchesFiltro;
     });
 
     // Pagination
@@ -342,10 +389,8 @@ function ProjectsContent() {
     );
 
     const totalValue = useMemo(() => {
-        const filteredIds = new Set(filteredProjects.map(p => p.id));
-        const filteredRaw = rawAmendments.filter(a => filteredIds.has(a.id));
-        return filteredRaw.reduce((acc, a) => acc + parseCurrency(a.valor || a.value), 0);
-    }, [filteredProjects, rawAmendments]);
+        return filteredProjects.reduce((acc, project) => acc + project.amount, 0);
+    }, [filteredProjects]);
 
     // Reset page when filters change
     useEffect(() => {
@@ -353,13 +398,19 @@ function ProjectsContent() {
     }, [searchTerm, selectedStatus, selectedSector, selectedResponsible, selectedAmbito]);
 
     const getStatusStyle = (status: string) => {
+        if (status.startsWith("Creditado") || status === "Emenda Creditada") {
+            return { bg: "bg-emerald-100 text-emerald-700", bar: "bg-emerald-500" };
+        }
+        if (status === "Estorno de crédito") {
+            return { bg: "bg-rose-100 text-rose-700", bar: "bg-rose-500" };
+        }
         switch (status) {
             case "Prestação de Contas":
                 return { bg: "bg-teal-100 text-teal-700", bar: "bg-teal-500" };
             case "Executada":
                 return { bg: "bg-blue-100 text-blue-700", bar: "bg-blue-500" };
             case "Execução":
-                return { bg: "bg-emerald-100 text-emerald-700", bar: "bg-emerald-500" };
+                return { bg: "bg-blue-100 text-blue-700", bar: "bg-blue-500" }; // Changed to blue so Creditado stands out
             case "Cancelada":
                 return { bg: "bg-red-100 text-red-700", bar: "bg-red-500" };
             case "Contratação":
@@ -408,9 +459,13 @@ function ProjectsContent() {
             <main aria-label="Listagem de emendas parlamentares" className="max-w-7xl mx-auto px-6 py-10 w-full">
                 {/* Header */}
                 <div className="mb-10">
-                    <h1 className="text-4xl font-extrabold tracking-tight mb-3">Explorar Todas as Emendas</h1>
+                    <h1 className="text-4xl font-extrabold tracking-tight mb-3">
+                        {isCreditedView ? "Emendas Creditadas" : "Explorar Todas as Emendas"}
+                    </h1>
                     <p className="text-slate-500 text-lg max-w-2xl">
-                        Acompanhe em tempo real a destinação de recursos públicos, status de execução e o impacto gerado pelos parlamentares.
+                        {isCreditedView
+                            ? "Créditos recebidos no Portal da Transparência que ainda aguardam associação com uma emenda cadastrada."
+                            : "Acompanhe em tempo real a destinação de recursos públicos, status de execução e o impacto gerado pelos parlamentares."}
                     </p>
                 </div>
 
@@ -470,7 +525,7 @@ function ProjectsContent() {
                             <span className="material-symbols-outlined text-2xl" aria-hidden="true">description</span>
                         </div>
                         <div>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total de Emendas</p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{isCreditedView ? "Lançamentos" : "Total de Emendas"}</p>
                             <h3 className="text-2xl font-black text-slate-800">{filteredProjects.length}</h3>
                             <p className="text-[10px] text-slate-500 font-medium">Selecionadas pelos filtros</p>
                         </div>
@@ -482,11 +537,11 @@ function ProjectsContent() {
                             <span className="material-symbols-outlined text-2xl" aria-hidden="true">payments</span>
                         </div>
                         <div>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Valor Total Destinado</p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{isCreditedView ? "Total Creditado" : "Valor Total Destinado"}</p>
                             <h3 className="text-2xl font-black text-slate-800">
                                 {totalValue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                             </h3>
-                            <p className="text-[10px] text-slate-500 font-medium">Soma dos recursos ativos</p>
+                            <p className="text-[10px] text-slate-500 font-medium">{isCreditedView ? "Saldo líquido dos lançamentos" : "Soma dos recursos ativos"}</p>
                         </div>
                     </div>
 
@@ -500,7 +555,7 @@ function ProjectsContent() {
                             <h3 className="text-2xl font-black text-slate-800">
                                 {(filteredProjects.length > 0 ? totalValue / filteredProjects.length : 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                             </h3>
-                            <p className="text-[10px] text-slate-500 font-medium">Média por emenda</p>
+                            <p className="text-[10px] text-slate-500 font-medium">{isCreditedView ? "Média por lançamento" : "Média por emenda"}</p>
                         </div>
                     </div>
                 </div>
@@ -602,8 +657,8 @@ function ProjectsContent() {
                             <span className="material-symbols-outlined block" aria-hidden="true">filter_list_off</span>
                         </button>
 
-                        {/* Export to Excel */}
-                        <button
+                        {/* Exportações e relatório referem-se somente às emendas cadastradas. */}
+                        {!isCreditedView && <button
                             onClick={() => {
                                 const filteredIds = new Set(filteredProjects.map(p => p.id));
                                 const filtered = rawAmendments.filter(a => filteredIds.has(a.id));
@@ -615,26 +670,28 @@ function ProjectsContent() {
                         >
                             <span className="material-symbols-outlined text-sm" aria-hidden="true">download</span>
                             Exportar
-                        </button>
+                        </button>}
 
-                        <Link
+                        {!isCreditedView && <Link
                             href={`/projetos/relatorio-indicacoes${detailQueryString ? `?${detailQueryString}` : ""}`}
                             aria-label="Abrir relatório de indicações com os filtros atuais"
                             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-slate-900"
                         >
                             <span className="material-symbols-outlined text-sm" aria-hidden="true">description</span>
                             Relatório de Indicações
-                        </Link>
+                        </Link>}
                     </div>
                 </div>
 
                 {/* View Mode Toggle */}
                 <div className="flex items-center justify-between mb-8">
                     <p role="status" aria-live="polite" aria-atomic="true" className="text-sm text-slate-500 font-medium">
-                        {filteredProjects.length} {filteredProjects.length === 1 ? "emenda encontrada" : "emendas encontradas"}
+                        {filteredProjects.length} {isCreditedView
+                            ? (filteredProjects.length === 1 ? "receita encontrada" : "receitas encontradas")
+                            : (filteredProjects.length === 1 ? "emenda encontrada" : "emendas encontradas")}
                     </p>
 
-                    <div className="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
+                    {!isCreditedView && <div className="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
                         <button
                             onClick={() => setViewMode("individual")}
                             className={cn(
@@ -655,17 +712,17 @@ function ProjectsContent() {
                             <span className="material-symbols-outlined text-sm">group_work</span>
                             Por Objetivo
                         </button>
-                    </div>
+                    </div>}
                 </div>
 
                 {/* Grid of Cards */}
                 {paginatedProjects.length === 0 ? (
                     <div className="py-20 text-center text-slate-400">
                         <span className="material-symbols-outlined text-5xl mb-4 block">search_off</span>
-                        <p className="text-lg font-semibold">Nenhuma emenda encontrada</p>
+                        <p className="text-lg font-semibold">{isCreditedView ? "Nenhuma emenda creditada encontrada" : "Nenhuma emenda encontrada"}</p>
                         <p className="text-sm mt-1">Tente ajustar os filtros ou o termo de busca.</p>
                     </div>
-                ) : viewMode === "grouped" ? (
+                ) : viewMode === "grouped" && !isCreditedView ? (
                     <GroupedAmendments 
                         amendments={rawAmendments.filter(a => 
                           filteredProjects.some(fp => fp.id === a.id)
@@ -682,10 +739,12 @@ function ProjectsContent() {
                                 <li 
                                     key={project.id} 
                                     className="staggered-item"
-                                    style={{ "--index": index % 20 } as any}
+                                    style={{ "--index": index % 20 } as CSSProperties}
                                 >
                                     <Link
-                                        href={`/projetos/${project.id}${detailQueryString ? `?${detailQueryString}` : ""}`}
+                                        href={project.kind === "credited-revenue"
+                                            ? `/projetos/receitas/${project.id}`
+                                            : `/projetos/${project.id}${detailQueryString ? `?${detailQueryString}` : ""}`}
                                         aria-label={`${project.title} — ${project.status} — ${project.budget} — Autor: ${project.responsible}`}
                                         className="no-underline block h-full"
                                     >
@@ -696,9 +755,11 @@ function ProjectsContent() {
                                                     <span className={`px-2.5 py-1 ${style.bg} rounded-full text-[10px] font-bold uppercase tracking-wider`}>
                                                         {project.status}
                                                     </span>
-                                                    <span className={`px-2.5 py-1 ${sc.badgeBg} ${sc.badgeText} rounded-full text-[10px] font-bold uppercase tracking-wider`}>
-                                                        {project.sector}
-                                                    </span>
+                                                    {project.kind === "amendment" && (
+                                                        <span className={`px-2.5 py-1 ${sc.badgeBg} ${sc.badgeText} rounded-full text-[10px] font-bold uppercase tracking-wider`}>
+                                                            {project.sector}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 <span className="material-symbols-outlined text-slate-300 text-xl" aria-hidden="true">bookmark</span>
                                             </div>
@@ -733,12 +794,17 @@ function ProjectsContent() {
 
                                             {/* 4. Value */}
                                             <div className="mb-auto" aria-hidden="true">
-                                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Valor Alocado</p>
-                                                <p className="text-2xl font-black text-blue-600 tracking-tight">{project.budget}</p>
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{project.kind === "credited-revenue" ? "Valor Creditado" : "Valor Alocado"}</p>
+                                                <p className={`text-2xl font-black tracking-tight ${project.kind === "credited-revenue" ? "text-emerald-600" : "text-blue-600"}`}>{project.budget}</p>
                                             </div>
 
                                             {/* 5. Progress */}
-                                            <div className="space-y-2 mt-4">
+                                            {project.kind === "credited-revenue" ? (
+                                                <div className="mt-4 flex items-center justify-between rounded-xl bg-emerald-50 px-4 py-3 text-emerald-800">
+                                                    <span className="text-[10px] font-bold uppercase tracking-widest">Crédito em {project.creditDate || "data não informada"}</span>
+                                                    <span className="material-symbols-outlined text-lg" aria-hidden="true">arrow_forward</span>
+                                                </div>
+                                            ) : <div className="space-y-2 mt-4">
                                                 <div className="flex justify-between items-center" aria-hidden="true">
                                                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Progresso de Execução</span>
                                                     <span className="text-[10px] font-bold text-blue-500">{project.progress}%</span>
@@ -755,7 +821,7 @@ function ProjectsContent() {
                                                         style={{ width: `${project.progress}%` }}
                                                     />
                                                 </div>
-                                            </div>
+                                            </div>}
                                         </div>
                                     </Link>
                                 </li>
@@ -765,7 +831,7 @@ function ProjectsContent() {
                 )}
 
                 {/* Pagination */}
-                {viewMode === "individual" && totalPages > 1 && (
+                {(viewMode === "individual" || isCreditedView) && totalPages > 1 && (
                     <nav aria-label="Paginação das emendas" className="mt-12 flex justify-center items-center gap-4">
                         <button
                             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}

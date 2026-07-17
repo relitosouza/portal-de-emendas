@@ -44,6 +44,8 @@ export interface Amendment {
     pago?: string;
     codigoAplicacao?: string;
     codigoAplicacaoVariavel?: string;
+    dataCredito?: string;      // Data em que o recurso entrou (creditado)
+    valorCreditado?: string;   // Valor que foi creditado
     vinculo?: string;          // Código numérico do vínculo no portal SMARAPD (ex: "08.804.0061")
     naturezaDespesa?: string;  // Natureza da Despesa do portal SMARAPD (ex: "3.3.90.30.00 - MATERIAL DE CONSUMO")
     classificacaoFuncional?: string; // Classificação Funcional do portal SMARAPD (ex: "08.245.0018.2.016")

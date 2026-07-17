@@ -1,4 +1,12 @@
-import { readJsonFile, writeJsonFile, FINANCIAL_FILE, AMENDMENTS_FILE, FinancialRecord } from "./json-storage";
+import {
+    readJsonFile,
+    writeJsonFile,
+    FINANCIAL_FILE,
+    AMENDMENTS_FILE,
+    CREDITED_REVENUES_FILE,
+    CreditedRevenue,
+    FinancialRecord,
+} from "./json-storage";
 import { parseCurrency } from "./amendments-utils";
 import fs from "fs/promises";
 import path from "path";
@@ -334,6 +342,126 @@ async function fetchPaymentsForEmpenhos(empenhos: { numero: string; ano: number 
     }
     return paymentsByEmpenho;
 }
+export interface ReceitaRecord {
+    Id: string;
+    Vinculo: string;
+    DescVinculo: string;
+    Historico: string;
+    DataMovto: string;
+    ValorCreditado: number;
+    Operacao: string;
+    NaturezaReceita: string;
+    DescriReceita: string;
+    NomeBanco: string;
+}
+
+function normalizeText(value?: string): string {
+    return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function extractAmendmentNumber(receita: ReceitaRecord): string | undefined {
+    const source = `${receita.Historico} ${receita.DescVinculo} ${receita.NomeBanco}`;
+    const candidates = source.match(/(?:20\d{2})(?:[.\s-]*\d){7,}/g) || [];
+    const number = candidates
+        .map((candidate) => candidate.replace(/\D/g, ""))
+        .find((candidate) => candidate.length >= 11 && candidate.length <= 14);
+    return number || undefined;
+}
+
+function cleanAuthorCandidate(value: string): string {
+    return value
+        .replace(/\bREF\.?\s.*$/i, "")
+        .replace(/\bC\/C\s*\d.*$/i, "")
+        .replace(/[.;,\s-]+$/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function extractRevenueAuthor(receita: ReceitaRecord): string {
+    const history = receita.Historico.replace(/\s+/g, " ").trim();
+    const applicants = history.match(/Solicitantes?\s*:\s*([^.;]+)/i)?.[1];
+    if (applicants) return cleanAuthorCandidate(applicants.split("/")[0]);
+
+    const afterNumber = history.match(/(?:n[º°o]?\.?\s*)?(?:20\d{2})(?:[.\s-]*\d){7,}\s*-\s*([^.;]+)/i)?.[1];
+    if (afterNumber) return cleanAuthorCandidate(afterNumber);
+
+    const vinculoParts = receita.DescVinculo.split(" - ").map((part) => part.trim()).filter(Boolean);
+    if (vinculoParts.length >= 3) {
+        const candidate = cleanAuthorCandidate(vinculoParts[vinculoParts.length - 1]);
+        const genericLabels = ["saude", "assistencia social", "sao paulo"];
+        if (candidate && !genericLabels.includes(normalizeText(candidate))) return candidate;
+    }
+
+    const description = normalizeText(
+        `${receita.Historico} ${receita.DescVinculo} ${receita.DescriReceita}`
+    );
+    if (description.includes("comissao") || description.includes("emenda com")) {
+        return "Emenda Comissão";
+    }
+
+    return "Autor não identificado";
+}
+
+async function fetchReceitas(exercise: number): Promise<ReceitaRecord[]> {
+    const receitasList: ReceitaRecord[] = [];
+    try {
+        const payload = {
+            "ChaveModulo": "emendas_parlamentares",
+            "NomeVisao": "emendasrecebidas",
+            "Filtros": [],
+            "Periodicidade": "ANUAL",
+            "Periodo": "",
+            "Exercicio": exercise,
+            "Pagina": 1,
+            "QuantidadeRegistros": "1000",
+            "Ordenacao": []
+        };
+        const response = await fetch(OSASCO_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json, text/plain, */*',
+                'User-Agent': 'Mozilla/5.0',
+                'Origin': 'https://transparencia-osasco.smarapd.com.br',
+                'Referer': 'https://transparencia-osasco.smarapd.com.br/'
+            },
+            body: JSON.stringify(payload)
+        });
+        if (response.ok) {
+            let data = await response.json();
+            if (typeof data === 'string') data = JSON.parse(data);
+            if (data && data.Valores) {
+                for (const r of data.Valores) {
+                    if (!r.Vinculo) continue;
+                    let val = parseAnulacao(r.Valor);
+                    if (r.Operacao && r.Operacao.includes('ESTORNO')) val = -Math.abs(val);
+
+                    receitasList.push({
+                        Id: String(r.Id || r.ID || `${r.Vinculo}-${r.DataMovto}-${r.Valor}`),
+                        Vinculo: r.Vinculo.trim(),
+                        DescVinculo: r.DescriVinculo || r.DescVinculo || '',
+                        Historico: r.Historico || '',
+                        DataMovto: r.DataMovto || '',
+                        ValorCreditado: val,
+                        Operacao: r.Operacao?.trim() || '',
+                        NaturezaReceita: r.NaturezaReceita?.trim() || '',
+                        DescriReceita: r.DescriReceita?.trim() || '',
+                        NomeBanco: r.NomeBanco?.trim() || '',
+                    });
+                }
+            }
+        }
+    } catch (e) {
+        console.error("[Sync] Erro ao buscar receitas:", e);
+    }
+    return receitasList;
+}
+
 
 export async function runFinancialSync() {
     const exercise = new Date().getFullYear();
@@ -475,6 +603,10 @@ export async function runFinancialSync() {
     }
     console.log(`[Sync] ${allMovimentos.length} movimentos de empenho obtidos para cruzamento.`);
 
+    // Busca receitas do portal para encontrar as datas de crédito e valores
+    const receitasList = await fetchReceitas(exercise);
+    console.log(`[Sync] ${receitasList.length} registros de receitas obtidos para cruzamento de crédito.`);
+
     // Mantenha cópias para atualizar/inserir novos clones desmembrados, limpando clones antigos
     const updatedMain = mainAmendments.filter((a: any) => !a.id.includes("_cf_"));
     const updatedExternal = externalAmendments.filter((a: any) => !a.id.includes("_cf_"));
@@ -491,6 +623,44 @@ export async function runFinancialSync() {
         }
     });
 
+    // Cada lançamento de receita pode pertencer a no máximo uma emenda. O número da
+    // emenda, quando informado no histórico, é a chave segura para a associação.
+    const receitaAssignments = new Map<string, ReceitaRecord[]>();
+    const assignedReceitaIds = new Set<string>();
+    const originalExternalAmendments = localAmendments.filter((local: any) =>
+        !local.id.includes("_cf_") && (local.ambito === "Estadual" || local.ambito === "Federal")
+    );
+
+    for (const receita of receitasList) {
+        const amendmentNumber = extractAmendmentNumber(receita);
+        let owner = amendmentNumber
+            ? originalExternalAmendments.find((local: any) =>
+                String(local.numeroEmenda || "").replace(/\D/g, "") === amendmentNumber
+            )
+            : undefined;
+
+        // Registros sem número no histórico só usam o fallback de vínculo + autor.
+        // Isso evita associar uma receita a uma emenda diferente do mesmo parlamentar.
+        if (!owner && !amendmentNumber) {
+            const sourceText = normalizeText(`${receita.Historico} ${receita.DescVinculo} ${receita.NomeBanco}`);
+            owner = originalExternalAmendments.find((local: any) => {
+                const financialVinculo = financialMap.get(local.id)?.vinculo;
+                const portalVinculo = findPortalMatches(local, aggregated)[0]?.Vinculo;
+                const localVinculo = normalizeVinculo(local.vinculo || financialVinculo || portalVinculo || "");
+                const sameVinculo = localVinculo && localVinculo === normalizeVinculo(receita.Vinculo);
+                const author = normalizeText(local.autor);
+                return sameVinculo && author.length >= 4 && sourceText.includes(author);
+            });
+        }
+
+        if (owner) {
+            const current = receitaAssignments.get(owner.id) || [];
+            current.push(receita);
+            receitaAssignments.set(owner.id, current);
+            assignedReceitaIds.add(receita.Id);
+        }
+    }
+
     let matchedCount = 0;
     const allAmendmentIds = new Set(localAmendments.filter((a: any) => !a.id.includes("_cf_")).map((a: any) => a.id));
 
@@ -502,6 +672,19 @@ export async function runFinancialSync() {
         }
 
         const portalMatches = findPortalMatches(local, aggregated);
+
+        const matchedReceitas = receitaAssignments.get(local.id) || [];
+        const receitaMatch = matchedReceitas.length > 0 ? {
+            dataCredito: matchedReceitas
+                .map((item) => item.DataMovto.split(" ")[0])
+                .sort((a, b) => {
+                    const [ad, am, ay] = a.split("/").map(Number);
+                    const [bd, bm, by] = b.split("/").map(Number);
+                    return new Date(ay, am - 1, ad).getTime() - new Date(by, bm - 1, bd).getTime();
+                })
+                .at(-1) || "",
+            valorCreditado: matchedReceitas.reduce((sum, item) => sum + item.ValorCreditado, 0),
+        } : null;
 
         if (portalMatches.length > 0) {
             // 1. O primeiro match atualiza a emenda original
@@ -556,6 +739,8 @@ export async function runFinancialSync() {
                 liquidado: parsePortalCurrency(String(firstMatch.Liquidado)),
                 pago: parsePortalCurrency(String(firstMatch.ValorPago)),
                 vinculo: firstMatch.Vinculo,
+                dataCredito: receitaMatch?.dataCredito,
+                valorCreditado: receitaMatch ? new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2 }).format(receitaMatch.valorCreditado) : undefined,
                 naturezaDespesa: firstMatch.NaturezaDespesa && firstMatch.DescricaoNaturezaDespesa
                     ? `${firstMatch.NaturezaDespesa.trim()} - ${firstMatch.DescricaoNaturezaDespesa.trim()}`
                     : firstMatch.NaturezaDespesa?.trim(),
@@ -565,7 +750,7 @@ export async function runFinancialSync() {
                 updatedAt: new Date().toISOString()
             });
             matchedCount++;
-            console.log(`[Sync] ✓ Match (Original): "${local.autor}" / "${local.objeto?.substring(0, 35)}" → CF ${firstMatch.ClassificacaoFuncional} | Empenhos: ${nrEmpenhos || 'nenhum'}`);
+            console.log(`[Sync] ✓ Match (Original): "${local.autor}" / "${local.objeto?.substring(0, 35)}" → CF ${firstMatch.ClassificacaoFuncional} | Empenhos: ${nrEmpenhos || 'nenhum'} | Receitas: ${receitaMatch ? 'Sim' : 'Não'}`);
 
             // 2. Matches subsequentes geram emendas clonadas (desmembradas) por classificação funcional e natureza de despesa
             for (let i = 1; i < portalMatches.length; i++) {
@@ -638,6 +823,8 @@ export async function runFinancialSync() {
                     }
                 }
 
+                const cloneReceitaMatch = receitaMatch; // Clones inherit the exact same receita match
+
                 financialMap.set(cloneId, {
                     amendmentId: cloneId,
                     reservado: parsePortalCurrency(String(match.Reservado)),
@@ -645,6 +832,8 @@ export async function runFinancialSync() {
                     liquidado: parsePortalCurrency(String(match.Liquidado)),
                     pago: parsePortalCurrency(String(match.ValorPago)),
                     vinculo: match.Vinculo,
+                    dataCredito: cloneReceitaMatch?.dataCredito,
+                    valorCreditado: cloneReceitaMatch ? new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2 }).format(cloneReceitaMatch.valorCreditado) : undefined,
                     naturezaDespesa: match.NaturezaDespesa && match.DescricaoNaturezaDespesa
                         ? `${match.NaturezaDespesa.trim()} - ${match.DescricaoNaturezaDespesa.trim()}`
                         : match.NaturezaDespesa?.trim(),
@@ -657,8 +846,9 @@ export async function runFinancialSync() {
             }
         } else {
             // Se tinha vínculo associado anteriormente, mas agora não tem match válido, limpa
+            // MAS mantém a receita se houver (já que pode ter sido creditado sem estar empenhado ainda)
             const existing = financialMap.get(local.id);
-            if (existing && existing.vinculo) {
+            if (existing && existing.vinculo && !receitaMatch) {
                 console.log(`[Sync] ✗ Desvinculando (sem match válido): "${local.autor}" / "${local.objeto?.substring(0, 40)}"`);
                 financialMap.set(local.id, {
                     amendmentId: local.id,
@@ -671,6 +861,21 @@ export async function runFinancialSync() {
                     classificacaoFuncional: "",
                     updatedAt: new Date().toISOString()
                 });
+            } else if (receitaMatch) {
+                // Tem receita mas não tem match de empenho/LOA
+                const recVal = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2 }).format(receitaMatch.valorCreditado);
+                const prev = existing || {
+                    amendmentId: local.id,
+                    reservado: "0,00", empenhado: "0,00", liquidado: "0,00", pago: "0,00", vinculo: "",
+                    naturezaDespesa: "", classificacaoFuncional: ""
+                };
+                financialMap.set(local.id, {
+                    ...prev,
+                    dataCredito: receitaMatch.dataCredito,
+                    valorCreditado: recVal,
+                    updatedAt: new Date().toISOString()
+                });
+                console.log(`[Sync] ✓ Receita avulsa (sem empenho): "${local.autor}" -> ${recVal}`);
             }
         }
     }
@@ -752,12 +957,41 @@ export async function runFinancialSync() {
         }
     }
 
-    // Salvar as emendas e os dados financeiros
+    const sourceUrl = `https://transparencia-osasco.smarapd.com.br/#/dinamico/emendas_parlamentares/emendasrecebidas?periodicidade=ANUAL&exercicio=${exercise}`;
+    const unmatchedRevenues: CreditedRevenue[] = receitasList
+        .filter((receita) => !assignedReceitaIds.has(receita.Id))
+        .map((receita) => ({
+            id: receita.Id,
+            exercise,
+            amendmentNumber: extractAmendmentNumber(receita),
+            author: extractRevenueAuthor(receita),
+            history: receita.Historico.replace(/\s+/g, " ").trim(),
+            creditDate: receita.DataMovto.split(" ")[0] || "",
+            creditedValue: receita.ValorCreditado,
+            operation: receita.Operacao,
+            vinculo: receita.Vinculo,
+            vinculoDescription: receita.DescVinculo.trim(),
+            revenueNature: receita.NaturezaReceita,
+            revenueDescription: receita.DescriReceita,
+            bank: receita.NomeBanco,
+            scope: (receita.Vinculo.startsWith("02.")
+                ? "Estadual"
+                : receita.Vinculo.startsWith("05.")
+                    ? "Federal"
+                    : "Não identificado") as CreditedRevenue["scope"],
+            sourceUrl,
+            updatedAt: new Date().toISOString(),
+        }))
+        .sort((a, b) => b.creditDate.split("/").reverse().join("").localeCompare(a.creditDate.split("/").reverse().join("")));
+
+    // Salvar as emendas, os dados financeiros e as receitas ainda sem associação.
     await writeJsonFile(AMENDMENTS_FILE, updatedMain);
     await writeJsonFile("emendas-externas.json", updatedExternal);
     await writeJsonFile(FINANCIAL_FILE, Array.from(financialMap.values()));
+    await writeJsonFile(CREDITED_REVENUES_FILE, unmatchedRevenues);
     await writeJsonFile("sync_info.json", [{ lastSync: new Date().toISOString() }]);
 
+    console.log(`[Sync] ${unmatchedRevenues.length} receitas creditadas aguardando associação.`);
     console.log(`[Sync] Concluído: ${matchedCount} emendas atualizadas/criadas.`);
     return matchedCount;
 }

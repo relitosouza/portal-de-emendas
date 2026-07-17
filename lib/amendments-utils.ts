@@ -50,6 +50,28 @@ export const VEREADORES_PHOTOS: Record<string, string> = {
     "gilberto nascimento": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/74270.jpg",
     "maria rosas": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/204540.jpg",
     "vinicius carvalho": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/141555.jpg",
+    "guto zacarias": "https://www3.al.sp.gov.br/legis/biografia/fotos/20230321-131051-id=1645-GRD.jpg",
+    "monica seixas": "https://www3.al.sp.gov.br/legis/biografia/fotos/300637/33861a85d3642f45442e3d20ccb2f7b97634d8b79ca8995492740c8ee237e5f6.jpeg",
+    "mônica seixas": "https://www3.al.sp.gov.br/legis/biografia/fotos/300637/33861a85d3642f45442e3d20ccb2f7b97634d8b79ca8995492740c8ee237e5f6.jpeg",
+    "ediane maria": "https://www3.al.sp.gov.br/legis/biografia/fotos/20230427-144843-id=1654-GRD.jpg",
+    "altair moraes": "https://www3.al.sp.gov.br/legis/biografia/fotos/20230315-141411-id=545-GRD.jpeg",
+    "sebastião santos": "https://www3.al.sp.gov.br/legis/biografia/fotos/20230321-200423-id=95-GRD.png",
+    "sebastiao santos": "https://www3.al.sp.gov.br/legis/biografia/fotos/20230321-200423-id=95-GRD.png",
+    "marta costa": "https://www3.al.sp.gov.br/legis/biografia/fotos/20191112-192923-id=284-GRD.png",
+    "eduardo nóbrega": "https://www3.al.sp.gov.br/legis/biografia/fotos/20230315-171633-id=1657-GRD.jpg",
+    "eduardo nobrega": "https://www3.al.sp.gov.br/legis/biografia/fotos/20230315-171633-id=1657-GRD.jpg",
+    "leci brandão": "https://www3.al.sp.gov.br/legis/biografia/fotos/20230718-161931-id=38-GRD.jpg",
+    "leci brandao": "https://www3.al.sp.gov.br/legis/biografia/fotos/20230718-161931-id=38-GRD.jpg",
+    "mara gabrilli": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Senadora_Mara_Gabrilli.jpg/250px-Senadora_Mara_Gabrilli.jpg",
+    "eduardo bolsonaro": "https://www.camara.leg.br/internet/deputado/bandep/92346.jpgmaior.jpg",
+    "orlando silva": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/178987.jpg",
+    "valmir prascidelli": "https://www.camara.leg.br/internet/deputado/bandep/113247.jpgmaior.jpg",
+    "nilto tatto": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/178986.jpg",
+    "miguel lombardi": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/178985.jpg",
+    "delegado palumbo": "https://www.camara.leg.br/internet/deputado/bandep/pagina_do_deputado/220652.jpg",
+    "renata abreu": "https://www.camara.leg.br/internet/deputado/bandep/178989.jpgmaior.jpg",
+    "ricardo frança": "https://www3.al.sp.gov.br/legis/biografia/fotos/300682/6e3a648bae583eebc11b13e0955f7105566a8ca3291620dc85be8ce114583717.jpeg",
+    "ricardo franca": "https://www3.al.sp.gov.br/legis/biografia/fotos/300682/6e3a648bae583eebc11b13e0955f7105566a8ca3291620dc85be8ce114583717.jpeg",
 };
 
 export function findVereadorPhoto(name: string): string | undefined {
@@ -90,7 +112,7 @@ export const CATEGORY_MAP: Record<string, string> = {
     "20": "AGRICULTURA", "21": "ORGANIZAÇÃO AGRÁRIA", "22": "INDÚSTRIA",
     "23": "COMÉRCIO E SERVIÇOS", "24": "COMUNICAÇÕES", "25": "ENERGIA",
     "26": "TRANSPORTE", "27": "DESPORTO E LAZER", "28": "ENCARGOS ESPECIAIS",
-    "99": "RESERVA DE CONTIGÊNCIA",
+    "99": "RESERVA DE CONTINGÊNCIA",
 };
 
 export function getCategoryLabel(cat?: string): string | null {

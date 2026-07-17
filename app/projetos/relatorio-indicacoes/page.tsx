@@ -65,6 +65,7 @@ function matchesFilters(amendment: Amendment, filters: {
         empenhado: amendment.empenhado,
         liquidado: amendment.liquidado,
         pago: amendment.pago,
+        dataCredito: amendment.dataCredito,
     }));
     const valueSearch = normalizeString(amendment.numeroEmenda || "");
     const description = normalizeString(amendment.finalidade || amendment.description || "");
@@ -242,6 +243,7 @@ export default async function RelatorioIndicacoesPage(props: Props) {
                                                 empenhado: item.empenhado,
                                                 liquidado: item.liquidado,
                                                 pago: item.pago,
+                                                dataCredito: item.dataCredito,
                                             });
                                             return (
                                                 <Fragment key={item.id}>

@@ -3,28 +3,37 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import type { Amendment } from "@/lib/store";
+import type { CreditedRevenue } from "@/lib/json-storage";
 import Navbar from "@/components/shared/navbar";
 import CouncilorRanking from "@/components/dashboard/councilor-ranking";
 import { useCountUp } from "@/hooks/useCountUp";
-import { getSectorColor } from "@/lib/sector-colors";
-import { getNormalizedStatus } from "@/lib/status-mapper";
 import { CATEGORY_MAP, parseCurrency as parseValor, findVereadorPhoto } from "@/lib/amendments-utils";
 import GroupedAmendments from "@/components/dashboard/grouped-amendments";
 import AmendmentPieChart from "@/components/dashboard/amendment-pie-chart";
 import SectorRanking from "@/components/dashboard/sector-ranking";
 import { cn } from "@/lib/utils";
 
+type DashboardAmendment = Amendment & {
+  autorFoto?: string;
+  responsavelFoto?: string;
+};
+
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [amendments, setAmendments] = useState<any[]>([]);
+  const [amendments, setAmendments] = useState<DashboardAmendment[]>([]);
+  const [creditedRevenues, setCreditedRevenues] = useState<CreditedRevenue[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedAmbito, setSelectedAmbito] = useState<string | null>(null);
 
-  const filteredAmendments = amendments.filter((e: any) => {
+  const filteredAmendments = amendments.filter((e) => {
     return selectedAmbito ? (e.ambito ? e.ambito.toLowerCase() === selectedAmbito.toLowerCase() : false) : true;
+  });
+  const filteredCreditedRevenues = creditedRevenues.filter((revenue) => {
+    return selectedAmbito ? revenue.scope === selectedAmbito : true;
   });
 
   const totalReservado = filteredAmendments.reduce((acc, e) => {
@@ -36,7 +45,11 @@ export default function Home() {
   const totalEmpenhado = filteredAmendments.reduce((acc, e) => acc + parseValor(e.empenhado), 0);
   const totalLiquidado = filteredAmendments.reduce((acc, e) => acc + parseValor(e.liquidado), 0);
   const totalPago = filteredAmendments.reduce((acc, e) => acc + parseValor(e.pago), 0);
-  const totalValor = filteredAmendments.reduce((acc: number, e: any) => acc + parseValor(e.valor), 0);
+  const totalValor = filteredAmendments.reduce((acc: number, e) => acc + parseValor(e.valor), 0);
+  const totalCreditedRevenue = filteredCreditedRevenues.reduce(
+    (acc: number, revenue) => acc + Number(revenue.creditedValue || 0),
+    0
+  );
 
   const porcentagemEmpenhada = totalValor > 0 ? (totalEmpenhado / totalValor) * 100 : 0;
   const porcentagemFormatada = porcentagemEmpenhada.toFixed(1);
@@ -59,6 +72,7 @@ export default function Home() {
   const animatedEmpenhado = useCountUp(loading ? 0 : totalEmpenhado, 2000);
   const animatedLiquidado = useCountUp(loading ? 0 : totalLiquidado, 2000);
   const animatedPago = useCountUp(loading ? 0 : totalPago, 2000);
+  const animatedCreditedRevenue = useCountUp(loading ? 0 : totalCreditedRevenue, 2000);
   const animatedCount = useCountUp(loading ? 0 : filteredAmendments.length, 2000);
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -76,7 +90,7 @@ export default function Home() {
   // Group amendments by author
   const getAuthorRanking = () => {
     const authorMap: Record<string, { count: number; foto?: string }> = {};
-    filteredAmendments.forEach((e: any) => {
+    filteredAmendments.forEach((e) => {
       const autor = e.autor || e.responsavelNome || "Não informado";
       if (!authorMap[autor]) {
         authorMap[autor] = { 
@@ -102,7 +116,7 @@ export default function Home() {
   // Group amendments by sector
   const getSectorData = () => {
     const sectorMap: Record<string, { count: number, valor: number, catNum: string }> = {};
-    filteredAmendments.forEach((e: any) => {
+    filteredAmendments.forEach((e) => {
       let catNum = e.categoria;
       // Handle cases where categoria might come as "10 - Saúde" or just "10"
       if (typeof catNum === "string" && catNum.includes(" - ")) {
@@ -123,12 +137,18 @@ export default function Home() {
     async function fetchData(isRefresh = false) {
       if (isRefresh) setIsRefreshing(true);
       try {
-        const res = await fetch("/api/amendments?limit=1000");
-        const data = await res.json();
+        const [res, creditedRes] = await Promise.all([
+          fetch("/api/amendments?limit=1000"),
+          fetch("/api/credited-revenues"),
+        ]);
+        const [data, creditedData] = await Promise.all([res.json(), creditedRes.json()]);
         const amendments = Array.isArray(data) ? data : data?.data;
         if (Array.isArray(amendments)) {
           setAmendments(amendments);
           setLastUpdated(new Date());
+        }
+        if (Array.isArray(creditedData?.data)) {
+          setCreditedRevenues(creditedData.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -302,7 +322,25 @@ export default function Home() {
 
         {/* Financial Cards - Now Full Width */}
         <section aria-label="Indicadores financeiros" className="mb-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
+            <Link href={selectedAmbito ? `/projetos?filtro=creditado&ambito=${selectedAmbito}` : "/projetos?filtro=creditado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-emerald-200 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                  <span className="material-symbols-outlined text-xl">account_balance_wallet</span>
+                </div>
+                <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest text-right shrink-0">Crédito recebido</span>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Emenda Creditada</p>
+                <h3 className="text-xl font-extrabold text-emerald-700 mb-2 truncate">
+                  {loading ? "..." : animatedCreditedRevenue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                </h3>
+                <p className="text-[10px] font-semibold text-slate-500">
+                  {loading ? "Carregando..." : `${filteredCreditedRevenues.length} lançamento${filteredCreditedRevenues.length === 1 ? "" : "s"} para revisar`}
+                </p>
+              </div>
+            </Link>
+
             <Link href={selectedAmbito ? `/projetos?filtro=reservado&ambito=${selectedAmbito}` : "/projetos?filtro=reservado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
