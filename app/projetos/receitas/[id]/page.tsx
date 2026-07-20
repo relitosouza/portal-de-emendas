@@ -7,9 +7,46 @@ import {
     readJsonFile,
 } from "@/lib/json-storage";
 import { findVereadorPhoto } from "@/lib/amendments-utils";
+import type { Metadata } from "next";
+import { truncateDescription } from "@/lib/seo";
 
 interface Props {
     params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { id } = await params;
+    const revenues = await readJsonFile<CreditedRevenue>(CREDITED_REVENUES_FILE);
+    const revenue = revenues.find((item) => String(item.id) === String(id));
+
+    if (!revenue) {
+        return {
+            title: "Receita não encontrada",
+            robots: { index: false, follow: false },
+        };
+    }
+
+    const title = revenue.amendmentNumber
+        ? `Emenda creditada ${revenue.amendmentNumber}`
+        : `Emenda creditada de ${revenue.author || "Osasco"}`;
+    const description = truncateDescription(
+        `${revenue.history || revenue.revenueDescription || "Crédito de emenda parlamentar"}. Valor creditado: ${formatCurrency(revenue.creditedValue)}.`
+    );
+    const pathname = `/projetos/receitas/${encodeURIComponent(String(id))}`;
+
+    return {
+        title,
+        description,
+        alternates: { canonical: pathname },
+        openGraph: {
+            type: "article",
+            url: pathname,
+            title,
+            description,
+            modifiedTime: revenue.updatedAt || undefined,
+        },
+        twitter: { title, description },
+    };
 }
 
 function formatCurrency(value: number) {

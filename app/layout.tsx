@@ -3,6 +3,7 @@ import "./globals.css";
 import VLibras from "@/components/shared/vlibras";
 import AccessibilityBar from "@/components/shared/accessibility-bar";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
+import { getSiteUrl, SITE_DESCRIPTION, SITE_NAME } from "@/lib/seo";
 
 // Fallback: Use system fonts. Google Fonts can be re-enabled once network is available
 // Original fonts: Plus_Jakarta_Sans, JetBrains_Mono from next/font/google
@@ -12,11 +13,65 @@ const plusJakarta = { variable: "--font-plus-jakarta" };
 const jetbrainsMono = { variable: "--font-jetbrains-mono" };
 
 export const metadata: Metadata = {
-  title: "Portal das Emendas - Prefeitura Municipal de Osasco",
-  description: "Portal de Transparência e Gestão de Emendas Parlamentares",
+  metadataBase: getSiteUrl(),
+  title: {
+    default: "Portal das Emendas | Prefeitura de Osasco",
+    template: "%s | Portal das Emendas de Osasco",
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: "Prefeitura Municipal de Osasco" }],
+  creator: "Prefeitura Municipal de Osasco",
+  publisher: "Prefeitura Municipal de Osasco",
+  category: "Transparência pública",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "/",
+    siteName: SITE_NAME,
+    title: "Portal das Emendas | Prefeitura de Osasco",
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: "/mockup.png",
+        width: 1024,
+        height: 497,
+        alt: "Painel do Portal das Emendas de Osasco",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Portal das Emendas | Prefeitura de Osasco",
+    description: SITE_DESCRIPTION,
+    images: ["/mockup.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  keywords: [
+    "emendas parlamentares",
+    "emendas Osasco",
+    "transparência pública",
+    "execução orçamentária",
+    "Prefeitura de Osasco",
+  ],
   icons: {
     icon: "/brasao.ico",
+    apple: "/brasao-osasco.png",
   },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({

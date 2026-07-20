@@ -8,6 +8,8 @@ import ShareCard from "@/components/projects/share-card";
 import TechnicalDetailsAccordion from "@/components/projects/technical-details-accordion";
 import ComplianceModule from "@/components/projects/compliance-module";
 import { fetchManagementDetails } from "@/lib/management-api";
+import type { Metadata } from "next";
+import { truncateDescription } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -17,6 +19,44 @@ interface Props {
         id: string;
     }>;
     searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { id } = await params;
+    const amendments = await getAmendmentsFromSheet();
+    const amendment = amendments.find((item) => String(item.id) === String(id));
+
+    if (!amendment) {
+        return {
+            title: "Emenda não encontrada",
+            robots: { index: false, follow: false },
+        };
+    }
+
+    const title = amendment.objeto || amendment.title || `Emenda ${amendment.numeroEmenda || id}`;
+    const description = truncateDescription(
+        amendment.finalidade ||
+            amendment.description ||
+            `Consulte os dados, valores e a execução da emenda de ${amendment.autor || amendment.responsavelNome || "Osasco"}.`
+    );
+    const pathname = `/projetos/${encodeURIComponent(String(id))}`;
+
+    return {
+        title,
+        description,
+        alternates: { canonical: pathname },
+        openGraph: {
+            type: "article",
+            url: pathname,
+            title,
+            description,
+            publishedTime: amendment.createdAt || undefined,
+        },
+        twitter: {
+            title,
+            description,
+        },
+    };
 }
 
 export default async function ProjetoDetalhePage(props: Props) {
