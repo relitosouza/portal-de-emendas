@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateSessionToken, verifyPassword } from "@/lib/auth";
 import crypto from "crypto";
+import { checkRateLimit, createRateLimitResponse, getClientIp } from "@/lib/rate-limit";
+import { requireTrustedOrigin } from "@/lib/request-security";
 
 const MAX_ATTEMPTS = 5;
 const BLOCK_DURATION_MS = 15 * 60 * 1000; // 15 minutes
@@ -55,6 +57,18 @@ function setPenaltyCookie(response: NextResponse, count: number, blockedUntil: n
 
 export async function POST(req: NextRequest) {
     try {
+        const originError = requireTrustedOrigin(req);
+        if (originError) return originError;
+
+        const contentLength = Number(req.headers.get("content-length") || 0);
+        if (contentLength > 4096) {
+            return NextResponse.json({ error: "Requisição muito grande." }, { status: 413 });
+        }
+
+        const clientIp = getClientIp(req);
+        const ipLimit = await checkRateLimit(`admin-login:ip:${clientIp}`, 20, BLOCK_DURATION_MS);
+        if (!ipLimit.allowed) return createRateLimitResponse(ipLimit.retryAfterMs);
+
         const penalty = readPenaltyCookie(req);
         const now = Date.now();
 
@@ -69,6 +83,17 @@ export async function POST(req: NextRequest) {
 
         const { email, password } = await req.json();
 
+        if (
+            typeof email !== "string" ||
+            typeof password !== "string" ||
+            email.length > 254 ||
+            password.length > 256
+        ) {
+            return NextResponse.json({ error: "Credenciais inválidas." }, { status: 400 });
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
 
@@ -79,7 +104,10 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        if (email === adminEmail && verifyPassword(password, adminPassword)) {
+        const credentialsMatch =
+            normalizedEmail === adminEmail.trim().toLowerCase() && verifyPassword(password, adminPassword);
+
+        if (credentialsMatch) {
             const token = generateSessionToken();
             const response = NextResponse.json({ success: true });
 
@@ -96,6 +124,13 @@ export async function POST(req: NextRequest) {
 
             return response;
         }
+
+        const accountLimit = await checkRateLimit(
+            `admin-login:account:${normalizedEmail}`,
+            8,
+            BLOCK_DURATION_MS
+        );
+        if (!accountLimit.allowed) return createRateLimitResponse(accountLimit.retryAfterMs);
 
         // Increment failure count
         const currentCount = (penalty?.count ?? 0) + 1;

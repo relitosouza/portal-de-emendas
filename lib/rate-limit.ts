@@ -3,12 +3,93 @@
  * Tracks requests per IP address.
  */
 
+import crypto from "crypto";
+import Redis from "ioredis";
+
 interface RateLimitEntry {
     count: number;
     resetTime: number;
 }
 
 const store = new Map<string, RateLimitEntry>();
+
+type RateLimitGlobal = typeof globalThis & {
+    __portalRateLimitRedis?: Redis;
+};
+
+export interface RateLimitResult {
+    allowed: boolean;
+    remaining: number;
+    retryAfterMs: number;
+}
+
+function getRateLimitRedis(): Redis | null {
+    if (!process.env.REDIS_URL) return null;
+
+    const globalStore = globalThis as RateLimitGlobal;
+    if (!globalStore.__portalRateLimitRedis) {
+        globalStore.__portalRateLimitRedis = new Redis(process.env.REDIS_URL, {
+            maxRetriesPerRequest: 1,
+            enableReadyCheck: false,
+            connectTimeout: 2000,
+            commandTimeout: 2000,
+        });
+    }
+
+    return globalStore.__portalRateLimitRedis;
+}
+
+function hashIdentifier(identifier: string): string {
+    return crypto.createHash("sha256").update(identifier).digest("hex");
+}
+
+function checkMemoryRateLimit(identifier: string, limit: number, windowMs: number): RateLimitResult {
+    const allowed = isRateLimited(identifier, limit, windowMs);
+    return {
+        allowed,
+        remaining: getRemainingRequests(identifier, limit, windowMs),
+        retryAfterMs: allowed ? 0 : getRateLimitResetTime(identifier),
+    };
+}
+
+/**
+ * Persistent fixed-window limiter in production (Redis), with an in-memory
+ * fallback for local development or a temporary Redis outage.
+ */
+export async function checkRateLimit(
+    identifier: string,
+    limit: number,
+    windowMs: number = 60000
+): Promise<RateLimitResult> {
+    const redis = getRateLimitRedis();
+    if (!redis) return checkMemoryRateLimit(identifier, limit, windowMs);
+
+    const key = `portal:rate-limit:${hashIdentifier(identifier)}`;
+    const script = `
+        local count = redis.call('INCR', KEYS[1])
+        if count == 1 then
+            redis.call('PEXPIRE', KEYS[1], ARGV[1])
+        end
+        local ttl = redis.call('PTTL', KEYS[1])
+        return {count, ttl}
+    `;
+
+    try {
+        const result = (await redis.eval(script, 1, key, windowMs)) as [number, number];
+        const count = Number(result[0]);
+        const ttl = Math.max(0, Number(result[1]));
+        return {
+            allowed: count <= limit,
+            remaining: Math.max(0, limit - count),
+            retryAfterMs: count <= limit ? 0 : ttl,
+        };
+    } catch (error) {
+        if (process.env.NODE_ENV === "development") {
+            console.warn("[rate-limit] Redis indisponível; usando proteção local.", error);
+        }
+        return checkMemoryRateLimit(identifier, limit, windowMs);
+    }
+}
 
 /**
  * Check if request exceeds rate limit.
@@ -86,15 +167,16 @@ export function getClientIp(request: Request): string {
  * Create a rate limit response (429 Too Many Requests).
  */
 export function createRateLimitResponse(resetTime: number) {
-    const secondsUntilReset = Math.ceil(resetTime / 1000);
+    const secondsUntilReset = Math.max(1, Math.ceil(resetTime / 1000));
     return Response.json(
         {
-            error: `Rate limit exceeded. Try again in ${secondsUntilReset} second(s).`,
+            error: `Muitas requisições. Tente novamente em ${secondsUntilReset} segundo(s).`,
         },
         {
             status: 429,
             headers: {
                 "Retry-After": secondsUntilReset.toString(),
+                "Cache-Control": "no-store",
             },
         }
     );

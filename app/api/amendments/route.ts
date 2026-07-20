@@ -3,6 +3,7 @@ import { appendAmendmentToSheet, getAmendmentsFromSheet, deleteAmendmentFromShee
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 import { isValidAmendmentId, validatePaginationParams } from "@/lib/validation";
 import { logApiError, logApiCall } from "@/lib/logger";
+import { requireTrustedOrigin } from "@/lib/request-security";
 
 export async function GET(req: NextRequest) {
     const startTime = Date.now();
@@ -50,6 +51,8 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
     const startTime = Date.now();
     if (!(await isAuthenticated())) return unauthorizedResponse();
+    const originError = requireTrustedOrigin(req);
+    if (originError) return originError;
 
     try {
         const body = await req.json();
@@ -106,6 +109,8 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
     const startTime = Date.now();
     if (!(await isAuthenticated())) return unauthorizedResponse();
+    const originError = requireTrustedOrigin(req);
+    if (originError) return originError;
 
     try {
         const { searchParams } = new URL(req.url);
@@ -151,6 +156,8 @@ export async function DELETE(req: NextRequest) {
 export async function PUT(req: NextRequest) {
     const startTime = Date.now();
     if (!(await isAuthenticated())) return unauthorizedResponse();
+    const originError = requireTrustedOrigin(req);
+    if (originError) return originError;
 
     try {
         const body = await req.json();

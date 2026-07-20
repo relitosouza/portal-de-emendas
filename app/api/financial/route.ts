@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { upsertFinancialData } from "@/lib/json-storage";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
+import { requireTrustedOrigin } from "@/lib/request-security";
 
 export async function POST(request: Request) {
     if (!(await isAuthenticated())) return unauthorizedResponse();
+    const originError = requireTrustedOrigin(request);
+    if (originError) return originError;
 
     try {
         const body = await request.json();

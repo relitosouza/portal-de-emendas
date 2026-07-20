@@ -3,11 +3,14 @@ import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 import fs from "fs/promises";
 import path from "path";
 import { writeJsonFile, AMENDMENTS_FILE, EXTERNAL_FILE, FINANCIAL_FILE } from "@/lib/json-storage";
+import { requireTrustedOrigin } from "@/lib/request-security";
 
 export async function POST(request: Request) {
     if (!(await isAuthenticated())) {
         return unauthorizedResponse();
     }
+    const originError = requireTrustedOrigin(request);
+    if (originError) return originError;
 
     try {
         const dataDir = path.join(process.cwd(), "data");

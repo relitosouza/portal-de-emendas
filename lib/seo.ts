@@ -1,16 +1,23 @@
-const DEFAULT_SITE_URL = "https://portal.osasco.sp.gov.br";
+const LOCAL_SITE_URL = "http://localhost:3000";
 
 export const SITE_NAME = "Portal das Emendas de Osasco";
 export const SITE_DESCRIPTION =
     "Acompanhe com transparência as emendas parlamentares destinadas a Osasco, seus valores, autores, áreas beneficiadas e etapas de execução.";
 
 export function getSiteUrl(): URL {
-    const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+    const configuredUrl =
+        process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+        process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() ||
+        process.env.VERCEL_URL?.trim() ||
+        LOCAL_SITE_URL;
+    const urlWithProtocol = /^https?:\/\//i.test(configuredUrl)
+        ? configuredUrl
+        : `https://${configuredUrl}`;
 
     try {
-        return new URL(configuredUrl || DEFAULT_SITE_URL);
+        return new URL(urlWithProtocol);
     } catch {
-        return new URL(DEFAULT_SITE_URL);
+        return new URL(LOCAL_SITE_URL);
     }
 }
 

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDashboardCards, saveDashboardCards, DashboardCard } from "@/lib/json-storage";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
+import { requireTrustedOrigin } from "@/lib/request-security";
 
 export async function GET() {
     try {
@@ -14,6 +15,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
     if (!(await isAuthenticated())) return unauthorizedResponse();
+    const originError = requireTrustedOrigin(request);
+    if (originError) return originError;
 
     try {
         const body = await request.json();

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
+import { isAuthenticated, unauthorizedResponse, verifyPassword } from "@/lib/auth";
 import { runFinancialSync } from "@/lib/sync-logic";
 import { readJsonFile } from "@/lib/json-storage";
+import { requireTrustedOrigin } from "@/lib/request-security";
 
 export async function GET() {
     try {
@@ -14,10 +15,16 @@ export async function GET() {
 
 export async function POST(request: Request) {
     const authHeader = request.headers.get("authorization");
-    const isCron = authHeader === `Bearer ${process.env.CRON_SECRET}`;
+    const cronSecret = process.env.CRON_SECRET;
+    const providedSecret = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : "";
+    const isCron = Boolean(cronSecret && providedSecret && verifyPassword(providedSecret, cronSecret));
 
     if (!isCron && !(await isAuthenticated())) {
         return unauthorizedResponse();
+    }
+    if (!isCron) {
+        const originError = requireTrustedOrigin(request);
+        if (originError) return originError;
     }
 
     try {

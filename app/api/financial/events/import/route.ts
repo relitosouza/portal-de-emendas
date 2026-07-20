@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
 import { addFinancialEvent, FinancialEventType } from "@/lib/json-storage";
-import { isRateLimited, getClientIp, createRateLimitResponse } from "@/lib/rate-limit";
-import { requireCsrfToken } from "@/lib/csrf";
+import { checkRateLimit, getClientIp, createRateLimitResponse } from "@/lib/rate-limit";
+import { requireTrustedOrigin } from "@/lib/request-security";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const MAX_FIELD_LENGTH = 1000000; // 1MB per field
@@ -84,18 +84,16 @@ function parseCSV(content: string): string[][] {
 export async function POST(request: Request) {
     if (!(await isAuthenticated())) return unauthorizedResponse();
 
-    // CSRF validation
-    const csrfError = await requireCsrfToken(request);
-    if (csrfError) return csrfError;
+    const originError = requireTrustedOrigin(request);
+    if (originError) return originError;
 
     // Rate limiting: max 20 imports per hour per IP
     const clientIp = getClientIp(request);
     const IMPORT_LIMIT = 20;
     const WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
-    if (!isRateLimited(clientIp, IMPORT_LIMIT, WINDOW_MS)) {
-        return createRateLimitResponse(60 * 60 * 1000); // Full hour
-    }
+    const rateLimit = await checkRateLimit(`financial-events-import:${clientIp}`, IMPORT_LIMIT, WINDOW_MS);
+    if (!rateLimit.allowed) return createRateLimitResponse(rateLimit.retryAfterMs);
 
     try {
         const formData = await request.formData();

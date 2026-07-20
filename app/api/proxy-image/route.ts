@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { checkRateLimit, createRateLimitResponse, getClientIp } from "@/lib/rate-limit";
 
 const ALLOWED_HOSTS = [
     "lh3.googleusercontent.com",
@@ -69,6 +70,9 @@ function isBlockedUrl(urlString: string): boolean {
 }
 
 export async function GET(request: Request) {
+    const rateLimit = await checkRateLimit(`image-proxy:${getClientIp(request)}`, 120, 10 * 60 * 1000);
+    if (!rateLimit.allowed) return createRateLimitResponse(rateLimit.retryAfterMs);
+
     const { searchParams } = new URL(request.url);
     const url = searchParams.get("url");
 

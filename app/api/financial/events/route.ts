@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { addFinancialEvent, updateFinancialEvent, deleteFinancialEvent, FinancialEventType } from "@/lib/json-storage";
 import { isAuthenticated, unauthorizedResponse } from "@/lib/auth";
+import { requireTrustedOrigin } from "@/lib/request-security";
 
 const VALID_TYPES: FinancialEventType[] = ["empenho", "liquidacao", "pagamento"];
 
 export async function POST(request: Request) {
     if (!(await isAuthenticated())) return unauthorizedResponse();
+    const originError = requireTrustedOrigin(request);
+    if (originError) return originError;
 
     try {
         const body = await request.json();
@@ -27,6 +30,8 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
     if (!(await isAuthenticated())) return unauthorizedResponse();
+    const originError = requireTrustedOrigin(request);
+    if (originError) return originError;
 
     try {
         const body = await request.json();
@@ -52,6 +57,8 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
     if (!(await isAuthenticated())) return unauthorizedResponse();
+    const originError = requireTrustedOrigin(request);
+    if (originError) return originError;
 
     try {
         const body = await request.json();
