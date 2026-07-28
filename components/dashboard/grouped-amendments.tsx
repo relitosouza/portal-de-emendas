@@ -3,12 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import { findVereadorPhoto, formatCurrency, parseCurrency, getCategoryLabel } from "@/lib/amendments-utils";
+import type { Amendment } from "@/lib/store";
 import { getSectorColor } from "@/lib/sector-colors";
 import { getEffectiveStatus } from "@/lib/status-mapper";
 import { cn } from "@/lib/utils";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import * as Accordion from "@radix-ui/react-accordion";
-import { ChevronDown, Users, TrendingUp } from "lucide-react";
+import { ChevronDown, TrendingUp } from "lucide-react";
 
 const PROGRESS_MAP: Record<string, number> = {
   "Não Iniciada": 0,
@@ -29,6 +30,7 @@ interface Participant {
   valorNum: number;
   foto?: string;
   protocolo: string;
+  naturezaDespesa: string;
 }
 
 interface GroupedData {
@@ -40,7 +42,7 @@ interface GroupedData {
 }
 
 interface GroupedAmendmentsProps {
-  amendments: any[];
+  amendments: Amendment[];
   initialLimit?: number;
 }
 
@@ -80,6 +82,7 @@ export default function GroupedAmendments({ amendments, initialLimit = 3 }: Grou
         valorNum: valor,
         foto: findVereadorPhoto(autor),
         protocolo: a.numeroEmenda || a.id || "---",
+        naturezaDespesa: a.naturezaDespesa || "Não informado",
       });
     });
 
@@ -91,8 +94,6 @@ export default function GroupedAmendments({ amendments, initialLimit = 3 }: Grou
 
     return Object.values(map).sort((a, b) => b.valorTotal - a.valorTotal);
   }, [amendments]);
-
-  const isCollapsed = visibleCount <= initialLimit;
 
   return (
     <div className="space-y-4 animate-fade-in transition-all duration-500">
@@ -128,12 +129,15 @@ function GroupedAmendmentCard({ group }: { group: GroupedData }) {
       {/* Topo */}
       <div className="p-5 pb-3">
         <div className="flex justify-between items-start gap-4 mb-3">
-          <Link 
-            href={`/projetos?view=grouped&search=${encodeURIComponent(group.objeto)}`}
-            className="text-lg font-extrabold text-slate-800 leading-tight group-hover:text-blue-600 transition-colors hover:underline"
-          >
-            {group.objeto}
-          </Link>
+          <div className="min-w-0">
+            <p className="mb-1 text-[9px] font-black uppercase tracking-widest text-blue-600">Objetivo</p>
+            <Link
+              href={`/projetos?view=grouped&search=${encodeURIComponent(group.objeto)}`}
+              className="text-lg font-extrabold leading-tight text-slate-800 transition-colors group-hover:text-blue-600 hover:underline"
+            >
+              {group.objeto}
+            </Link>
+          </div>
           <div className="text-right shrink-0">
              <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Valor Total</p>
              <p className="text-lg font-black text-blue-600">{formatCurrency(group.valorTotal)}</p>
@@ -164,15 +168,16 @@ function GroupedAmendmentCard({ group }: { group: GroupedData }) {
       {/* Meio: Lista Técnica */}
       <div className="px-5 py-3 flex-1">
         <div className="space-y-1">
-          <div className="grid grid-cols-3 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 pb-1.5 mb-2">
-            <span>Vereador</span>
-            <span>Valor</span>
-            <span className="text-right">Nº da Emenda</span>
+          <div className="grid grid-cols-[5%_45%_30%_20%] text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 pb-1.5 mb-2">
+            <span>#</span>
+            <span>Autor e número da emenda</span>
+            <span>Natureza da despesa</span>
+            <span className="text-right">Valor</span>
           </div>
           
           {/* Top 5 Participants */}
           {group.participantes.slice(0, 5).map((p, i) => (
-            <ParticipantRow key={i} p={p} />
+            <ParticipantRow key={i} p={p} index={i} />
           ))}
 
           {/* Remaining in Accordion */}
@@ -182,7 +187,7 @@ function GroupedAmendmentCard({ group }: { group: GroupedData }) {
                 <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
                   <div className="space-y-1 pt-1 mt-1">
                     {group.participantes.slice(5).map((p, i) => (
-                      <ParticipantRow key={i + 5} p={p} />
+                      <ParticipantRow key={i + 5} p={p} index={i + 5} />
                     ))}
                   </div>
                 </Accordion.Content>
@@ -201,12 +206,21 @@ function GroupedAmendmentCard({ group }: { group: GroupedData }) {
 
       {/* Rodapé: Avatar Stack */}
       <div className="px-5 py-4 bg-slate-50/30 border-t border-slate-50">
-        <p className="text-[11px] font-bold text-slate-400 mb-3 flex items-center gap-2 uppercase tracking-wide">
-          Vereadores nesta emenda
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <p className="text-[11px] font-bold text-slate-400 flex items-center gap-2 uppercase tracking-wide">
+            Autores neste objetivo
           <span className="inline-flex items-center justify-center size-4 bg-blue-100 text-blue-600 rounded-full text-[9px] font-black">
             {group.participantes.length}
           </span>
-        </p>
+          </p>
+          <Link
+            href={`/projetos/relatorio-objetivos?search=${encodeURIComponent(group.objeto)}`}
+            className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold text-blue-600 transition hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600"
+          >
+            <span className="material-symbols-outlined text-sm" aria-hidden="true">print</span>
+            Imprimir objetivo
+          </Link>
+        </div>
         
         <div className="flex items-center">
           <div className="flex -space-x-4 overflow-hidden">
@@ -257,24 +271,23 @@ function GroupedAmendmentCard({ group }: { group: GroupedData }) {
   );
 }
 
-function ParticipantRow({ p }: { p: Participant }) {
+function ParticipantRow({ p, index }: { p: Participant; index: number }) {
   return (
-    <div className="grid grid-cols-3 items-center py-1.5 px-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors group/row">
+    <div className="grid grid-cols-[5%_45%_30%_20%] items-center py-1.5 px-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors group/row">
+      <span className="font-mono text-[10px] tabular-nums text-slate-400">{String(index + 1).padStart(2, "0")}</span>
       <div className="flex items-center gap-2 truncate pr-2">
         <Link 
           href={`/projetos?search=${encodeURIComponent(p.nome)}`}
           className="text-[13px] font-bold text-slate-700 truncate group-hover/row:text-blue-600 transition-colors hover:underline"
         >
-          {p.nome}
+          {p.nome}<span className="ml-1 text-[10px] font-normal text-slate-500">· {p.protocolo}</span>
         </Link>
       </div>
-      <span className="text-[12px] font-medium text-slate-500">{p.valor}</span>
-      <Link 
+      <span className="truncate pr-2 text-[10px] font-medium text-slate-500" title={p.naturezaDespesa}>{p.naturezaDespesa}</span>
+      <Link
         href={`/projetos/${p.id}`}
-        className="text-[11px] font-mono font-bold text-slate-400 text-right hover:text-blue-500 transition-colors hover:underline"
-      >
-        {p.protocolo}
-      </Link>
+        className="text-right text-[11px] font-mono font-bold text-slate-700 hover:text-blue-500 transition-colors hover:underline"
+      >{p.valor}</Link>
     </div>
   );
 }

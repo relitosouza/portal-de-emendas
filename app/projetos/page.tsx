@@ -437,6 +437,11 @@ function ProjectsContent() {
         filtroParam,
         viewMode,
     }), [searchTerm, selectedSector, selectedStatus, selectedResponsible, selectedAmbito, filtroParam, viewMode]);
+    const groupedQueryString = useMemo(() => {
+        const query = new URLSearchParams(detailQueryString);
+        query.set("view", "grouped");
+        return query.toString();
+    }, [detailQueryString]);
 
     if (loading) {
         return (
@@ -456,14 +461,27 @@ function ProjectsContent() {
             <main aria-label="Listagem de emendas parlamentares" className="max-w-7xl mx-auto px-6 py-10 w-full">
                 {/* Header */}
                 <div className="mb-10">
-                    <h1 className="text-4xl font-extrabold tracking-tight mb-3">
-                        {isCreditedView ? "Emendas Creditadas" : "Explorar Todas as Emendas"}
-                    </h1>
-                    <p className="text-slate-500 text-lg max-w-2xl">
-                        {isCreditedView
-                            ? "Créditos recebidos no Portal da Transparência que ainda aguardam associação com uma emenda cadastrada."
-                            : "Acompanhe em tempo real a destinação de recursos públicos, status de execução e o impacto gerado pelos parlamentares."}
-                    </p>
+                    <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                        <div>
+                            <h1 className="text-4xl font-extrabold tracking-tight mb-3">
+                                {isCreditedView ? "Emendas Creditadas" : viewMode === "grouped" ? "Emendas por objetivo" : "Explorar Todas as Emendas"}
+                            </h1>
+                            <p className="text-slate-500 text-lg max-w-2xl">
+                                {isCreditedView
+                                    ? "Créditos recebidos no Portal da Transparência que ainda aguardam associação com uma emenda cadastrada."
+                                    : viewMode === "grouped"
+                                        ? "Consulte os objetivos atendidos e veja, em cada grupo, as emendas e autores relacionados."
+                                        : "Acompanhe em tempo real a destinação de recursos públicos, status de execução e o impacto gerado pelos parlamentares."}
+                            </p>
+                        </div>
+                        {!isCreditedView && <Link
+                            href={`/projetos?${groupedQueryString}`}
+                            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600"
+                        >
+                            <span className="material-symbols-outlined text-lg" aria-hidden="true">account_tree</span>
+                            Visualizar por objetivo
+                        </Link>}
+                    </div>
                 </div>
 
                 {/* Selector de Âmbito (Municipal, Estadual, Federal) */}
@@ -676,6 +694,14 @@ function ProjectsContent() {
                         >
                             <span className="material-symbols-outlined text-sm" aria-hidden="true">description</span>
                             Relatório de Indicações
+                        </Link>}
+                        {!isCreditedView && <Link
+                            href={`/projetos/relatorio-objetivos${detailQueryString ? `?${detailQueryString}` : ""}`}
+                            aria-label="Abrir relatório de emendas por objetivo com os filtros atuais"
+                            className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white transition-all hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600"
+                        >
+                            <span className="material-symbols-outlined text-sm" aria-hidden="true">summarize</span>
+                            Por objetivo
                         </Link>}
                     </div>
                 </div>
