@@ -91,13 +91,6 @@ class Logger {
     error(message: string, error?: Error, context?: Record<string, unknown>) {
         this.log("error", message, context, error);
     }
-
-    /**
-     * Get recent logs (useful for debugging in production).
-     */
-    getRecentLogs(count: number = 20): LogEntry[] {
-        return this.logBuffer.slice(-count);
-    }
 }
 
 // Export singleton instance
@@ -137,3 +130,5 @@ export function logApiError(
         ...context,
     });
 }
+
+
