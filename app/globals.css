@@ -67,6 +67,7 @@
 
 @layer base {
   :root {
+    --a11y-font-scale: 1;
     /* Fonts */
     --font-plus-jakarta: 'Plus Jakarta Sans', sans-serif;
     --font-jetbrains-mono: 'JetBrains Mono', monospace;
@@ -200,7 +201,7 @@
 
   /* Tamanho de fonte acessível — eMAG */
   html {
-    font-size: calc(1rem * var(--a11y-font-scale));
+    font-size: calc(1rem * var(--a11y-font-scale, 1));
   }
 
   /* ─── Tipografia Fluida ─── */

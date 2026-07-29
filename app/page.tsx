@@ -182,7 +182,7 @@ export default function Home() {
             </span>
             <input
               id="busca-emendas"
-              className="w-full pl-12 pr-12 py-4 bg-white border-none rounded-2xl shadow-xl shadow-slate-200/50 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm"
+              className="w-full pl-12 pr-12 py-4 bg-white border-none outline-none rounded-2xl shadow-xl shadow-slate-200/50 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm"
               placeholder="Pesquisar por objetivo, autor ou número..."
               type="search"
               aria-label="Buscar emendas"
@@ -298,7 +298,7 @@ export default function Home() {
                   role="img"
                   aria-label={loading ? "Carregando percentual pago" : `${porcentagemPagaFormatada}% do valor total já foi pago`}
                 >
-                  <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 100 100" aria-hidden="true">
+                  <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
                     <circle cx="50" cy="50" fill="transparent" r="42" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
                     <circle
                       className="text-white transition-all duration-1000"
@@ -330,7 +330,7 @@ export default function Home() {
                 </div>
                 <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest text-right shrink-0">Crédito recebido</span>
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Emenda Creditada</p>
                 <h3 className="text-xl font-extrabold text-emerald-700 mb-2 truncate">
                   {loading ? "..." : animatedCreditedRevenue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
@@ -341,14 +341,14 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href={selectedAmbito ? `/projetos?filtro=reservado&ambito=${selectedAmbito}` : "/projetos?filtro=reservado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300">
+            <Link href={selectedAmbito ? `/projetos?filtro=reservado&ambito=${selectedAmbito}` : "/projetos?filtro=reservado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-600">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
                   <span className="material-symbols-outlined text-xl">account_balance</span>
                 </div>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right shrink-0">Previsão</span>
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Reservado</p>
                 <h3 className="text-xl font-extrabold text-slate-800 mb-4 truncate">{loading ? "..." : animatedReservado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</h3>
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
@@ -357,14 +357,14 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href={selectedAmbito ? `/projetos?filtro=empenhado&ambito=${selectedAmbito}` : "/projetos?filtro=empenhado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-blue-300">
+            <Link href={selectedAmbito ? `/projetos?filtro=empenhado&ambito=${selectedAmbito}` : "/projetos?filtro=empenhado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-blue-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
                   <span className="material-symbols-outlined text-xl">payments</span>
                 </div>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right shrink-0">Alocação</span>
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Empenhado</p>
                 <h3 className="text-xl font-extrabold text-slate-800 mb-4 truncate">{loading ? "..." : animatedEmpenhado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</h3>
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
@@ -373,14 +373,14 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href={selectedAmbito ? `/projetos?filtro=liquidado&ambito=${selectedAmbito}` : "/projetos?filtro=liquidado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-indigo-300">
+            <Link href={selectedAmbito ? `/projetos?filtro=liquidado&ambito=${selectedAmbito}` : "/projetos?filtro=liquidado"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
                   <span className="material-symbols-outlined text-xl">receipt_long</span>
                 </div>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right shrink-0">Execução</span>
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Liquidado</p>
                 <h3 className="text-xl font-extrabold text-slate-800 mb-4 truncate">{loading ? "..." : animatedLiquidado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</h3>
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
@@ -389,14 +389,14 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href={selectedAmbito ? `/projetos?filtro=pago&ambito=${selectedAmbito}` : "/projetos?filtro=pago"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-300">
+            <Link href={selectedAmbito ? `/projetos?filtro=pago&ambito=${selectedAmbito}` : "/projetos?filtro=pago"} className="bg-white p-6 rounded-[16px] shadow-sm border border-slate-100 flex flex-col justify-between group transition-all hover:shadow-md hover:border-emerald-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
                   <span className="material-symbols-outlined text-xl">check_circle</span>
                 </div>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right shrink-0">Fase Final</span>
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Pago</p>
                 <h3 className="text-xl font-extrabold text-slate-800 mb-4 truncate">{loading ? "..." : animatedPago.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</h3>
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
@@ -409,8 +409,8 @@ export default function Home() {
 
         {/* Main Split Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - 1/3 (Moved from right to align with user prompt) */}
-          <div className="space-y-6 flex flex-col">
+          {/* Left Column - 1/3 */}
+          <div className="flex flex-col gap-6">
             {/* Author Ranking */}
             {loading ? (
               <div className="bg-white rounded-[24px] border border-slate-100 shadow-xl shadow-slate-200/40 p-12 flex flex-col items-center justify-center gap-4 text-slate-400">
@@ -422,7 +422,7 @@ export default function Home() {
             )}
 
             {/* Container for Sector + Pie Chart to balance height */}
-            <div className="flex flex-col space-y-6">
+            <div className="flex flex-col gap-6">
               {/* Sector Ranking Card with Expansion */}
               <SectorRanking data={sectorData} loading={loading} />
 
