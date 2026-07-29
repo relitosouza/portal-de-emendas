@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "node --test tests/*.test.ts",
+    "test:smoke": "node scripts/tests/smoke-public-api.mjs",
     "sync-financeiro": "npx tsx scripts/sync-financial-osasco.ts"
   },
   "dependencies": {

@@ -24,6 +24,7 @@ export interface RateLimitResult {
 }
 
 function getRateLimitRedis(): Redis | null {
+    if (process.env.DISABLE_REDIS === "true") return null;
     if (!process.env.REDIS_URL) return null;
 
     const globalStore = globalThis as RateLimitGlobal;
@@ -47,8 +48,8 @@ function checkMemoryRateLimit(identifier: string, limit: number, windowMs: numbe
     const allowed = isRateLimited(identifier, limit, windowMs);
     return {
         allowed,
-        remaining: getRemainingRequests(identifier, limit, windowMs),
-        retryAfterMs: allowed ? 0 : getRateLimitResetTime(identifier),
+        remaining: getRemainingRequests(identifier, limit),
+        retryAfterMs: getRateLimitResetTime(identifier),
     };
 }
 
@@ -81,7 +82,7 @@ export async function checkRateLimit(
         return {
             allowed: count <= limit,
             remaining: Math.max(0, limit - count),
-            retryAfterMs: count <= limit ? 0 : ttl,
+            retryAfterMs: ttl,
         };
     } catch (error) {
         if (process.env.NODE_ENV === "development") {
@@ -130,8 +131,7 @@ export function isRateLimited(
  */
 export function getRemainingRequests(
     identifier: string,
-    limit: number,
-    windowMs: number = 60000
+    limit: number
 ): number {
     const now = Date.now();
     const entry = store.get(identifier);

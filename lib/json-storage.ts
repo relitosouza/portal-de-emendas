@@ -10,7 +10,8 @@ import { parseCurrency } from "./amendments-utils";
 // =====================================================
 
 const IS_VERCEL = !!process.env.VERCEL;
-const HAS_REDIS = !!process.env.REDIS_URL;
+const REDIS_DISABLED = process.env.DISABLE_REDIS === "true";
+const HAS_REDIS = !!process.env.REDIS_URL && !REDIS_DISABLED;
 const BUNDLED_DATA_DIR = path.join(process.cwd(), "data");
 
 let _redis: Redis | null = null;
