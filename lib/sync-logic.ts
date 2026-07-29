@@ -14,15 +14,6 @@ import path from "path";
 const OSASCO_API_URL = 'https://transparencia-osasco.smarapd.com.br/paiportalserver/modulovisao/filter';
 const DATA_DIR = path.join(process.cwd(), "data");
 
-/**
- * Escreve diretamente no arquivo JSON local (fallback quando Redis não está disponível).
- * Garante que a sincronização funcione localmente sem Redis ativo.
- */
-async function writeJsonFileDirect<T>(filename: string, data: T[]): Promise<void> {
-    const filePath = path.join(DATA_DIR, filename);
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
-}
 
 
 interface PortalRecord {
